@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>درس الإملاء التفاعلي – حرف الراء</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#fff8ec; --card:#ffffff; --ink:#2b2a33; --muted:#6b6878;
+  --brand:#e4572e; --brand2:#2e86ab; --ok:#2e9e5b; --bad:#d64045; --gold:#f6b93b; --line:#f0e3cc;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1d1b26; --card:#292735; --ink:#f4f1ea; --muted:#aaa6b8; --line:#3a3748;
+    --brand:#ff7a50; --brand2:#5cb8dd; --ok:#4cc782; --bad:#ff6b70; --gold:#ffcf5c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1d1b26; --card:#292735; --ink:#f4f1ea; --muted:#aaa6b8; --line:#3a3748;
+  --brand:#ff7a50; --brand2:#5cb8dd; --ok:#4cc782; --bad:#ff6b70; --gold:#ffcf5c;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI","Noto Naskh Arabic","Tahoma",system-ui,sans-serif;line-height:1.6;min-height:100vh}
+header{padding:14px 16px 6px;text-align:center}
+header h1{margin:0;font-size:1.35rem}
+header p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.steps{display:flex;gap:6px;padding:8px 12px;max-width:760px;margin:0 auto;overflow-x:auto}
+.steps button{flex:1;min-width:84px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 6px;font:inherit;font-size:.85rem;cursor:pointer}
+.steps button b{display:block;font-size:1.1rem}
+.steps button.on{border-color:var(--brand);background:var(--brand);color:#fff}
+.steps button.done:not(.on){border-color:var(--ok)}
+main{max-width:760px;margin:0 auto;padding:8px 14px 40px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 4px;font-size:1.2rem}
+.hint{color:var(--muted);font-size:.9rem;margin:0 0 10px}
+.btn{border:0;border-radius:14px;padding:11px 18px;font:inherit;font-weight:700;color:#fff;background:var(--brand);cursor:pointer}
+.btn.alt{background:var(--brand2)} .btn.ok{background:var(--ok)} .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:10px}
+.stat{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.wcard{border:3px solid var(--line);border-radius:18px;background:var(--bg);padding:10px 4px;text-align:center;cursor:pointer;font:inherit;color:var(--ink);transition:transform .15s}
+.wcard:active{transform:scale(.95)}
+.wcard .e{font-size:2.4rem;display:block}
+.wcard .t{font-size:1.2rem;font-weight:700}
+.wcard.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.wcard.wrong{border-color:var(--bad);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.big{font-size:6.5rem;font-weight:800;color:var(--brand);text-align:center;line-height:1.1}
+.forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.forms div{background:var(--bg);border:2px solid var(--line);border-radius:14px;text-align:center;padding:8px 2px}
+.forms span{font-size:2rem;display:block;font-weight:700}
+.forms small{color:var(--muted)}
+svg.write{display:block;margin:0 auto;width:150px;height:170px;background:var(--bg);border-radius:18px;border:2px dashed var(--line)}
+.harakat{display:flex;gap:8px;justify-content:center;margin:8px 0}
+.harakat button{font-size:1.6rem;padding:6px 18px}
+.pos{display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap}
+.tag{border-radius:10px;padding:0 8px;font-size:.78rem;color:#fff;font-weight:700}
+.tag.s{background:var(--brand2)} .tag.m{background:var(--gold);color:#333} .tag.e{background:var(--brand)}
+.words{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.wr{display:flex;align-items:center;gap:10px;background:var(--bg);border:2px solid var(--line);border-radius:16px;padding:8px 10px;cursor:pointer;font:inherit;color:var(--ink);text-align:right}
+.wr .e{font-size:2rem}
+.wr .t{font-size:1.2rem;font-weight:700;display:block}
+.show{text-align:center;padding:10px}
+.show .e{font-size:5rem;display:block}
+.show .t{font-size:3rem;font-weight:800}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--brand);width:100%;transition:width linear}
+.answer{min-height:76px;border:3px dashed var(--line);border-radius:18px;font-size:2.6rem;font-weight:800;text-align:center;padding:4px;margin:8px 0;letter-spacing:0}
+.answer.ok{border-color:var(--ok)} .answer.no{border-color:var(--bad)}
+.tiles{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tile{width:58px;height:58px;font-size:1.9rem;font-weight:800;border-radius:14px;border:2px solid var(--brand2);background:var(--card);color:var(--ink);cursor:pointer;font-family:inherit}
+.tile:disabled{opacity:.3}
+.c-bad{color:var(--bad)} .c-ok{color:var(--ok)}
+.pbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.pbtns button{padding:18px 4px;font-size:1.1rem}
+.speaker{font-size:4rem;text-align:center;cursor:pointer;background:none;border:0;display:block;margin:0 auto}
+.msg{text-align:center;font-weight:700;min-height:1.6em;margin-top:8px}
+.final{text-align:center}
+.final .stars{font-size:3rem}
+details{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:10px 14px;margin-top:6px}
+details summary{cursor:pointer;font-weight:700}
+details table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px;overflow-x:auto;display:block}
+details td,details th{border:1px solid var(--line);padding:5px 8px;text-align:right}
+.conf{position:fixed;top:-40px;font-size:1.8rem;pointer-events:none;animation:fall 2.2s ease-in forwards;z-index:9}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.8}}
+.novoice{display:none;background:#fff3cd;color:#5a4400;border-radius:12px;padding:8px 12px;font-size:.85rem;margin:6px 0}
+.topbar{display:flex;justify-content:center;gap:8px;margin-top:6px}
+.topbar button{font-size:.8rem;padding:4px 12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 حرف الراء (ر) – درس الإملاء المنظور</h1>
+  <p>تمهيد ← عرض ← نشاط الإملاء ← ختام</p>
+  <div class="topbar">
+    <button class="btn ghost" id="muteBtn">🔊 الصوت: يعمل</button>
+    <button class="btn ghost" id="themeBtn">🌓 المظهر</button>
+  </div>
+  <div class="novoice" id="novoice">لم يتم العثور على صوت عربي في هذا الجهاز؛ ستسمع المؤثرات فقط. جرّب Chrome أو Safari مع تنزيل صوت عربي من إعدادات الجهاز.</div>
+</header>
+
+<div class="steps" id="steps"></div>
+
+<main id="main"></main>
+
+<main>
+<details>
+  <summary>📋 دليل المعلم – إجراءات سير الدرس</summary>
+  <table>
+    <tr><th>المرحلة</th><th>الزمن</th><th>الإجراء</th></tr>
+    <tr><td>التمهيد: لعبة «صيّاد الراء»</td><td>5 د</td><td>الطلبة يستمعون للكلمات ويصطادون التي فيها صوت الراء.</td></tr>
+    <tr><td>العرض</td><td>8 د</td><td>صوت الراء وحركاتها، كتابتها المتحركة، مواضعها (أول/وسط/آخر)، وأنها لا تتصل بما بعدها.</td></tr>
+    <tr><td>النشاط الوحيد: إملاء منظور</td><td>15 د</td><td>تُعرض الكلمة بالصورة والصوت ثم تختفي، ويكتبها الطالب بالحروف. يُسجَّل الخطأ لكل كلمة لتشخيص الأخطاء وتصويبها.</td></tr>
+    <tr><td>الختام: لعبة «سباق الراء»</td><td>7 د</td><td>يستمع الطالب للكلمة ويحدد موضع الراء فيها.</td></tr>
+  </table>
+  <p class="hint">هدف الدرس: يميّز الطالب حرف الراء صوتًا وشكلًا في مواضعه الثلاثة، ويكتب كلمات فيها راء كتابة صحيحة (إملاء منظور).</p>
+  <div id="errlog" class="hint">سجل الأخطاء: لا توجد أخطاء مسجلة بعد.</div>
+</details>
+</main>
+
+<script>
+/* ---------- بيانات ---------- */
+const WORDS=[
+ {w:'رسم',e:'🎨',p:0},{w:'رمل',e:'🏖️',p:0},
+ {w:'أرنب',e:'🐰',p:1},{w:'شجرة',e:'🌳',p:1},{w:'سيارة',e:'🚗',p:1},
+ {w:'قمر',e:'🌙',p:2},{w:'بحر',e:'🌊',p:2},{w:'طائر',e:'🐦',p:2}
+];
+const NON=[{w:'جمل',e:'🐫'},{w:'كتاب',e:'📘'},{w:'سمك',e:'🐟'},{w:'تفاحة',e:'🍎'},{w:'بيت',e:'🏠'},{w:'نجمة',e:'⭐'}];
+const POSN=['بداية','وسط','نهاية'];
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- صوت ---------- */
+let muted=false,actx=null,voice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices();
+  voice=vs.find(v=>/^ar/i.test(v.lang))||null;
+  $('#novoice').style.display=(vs.length&&!voice)?'block':'none';
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t,rate){
+  if(muted||!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='ar-SA';u.rate=rate||.8;
+  if(voice)u.voice=voice;
+  speechSynthesis.speak(u);
+}
+function tone(f,d,type,delay,vol){
+  if(muted)return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const t0=actx.currentTime+(delay||0),o=actx.createOscillator(),g=actx.createGain();
+    o.type=type||'sine';o.frequency.value=f;
+    g.gain.setValueAtTime(vol||.2,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);
+    o.connect(g).connect(actx.destination);o.start(t0);o.stop(t0+d);
+  }catch(e){}
+}
+const sndOk=()=>{tone(660,.15,'triangle',0);tone(880,.25,'triangle',.12)};
+const sndNo=()=>{tone(180,.35,'sawtooth',0,.15)};
+const sndWin=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.3,'triangle',i*.13));
+const sndTick=()=>tone(1000,.05,'square',0,.06);
+function confetti(){
+  if(muted)sndWin();else sndWin();
+  const em=['🎉','⭐','🌟','✨','🎈'];
+  for(let i=0;i<26;i++){
+    const s=document.createElement('span');s.className='conf';
+    s.textContent=em[i%em.length];s.style.left=Math.random()*100+'vw';
+    s.style.animationDelay=Math.random()*.6+'s';
+    document.body.appendChild(s);setTimeout(()=>s.remove(),3200);
+  }
+}
+$('#muteBtn').onclick=()=>{muted=!muted;if(muted&&window.speechSynthesis)speechSynthesis.cancel();$('#muteBtn').textContent=muted?'🔇 الصوت: متوقف':'🔊 الصوت: يعمل'};
+$('#themeBtn').onclick=()=>{
+  const r=document.documentElement,dark=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+  r.dataset.theme=dark?'light':'dark';
+};
+
+/* ---------- التنقل ---------- */
+const STAGES=[['🎮','التمهيد'],['📖','العرض'],['✍️','نشاط الإملاء'],['🏁','الختام']];
+let cur=0,doneSt=[false,false,false,false];
+function renderSteps(){
+  $('#steps').innerHTML=STAGES.map((s,i)=>`<button class="${i===cur?'on':''} ${doneSt[i]?'done':''}" data-i="${i}"><b>${s[0]}</b>${s[1]}</button>`).join('');
+  document.querySelectorAll('#steps button').forEach(b=>b.onclick=()=>go(+b.dataset.i));
+}
+function go(i){
+  cur=i;renderSteps();
+  if(window.speechSynthesis)speechSynthesis.cancel();
+  [intro,teach,activity,finale][i]();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function complete(i){doneSt[i]=true;renderSteps()}
+
+/* ---------- 1) التمهيد: صيّاد الراء ---------- */
+function intro(){
+  const items=shuffle([...WORDS.filter(x=>[ 'رمل','أرنب','شجرة','سيارة','قمر','بحر'].includes(x.w)).map(x=>({w:x.w,e:x.e,r:1})),...NON.map(x=>({...x,r:0}))]);
+  let found=0,miss=0;
+  $('#main').innerHTML=`<div class="card"><h2>🎮 لعبة التمهيد: صيّاد الراء</h2>
+  <p class="hint">اضغط على البطاقة لتسمع الكلمة. اصطد كل الكلمات التي فيها صوت الراء (ر)! عددها 6.</p>
+  <div class="stat"><span>✅ اصطدت: <span id="f">0</span>/6</span><span>❌ أخطاء: <span id="m">0</span></span></div>
+  <div class="grid" id="g">${items.map((x,i)=>`<button class="wcard" data-i="${i}"><span class="e">${x.e}</span><span class="t">${x.w}</span></button>`).join('')}</div>
+  <div class="msg" id="msg"></div></div>`;
+  document.querySelectorAll('#g .wcard').forEach(b=>b.onclick=()=>{
+    const x=items[+b.dataset.i];speak(x.w);
+    if(b.classList.contains('right'))return;
+    if(x.r){b.classList.add('right');found++;$('#f').textContent=found;sndOk();
+      if(found===6){confetti();complete(0);$('#msg').innerHTML='🎉 أحسنت يا صيّاد! <br><button class="btn" id="nx">ابدأ العرض ←</button>';$('#nx').onclick=()=>go(1);speak('أحسنت')}}
+    else{b.classList.add('wrong');setTimeout(()=>b.classList.remove('wrong'),450);miss++;$('#m').textContent=miss;sndNo()}
+  });
+}
+
+/* ---------- 2) العرض ---------- */
+function teach(){
+  $('#main').innerHTML=`
+  <div class="card"><h2>🔊 صوت الراء وحركاتها</h2>
+    <div class="big" id="bigR">ر</div>
+    <div class="harakat">
+      <button class="btn" data-s="رَ">رَ</button><button class="btn alt" data-s="رُ">رُ</button><button class="btn ok" data-s="رِ">رِ</button>
+    </div>
+    <div class="row"><button class="btn ghost" id="sayR">🔊 اسمع حرف الراء</button></div>
+  </div>
+  <div class="card"><h2>✏️ كيف نكتب الراء؟</h2>
+    <p class="hint">شاهد الكتابة ثم أعدها.</p>
+    <svg class="write" viewBox="0 0 150 170" aria-label="كتابة حرف الراء">
+      <path id="rp" d="M95 30 C95 95 88 125 40 135" fill="none" stroke="var(--brand)" stroke-width="10" stroke-linecap="round"/>
+    </svg>
+    <div class="row"><button class="btn alt" id="again">▶ أعد الكتابة</button></div>
+    <div class="forms" style="grid-template-columns:repeat(2,1fr)">
+      <div><span>ر</span><small>منفصلة: رسم · أرنب</small></div>
+      <div><span>ـر</span><small>متصلة بما قبلها: قمر · شجرة</small></div>
+    </div>
+    <p class="hint">⚠️ الراء حرف لا يتصل بما بعده، ولذلك نترك مسافة صغيرة بعدها.</p>
+  </div>
+  <div class="card"><h2>📍 أين تقع الراء؟</h2>
+    <p class="hint">اضغط على الكلمة لتسمعها.</p>
+    <div class="words" id="wl">${WORDS.map((x,i)=>`<button class="wr" data-i="${i}"><span class="e">${x.e}</span><span><span class="t">${x.w}</span><span class="tag ${'sme'[x.p]}">${POSN[x.p]}</span></span></button>`).join('')}</div>
+    <div class="row"><button class="btn ok" id="toAct">إلى نشاط الإملاء ←</button></div>
+  </div>`;
+  const draw=()=>{const p=$('#rp'),l=p.getTotalLength();p.style.transition='none';p.style.strokeDasharray=l;p.style.strokeDashoffset=l;p.getBoundingClientRect();p.style.transition='stroke-dashoffset 1.6s ease';p.style.strokeDashoffset=0};
+  setTimeout(draw,200);
+  $('#again').onclick=draw;
+  $('#sayR').onclick=()=>speak('راء',.6);
+  document.querySelectorAll('.harakat button').forEach(b=>b.onclick=()=>{speak(b.dataset.s,.5);tone(520,.1,'sine');const e=$('#bigR');e.textContent=b.textContent;});
+  document.querySelectorAll('#wl .wr').forEach(b=>b.onclick=()=>speak(WORDS[+b.dataset.i].w));
+  $('#toAct').onclick=()=>{complete(1);go(2)};
+}
+
+/* ---------- 3) النشاط: إملاء منظور ---------- */
+const errs={};
+function renderErrLog(){
+  const k=Object.keys(errs);
+  $('#errlog').innerHTML=k.length?('سجل الأخطاء: '+k.map(w=>`${w} (${errs[w]})`).join(' – ')):'سجل الأخطاء: لا توجد أخطاء مسجلة بعد.';
+}
+function activity(){
+  const list=['رسم','قمر','شجرة','أرنب'].map(w=>WORDS.find(x=>x.w===w));
+  let idx=0,score=0;
+  const POOL=['ب','ت','ن','م','س','ل','ك','د','و','ي','ع','ح'];
+  function round(){
+    if(idx>=list.length)return end();
+    const it=list[idx],letters=it.w.split('');
+    const extra=shuffle(POOL.filter(c=>!letters.includes(c))).slice(0,2);
+    const tiles=shuffle([...letters,...extra]);
+    let chosen=[],used=[];
+    $('#main').innerHTML=`<div class="card"><h2>✍️ النشاط: إملاء منظور (${idx+1}/${list.length})</h2>
+      <p class="hint">انظر إلى الكلمة جيدًا، ستختفي بعد لحظات ثم اكتبها من الحروف.</p>
+      <div class="show" id="show"><span class="e">${it.e}</span><span class="t">${it.w}</span></div>
+      <div class="bar"><i id="tb"></i></div>
+      <div id="wr" style="display:none">
+        <div class="answer" id="ans"></div>
+        <div class="tiles" id="tl">${tiles.map((c,i)=>`<button class="tile" data-i="${i}">${c}</button>`).join('')}</div>
+        <div class="row"><button class="btn ghost" id="del">⌫ حذف</button><button class="btn ok" id="chk">تحقق ✓</button><button class="btn alt" id="hear">🔊 أعد النطق</button></div>
+      </div>
+      <div class="msg" id="msg"></div></div>`;
+    speak(it.w,.7);
+    const tb=$('#tb');tb.style.transitionDuration='5s';setTimeout(()=>tb.style.width='0%',50);
+    setTimeout(()=>{
+      $('#show').innerHTML=`<span class="e">❓</span>`;$('#wr').style.display='block';$('.hint').textContent='اكتب الكلمة التي رأيتها.';
+    },5200);
+    const upd=()=>{$('#ans').textContent=chosen.join('')};
+    document.addEventListener('click',handler);
+    function handler(ev){
+      const t=ev.target.closest('.tile');
+      if(t&&!t.disabled){t.disabled=true;used.push(t);chosen.push(t.textContent);upd();sndTick();}
+    }
+    setTimeout(()=>{
+      const del=$('#del'),chk=$('#chk'),hear=$('#hear');
+      if(!del)return;
+      del.onclick=()=>{if(chosen.length){chosen.pop();used.pop().disabled=false;upd();$('#ans').className='answer'}};
+      hear.onclick=()=>speak(it.w,.7);
+      chk.onclick=()=>{
+        const a=chosen.join('');
+        if(a===it.w){
+          $('#ans').className='answer ok';sndOk();score++;
+          $('#msg').innerHTML='<span class="c-ok">✅ إملاء صحيح!</span>';speak('أحسنت');
+        }else{
+          $('#ans').className='answer no';sndNo();errs[it.w]=(errs[it.w]||0)+1;renderErrLog();
+          const html=a.split('').map((c,i)=>`<span class="${c===it.w[i]?'c-ok':'c-bad'}">${c}</span>`).join('');
+          $('#ans').innerHTML=html||'—';
+          $('#msg').innerHTML=`<span class="c-bad">الصحيح: ${it.w}</span><br><span class="hint">قارن الحروف الملوّنة، ثم صوّب الكلمة.</span>`;
+        }
+        chk.disabled=true;
+        const nx=document.createElement('button');nx.className='btn';nx.textContent=idx<list.length-1?'الكلمة التالية ←':'إنهاء النشاط ←';
+        nx.onclick=()=>{document.removeEventListener('click',handler);idx++;round()};
+        $('#msg').appendChild(document.createElement('br'));$('#msg').appendChild(nx);
+      };
+    },5300);
+  }
+  function end(){
+    complete(2);if(score===list.length)confetti();
+    $('#main').innerHTML=`<div class="card final"><h2>انتهى نشاط الإملاء</h2><div class="stars">${'⭐'.repeat(Math.max(1,score))}</div>
+      <p>كتبت <b>${score}</b> من ${list.length} كلمات بصورة صحيحة.</p>
+      <div class="row"><button class="btn alt" id="rt">🔁 أعد النشاط</button><button class="btn" id="nx">إلى لعبة الختام ←</button></div></div>`;
+    $('#rt').onclick=()=>go(2);$('#nx').onclick=()=>go(3);
+  }
+  round();
+}
+
+/* ---------- 4) الختام: سباق الراء ---------- */
+function finale(){
+  const qs=shuffle(WORDS).slice(0,8);let i=0,score=0,streak=0;
+  function q(){
+    if(i>=qs.length)return end();
+    const it=qs[i];
+    $('#main').innerHTML=`<div class="card"><h2>🏁 لعبة الختام: سباق الراء</h2>
+      <p class="hint">استمع للكلمة، ثم اختر: أين وقعت الراء؟</p>
+      <div class="stat"><span>السؤال ${i+1}/${qs.length}</span><span>⭐ ${score}</span><span>🔥 ${streak}</span></div>
+      <button class="speaker" id="sp" aria-label="استمع">🔊</button>
+      <div class="pbtns">
+        <button class="btn" data-p="0">بداية</button><button class="btn alt" data-p="1">وسط</button><button class="btn ok" data-p="2">نهاية</button>
+      </div><div class="msg" id="msg"></div></div>`;
+    const say=()=>speak(it.w,.7);setTimeout(say,300);$('#sp').onclick=say;
+    document.querySelectorAll('.pbtns button').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.pbtns button').forEach(x=>x.disabled=true);
+      if(+b.dataset.p===it.p){score++;streak++;sndOk();$('#msg').innerHTML=`<span class="c-ok">✅ صحيح! ${it.e} ${it.w}</span>`;}
+      else{streak=0;sndNo();$('#msg').innerHTML=`<span class="c-bad">❌ الراء في ${POSN[it.p]} كلمة ${it.e} ${it.w}</span>`;}
+      i++;setTimeout(q,1700);
+    });
+  }
+  function end(){
+    complete(3);if(score>=6)confetti();else sndOk();
+    const st=score>=7?3:score>=4?2:1;
+    $('#main').innerHTML=`<div class="card final"><h2>🏆 انتهى السباق</h2><div class="stars">${'🌟'.repeat(st)}</div>
+      <p>نتيجتك: <b>${score}</b> من ${qs.length}</p>
+      <p class="hint">${score>=7?'ممتاز! أنت بطل الراء':score>=4?'جيد جدًا، حاول مرة أخرى للوصول للقمة':'لا بأس، راجع العرض وأعد المحاولة'}</p>
+      <div class="row"><button class="btn alt" id="rt">🔁 العب مرة أخرى</button><button class="btn ghost" id="hm">↩ العودة للبداية</button></div></div>`;
+    speak(score>=7?'ممتاز':'أحسنت');
+    $('#rt').onclick=()=>go(3);$('#hm').onclick=()=>go(0);
+  }
+  q();
+}
+
+renderSteps();go(0);
+</script>
+</body>
+</html>
