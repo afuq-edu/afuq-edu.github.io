@@ -88,6 +88,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 <main>
   <h2>الأقسام</h2>
   <div class="grid">
+    <button class="card" style="--c:var(--c1)" data-id="prep">
+      <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><h3>ملف التحضير</h3></div>
+      <p>نسخ حقول نور – التربية الإسلامية – الصف الثالث</p>
+    </button>
     <button class="card" style="--c:var(--c2)" data-id="explorer">
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/><path d="M17 4v3M15.5 5.5h3"/></svg></span><h3>ديني حياتي</h3></div>
       <p>التربية الإسلامية الصف الثالث – أنشطة تفاعلية</p>
@@ -125,6 +129,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 <script>
 (function(){
   var SECTIONS={
+    prep:{title:'ملف التحضير',hash:null},
     explorer:{title:'ديني حياتي',hash:'40e90363321b9ee3a4cff4991e38124ffd1d71864beb9da28937efcb45776ba8'},
     kahoot:{title:'مسابقات كاهوت',hash:'fcd647aca9ee1134a1db2eb2bfff2fe2969739c6ea742c11e6cfa032371a2071'}
   };
