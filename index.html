@@ -41,8 +41,8 @@ h2{font-size:20px;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .card{position:relative;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;text-align:start;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:16px;padding:20px;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px #0000001a}
-.card .ic{font-size:34px;line-height:1}
-.card h3{margin:0;font-size:19px}
+
+.card h3{margin:0;font-size:18px}
 .card p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
 .tag{align-self:flex-start;font-size:13px;font-weight:700;border-radius:999px;padding:3px 12px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
 
@@ -64,70 +64,63 @@ dialog::backdrop{background:#0b1220aa}
 .row button{flex:1;border-radius:12px;padding:10px;font-weight:700;cursor:pointer;border:1px solid var(--line);background:var(--card)}
 .row .go{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
+.card .hd{display:flex;align-items:center;gap:12px}
+.ic{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,transparent);color:var(--c);font-size:20px;font-weight:800;line-height:1}
+.ic svg{width:22px;height:22px}
+.tag{display:inline-flex;align-items:center;gap:5px}
+.contact svg{color:var(--brand)}
 .card .go{font-size:14px;font-weight:700;color:var(--c)}
-.num{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:28px;font-weight:800;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
-h2+.grid{margin-bottom:32px}
+.back{color:var(--brand);font-weight:700;text-decoration:none}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
-    <div class="logo" aria-hidden="true">أ</div>
+    <a class="logo" href="./" aria-label="منصة أفق التعليمية" style="text-decoration:none">أ</a>
     <div class="title">
       <h1>منصة أفق التعليمية</h1>
-      <p>اختر الصف والمادة</p>
+      <p>اختر الصف</p>
     </div>
-    <a class="contact" href="tel:76506037"><span>📞 رقم التواصل:</span> <b>76506037</b></a>
+    <a class="contact" href="tel:76506037"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> رقم التواصل:</span> <b>76506037</b></a>
   </div>
 </header>
 
 <main>
-  <h2>الرياضيات</h2>
+  <h2>الصفوف</h2>
   <div class="grid">
-    <a class="card" style="--c:#0E8C8C" href="math-g1/">
-      <span class="ic num" aria-hidden="true">١</span>
-      <h3>رياضيات الصف الأول</h3>
-      <p>ملف التحضير وأرقام وأشكال ومسابقات كاهوت</p>
+    <a class="card" style="--c:#0E8C8C" href="1/">
+      <div class="hd"><span class="ic">١</span><h3>الصف الأول</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-    <a class="card" style="--c:#D98A0B" href="math-g2/">
-      <span class="ic num" aria-hidden="true">٢</span>
-      <h3>رياضيات الصف الثاني</h3>
-      <p>ملف التحضير وعالم الأرقام ومسابقات كاهوت</p>
+    <a class="card" style="--c:#D98A0B" href="2/">
+      <div class="hd"><span class="ic">٢</span><h3>الصف الثاني</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-    <a class="card" style="--c:#C2367A" href="ofuq/">
-      <span class="ic num" aria-hidden="true">٣</span>
-      <h3>رياضيات الصف الثالث</h3>
-      <p>ملف التحضير ومدينة الأرقام ومسابقات كاهوت</p>
+    <a class="card" style="--c:#C2367A" href="3/">
+      <div class="hd"><span class="ic">٣</span><h3>الصف الثالث</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-    <a class="card" style="--c:#3B5BDB" href="math-g4/">
-      <span class="ic num" aria-hidden="true">٤</span>
-      <h3>رياضيات الصف الرابع</h3>
-      <p>ملف التحضير ومرسى الأرقام ومسابقات كاهوت</p>
+    <a class="card" style="--c:#3B5BDB" href="4/">
+      <div class="hd"><span class="ic">٤</span><h3>الصف الرابع</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-    <a class="card" style="--c:#1F9D55" href="math-g5/">
-      <span class="ic num" aria-hidden="true">٥</span>
-      <h3>رياضيات الصف الخامس</h3>
-      <p>ملف التحضير ومسابقات كاهوت</p>
+    <a class="card" style="--c:#1F9D55" href="5/">
+      <div class="hd"><span class="ic">٥</span><h3>الصف الخامس</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-    <a class="card" style="--c:#B8322F" href="math-g6/">
-      <span class="ic num" aria-hidden="true">٦</span>
-      <h3>رياضيات الصف السادس</h3>
-      <p>ملف التحضير ومسابقات كاهوت</p>
+    <a class="card" style="--c:#B8322F" href="6/">
+      <div class="hd"><span class="ic">٦</span><h3>الصف السادس</h3></div>
+      <p>الرياضيات</p>
       <span class="go">ادخل ←</span>
     </a>
-  </div>
-
-  <h2>اللغة الإنجليزية</h2>
-  <div class="grid">
-    <a class="card" style="--c:#7048E8" href="english-g11/">
-      <span class="ic" aria-hidden="true">🛂</span>
-      <h3>My English Passport</h3>
-      <p>Grade 11 – Semester A</p>
+    <a class="card" style="--c:#7048E8" href="11/">
+      <div class="hd"><span class="ic">١١</span><h3>الصف الحادي عشر</h3></div>
+      <p>اللغة الإنجليزية</p>
       <span class="go">ادخل ←</span>
     </a>
   </div>
