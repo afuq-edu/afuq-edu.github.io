@@ -45,6 +45,9 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--sky);outli
 .brand-mark:after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:var(--sun);top:-8px;left:-8px}
 .brand h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,6vw,46px);margin:0;line-height:1.1}
 .brand p{margin:0;color:var(--ink2);font-size:15px}
+.axis-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.axis-tabs .ax{font-size:15px}
+.axis-tabs .ax.on{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 3px 0 #0b1226}
 .pill-btn{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:2px solid var(--line);padding:8px 16px;border-radius:999px;font-weight:700;font-size:16px;box-shadow:0 3px 0 var(--line)}
 .pill-btn:active{transform:translateY(2px);box-shadow:none}
 
@@ -289,6 +292,11 @@ const PARTS=[
 ];
 function stars(n){return '⭐'.repeat(n)+'☆'.repeat(3-n);}
 
+const AXES={
+  1:{n:'الْمِحْوَرُ الْأَوَّلُ',t:'الْحَياةُ مِنْ حَوْلي',p:'سبع محطات، في كل محطة عرضٌ تقديمي ونشاطٌ قبلي ونشاطٌ بعدي ولعبة، وكلُّ نشاطٍ ولعبةٍ فكرتُها جديدة لا تتكرر.'},
+  2:{n:'الْمِحْوَرُ الثّاني',t:'عُلومٌ وَاكْتِشافاتٌ',p:'نُجَرِّبُ وَنَكْتَشِفُ وَنُبْحِرُ وَنُدَوِّرُ وَنَتَعَلَّمُ بِالْحاسوبِ وَالْقَلَمِ: سَبْعُ مَحَطّاتٍ، في كُلِّ مَحَطَّةٍ عَرْضٌ وَنَشاطانِ وَلُعْبَةٌ.'}
+};
+let AX=1;try{AX=localStorage.getItem(KEY+'-ax')==='2'?2:1;}catch(e){}
 function renderHome(){
   const H=$('#home');
   H.innerHTML=`
@@ -297,11 +305,12 @@ function renderHome(){
       <div><h1>واحة لغتي</h1><p>أُحِبُّ لُغَتي · الصَّفُّ الثّالِثُ · الْفَصْلُ الْأَوَّلُ · الْجُزْءُ الْأَوَّلُ</p></div></div>
     <button class="pill-btn" id="sndHome">${SND.on?'🔊 الصوت يعمل':'🔇 الصوت مغلق'}</button>
   </div>
+  <div class="axis-tabs" role="tablist">${[1,2].map(a=>`<button role="tab" aria-selected="${a===AX}" class="pill-btn ax${a===AX?' on':''}" data-ax="${a}">${a===1?'🏡':'🔭'} ${AXES[a].n}: ${AXES[a].t}</button>`).join('')}</div>
   <section class="hero">
     <div class="sunball"></div>
     <div class="hero-inner">
-      <h2>الْمِحْوَرُ الْأَوَّلُ: الْحَياةُ مِنْ حَوْلي</h2>
-      <p>سبع محطات، في كل محطة عرضٌ تقديمي ونشاطٌ قبلي ونشاطٌ بعدي ولعبة، وكلُّ نشاطٍ ولعبةٍ فكرتُها جديدة لا تتكرر.</p>
+      <h2>${AXES[AX].n}: ${AXES[AX].t}</h2>
+      <p>${AXES[AX].p}</p>
       <div class="legend">${PARTS.map(p=>`<span style="color:${p.c}">${p.ico} ${p.name}</span>`).join('')}</div>
     </div>
     <svg class="fort" viewBox="0 0 800 70" preserveAspectRatio="none" aria-hidden="true">
@@ -309,7 +318,7 @@ function renderHome(){
       <rect x="360" y="46" width="18" height="24" rx="9" fill="#B58E4F"/><rect x="95" y="50" width="10" height="12" fill="#B58E4F"/><rect x="620" y="48" width="10" height="12" fill="#B58E4F"/>
     </svg>
   </section>
-  <div class="lessons">${LESSONS.map((L,i)=>{
+  <div class="lessons">${LESSONS.filter(L=>(L.ax||1)===AX).map((L,i)=>{
     const done=PARTS.filter(p=>PROG[L.id+'-'+p.id]).length;
     return `<button class="lcard" data-l="${L.id}" style="--c:${L.color}">
       <span class="num">${AR(i+1)}</span>
@@ -326,6 +335,7 @@ function renderHome(){
   </div>`;
   $$('.lcard',H).forEach(b=>b.onclick=()=>{sfx.click();b.dataset.l==='self'?openSelf():openHub(b.dataset.l);});
   $('#sndHome').onclick=()=>{toggleSound();renderHome();};
+  $$('[data-ax]',H).forEach(b=>b.onclick=()=>{const a=+b.dataset.ax;if(a===AX)return;sfx.click();AX=a;try{localStorage.setItem(KEY+'-ax',String(a));}catch(e){}renderHome();});
 }
 function toggleSound(){SND.on=!SND.on;try{localStorage.setItem(KEY+'-snd',SND.on?'1':'0');}catch(e){}$('#stSound').textContent=SND.on?'🔊':'🔇';if(SND.on)sfx.click();}
 
@@ -576,16 +586,16 @@ const SLIDEFN={
 function openSelf(){
   CUR.lesson={id:'self',color:'#E75C9A',title:'أُقَيِّمُ أَدائي',parts:{}};CUR.part='self';
   $('#stage').classList.remove('hide');document.body.style.overflow='hidden';$('#stage').style.setProperty('--c','#E75C9A');
-  $('#stTitle').textContent='أُقَيِّمُ أَدائي';$('#stSub').textContent='خِتامُ الْمِحْوَرِ الْأَوَّلِ: الْحَياةُ مِنْ حَوْلي';
-  const items=['تَحَدَّثْتُ مَعَ زُمَلائي في مَوْضوعاتِ الدُّروسِ.','اسْتَمَعْتُ إِلى مُعَلِّمَتي وَزُمَلائي أَثْناءَ الدُّروسِ.','قَرَأْتُ النُّصوصَ بِطَلاقَةٍ وَبِصَوْتٍ جَهيرٍ.','اسْتَفَدْتُ مِنَ الدُّروسِ في كِتابَةِ كَلِماتٍ وَجُمَلٍ وَفِقْراتٍ.','حَفِظْتُ نَشيدَ «أَنا أُحِبُّ جاري» وَرَدَّدْتُهُ مَعَ زُمَلائي.','طالَعْتُ قِصَصًا شائِقَةً وَمُفيدَةً.','مُسْتَعِدٌّ كَيْ أَكونَ أَفْضَلَ في الدُّروسِ الْقادِمَةِ.'];
-  let saved={};try{saved=JSON.parse(localStorage.getItem(KEY+'-self')||'{}')||{};}catch(e){}
+  $('#stTitle').textContent='أُقَيِّمُ أَدائي';$('#stSub').textContent='خِتامُ '+(AX===2?'الْمِحْوَرِ الثّاني':'الْمِحْوَرِ الْأَوَّلِ')+': '+AXES[AX].t;
+  const items=AX===2?['تَحَدَّثْتُ مَعَ زُمَلائي في مَوْضوعاتِ الدُّروسِ.','اسْتَمَعْتُ إِلى مُعَلِّمَتي وَزُمَلائي أَثْناءَ الدُّروسِ.','قَرَأْتُ النُّصوصَ بِطَلاقَةٍ وَبِصَوْتٍ واضِحٍ.','اسْتَفَدْتُ مِنَ الدُّروسِ في كِتابَةِ كَلِماتٍ وَفِقْراتٍ.','حَفِظْتُ نَشيدَ «مَجْدُ الْقَلَمِ» وَرَدَّدْتُهُ مَعَ زُمَلائي.','قَرَأْتُ أَوْ طالَعْتُ قِصَصًا شائِقَةً وَمُفيدَةً.','سَأَسْتَمِرُّ في التَّعَلُّمِ حَتّى أُصْبِحَ أَفْضَلَ.']:['تَحَدَّثْتُ مَعَ زُمَلائي في مَوْضوعاتِ الدُّروسِ.','اسْتَمَعْتُ إِلى مُعَلِّمَتي وَزُمَلائي أَثْناءَ الدُّروسِ.','قَرَأْتُ النُّصوصَ بِطَلاقَةٍ وَبِصَوْتٍ جَهيرٍ.','اسْتَفَدْتُ مِنَ الدُّروسِ في كِتابَةِ كَلِماتٍ وَجُمَلٍ وَفِقْراتٍ.','حَفِظْتُ نَشيدَ «أَنا أُحِبُّ جاري» وَرَدَّدْتُهُ مَعَ زُمَلائي.','طالَعْتُ قِصَصًا شائِقَةً وَمُفيدَةً.','مُسْتَعِدٌّ كَيْ أَكونَ أَفْضَلَ في الدُّروسِ الْقادِمَةِ.'];
+  let saved={};try{saved=JSON.parse(localStorage.getItem(KEY+'-self'+(AX===2?'2':''))||'{}')||{};}catch(e){}
   const B=$('#stageBody');B.innerHTML='';const w=el('<div class="act-wrap"></div>');B.appendChild(w);
   brief(w,'🪞','أَقْرَأُ كُلَّ عِبارَةٍ، ثُمَّ أَضْغَطُ الْوَجْهَ الَّذي يُناسِبُني.');
   const F=[['😊','#FCE3EE','#E75C9A'],['😐','#FFF4CF','#FFBE2E'],['🙁','#FDE3E6','#E4485A']];
   items.forEach((t,k)=>{
     const r=el(`<div class="brief" style="flex-wrap:wrap;justify-content:space-between"><p class="ar" style="flex:1;min-width:220px;font-size:20px">${AR(k+1)}. ${t}</p><div style="display:flex;gap:8px">${F.map((f,j)=>`<button data-j="${j}" style="font-size:34px;width:60px;height:60px;border-radius:18px;border:3px solid ${saved[k]===j?f[2]:'#D5E3DC'};background:${saved[k]===j?f[1]:'#fff'}">${f[0]}</button>`).join('')}</div></div>`);
     $$('button',r).forEach(b=>b.onclick=()=>{const j=+b.dataset.j;saved[k]=j;sfx.pop();$$('button',r).forEach((x,i)=>{x.style.borderColor=i===j?F[i][2]:'#D5E3DC';x.style.background=i===j?F[i][1]:'#fff';});
-      try{localStorage.setItem(KEY+'-self',JSON.stringify(saved));}catch(e){}
+      try{localStorage.setItem(KEY+'-self'+(AX===2?'2':''),JSON.stringify(saved));}catch(e){}
       if(Object.keys(saved).length===items.length){const g=Object.values(saved).filter(v=>v===0).length;toast(g>=5?'🌟 أداءٌ رائع! استمرّ.':'💪 أحسنت الصدق مع نفسك، وسنتحسن معًا.');}});
     w.appendChild(r);
   });
@@ -1536,6 +1546,688 @@ LESSONS.push({
   }}
  }
 });
+</script>
+<script>
+/* =====================================================================
+   المحور الثاني: علوم واكتشافات
+   ===================================================================== */
+
+/* ---- reusable activity builders ---- */
+const STARS=m=>m<=1?3:m<=3?2:1;
+/* questions one after another; q=[question, options, correctIndex, cols?] */
+function seqQuiz(W,done,Q,o={}){
+  if(o.intro)brief(W,o.ico||'❓',o.intro);
+  const sb=el('<div class="scorebar"><span class="chip" data-n></span><span class="chip" data-s></span></div>');W.appendChild(sb);
+  const box=el('<div></div>');W.appendChild(box);
+  let i=0,miss=0,ok=0;
+  const step=async()=>{
+    $('[data-n]',sb).textContent=`السؤال ${AR(i+1)} من ${AR(Q.length)}`;$('[data-s]',sb).textContent=`✅ صحيحة من أول مرة: ${AR(ok)}`;
+    box.innerHTML='';const q=Q[i];
+    if(q[4])box.appendChild(el(`<div style="text-align:center;font-size:clamp(44px,9vw,74px);line-height:1.2;margin-bottom:6px">${q[4]}</div>`));
+    const first=await askMCQ(box,q[0],q[1],q[2],{cols:q[3]});
+    first?ok++:miss++;i++;
+    if(i<Q.length)setTimeout(step,250);else done(STARS(miss),o.msg);
+  };step();
+}
+/* tap a card, then tap its basket; items=[[html,binIndex],...], bins=[[emoji,label],...] */
+function sortGame(W,done,bins,items,o={}){
+  brief(W,o.ico||'🧺',o.intro||'اضغط بطاقة، ثم اضغط السلة المناسبة لها.');
+  const sb=el('<div class="scorebar"><span class="chip" data-p></span></div>');
+  const pool=el('<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>');
+  const B=el(`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(${bins.length>3?140:190}px,1fr));gap:10px"></div>`);
+  W.append(sb,pool,B);
+  let sel=null,left=items.length,miss=0;
+  const upd=()=>$('[data-p]',sb).textContent=`بقي ${AR(left)} من ${AR(items.length)}`;upd();
+  bins.forEach((b,k)=>{
+    const d=el(`<button style="background:var(--paper);border:3px dashed var(--line);border-radius:20px;padding:10px;min-height:120px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-size:34px">${b[0]}</div><b style="font-size:18px">${b[1]}</b><div class="sin" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:6px"></div></button>`);
+    B.appendChild(d);
+    d.onclick=()=>{
+      if(sel==null){toast('اختر بطاقة أولًا 🙂');return;}
+      const it=items[sel];
+      if(it[1]===k){sfx.ok();$('.sin',d).appendChild(el(`<span class="chip" style="font-size:14px;font-family:var(--f-text)">${it[0]}</span>`));d.style.borderColor='var(--ok)';
+        $(`[data-i="${sel}"]`,pool).remove();sel=null;left--;upd();
+        if(!left)setTimeout(()=>done(STARS(miss),o.msg),400);}
+      else{sfx.bad();miss++;d.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:300});}
+    };
+  });
+  shuffle(items.map((x,i)=>i)).forEach(i=>{
+    const t=el(`<button class="tile" data-i="${i}">${items[i][0]}</button>`);
+    t.onclick=()=>{sfx.click();$$('.tile',pool).forEach(x=>x.style.outline='');t.style.outline='4px solid var(--sun)';sel=i;};
+    pool.appendChild(t);
+  });
+}
+/* put events in order; E=[[emoji,text],...] in the right order */
+function orderGame(W,done,E,o={}){
+  brief(W,'🔢',o.intro||'اضغط البطاقات بالترتيب الصحيح، ثم اضغط «تحقّق». لإرجاع بطاقة اضغطها في مكانها.');
+  const slots=Array(E.length).fill(null);let tries=0;
+  const S=el('<div style="display:grid;gap:8px"></div>'),P=el('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px"></div>');
+  const chk=el('<button class="big-btn" style="align-self:center">✔ تحقّق</button>');
+  W.append(S,el('<div style="text-align:center;font-weight:800;color:var(--ink2)">⬇️ البطاقات ⬇️</div>'),P,chk);
+  let pool=shuffle(E.map((e,i)=>i));
+  function paint(){
+    S.innerHTML='';slots.forEach((v,i)=>{
+      const b=el(`<button class="tile" style="display:flex;gap:10px;align-items:center;min-height:56px;text-align:right;${v==null?'border-style:dashed;background:#F7FBF9;color:var(--ink2)':''}"><b style="background:var(--c);color:#fff;border-radius:10px;min-width:34px;text-align:center;font-family:var(--f-ui)">${AR(i+1)}</b>${v==null?'<span>…</span>':`<span style="font-size:26px">${E[v][0]}</span><span>${E[v][1]}</span>`}</button>`);
+      b.onclick=()=>{if(v==null)return;sfx.pop();slots[i]=null;pool.push(v);paint();};S.appendChild(b);});
+    P.innerHTML='';pool.forEach(v=>{
+      const b=el(`<button class="tile" style="display:flex;gap:10px;align-items:center;text-align:right"><span style="font-size:26px">${E[v][0]}</span><span>${E[v][1]}</span></button>`);
+      b.onclick=()=>{const k=slots.indexOf(null);if(k<0)return;sfx.step();slots[k]=v;pool=pool.filter(x=>x!==v);paint();};P.appendChild(b);});
+  }
+  chk.onclick=()=>{
+    if(slots.includes(null)){toast('رتّب كل البطاقات أولًا 🙂');sfx.bad();return;}
+    tries++;let bad=0;slots.forEach((v,i)=>{if(v!==i){bad++;pool.push(v);slots[i]=null;}});
+    if(!bad){paint();$$('.tile',S).forEach(t=>{t.style.borderColor='var(--ok)';t.style.background='#E3F7EC';});done(tries===1?3:tries===2?2:1,o.msg);}
+    else{sfx.bad();toast(`${AR(E.length-bad)} في مكانها الصحيح ✔ · أعد ترتيب الباقي`);paint();}
+  };
+  paint();
+}
+/* match each item on the right with its partner on the left; pairs=[[a,b],...] */
+function matchGame(W,done,pairs,o={}){
+  brief(W,o.ico||'🔗',o.intro||'اضغط بطاقة من العمود الأيمن، ثم اضغط ما يناسبها في العمود الأيسر.');
+  const G=el('<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>');
+  const A=el('<div style="display:grid;gap:10px;align-content:start"></div>'),Bc=el('<div style="display:grid;gap:10px;align-content:start"></div>');
+  G.append(A,Bc);W.appendChild(G);
+  let sel=null,left=pairs.length,miss=0;
+  shuffle(pairs.map((p,i)=>i)).forEach(i=>{const b=el(`<button class="tile" data-a="${i}" style="min-height:62px">${pairs[i][0]}</button>`);
+    b.onclick=()=>{if(b.dataset.done)return;sfx.click();$$('[data-a]',A).forEach(x=>x.style.outline='');b.style.outline='4px solid var(--sun)';sel=i;};A.appendChild(b);});
+  shuffle(pairs.map((p,i)=>i)).forEach(i=>{const b=el(`<button class="tile" data-b="${i}" style="min-height:62px">${pairs[i][1]}</button>`);
+    b.onclick=()=>{if(b.dataset.done||sel==null)return;
+      if(sel===i){sfx.ok();const a=$(`[data-a="${i}"]`,A);[a,b].forEach(x=>{x.dataset.done=1;x.style.outline='';x.style.borderColor='var(--ok)';x.style.background='#E3F7EC';});sel=null;left--;
+        if(!left)setTimeout(()=>done(STARS(miss),o.msg),400);}
+      else{sfx.bad();miss++;b.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:300});}};
+    Bc.appendChild(b);});
+}
+/* journey game: every answered question moves the hero one step. scene(N) returns {node,update(k,wrong)} */
+function journey(W,done,Q,o){
+  brief(W,o.ico,o.intro);
+  const N=Q.length,sc=o.scene(N);W.appendChild(sc.node);
+  const sb=el('<div class="scorebar"><span class="chip" data-n></span></div>');W.appendChild(sb);
+  const box=el('<div></div>');W.appendChild(box);
+  let i=0,miss=0;
+  const step=async()=>{
+    $('[data-n]',sb).textContent=`${o.unit||'الخطوة'} ${AR(i+1)} من ${AR(N)}`;
+    box.innerHTML='';const q=Q[i];
+    if(q[4])box.appendChild(el(`<div style="text-align:center;font-size:clamp(40px,8vw,64px);line-height:1.2">${q[4]}</div>`));
+    const first=await askMCQ(box,q[0],q[1],q[2],{cols:q[3]});
+    if(!first){miss++;sc.update(i,true);}
+    i++;sc.update(i,false);sfx.step();
+    if(i<N)setTimeout(step,first?450:1100);else setTimeout(()=>done(STARS(miss),o.msg),900);
+  };step();
+}
+/* a horizontal track from start to goal (right to left) */
+function trackScene(o){return N=>{
+  const node=el(`<div style="position:relative;height:clamp(110px,18vw,150px);border-radius:24px;overflow:hidden;background:${o.bg};border:2px solid var(--line)">
+    ${o.deco||''}
+    <span style="position:absolute;right:2%;bottom:14%;font-size:clamp(26px,4vw,36px)">${o.start}</span>
+    <span style="position:absolute;left:2%;bottom:14%;font-size:clamp(30px,5vw,44px)">${o.goal}</span>
+    <span class="mv" style="position:absolute;right:9%;bottom:16%;font-size:clamp(36px,6vw,54px);transition:right .9s ease, transform .4s;transform:scaleX(${o.flip?-1:1})">${o.mover}</span>
+    <span class="fx" style="position:absolute;inset:0;display:grid;place-items:center;font-size:56px;opacity:0;transition:opacity .3s;pointer-events:none">${o.fx||'🌧️'}</span>
+  </div>`);
+  const mv=$('.mv',node),fx=$('.fx',node);
+  return{node,update(k,wrong){
+    if(wrong){fx.style.opacity=1;mv.animate([{transform:`scaleX(${o.flip?-1:1}) rotate(-12deg)`},{transform:`scaleX(${o.flip?-1:1}) rotate(12deg)`},{transform:`scaleX(${o.flip?-1:1})`}],{duration:700});setTimeout(()=>fx.style.opacity=0,900);return;}
+    mv.style.right=(9+78*k/N)+'%';}};
+};}
+
+/* ---- slide widgets ---- */
+Object.assign(SLIDEFN,{
+  /* tap a word to see its tag; data-items=[[word,tag],...] data-colors={tag:color} */
+  tags(n){
+    const items=JSON.parse(n.dataset.items),C=JSON.parse(n.dataset.colors||'{}');
+    n.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">${items.map(([w,t])=>`<button style="display:flex;flex-direction:column;align-items:center;gap:4px;background:#fff;border:3px solid #D5E3DC;border-radius:16px;padding:8px 14px"><span class="ar" style="font-size:clamp(22px,3.4vw,30px);font-weight:700">${w}</span><small style="font-weight:800;visibility:hidden;color:#fff;background:${C[t]||'#8466E6'};border-radius:999px;padding:0 10px">${t}</small></button>`).join('')}</div>`;
+    $$('button',n).forEach(b=>b.onclick=()=>{sfx.pop();const s=$('small',b);s.style.visibility='visible';b.style.borderColor=s.style.background;});
+  },
+  /* letters entering «ال» */
+  alpre(n){
+    const L=[['بِـ','بِ'],['فَـ','فَ'],['كَـ','كَ'],['لِـ','لِ']];
+    const W=[['الْبَحْرِ','بَحْرِ','🌊'],['السَّفينَةِ','سَّفينَةِ','⛵'],['الرّيحِ','رّيحِ','🌬️'],['الْمَطَرِ','مَطَرِ','🌧️'],['الْقَلَمِ','قَلَمِ','✏️']];
+    let l=0,w=0;
+    n.innerHTML=`<div class="trace-tools" style="justify-content:center" data-row="l">${L.map((x,k)=>`<button data-l="${k}" class="${k?'':'on'}">${x[0]}</button>`).join('')}</div>
+      <div class="trace-tools" style="justify-content:center" data-row="w">${W.map((x,k)=>`<button data-w="${k}" class="${k?'':'on'}">${x[2]} ${x[0]}</button>`).join('')}</div>
+      <div style="text-align:center;font-family:var(--f-text);font-size:clamp(40px,8vw,70px);font-weight:700" id="apv"></div>
+      <p style="text-align:center;margin:0" id="aps"></p>`;
+    const paint=()=>{const lt=L[l],wd=W[w],word=l===3?'لِ'+wd[0].slice(1):lt[1]+wd[0];
+      $('#apv',n).textContent=word;
+      $('#aps',n).innerHTML=`${lt[0]} + ${wd[0]} = <b>${word}</b>${l===3?' · ⚠️ مَعَ اللّامِ تُحْذَفُ أَلِفُ «الْ»':''}`;};
+    $$('[data-l]',n).forEach(b=>b.onclick=()=>{sfx.click();$$('[data-l]',n).forEach(x=>x.classList.remove('on'));b.classList.add('on');l=+b.dataset.l;paint();});
+    $$('[data-w]',n).forEach(b=>b.onclick=()=>{sfx.click();$$('[data-w]',n).forEach(x=>x.classList.remove('on'));b.classList.add('on');w=+b.dataset.w;paint();});
+    paint();
+  },
+  /* numbers 11–19 with a masculine or feminine counted noun */
+  nums(n){
+    const N=[[11,'أَحَدَ عَشَرَ','إِحْدى عَشْرَةَ'],[12,'اثْنا عَشَرَ','اثْنَتا عَشْرَةَ'],[13,'ثَلاثَةَ عَشَرَ','ثَلاثَ عَشْرَةَ'],[14,'أَرْبَعَةَ عَشَرَ','أَرْبَعَ عَشْرَةَ'],[15,'خَمْسَةَ عَشَرَ','خَمْسَ عَشْرَةَ'],[16,'سِتَّةَ عَشَرَ','سِتَّ عَشْرَةَ'],[17,'سَبْعَةَ عَشَرَ','سَبْعَ عَشْرَةَ'],[18,'ثَمانِيَةَ عَشَرَ','ثَمانِيَ عَشْرَةَ'],[19,'تِسْعَةَ عَشَرَ','تِسْعَ عَشْرَةَ']];
+    const T=[['📘','كِتابًا',0],['🥤','كوبًا',0],['📄','وَرَقَةً',1],['🍾','زُجاجَةً',1]];
+    let k=3,t=0;
+    n.innerHTML=`<div class="trace-tools" style="justify-content:center">${N.map((x,i)=>`<button data-k="${i}" class="${i===k?'on':''}">${AR(x[0])}</button>`).join('')}</div>
+      <div class="trace-tools" style="justify-content:center">${T.map((x,i)=>`<button data-t="${i}" class="${i?'':'on'}">${x[0]} ${x[1]} · ${x[2]?'مُؤَنَّثٌ':'مُذَكَّرٌ'}</button>`).join('')}</div>
+      <div id="nv" style="text-align:center;font-size:clamp(18px,3.4vw,28px);letter-spacing:2px;min-height:1.6em"></div>
+      <div id="nw" class="ar" style="text-align:center;font-size:clamp(30px,6vw,52px);font-weight:700"></div>`;
+    const paint=()=>{const x=N[k],y=T[t];$('#nv',n).textContent=y[0].repeat(x[0]);$('#nw',n).textContent=`${AR(x[0])} ← ${y[2]?x[2]:x[1]} ${y[1]}`;};
+    $$('[data-k]',n).forEach(b=>b.onclick=()=>{sfx.pop();$$('[data-k]',n).forEach(z=>z.classList.remove('on'));b.classList.add('on');k=+b.dataset.k;paint();});
+    $$('[data-t]',n).forEach(b=>b.onclick=()=>{sfx.pop();$$('[data-t]',n).forEach(z=>z.classList.remove('on'));b.classList.add('on');t=+b.dataset.t;paint();});
+    paint();
+  },
+  /* demonstratives */
+  ishara(n){
+    const D=[['💻','هذا حاسوبٌ','هذا','مُفْرَدٌ مُذَكَّرٌ'],['🖥️','هذه شاشَةٌ','هذه','مُفْرَدٌ مُؤَنَّثٌ'],['💻💻','هذانِ حاسوبانِ','هذانِ','مُثَنًّى مُذَكَّرٌ'],['📱📱','هاتانِ لَوْحَتانِ','هاتانِ','مُثَنًّى مُؤَنَّثٌ'],['🧒🧒🧒','هؤلاءِ طُلّابٌ','هؤلاءِ','جَمْعٌ لِلْعاقِلِ']];
+    n.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px">${D.map((d,i)=>`<button data-i="${i}" style="background:#fff;border:3px solid #D5E3DC;border-radius:18px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:clamp(30px,5vw,44px)">${d[0]}</span><b class="ar" style="font-size:22px;visibility:hidden">${d[2]}</b><small style="visibility:hidden;color:var(--ink2);font-weight:700">${d[3]}</small></button>`).join('')}</div>
+      <p class="ar" id="isv" style="text-align:center;font-size:clamp(26px,5vw,40px);font-weight:700;min-height:1.5em;margin:8px 0 0">اضغط صورة 👆</p>`;
+    $$('[data-i]',n).forEach(b=>b.onclick=()=>{sfx.pop();const d=D[+b.dataset.i];$$('b,small',b).forEach(x=>x.style.visibility='visible');b.style.borderColor='var(--c)';$('#isv',n).textContent=d[1];});
+  },
+  /* pharmacy logo */
+  pharm(n){
+    n.innerHTML=`<div style="display:flex;justify-content:center"><div style="width:min(240px,60vw);aspect-ratio:1;border-radius:28px;background:#E7F6EE;border:4px solid #2E8B57;display:grid;place-items:center">${PHARM}</div></div>`;
+  }
+});
+const PHARM=`<svg viewBox="0 0 120 140" width="70%" aria-label="شعار الصيدلية"><path d="M28 34h64q0 38-32 46Q28 72 28 34z" fill="#2E8B57"/><rect x="56" y="78" width="8" height="30" fill="#2E8B57"/><rect x="36" y="106" width="48" height="9" rx="4.5" fill="#2E8B57"/><path d="M60 128C22 112 98 98 60 82S26 56 70 34" stroke="#155E3B" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="73" cy="31" r="7.5" fill="#155E3B"/><circle cx="75" cy="29" r="1.6" fill="#fff"/></svg>`;
+const TRACE=(g,h)=>`<div data-fn="trace" data-g="${g}"${h?` data-h="${h}"`:''}></div>`;
+
+/* =====================================================
+   M1 — استماع: ضوء في يديك
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m1',color:'#E0A400',emo:'🔦',kind:'اسْتِماعٌ · تَجْرِبَةٌ',title:'ضَوْءٌ في يَدَيْكَ',
+ desc:'أُنْصِتُ إِلى خُطُواتِ تَجْرِبَةٍ، وَأُنَفِّذُها بِدِقَّةٍ حَتّى أَصِلَ إِلى اكْتِشافٍ.',
+ slides:[
+  COVER('🔦','اسْتِماعٌ','ضَوْءٌ في يَدَيْكَ','أُنْصِتُ · أُجَرِّبُ · أَكْتَشِفُ'),
+  `<span class="eyebrow">أُشاهِدُ وَأَتَحَدَّثُ</span><h2>يَدٌ عَلَيْها ضَوْءٌ!</h2>
+   <div style="text-align:center;font-size:clamp(70px,14vw,120px);line-height:1.1;filter:drop-shadow(0 0 22px #FFD54A)">✋</div>
+   <p>👀 ماذا أَرى في الصّورَةِ؟ ${R('يَدًا عَلَيْها مِنْطَقَةٌ مُضيئَةٌ.')}</p>
+   <p>🤔 كَيْفَ يَكونُ الضَّوْءُ في الْيَدِ؟ ${R('سَنَعْرِفُ ذَلِكَ مِنْ خِلالِ التَّجْرِبَةِ وَالِاسْتِماعِ!')}</p>`,
+  `<span class="eyebrow">مَفاهيمُ</span><h2>تَجْرِبَةٌ وَاكْتِشافٌ</h2>
+   ${CARDS([['🧪','التَّجْرِبَةُ','عَمَلٌ نُنَفِّذُهُ بِخُطُواتٍ مُرَتَّبَةٍ لِنَعْرِفَ شَيْئًا جَديدًا'],['💡','الِاكْتِشافُ','الشَّيْءُ الْجَديدُ الَّذي نَصِلُ إِلَيْهِ بَعْدَ التَّجْرِبَةِ'],['🔍','الْمُلاحَظَةُ','أَنْ أَنْظُرَ بِانْتِباهٍ إِلى ما يَحْدُثُ'],['🎯','الدِّقَّةُ','أَنْ أُنَفِّذَ كُلَّ خُطْوَةٍ كَما هِيَ تَمامًا']])}`,
+  `<span class="eyebrow">خُطُواتُ التَّجْرِبَةِ</span><h2>خَمْسُ خُطُواتٍ إِلى الِاكْتِشافِ</h2>
+   ${CARDS([['🧰','١. أُحْضِرُ الْأَدَواتِ','اللّازِمَةَ لِإِجْراءِ التَّجْرِبَةِ'],['👂','٢. أُصْغي','إِلى خُطُواتِ التَّجْرِبَةِ'],['🎯','٣. أَلْتَزِمُ الدِّقَّةَ','في تَطْبيقِ التَّجْرِبَةِ'],['⏱️','٤. أَلْتَزِمُ الْوَقْتَ','الْمُحَدَّدَ'],['💡','٥. أَتَوَصَّلُ إِلى اكْتِشافٍ','بَعْدَ أَنْ أُلاحِظَ النَّتيجَةَ']])}`,
+  `<span class="eyebrow">قَبْلَ أَنْ أَسْتَمِعَ</span><h2>أَنا مُسْتَمِعٌ ذَكِيٌّ</h2>
+   ${CARDS([['🤫','أُنْصِتُ وَلا أُقاطِعُ',''],['🧠','أَحْفَظُ تَرْتيبَ الْخُطُواتِ',''],['📝','أُدَوِّنُ الْكَلِماتِ الْمُهِمَّةَ',''],['🙋','أَسْأَلُ إِذا لَمْ أَفْهَمْ','']])}
+   <div data-fn="audio"></div>`,
+  `<span class="eyebrow">بَعْدَ الِاسْتِماعِ</span><h2>أُجيبُ</h2>
+   ${QZ('ما الْخُطْوَةُ الْأولى في التَّجْرِبَةِ؟',['أُحْضِرُ الْأَدَواتِ اللّازِمَةَ','أَتَوَصَّلُ إِلى اكْتِشافٍ','أَلْتَزِمُ الْوَقْتَ'],0)}
+   ${QZ('ما الْخُطْوَةُ الْأَخيرَةُ؟',['أَتَوَصَّلُ إِلى اكْتِشافٍ','أُصْغي إِلى الْخُطُواتِ','أُحْضِرُ الْأَدَواتِ'],0)}
+   <p>🤔 لِماذا أَلْتَزِمُ الدِّقَّةَ؟ ${R('لِأَنَّ الْخَطَأَ في خُطْوَةٍ قَدْ يُغَيِّرُ النَّتيجَةَ.')}</p>`,
+  `<span class="eyebrow">سَبَبٌ وَنَتيجَةٌ</span><h2>إِذا ... فَإِنَّ ...</h2>
+   <div class="tbl-wrap"><table class="tbl"><tr><th>إِذا ...</th><th>فَإِنَّ ...</th></tr>
+   <tr><td>أَصْغَيْتُ إِلى التَّعْليماتِ</td><td>${R('عَرَفْتُ الْخُطُواتِ وَتَرْتيبَها')}</td></tr>
+   <tr><td>نَسيتُ أَداةً</td><td>${R('لا أَسْتَطيعُ إِكْمالَ التَّجْرِبَةِ')}</td></tr>
+   <tr><td>تَعَجَّلْتُ وَلَمْ أَلْتَزِمِ الْوَقْتَ</td><td>${R('قَدْ تَخْتَلِفُ النَّتيجَةُ')}</td></tr>
+   <tr><td>لاحَظْتُ النَّتيجَةَ بِانْتِباهٍ</td><td>${R('أَصِلُ إِلى اكْتِشافٍ')}</td></tr></table></div>`,
+  `<span class="eyebrow">أُبْدي رَأْيي</span><h2>ما رَأْيُكَ؟</h2>
+   <p>🗣️ هَلْ أَعْجَبَتْكَ التَّجْرِبَةُ؟ لِماذا؟</p>
+   <p>🔬 تَحَدَّثْ عَنْ تَجْرِبَةٍ أُخْرى أَجْرَيْتَها في الْبَيْتِ أَوْ في دَرْسِ الْعُلومِ.</p>
+   <div class="rule">💡 الْعالِمُ الصَّغيرُ: يَسْتَمِعُ جَيِّدًا، وَيُرَتِّبُ خُطُواتِهِ، وَيُنَفِّذُ بِدِقَّةٍ، وَيَصْبِرُ، ثُمَّ يُلاحِظُ وَيَكْتَشِفُ.</div>`
+ ],
+ parts:{
+  pres:{name:'خُطُواتُ الِاكْتِشافِ',hint:'نَتَعَرَّفُ التَّجْرِبَةَ وَخُطُواتِها وَنَسْتَمِعُ'},
+  pre:{name:'سُلوكُ الْعالِمِ الصَّغيرِ',hint:'نُفَرِّقُ بَيْنَ السُّلوكِ الصَّحيحِ وَالْخاطِئِ أَثْناءَ التَّجْرِبَةِ',run(W,done){
+    sortGame(W,done,[['✅','سُلوكٌ صَحيحٌ'],['❌','سُلوكٌ خاطِئٌ']],[
+      ['أُصْغي إِلى التَّعْليماتِ',0],['أُحْضِرُ أَدَواتي قَبْلَ الْبَدْءِ',0],['أُنَفِّذُ الْخُطُواتِ بِالتَّرْتيبِ',0],['أَلْتَزِمُ الْوَقْتَ الْمُحَدَّدَ',0],['أُلاحِظُ النَّتيجَةَ بِانْتِباهٍ',0],
+      ['أَتَحَدَّثُ أَثْناءَ شَرْحِ الْخُطُواتِ',1],['أَبْدَأُ قَبْلَ أَنْ أَفْهَمَ الْمَطْلوبَ',1],['أُغَيِّرُ تَرْتيبَ الْخُطُواتِ',1],['أَتَعَجَّلُ وَلا أَنْتَظِرُ',1],['أَلْعَبُ بِالْأَدَواتِ',1]],
+      {ico:'🧑‍🔬',intro:'ضع كل سلوك في السلة المناسبة: ما يفعله العالِم الصغير ✅ وما لا يفعله ❌.',msg:'أنت عالِم صغير يعرف آداب التجربة! 🧑‍🔬'});
+  }},
+  post:{name:'أُرَتِّبُ خُطُواتِ التَّجْرِبَةِ',hint:'نَضَعُ خُطُواتِ التَّجْرِبَةِ في تَرْتيبِها',run(W,done){
+    orderGame(W,done,[['🧰','أُحْضِرُ الْأَدَواتِ اللّازِمَةَ لِإِجْراءِ التَّجْرِبَةِ.'],['👂','أُصْغي إِلى خُطُواتِ التَّجْرِبَةِ.'],['🎯','أَلْتَزِمُ الدِّقَّةَ في تَطْبيقِ التَّجْرِبَةِ.'],['⏱️','أَلْتَزِمُ الْوَقْتَ الْمُحَدَّدَ.'],['💡','أَتَوَصَّلُ إِلى اكْتِشافٍ.']],
+      {intro:'رتّب خطوات التجربة من الأولى إلى الأخيرة، ثم اضغط «تحقّق».',msg:'رتّبتَ خطوات التجربة كالعلماء! 💡'});
+  }},
+  game:{name:'أَضِئِ الْيَدَ',hint:'كُلُّ إِجابَةٍ تَزيدُ الضَّوْءَ في الْيَدِ',run(W,done){
+    journey(W,done,shuffle([
+      ['ما مَعْنى «التَّجْرِبَةِ»؟',['عَمَلٌ بِخُطُواتٍ لِنَعْرِفَ شَيْئًا جَديدًا','لُعْبَةٌ لِلتَّسْلِيَةِ فَقَطْ','قِصَّةٌ خَيالِيَّةٌ'],0],
+      ['ما مَعْنى «الِاكْتِشافِ»؟',['الشَّيْءُ الْجَديدُ الَّذي نَصِلُ إِلَيْهِ','الْأَدَواتُ الَّتي نَسْتَخْدِمُها','الْوَقْتُ الْمُحَدَّدُ'],0],
+      ['ماذا أَفْعَلُ قَبْلَ أَنْ أَبْدَأَ التَّجْرِبَةَ؟',['أُحْضِرُ الْأَدَواتِ','أَكْتُبُ الِاكْتِشافَ','أُغادِرُ الْمَكانَ'],0],
+      ['لِماذا أُصْغي إِلى التَّعْليماتِ؟',['لِأَعْرِفَ الْخُطُواتِ وَتَرْتيبَها','لِأُنْهِيَ بِسُرْعَةٍ','لِأَلْعَبَ بِالْأَدَواتِ'],0],
+      ['إِذا لَمْ أَلْتَزِمِ الدِّقَّةَ فَإِنَّ ...',['النَّتيجَةَ قَدْ تَتَغَيَّرُ','التَّجْرِبَةَ تَنْجَحُ دائِمًا','الْأَدَواتِ تَزيدُ'],0],
+      ['أَيُّ سُلوكٍ لا يُناسِبُ التَّجْرِبَةَ؟',['أَتَعَجَّلُ وَأُغَيِّرُ التَّرْتيبَ','أُلاحِظُ بِانْتِباهٍ','أَلْتَزِمُ الْوَقْتَ'],0],
+      ['بَعْدَ أَنْ أُنَفِّذَ الْخُطُواتَ ...',['أُلاحِظُ النَّتيجَةَ','أُحْضِرُ الْأَدَواتِ','أُصْغي إِلى التَّعْليماتِ'],0],
+      ['الْعالِمُ الصَّغيرُ يَكونُ ...',['صَبورًا دَقيقًا مُنْتَبِهًا','مُسْتَعْجِلًا','كَثيرَ الْكَلامِ'],0]]),
+      {ico:'✋',intro:'اليد مظلمة! أجب عن الأسئلة لتشعل الضوء فيها شيئًا فشيئًا 💡',unit:'الشُّعاعُ',msg:'أضأتَ اليد كلها بإجاباتك! ✋✨',
+       scene:N=>{const node=el(`<div style="display:grid;place-items:center;height:clamp(150px,26vw,210px);border-radius:24px;background:#1D2946;overflow:hidden;position:relative"><div class="glow" style="position:absolute;width:40%;aspect-ratio:1;border-radius:50%;background:radial-gradient(#FFF6C2,#FFD54A 40%,transparent 70%);opacity:0;transition:opacity .8s,transform .8s;transform:scale(.4)"></div><span style="font-size:clamp(70px,13vw,110px);position:relative">✋</span></div>`);
+         const g=$('.glow',node);return{node,update(k,wrong){if(wrong){node.animate([{background:'#1D2946'},{background:'#3a1c2a'},{background:'#1D2946'}],{duration:700});return;}g.style.opacity=k/N;g.style.transform=`scale(${.4+.9*k/N})`;}};}});
+  }}
+ }
+});
+
+/* =====================================================
+   M2 — المستند البصري: قراءة شعار
+   ===================================================== */
+const LOGOS=[['⚕️','مُسْتَشْفى أَوْ عِيادَةٌ'],['♻️','مَكانُ إِعادَةِ التَّدْويرِ'],['📮','مَكْتَبُ الْبَريدِ'],['✈️','الْمَطارُ'],['🅿️','مَوْقِفُ السَّيّاراتِ'],['📚','الْمَكْتَبَةُ'],['🍴','الْمَطْعَمُ'],['⛽','مَحَطَّةُ الْوَقودِ']];
+LESSONS.push({
+ ax:2,id:'m2',color:'#2E8B57',emo:'🐍',kind:'مُسْتَنَدٌ بَصَرِيٌّ',title:'قِراءَةُ شِعارٍ',
+ desc:'أَقْرَأُ شِعارَ الصَّيْدَلِيَّةِ، وَأَفْهَمُ دَلالَةَ الرُّموزِ، وَأُصَمِّمُ شِعاري.',
+ slides:[
+  COVER('🐍','مُسْتَنَدٌ بَصَرِيٌّ','قِراءَةُ شِعارٍ','الرُّموزُ تَتَكَلَّمُ!'),
+  `<span class="eyebrow">أُشاهِدُ وَأَتَحَدَّثُ</span><h2>ماذا أَرى؟</h2>
+   <div data-fn="pharm"></div>
+   <p>👀 ماذا تَرى في الشَّكْلِ؟ ${R('أَفْعى تَلْتَفُّ عَلى كَأْسٍ.')}</p>
+   <p>🙋 هَلْ شاهَدْتَ مِثْلَ هَذا الشِّعارِ؟ أَيْنَ؟ ${R('عَلى لافِتَةِ الصَّيْدَلِيَّةِ وَعُلَبِ الدَّواءِ.')}</p>
+   <p>💊 عَلامَ يَدُلُّ؟ ${R('عَلى الصَّيْدَلِيَّةِ: مَكانِ بَيْعِ الْأَدْوِيَةِ.')}</p>`,
+  `<span class="eyebrow">مَفاهيمُ</span><h2>شِعارٌ · رَمْزٌ · دَلالَةٌ</h2>
+   ${CARDS([['🏷️','الشِّعارُ','عَلامَةٌ تُعَرِّفُ بِمَكانٍ أَوْ مُؤَسَّسَةٍ'],['🔣','الرَّمْزُ','صورَةٌ قَصيرَةٌ تَحْمِلُ مَعْنًى'],['🧭','الدَّلالَةُ','الْمَعْنى الَّذي يَدُلُّ عَلَيْهِ الرَّمْزُ'],['🖼️','الْمُسْتَنَدُ الْبَصَرِيُّ','صورَةٌ نَقْرَؤُها بِأَعْيُنِنا وَنَفْهَمُ رِسالَتَها']])}`,
+  `<span class="eyebrow">وَظيفَةُ الشِّعارِ</span><h2>لِماذا نَسْتَخْدِمُ الشِّعاراتِ؟</h2>
+   ${CARDS([['⚡','سَريعٌ','نَفْهَمُهُ بِنَظْرَةٍ واحِدَةٍ'],['🌍','مَفْهومٌ','يَفْهَمُهُ النّاسُ وَلَوِ اخْتَلَفَتْ لُغاتُهُمْ'],['📍','يَدُلُّ عَلى الْمَكانِ','نَعْرِفُ الْخِدْمَةَ الْمَوْجودَةَ فيهِ'],['🧠','سَهْلُ التَّذَكُّرِ','يَبْقى في الذّاكِرَةِ']])}
+   ${QZ('إِذا رَأَيْتَ شِعارَ الْأَفْعى وَالْكَأْسِ عَلى مَبْنًى، فَماذا تَتَوَقَّعُ أَنْ تَجِدَ فيهِ؟',['أَدْوِيَةً','كُتُبًا','طَعامًا'],0)}`,
+  `<span class="eyebrow">شِعاراتٌ مِنْ حَوْلي</span><h2>عَلامَ يَدُلُّ كُلُّ شِعارٍ؟</h2>
+   <div class="cards">${LOGOS.slice(0,6).map(l=>`<div class="card"><div class="e">${l[0]}</div><b>${R(l[1],'👆 عَلامَ يَدُلُّ؟')}</b></div>`).join('')}</div>`,
+  `<span class="eyebrow">أُقارِنُ</span><h2>أَيُّ الشِّعارَيْنِ ...؟</h2>
+   ${QZ('أَيُّ الشِّعاراتِ لا يَدُلُّ عَلى مَكانٍ لِلْعِلاجِ؟',['📚','⚕️','💊'],0)}
+   ${QZ('أَيُّ شِعارٍ نَراهُ عِنْدَ حاوِياتِ فَرْزِ النُّفاياتِ؟',['♻️','✈️','🍴'],0)}`,
+  `<span class="eyebrow">مَشْروعي</span><h2>أَجْمَعُ وَأُصَمِّمُ</h2>
+   <p>📸 أَجْمَعُ شِعاراتٍ أُشاهِدُها في الطَّريقِ وَالسّوقِ وَالْمَدْرَسَةِ.</p>
+   <p>✏️ أُصَمِّمُ شِعارًا لِنَشاطٍ أَخْتارُهُ: نادي الْقِراءَةِ، أَوْ مُسابَقَةِ الْعُلومِ، أَوْ حَمْلَةِ النَّظافَةِ.</p>
+   <div class="rule">💡 الشِّعارُ الْجَيِّدُ: بَسيطٌ، وَواضِحٌ، وَيَدُلُّ عَلى صاحِبِهِ، وَأَلْوانُهُ قَليلَةٌ.</div>`
+ ],
+ parts:{
+  pres:{name:'الرُّموزُ تَتَكَلَّمُ',hint:'نَقْرَأُ شِعارَ الصَّيْدَلِيَّةِ وَنَفْهَمُ وَظيفَةَ الشِّعاراتِ'},
+  pre:{name:'اكْشِفِ الشِّعارَ',hint:'نَكْشِفُ أَجْزاءَ الشِّعارِ وَنُخَمِّنُ الْمَكانَ',run(W,done){
+    brief(W,'🕵️','الشعار مختبئ خلف المربعات. اكشف أقل عدد من المربعات ثم اختر المكان الذي يدل عليه!');
+    const R5=shuffle([['💊PHARM','الصَّيْدَلِيَّةُ',['الصَّيْدَلِيَّةُ','الْمَكْتَبَةُ','الْمَطْعَمُ']],...shuffle(LOGOS).slice(0,4).map(l=>[l[0],l[1],shuffle([l[1],...shuffle(LOGOS.filter(x=>x[1]!==l[1])).slice(0,2).map(x=>x[1])])])]);
+    let r=0,score=0;const sb=el('<div class="scorebar"><span class="chip" data-r></span><span class="chip" data-s></span></div>'),A=el('<div></div>');W.append(sb,A);
+    function round(){
+      const L=R5[r];let opened=0,locked=false;
+      $('[data-r]',sb).textContent=`الشعار ${AR(r+1)} من ${AR(R5.length)}`;$('[data-s]',sb).textContent=`⭐ ${AR(score)}`;
+      const art=L[0]==='💊PHARM'?PHARM:`<span style="font-size:clamp(90px,18vw,150px)">${L[0]}</span>`;
+      A.innerHTML=`<div style="position:relative;width:min(260px,70vw);aspect-ratio:1;margin:0 auto;border-radius:24px;background:#F2F8F4;display:grid;place-items:center;overflow:hidden">${art}
+        <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)">${Array.from({length:9},(_,i)=>`<button data-c="${i}" style="background:#8466E6;border:2px solid #fff;font-size:22px;color:#fff">❔</button>`).join('')}</div></div><div class="opts" style="margin-top:12px"></div>`;
+      $$('[data-c]',A).forEach(c=>c.onclick=()=>{sfx.flip();c.style.visibility='hidden';opened++;});
+      L[2].forEach(o=>{const b=el(`<button class="opt">${o}</button>`);b.onclick=()=>{if(locked)return;
+        if(o===L[1]){locked=true;b.classList.add('right');sfx.ok();$$('[data-c]',A).forEach(c=>c.style.visibility='hidden');score+=opened<=3?3:opened<=6?2:1;
+          setTimeout(()=>{r++;r<R5.length?round():done(score>=12?3:score>=8?2:1,`جمعتَ ${AR(score)} نجمة. أنت قارئ شعارات ماهر!`);},1100);}
+        else{b.classList.add('wrong');sfx.bad();setTimeout(()=>b.classList.remove('wrong'),500);}};$('.opts',A).appendChild(b);});
+    }
+    round();
+  }},
+  post:{name:'صِلِ الشِّعارَ بِالْمَكانِ',hint:'نَرْبِطُ كُلَّ شِعارٍ بِالْمَكانِ أَوِ الْخِدْمَةِ',run(W,done){
+    matchGame(W,done,[[`<span style="display:inline-block;width:52px">${PHARM}</span>`,'الصَّيْدَلِيَّةُ'],...shuffle(LOGOS).slice(0,5).map(l=>[`<span style="font-size:36px">${l[0]}</span>`,l[1]])],
+      {ico:'🔗',intro:'اضغط شعارًا من اليمين، ثم اضغط المكان الذي يدل عليه.',msg:'وصلتَ كل شعار بمكانه! 🎯'});
+  }},
+  game:{name:'أُصَمِّمُ شِعاري',hint:'نَخْتارُ الشَّكْلَ وَالرَّمْزَ وَاللَّوْنَ لِنُصَمِّمَ شِعارًا',run(W,done){
+    brief(W,'🎨','صمّم شعارًا لنشاط تختاره: اختر النشاط، ثم الرمز المناسب، ثم الشكل واللون، واكتب اسمًا قصيرًا.');
+    const T=[['📖','نادي الْقِراءَةِ',['📖','📚','🔖']],['🔬','مُسابَقَةُ الْعُلومِ',['🔬','🧪','💡']],['🧹','حَمْلَةُ النَّظافَةِ',['🧹','♻️','🌱']],['⛵','رِحْلَةٌ بَحْرِيَّةٌ',['⛵','⚓','🌊']]];
+    const SH=[['50%','دائِرَةٌ'],['22px','مُرَبَّعٌ'],['50% 50% 12px 12px','دِرْعٌ']],CO=['#E4485A','#18966A','#3BA7EE','#8466E6','#F27A2E'];
+    const st={t:null,sym:null,sh:0,co:2,name:''};
+    W.appendChild(el(`<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start" class="lg">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <b>١. النَّشاطُ</b><div class="trace-tools" data-g="t">${T.map((x,i)=>`<button data-t="${i}">${x[0]} ${x[1]}</button>`).join('')}</div>
+        <b>٢. الرَّمْزُ</b><div class="trace-tools" data-g="sym"><span style="color:var(--ink2)">اختر النشاط أولًا</span></div>
+        <b>٣. الشَّكْلُ</b><div class="trace-tools">${SH.map((x,i)=>`<button data-sh="${i}" class="${i?'':'on'}">${x[1]}</button>`).join('')}</div>
+        <b>٤. اللَّوْنُ</b><div class="trace-tools">${CO.map((c,i)=>`<button data-co="${i}" class="${i===2?'on':''}" style="width:40px;height:40px;border-radius:50%;background:${c}" aria-label="لون"></button>`).join('')}</div>
+        <b>٥. الِاسْمُ</b><input id="lgName" maxlength="18" placeholder="اسم قصير" style="font:inherit;font-size:20px;padding:8px 12px;border:3px solid var(--line);border-radius:14px">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div id="lgv" style="width:min(220px,40vw);aspect-ratio:1;display:grid;place-items:center;color:#fff;font-size:clamp(60px,11vw,96px);box-shadow:0 8px 0 rgba(0,0,0,.12);transition:.2s"></div>
+        <b id="lgn" class="ar" style="font-size:24px;min-height:1.4em"></b>
+        <button class="big-btn" id="lgDone">✔ أَنْهَيْتُ شِعاري</button>
+      </div></div>`));
+    const v=$('#lgv',W);
+    const paint=()=>{v.style.background=CO[st.co];v.style.borderRadius=SH[st.sh][0];v.textContent=st.sym||'❔';$('#lgn',W).textContent=st.name;};
+    $$('[data-t]',W).forEach(b=>b.onclick=()=>{sfx.click();$$('[data-t]',W).forEach(x=>x.classList.remove('on'));b.classList.add('on');st.t=+b.dataset.t;st.sym=null;
+      const g=$('[data-g="sym"]',W);g.innerHTML=T[st.t][2].map(s=>`<button data-sym="${s}" style="font-size:26px">${s}</button>`).join('');
+      $$('[data-sym]',g).forEach(s=>s.onclick=()=>{sfx.pop();$$('[data-sym]',g).forEach(x=>x.classList.remove('on'));s.classList.add('on');st.sym=s.dataset.sym;paint();});paint();});
+    $$('[data-sh]',W).forEach(b=>b.onclick=()=>{sfx.click();$$('[data-sh]',W).forEach(x=>x.classList.remove('on'));b.classList.add('on');st.sh=+b.dataset.sh;paint();});
+    $$('[data-co]',W).forEach(b=>b.onclick=()=>{sfx.click();$$('[data-co]',W).forEach(x=>x.classList.remove('on'));b.classList.add('on');st.co=+b.dataset.co;paint();});
+    $('#lgName',W).oninput=e=>{st.name=e.target.value.trim();paint();};
+    $('#lgDone',W).onclick=()=>{
+      if(st.t==null||!st.sym){toast('اختر النشاط والرمز أولًا 🙂');sfx.bad();return;}
+      if(!st.name){toast('اكتب اسمًا قصيرًا لشعارك ✏️');sfx.bad();return;}
+      done(3,`صمّمتَ شعار «${st.name}» لـ${T[st.t][1]}. شعار بسيط وواضح ويدل على صاحبه! 🎨`);};
+    paint();
+    const mq=()=>{const g=$('.lg',W);if(!g)return;const nar=innerWidth<620;g.style.gridTemplateColumns=nar?'1fr':'minmax(0,1fr) minmax(0,1fr)';g.lastElementChild.style.order=nar?'-1':'';$('#lgv',W).style.width=nar?'min(150px,40vw)':'min(220px,40vw)';};mq();addEventListener('resize',mq);
+    return()=>removeEventListener('resize',mq);
+  }}
+ }
+});
+
+/* =====================================================
+   M3 — الدرس الأول: رحلة السندباد الثامنة
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m3',color:'#1F6FB2',emo:'⛵',kind:'الدَّرْسُ الْأَوَّلُ',title:'رِحْلَةُ السِّنْدِبادِ الثّامِنَةُ',
+ desc:'السَّفينَةُ الْعُمانِيَّةُ «صُحارُ» تُبْحِرُ مِنْ مَسْقَطَ إِلى بَحْرِ الصّينِ، وَبَحّارَتُها يَصْبِرونَ وَيَتَعاوَنونَ.',
+ slides:[
+  COVER('⛵','الدَّرْسُ الْأَوَّلُ','رِحْلَةُ السِّنْدِبادِ الثّامِنَةُ','قِصَّةُ رِحْلَةٍ بَحْرِيَّةٍ مِنْ تاريخِ الْمِلاحَةِ الْعُمانِيَّةِ'),
+  `<span class="eyebrow">أُشاهِدُ وَأَتَحَدَّثُ</span><h2>مَنْ عَلى السَّفينَةِ؟</h2>
+   <div style="text-align:center;font-size:clamp(60px,12vw,100px);line-height:1.1">🧔🏽‍♂️⛵🌊</div>
+   <p>🧭 مَنْ هَذِهِ الشَّخْصِيَّةُ؟ ${R('السِّنْدِبادُ الْبَحْرِيُّ.')}</p>
+   <p>📖 ماذا تَعْرِفُ عَنْهُ؟ ${R('بَحّارٌ تَحْكي الْقِصَصُ عَنْ رِحْلاتِهِ السَّبْعِ وَمُغامَراتِهِ.')}</p>
+   <p>🤔 هَلْ هُوَ شَخْصِيَّةٌ حَقيقِيَّةٌ أَمْ قِصَصِيَّةٌ؟ ${R('شَخْصِيَّةٌ قِصَصِيَّةٌ مِنَ الْحِكاياتِ.')}</p>`,
+  `<span class="eyebrow">أَتَصَفَّحُ وَأَتَوَقَّعُ</span><h2>رِحْلَةٌ ثامِنَةٌ؟!</h2>
+   <p>👀 أَتَصَفَّحُ الْعُنْوانَ وَالصُّوَرَ، وَأَتَوَقَّعُ مَوْضوعَ النَّصِّ.</p>
+   ${QZ('أَتَوَقَّعُ أَنَّ النَّصَّ يَتَحَدَّثُ عَنْ:',['رِحْلَةٍ بَحْرِيَّةٍ عَلى سَفينَةٍ','رِحْلَةٍ إِلى الصَّحْراءِ','زِيارَةٍ لِلْمَكْتَبَةِ'],0)}
+   <div class="rule">💡 لِلسِّنْدِبادِ في الْحِكاياتِ سَبْعُ رِحْلاتٍ، وَهَذِهِ رِحْلَةٌ جَديدَةٌ تُشْبِهُ رِحْلاتِهِ؛ لِذَلِكَ سُمِّيَتِ «الرِّحْلَةَ الثّامِنَةَ».</div>`,
+  `<span class="eyebrow">أَحْداثُ الرِّحْلَةِ · ١</span><h2>الِانْطِلاقُ مِنْ مَسْقَطَ</h2><div class="txt">
+   <p>انْطَلَقَتْ سَفينَةٌ عُمانِيَّةٌ ${w('تَقْليدِيَّةٌ','مَصْنوعَةٌ عَلى الطَّريقَةِ الْقَديمَةِ')} اسْمُها «صُحارُ» مِنْ ${w('ميناءِ','مَكانٌ تَرْسو فيهِ السُّفُنُ')} مَسْقَطَ. تَسيرُ بِـ${w('الْأَشْرِعَةِ','قِطَعُ قُماشٍ كَبيرَةٌ تَدْفَعُها الرّيحُ')}، فَتَبْدو كَأَنَّها جاءَتْ مِنْ زَمَنٍ بَعيدٍ، ${w('تَقْتَدي','تَسيرُ عَلى طَريقِ غَيْرِها وَتَتَّخِذُهُ قُدْوَةً')} بِسُفُنِ الْأَجْدادِ وَرِحْلاتِ السِّنْدِبادِ.</p></div>
+   <p style="font-size:14px;color:var(--ink2)">📝 هَذا تَلْخيصٌ لِأَحْداثِ النَّصِّ، وَالنَّصُّ الْكامِلُ في كِتابِ الطّالِبِ.</p>`,
+  `<span class="eyebrow">أَحْداثُ الرِّحْلَةِ · ٢</span><h2>الرّيحُ تَسْكُنُ</h2><div class="txt">
+   <p>أَبْحَرَتْ «صُحارُ» أَيّامًا طَويلَةً، ثُمَّ ${w('سَكَنَتِ','هَدَأَتْ وَتَوَقَّفَتْ')} الرّيحُ، فَتَباطَأَتِ السَّفينَةُ لِأَنَّها تَعْتَمِدُ عَلى الرّيحِ. وَبَدَأَتِ ${w('الْمُؤَنُ','الطَّعامُ وَالْماءُ الْمَحْمولُ لِلرِّحْلَةِ')} وَالْماءُ الْعَذْبُ ${w('تَنْفَدُ','تَنْتَهي شَيْئًا فَشَيْئًا')}، فَتَشاوَرَ الْبَحّارَةُ، وَصَبَروا، وَتَعاوَنوا، وَلَمْ يَسْتَسْلِموا.</p></div>`,
+  `<span class="eyebrow">أَحْداثُ الرِّحْلَةِ · ٣</span><h2>الْعاصِفَةُ ثُمَّ الْوُصولُ</h2><div class="txt">
+   <p>تَغَيَّرَ الطَّقْسُ، فَهَبَّتْ ${w('عاصِفَةٌ','ريحٌ شَديدَةٌ قَوِيَّةٌ')} وَاشْتَدَّ الْمَطَرُ، فَأَسْرَعَ الْبَحّارَةُ لِحِمايَةِ السَّفينَةِ. وَبَعْدَ أَنْ تَجاوَزوا الْخَطَرَ واصَلوا رِحْلَتَهُمُ الطَّويلَةَ حَتّى وَصَلَتْ «صُحارُ» إِلى بَحْرِ الصّينِ، وَظَهَرَتْ مَهارَةُ الْعُمانِيّينَ في صِناعَةِ السُّفُنِ وَ${w('الْمِلاحَةِ','قِيادَةُ السُّفُنِ وَمَعْرِفَةُ طُرُقِ الْبَحْرِ')}.</p></div>`,
+  `<span class="eyebrow">الْفَهْمُ · الْمُسْتَوى الْأَوَّلُ</span><h2>أَبْحَثُ عَنِ الْمَعْلومَةِ</h2>
+   ${QZ('مِنْ أَيْنَ أَبْحَرَتِ السَّفينَةُ؟',['مِنْ ميناءِ مَسْقَطَ','مِنْ بَحْرِ الصّينِ','مِنْ صُحارَ الْمَدينَةِ'],0)}
+   ${QZ('بِمَ تَتَحَرَّكُ «صُحارُ»؟',['بِالْأَشْرِعَةِ وَالرّيحِ','بِالْمُحَرِّكِ','بِالْمَجاديفِ فَقَطْ'],0)}
+   ${QZ('إِلى أَيْنَ وَصَلَتِ الرِّحْلَةُ؟',['بَحْرِ الصّينِ','ميناءِ مَسْقَطَ','الصَّحْراءِ'],0)}`,
+  `<span class="eyebrow">الْفَهْمُ · الْمُسْتَوى الثّاني</span><h2>أَسْتَنْتِجُ</h2>
+   ${QZ('ما الْعَلاقَةُ بَيْنَ سُكونِ الرّيحِ وَتَوَقُّفِ السَّفينَةِ؟',['السَّفينَةُ الشِّراعِيَّةُ تَحْتاجُ إِلى الرّيحِ لِتَسيرَ','الرّيحُ تُبْطِئُ السَّفينَةَ دائِمًا','لا عَلاقَةَ بَيْنَهُما'],0)}
+   <p>🍞 لِماذا كانَ نَقْصُ الطَّعامِ وَالْماءِ مُشْكِلَةً كَبيرَةً؟ ${R('لِأَنَّ الْبَحّارَةَ في وَسَطِ الْبَحْرِ بَعيدونَ عَنِ الْيابِسَةِ.')}</p>
+   <p>🧔 ما صِفاتُ الْبَحّارَةِ؟ ${R('صابِرونَ، شُجْعانٌ، مُتَعاوِنونَ، يَتَشاوَرونَ.')}</p>`,
+  `<span class="eyebrow">الْفَهْمُ · الثّالِثُ وَالرّابِعُ</span><h2>أُقارِنُ وَأُبْدي رَأْيي</h2>
+   <div class="tbl-wrap"><table class="tbl"><tr><th>وَجْهُ الْمُقارَنَةِ</th><th>⛵ السَّفينَةُ التَّقْليدِيَّةُ</th><th>🚢 السَّفينَةُ الْحَديثَةُ</th></tr>
+   <tr><td>مادَّةُ الصُّنْعِ</td><td>${R('الْخَشَبُ')}</td><td>${R('الْحَديدُ وَالْمَعادِنُ')}</td></tr>
+   <tr><td>طَريقَةُ الْحَرَكَةِ</td><td>${R('الْأَشْرِعَةُ وَالرّيحُ')}</td><td>${R('الْمُحَرِّكاتُ')}</td></tr>
+   <tr><td>السُّرْعَةُ</td><td>${R('أَبْطَأُ')}</td><td>${R('أَسْرَعُ')}</td></tr>
+   <tr><td>مَعْرِفَةُ الِاتِّجاهِ</td><td>${R('النُّجومُ وَالْخِبْرَةُ وَالْأَدَواتُ الْقَديمَةُ')}</td><td>${R('الْأَجْهِزَةُ الْحَديثَةُ')}</td></tr></table></div>
+   <p>🗣️ لَوْ أُتيحَتْ لَكَ رِحْلَةٌ قَصيرَةٌ: أَتَخْتارُ سَفينَةً تَقْليدِيَّةً أَمْ حَديثَةً؟ وَلِماذا؟</p>`,
+  `<span class="eyebrow">النَّمَطُ اللُّغَوِيُّ</span><h2>الْجُمْلَةُ الْفِعْلِيَّةُ</h2>
+   <div class="rule">💡 الْجُمْلَةُ الْفِعْلِيَّةُ تَبْدَأُ بِـ<b>فِعْلٍ</b>، وَبَعْدَهُ <b>الْفاعِلُ</b>: مَنْ قامَ بِالْفِعْلِ.</div>
+   <p class="ar" style="text-align:center;font-size:clamp(24px,4vw,32px)">تُحَلِّقُ الطُّيورُ · يُرَفْرِفُ الْعَلَمُ · تَسيرُ السَّفينَةُ</p>
+   <p style="text-align:center">👆 اضْغَطْ كُلَّ كَلِمَةٍ لِتَعْرِفَ: فِعْلٌ أَمْ فاعِلٌ؟</p>
+   <div data-fn="tags" data-items='[["تُحَلِّقُ","فِعْلٌ"],["الطُّيورُ","فاعِلٌ"],["يُرَفْرِفُ","فِعْلٌ"],["الْعَلَمُ","فاعِلٌ"],["أَبْحَرَتْ","فِعْلٌ"],["صُحارُ","فاعِلٌ"],["هَبَّتِ","فِعْلٌ"],["الْعاصِفَةُ","فاعِلٌ"]]' data-colors='{"فِعْلٌ":"#E4485A","فاعِلٌ":"#3BA7EE"}'></div>`,
+  `<span class="eyebrow">الْجُمْلَةُ الْفِعْلِيَّةُ</span><h2>أَحْمَدُ بْنُ ماجِدٍ</h2>
+   <p>⚓ أُكْمِلُ بِفِعْلٍ أَوْ فاعِلٍ مُناسِبٍ:</p>
+   <p class="ar">• ${R('عَرَفَ','___')} أَحْمَدُ بْنُ ماجِدٍ طُرُقَ الْبَحْرِ.</p>
+   <p class="ar">• قادَ ${R('الْبَحّارُ','___')} السَّفينَةَ بِمَهارَةٍ.</p>
+   <p class="ar">• ${R('هَبَّتْ','___')} الرّيحُ فَانْطَلَقَتِ السَّفينَةُ.</p>
+   ${QZ('أَيُّ جُمْلَةٍ فِعْلِيَّةٌ؟',['يَقودُ الرُّبّانُ السَّفينَةَ.','السَّفينَةُ كَبيرَةٌ.','الْبَحْرُ واسِعٌ.'],0)}`,
+  `<span class="eyebrow">النَّمَطُ الْإِمْلائِيُّ</span><h2>دُخولُ بَعْضِ الْحُروفِ عَلى «الْ»</h2>
+   <p style="text-align:center">اخْتَرْ حَرْفًا ثُمَّ كَلِمَةً وَشاهِدْ ما يَحْدُثُ 👇</p>
+   <div data-fn="alpre"></div>
+   <div class="rule">⚠️ الْباءُ وَالْفاءُ وَالْكافُ: تَبْقى «الْ» كَما هِيَ (بِالْبَحْرِ · فَالْبَحْرُ · كَالْبَحْرِ). <b>اللّامُ</b>: تُحْذَفُ أَلِفُ «الْ» (لِلْبَحْرِ).</div>`,
+  `<span class="eyebrow">الْخَطُّ</span><h2>الْميمُ وَالنّونُ بِخَطِّ النَّسْخِ</h2>
+   ${TRACE('م|ن|منارة|أحمد بن ماجد بحار عماني')}`,
+  `<span class="eyebrow">التَّعْبيرُ</span><h2>بِنْيَةُ النَّصِّ السَّرْدِيِّ (١)</h2>
+   ${CARDS([['🟢','الْبِدايَةُ','الْمَكانُ وَالزَّمانُ وَالشَّخْصِيّاتُ: انْطِلاقُ «صُحارَ» مِنْ مَسْقَطَ'],['🟠','الْوَسَطُ','الْمُشْكِلَةُ: سُكونُ الرّيحِ وَنَفادُ الْمُؤَنِ وَالْعاصِفَةُ'],['🔵','النِّهايَةُ','الْحَلُّ وَالنَّتيجَةُ: الْوُصولُ إِلى بَحْرِ الصّينِ']])}
+   <p>✏️ أَقْتَرِحُ نِهايَةً مُناسِبَةً لِقِصَّةٍ قَرَأْتُ بِدايَتَها وَوَسَطَها.</p>`,
+  `<span class="eyebrow">بَيْنَ رُفوفِ مَكْتَبَتي</span><h2>بِطاقَةُ كِتابٍ</h2>
+   ${CARDS([['📕','الْعُنْوانُ',''],['✍️','الْمُؤَلِّفُ',''],['🏢','دارُ النَّشْرِ',''],['🎨','الرَّسّامُ',''],['🔢','الطَّبْعَةُ','']])}
+   <p>💬 أَذْكُرُ رَأْيي في الْقِصَّةِ، وَما أَعْجَبَني، وَلِماذا، وَأَرْسُمُ شَخْصِيَّةً مِنْها.</p>`
+ ],
+ parts:{
+  pres:{name:'رِحْلَةُ صُحارَ',hint:'أَحْداثُ الرِّحْلَةِ وَالْفَهْمُ وَالْجُمْلَةُ الْفِعْلِيَّةُ وَالْخَطُّ'},
+  pre:{name:'سَفينَةٌ تَقْليدِيَّةٌ أَمْ حَديثَةٌ؟',hint:'نَضَعُ كُلَّ خاصِّيَّةٍ في السَّفينَةِ الْمُناسِبَةِ',run(W,done){
+    sortGame(W,done,[['⛵','سَفينَةٌ تَقْليدِيَّةٌ'],['🚢','سَفينَةٌ حَديثَةٌ']],[
+      ['تُصْنَعُ مِنَ الْخَشَبِ',0],['تَتَحَرَّكُ بِالْأَشْرِعَةِ',0],['تَعْتَمِدُ عَلى الرّيحِ',0],['يَهْتَدي بَحّارَتُها بِالنُّجومِ',0],['أَبْطَأُ في السَّيْرِ',0],
+      ['تُصْنَعُ مِنَ الْحَديدِ',1],['تَتَحَرَّكُ بِالْمُحَرِّكاتِ',1],['فيها أَجْهِزَةٌ لِتَحْديدِ الِاتِّجاهِ',1],['أَسْرَعُ في السَّيْرِ',1],['تَحْمِلُ آلافَ الْحاوِياتِ',1]],
+      {ico:'⚓',intro:'ضع كل خاصية في السفينة المناسبة لها.',msg:'عرفتَ الفرق بين السفينة التقليدية والحديثة! ⚓'});
+  }},
+  post:{name:'أُرَتِّبُ أَحْداثَ الرِّحْلَةِ',hint:'نُرَتِّبُ أَحْداثَ رِحْلَةِ «صُحارَ» مِنَ الْبِدايَةِ إِلى النِّهايَةِ',run(W,done){
+    orderGame(W,done,[['🧳','الِاسْتِعْدادُ لِلرِّحْلَةِ.'],['⛵','انْطِلاقُ «صُحارَ» مِنْ ميناءِ مَسْقَطَ.'],['🌬️','سُكونُ الرّيحِ وَبُطْءُ السَّفينَةِ.'],['🍞','نَقْصُ الطَّعامِ وَالْماءِ الْعَذْبِ.'],['🤝','تَشاوُرُ الْبَحّارَةِ وَصَبْرُهُمْ.'],['⛈️','هُبوبُ الْعاصِفَةِ وَاشْتِدادُ الْمَطَرِ.'],['🛟','حِمايَةُ الْبَحّارَةِ لِلسَّفينَةِ وَتَجاوُزُ الْخَطَرِ.'],['🏁','الْوُصولُ إِلى بَحْرِ الصّينِ.']],
+      {intro:'رتّب أحداث رحلة «صحار» من البداية إلى النهاية، ثم اضغط «تحقّق».',msg:'رتّبتَ رحلة السندباد الثامنة كاملة! 🏁'});
+  }},
+  game:{name:'أَبْحِرْ بِصُحارَ',hint:'كُلُّ إِجابَةٍ تُقَرِّبُ السَّفينَةَ مِنْ بَحْرِ الصّينِ',run(W,done){
+    journey(W,done,shuffle([
+      ['ما اسْمُ السَّفينَةِ؟',['صُحارُ','مَسْقَطُ','السِّنْدِبادُ'],0],
+      ['ماذا حَدَثَ لِلسَّفينَةِ عِنْدَما سَكَنَتِ الرّيحُ؟',['تَباطَأَتْ','أَسْرَعَتْ','غَرِقَتْ'],0],
+      ['كَيْفَ واجَهَ الْبَحّارَةُ نَقْصَ الْمُؤَنِ؟',['بِالصَّبْرِ وَالتَّشاوُرِ وَالتَّعاوُنِ','بِالْبُكاءِ','بِالرُّجوعِ فَوْرًا'],0],
+      ['مَعْنى «الْمُؤَنِ»:',['الطَّعامُ وَالْماءُ لِلرِّحْلَةِ','الْأَشْرِعَةُ','الْأَمْواجُ'],0],
+      ['مَعْنى «تَقْتَدي»:',['تَتَّخِذُ غَيْرَها قُدْوَةً','تَبْتَعِدُ','تَتَوَقَّفُ'],0],
+      ['الْفِعْلُ في «أَبْحَرَتْ صُحارُ»:',['أَبْحَرَتْ','صُحارُ','لا يوجَدُ'],0],
+      ['الْفاعِلُ في «هَبَّتِ الْعاصِفَةُ»:',['الْعاصِفَةُ','هَبَّتْ','الرّيحُ'],0],
+      ['أَيُّ جُمْلَةٍ فِعْلِيَّةٌ؟',['يَصْبِرُ الْبَحّارَةُ','الْبَحّارَةُ صابِرونَ','الْبَحْرُ هادِئٌ'],0],
+      ['لِ + الْبَحْرِ = ؟',['لِلْبَحْرِ','لِالْبَحْرِ','لَلْبَحْرِ'],0],
+      ['بِ + السَّفينَةِ = ؟',['بِالسَّفينَةِ','بِلسَّفينَةِ','بِسَّفينَةِ'],0],
+      ['أَيُّ قيمَةٍ ظَهَرَتْ في الرِّحْلَةِ؟',['الصَّبْرُ وَالتَّعاوُنُ','الْكَسَلُ','الْأَنانِيَّةُ'],0],
+      ['لِماذا سُمِّيَتِ الرِّحْلَةَ الثّامِنَةَ؟',['لِأَنَّ لِلسِّنْدِبادِ في الْحِكاياتِ سَبْعَ رِحْلاتٍ','لِأَنَّها ثَمانِيَةُ أَيّامٍ','لِأَنَّ فيها ثَمانِيَةَ بَحّارَةٍ'],0]]).slice(0,10),
+      {ico:'🧭',intro:'أبحر بالسفينة «صحار» من مسقط إلى بحر الصين. الإجابة الخاطئة تُثير عاصفة! ⛈️',unit:'الْمَرْحَلَةُ',msg:'وصلت «صحار» إلى بحر الصين بفضل مهارتك! 🏁',
+       scene:trackScene({bg:'linear-gradient(#BFE6FF,#DFF3FF 55%,#5BB6EA 56%,#2E86C9)',start:'🏰<small style="font-size:12px;display:block">مَسْقَطُ</small>',goal:'🏯<small style="font-size:12px;display:block">بَحْرُ الصّينِ</small>',mover:'⛵',fx:'⛈️',flip:false})});
+  }}
+ }
+});
+
+/* =====================================================
+   M4 — الدرس الثاني: قصة ورقة
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m4',color:'#18966A',emo:'📄',kind:'الدَّرْسُ الثّاني',title:'قِصَّةُ وَرَقَةٍ',
+ desc:'وَرَقَةٌ حَزينَةٌ في صُنْدوقِ الْقُمامَةِ تَبْدَأُ رِحْلَةَ إِعادَةِ التَّدْويرِ وَتَعودُ نافِعَةً جَميلَةً.',
+ slides:[
+  COVER('📄','الدَّرْسُ الثّاني','قِصَّةُ وَرَقَةٍ','سَلامَةُ مُحَمَّد سَلامَة'),
+  `<span class="eyebrow">أُشاهِدُ وَأَتَحَدَّثُ</span><h2>صُنْدوقٌ مُمْتَلِئٌ!</h2>
+   <div style="text-align:center;font-size:clamp(60px,12vw,100px);line-height:1.1">🗑️📄🥫🥤🍾</div>
+   <p>👀 ما الْمَوادُّ في الصُّنْدوقِ؟ ${R('وَرَقٌ، وَعُلَبٌ، وَأَكْوابٌ، وَزُجاجاتٌ.')}</p>
+   <p>🤔 ما رَأْيُكَ في هَذا الْمَنْظَرِ؟ ماذا نَفْعَلُ بِهَذِهِ النُّفاياتِ؟ ${R('نَفْرِزُها وَنُعيدُ تَدْويرَها بَدَلَ رَمْيِها.')}</p>
+   <p>🔮 أَتَوَقَّعُ: أَيْنَ تَدورُ أَحْداثُ الْقِصَّةِ؟ ${R('في صُنْدوقِ الْقُمامَةِ ثُمَّ في مَكانِ إِعادَةِ التَّدْويرِ.')}</p>`,
+  `<span class="eyebrow">شَخْصِيّاتُ الْقِصَّةِ</span><h2>أَشْياءُ تَتَكَلَّمُ!</h2>
+   ${CARDS([['📄','وَرَقَةٌ','حَزينَةٌ لِأَنَّ صاحِبَها رَماها'],['🥫','عُلْبَةٌ','مِنَ الْمَعْدِنِ'],['🥤','كوبٌ','مِنَ الْبلاسْتيكِ'],['🍾','زُجاجَةٌ','مِنَ الزُّجاجِ']])}
+   <div class="rule">💡 الْقِصَّةُ خَيالِيَّةٌ: جَعَلَ الْكاتِبُ الْأَشْياءَ تَتَحَدَّثُ وَتَشْعُرُ كَالنّاسِ.</div>`,
+  `<span class="eyebrow">أَحْداثُ الْقِصَّةِ · ١</span><h2>في صُنْدوقِ الْقُمامَةِ</h2><div class="txt">
+   <p>كانَتْ وَرَقَةٌ نافِعَةً، فَلَمّا انْتَهى اسْتِخْدامُها رَماها صاحِبُها في صُنْدوقِ الْقُمامَةِ، فَحَزِنَتْ. وَهُناكَ الْتَقَتْ عُلْبَةً وَكوبًا وَزُجاجَةً، وَتَحَدَّثَتِ الْأَشْياءُ عَنْ حالِها في ذَلِكَ الْمَكانِ الْمُتَّسِخِ.</p></div>
+   <p style="font-size:14px;color:var(--ink2)">📝 هَذا تَلْخيصٌ لِأَحْداثِ الْقِصَّةِ، وَالنَّصُّ الْكامِلُ في كِتابِ الطّالِبِ.</p>`,
+  `<span class="eyebrow">أَحْداثُ الْقِصَّةِ · ٢</span><h2>رِحْلَةُ التَّدْويرِ</h2><div class="txt">
+   <p>جاءَ مَنْ يَجْمَعُ الْمَوادَّ، فَخَرَجَتْ مِنَ الصُّنْدوقِ وَ${w('فُرِزَتْ','فُصِلَ كُلُّ نَوْعٍ عَنْ غَيْرِهِ')}، وَذَهَبَتْ كُلُّ مادَّةٍ إِلى ${w('مُعالَجَةٍ','عَمَلِيّاتٌ تُغَيِّرُ الْمادَّةَ')} تُناسِبُها: الْعُلَبُ تُضْغَطُ في ${w('الْمِكْبَسِ','آلَةٌ تَضْغَطُ الْأَشْياءَ بِقُوَّةٍ')} وَتُصْنَعُ مِنْها ${w('صَفائِحُ','قِطَعٌ رَقيقَةٌ مُسَطَّحَةٌ مِنَ الْمَعْدِنِ')}، وَالزُّجاجُ ${w('يُصْهَرُ','يُذابُ بِالْحَرارَةِ الشَّديدَةِ')}، وَالْوَرَقُ يُعادُ تَصْنيعُهُ.</p></div>`,
+  `<span class="eyebrow">أَحْداثُ الْقِصَّةِ · ٣</span><h2>نِهايَةٌ سَعيدَةٌ</h2><div class="txt">
+   <p>تَحَوَّلَتِ الْمَوادُّ إِلى أَشْياءَ جَديدَةٍ نافِعَةٍ، وَأَصْبَحَتْ «وَرَقَةُ» جُزْءًا مِنْ كِتابٍ جَميلٍ. وَالْتَقَتِ الشَّخْصِيّاتُ بَعْدَ أَنْ تَغَيَّرَتْ أَشْكالُها، فَتَحَوَّلَ حُزْنُها إِلى سَعادَةٍ.</p></div>
+   <div class="rule">💡 الْأُمورُ الَّتي نَحْزَنُ لِبِدايَتِها قَدْ تَكونُ نِهايَتُها سَعيدَةً.</div>`,
+  `<span class="eyebrow">رِحْلَةُ الْوَرَقَةِ</span><h2>مَحَطّاتُ إِعادَةِ تَدْويرِ الْوَرَقِ</h2>
+   <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;font-size:clamp(16px,2.6vw,22px);font-weight:800">
+    <span class="chip">📄 وَرَقٌ مُسْتَعْمَلٌ</span>⬅️<span class="chip">🚛 جَمْعٌ وَفَرْزٌ</span>⬅️<span class="chip">🏭 مُعالَجَةُ الْوَرَقِ</span>⬅️<span class="chip">🔄 إِعادَةُ تَصْنيعٍ</span>⬅️<span class="chip">📗 مُنْتَجٌ جَديدٌ</span></div>
+   ${QZ('مِمّا يُصْنَعُ مِنَ الْوَرَقِ الْمُعادِ تَدْويرُهُ:',['كُتُبٌ وَكُرّاساتٌ وَصُحُفٌ','عُلَبٌ مَعْدِنِيَّةٌ','زُجاجاتٌ'],0)}`,
+  `<span class="eyebrow">الْفَهْمُ</span><h2>أُجيبُ وَأَسْتَنْتِجُ</h2>
+   ${QZ('لِماذا حَزِنَتْ وَرَقَةٌ؟',['لِأَنَّ صاحِبَها رَماها في الْقُمامَةِ','لِأَنَّها أَصْبَحَتْ كِتابًا','لِأَنَّها ضاعَتْ في الْبَحْرِ'],0)}
+   ${QZ('مَعْنى «صَهْرِها»:',['إِذابَتُها بِالْحَرارَةِ','غَسْلُها بِالْماءِ','رَمْيُها'],0)}
+   <p>🔁 ما الْفَرْقُ بَيْنَ حالِ وَرَقَةٍ في الْبِدايَةِ وَالنِّهايَةِ؟ ${R('في الْبِدايَةِ حَزينَةٌ مُهْمَلَةٌ، وَفي النِّهايَةِ سَعيدَةٌ نافِعَةٌ في كِتابٍ جَميلٍ.')}</p>
+   <p>🏫 اقْتَرِحْ مَشْروعًا لِإِعادَةِ التَّدْويرِ في مَدْرَسَتِكَ.</p>`,
+  `<span class="eyebrow">النَّمَطُ اللُّغَوِيُّ</span><h2>الْأَعْدادُ مِنْ ١١ إِلى ١٩</h2>
+   <p style="text-align:center">اخْتَرِ الْعَدَدَ وَالْمَعْدودَ 👇</p>
+   <div data-fn="nums"></div>
+   <div class="rule">💡 مَعَ الْمَعْدودِ <b>الْمُذَكَّرِ</b>: ثَلاثَةَ عَشَرَ كِتابًا · مَعَ <b>الْمُؤَنَّثِ</b>: ثَلاثَ عَشْرَةَ وَرَقَةً. وَالْمَعْدودُ بَعْدَها مُفْرَدٌ مَنْصوبٌ.</div>`,
+  `<span class="eyebrow">النَّمَطُ الْإِمْلائِيُّ</span><h2>الْأَلِفُ الْمَقْصورَةُ «ى» وَالْياءُ «ي»</h2>
+   ${CARDS([['ى','أَلِفٌ مَقْصورَةٌ','بِلا نُقْطَتَيْنِ: مُسْتَشْفى · عَلى · إِلى · حَلْوى'],['ي','ياءٌ','بِنُقْطَتَيْنِ: كُرْسِيٌّ · الْوادي · يَمْشي · ذَكِيٌّ']])}
+   ${QZ('أُكْمِلُ: «ذَهَبْتُ إِلـ__ الْمَدْرَسَةِ»',['ى','ي'],0)}
+   ${QZ('أُكْمِلُ: «جَلَسَ الطِّفْلُ عَلى الْكُرْسـ__»',['ي','ى'],0)}`,
+  `<span class="eyebrow">الْخَطُّ</span><h2>الْكافُ وَاللّامُ بِخَطِّ النَّسْخِ</h2>
+   ${TRACE('ك|ل|كوب|علبة|بلاستيك|مجلات|يكتب|يلعب')}`,
+  `<span class="eyebrow">التَّعْبيرُ</span><h2>بِنْيَةُ النَّصِّ السَّرْدِيِّ (٢): مَشْروعُ التَّدْويرِ</h2>
+   ${CARDS([['🟢','الْبِدايَةُ','الزَّمانُ وَالْمَكانُ، وَكَيْفَ كَلَّفَتِ الْمُعَلِّمَةُ الطُّلّابَ بِالْمَشْروعِ'],['🟠','الْوَسَطُ','جَمْعُ الْمَوادِّ، وَالْعَمَلُ الْجَماعِيُّ، وَتَطْويرُ الْفِكْرَةِ'],['🔵','النِّهايَةُ','رَأْيُ الْمُعَلِّمَةِ، وَشُعورُ الطُّلّابِ بَعْدَ الْإِنْجازِ']])}
+   <p>✏️ أَكْتُبُ قِصَّةً قَصيرَةً مُتَرابِطَةً عَنْ مَشْروعِ التَّدْويرِ.</p>`
+ ],
+ parts:{
+  pres:{name:'رِحْلَةُ وَرَقَةٍ',hint:'أَحْداثُ الْقِصَّةِ وَالْأَعْدادُ وَالْأَلِفُ الْمَقْصورَةُ وَالْخَطُّ'},
+  pre:{name:'صُنْدوقُ الْفَرْزِ',hint:'نَفْرِزُ النُّفاياتِ في الْحاوِيَةِ الْمُناسِبَةِ',run(W,done){
+    sortGame(W,done,[['📄','وَرَقٌ'],['🥤','بلاسْتيكٌ'],['🥫','مَعْدِنٌ'],['🍾','زُجاجٌ']],[
+      ['📰 صَحيفَةٌ قَديمَةٌ',0],['📦 صُنْدوقُ كَرْتونٍ',0],['📒 دَفْتَرٌ مُسْتَعْمَلٌ',0],['🥤 كوبٌ بلاسْتيكِيٌّ',1],['🧴 قارورَةُ شامْبو',1],['🛍️ كيسٌ بلاسْتيكِيٌّ',1],
+      ['🥫 عُلْبَةُ عَصيرٍ',2],['🥄 مِلْعَقَةٌ مَعْدِنِيَّةٌ',2],['🔩 مِسْمارٌ',2],['🍾 زُجاجَةٌ',3],['🫙 مَرْطَبانٌ زُجاجِيٌّ',3]],
+      {ico:'♻️',intro:'افرز النفايات: اضغط بطاقة، ثم اضغط الحاوية المناسبة لمادتها.',msg:'فرزتَ النفايات كلها، والبيئة تشكرك! ♻️'});
+  }},
+  post:{name:'أُرَتِّبُ رِحْلَةَ وَرَقَةٍ',hint:'نُرَتِّبُ أَحْداثَ الْقِصَّةِ مِنَ الْحُزْنِ إِلى السَّعادَةِ',run(W,done){
+    orderGame(W,done,[['📄','كانَتْ وَرَقَةٌ نافِعَةً.'],['🗑️','رَماها صاحِبُها في صُنْدوقِ الْقُمامَةِ فَحَزِنَتْ.'],['🥫','الْتَقَتْ عُلْبَةً وَكوبًا وَزُجاجَةً وَتَحَدَّثَتْ مَعَها.'],['🚛','جاءَ مَنْ يَجْمَعُ الْمَوادَّ.'],['🔀','فُرِزَتِ الْمَوادُّ.'],['🏭','ذَهَبَتْ كُلُّ مادَّةٍ إِلى مُعالَجَةٍ تُناسِبُها.'],['📗','أَصْبَحَتْ وَرَقَةٌ جُزْءًا مِنْ كِتابٍ جَميلٍ.'],['😊','تَحَوَّلَ حُزْنُ الشَّخْصِيّاتِ إِلى سَعادَةٍ.']],
+      {intro:'رتّب أحداث قصة ورقة، ثم اضغط «تحقّق».',msg:'رتّبتَ رحلة ورقة من الحزن إلى السعادة! 📗'});
+  }},
+  game:{name:'قِطارُ الْأَعْدادِ',hint:'نَعُدُّ ما في الْعَرَباتِ وَنَخْتارُ الْكِتابَةَ الصَّحيحَةَ',run(W,done){
+    const A=[['🐑','خَروفًا',0],['🐓','ديكًا',0],['🐫','جَمَلًا',0],['🐇','أَرْنَبًا',0],['🐈','قِطَّةً',1],['🦆','بَطَّةً',1],['🐟','سَمَكَةً',1],['🐄','بَقَرَةً',1]];
+    const N={11:['أَحَدَ عَشَرَ','إِحْدى عَشْرَةَ'],12:['اثْنا عَشَرَ','اثْنَتا عَشْرَةَ'],13:['ثَلاثَةَ عَشَرَ','ثَلاثَ عَشْرَةَ'],14:['أَرْبَعَةَ عَشَرَ','أَرْبَعَ عَشْرَةَ'],15:['خَمْسَةَ عَشَرَ','خَمْسَ عَشْرَةَ'],16:['سِتَّةَ عَشَرَ','سِتَّ عَشْرَةَ'],17:['سَبْعَةَ عَشَرَ','سَبْعَ عَشْرَةَ'],18:['ثَمانِيَةَ عَشَرَ','ثَمانِيَ عَشْرَةَ'],19:['تِسْعَةَ عَشَرَ','تِسْعَ عَشْرَةَ']};
+    const nums=shuffle(Object.keys(N).map(Number)).slice(0,6),an=shuffle(A).slice(0,6);
+    const Q=nums.map((k,i)=>{const a=an[i],other=k===19?18:k+1;
+      return [`كَمْ ${a[0]} في الْعَرَبَةِ؟ عُدَّ جَيِّدًا!`,[`${N[k][a[2]]} ${a[1]}`,`${N[k][1-a[2]]} ${a[1]}`,`${N[other][a[2]]} ${a[1]}`],0,1,`<div style="font-size:clamp(22px,4.4vw,34px);letter-spacing:2px;max-width:560px;margin:0 auto;background:#FFF6DA;border:3px solid #E6CB92;border-radius:18px;padding:6px">${a[0].repeat(k)}</div>`];});
+    const Y=shuffle([['مُسْتَشْفـ_',['ى','ي'],0],['عَلـ_ الطّاوِلَةِ',['ى','ي'],0],['الْواد_',['ي','ى'],0],['حَلْو_ لَذيذَةٌ',['ى','ي'],0],['كُرْس_ جَديدٌ',['ي','ى'],0],['يَمْش_ الطِّفْلُ',['ي','ى'],0]]).slice(0,4).map(y=>[`أُكْمِلُ الْكَلِمَةَ: «${y[0]}»`,y[1],y[2],2]);
+    journey(W,done,shuffle(Q.concat(Y)),
+      {ico:'🚂',intro:'القطار يحمل عربات! عُدّ ما في كل عربة واختر الكتابة الصحيحة، وأكمل كلمات «ى / ي» لتصل إلى المحطة.',unit:'الْعَرَبَةُ',msg:'وصل قطار الأعداد إلى المحطة! 🚉',
+       scene:trackScene({bg:'linear-gradient(#DFF3FF,#F4FBFF 60%,#C9B48A 61%,#B59A66)',deco:'<div style="position:absolute;left:0;right:0;bottom:12%;height:6px;background:repeating-linear-gradient(90deg,#5a4630 0 18px,transparent 18px 28px)"></div>',start:'🏠',goal:'🚉',mover:'🚂',fx:'❌',flip:false})});
+  }}
+ }
+});
+
+/* =====================================================
+   M5 — الدرس الثالث: حاسوبي
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m5',color:'#3B5BDB',emo:'💻',kind:'الدَّرْسُ الثّالِثُ',title:'حاسوبي',
+ desc:'طِفْلٌ يُحَدِّثُ أَباهُ عَنِ الْحاسوبِ وَفَوائِدِهِ في التَّعَلُّمِ وَالتَّفْكيرِ وَالْإِبْداعِ.',
+ slides:[
+  COVER('💻','الدَّرْسُ الثّالِثُ','حاسوبي','نَصٌّ شِعْرِيٌّ عَنِ التِّقْنِيَةِ وَالتَّعَلُّمِ'),
+  `<span class="eyebrow">أُشاهِدُ وَأَتَحَدَّثُ</span><h2>أَجْهِزَةٌ مِنْ حَوْلي</h2>
+   ${CARDS([['🖥️','حاسوبٌ مَكْتَبِيٌّ','ثابِتٌ عَلى الْمَكْتَبِ'],['💻','حاسوبٌ مَحْمولٌ','نَحْمِلُهُ مَعَنا'],['📱','جِهازٌ لَوْحِيٌّ','نَلْمِسُ شاشَتَهُ']])}
+   <p>⏰ كَمْ تُمْضي مِنَ الْوَقْتِ أَمامَ الْحاسوبِ؟ وَفيمَ تَسْتَخْدِمُهُ؟</p>
+   <p>💬 تَخَيَّلْ حِوارًا بَيْنَ حاسوبٍ ثابِتٍ وَحاسوبٍ مَحْمولٍ!</p>`,
+  `<span class="eyebrow">أَفْكارُ النَّصِّ</span><h2>الطِّفْلُ يُحَدِّثُ أَباهُ</h2>
+   ${CARDS([['🙏','يَطْلُبُ حاسوبًا','يُريدُ أَنْ يُواكِبَ التَّطَوُّرَ'],['⌨️','يُنَفِّذُ الْأَوامِرَ','الْحاسوبُ يَعْمَلُ بِما نَطْلُبُهُ مِنْهُ'],['📚','لِلتَّعَلُّمِ','دُروسٌ وَمَعْلوماتٌ'],['🏖️','في الْإِجازَةِ','وَقْتٌ نافِعٌ'],['🎨','لِلرَّسْمِ','يَرْسُمُ عَلى الشّاشَةِ'],['🧩','أَلْعابٌ نافِعَةٌ','تُنَمّي التَّفْكيرَ وَالْمُنافَسَةَ مَعَ الْأَقْرانِ']])}
+   <p style="font-size:14px;color:var(--ink2)">📝 هَذِهِ أَفْكارُ النَّصِّ، وَالنَّصُّ الشِّعْرِيُّ الْكامِلُ في كِتابِ الطّالِبِ.</p>`,
+  `<span class="eyebrow">الْمُفْرَداتُ</span><h2>أَفْهَمُ الْكَلِمَةَ مِنَ السِّياقِ</h2>
+   <p class="ar">• ${w('يَرْقى','يَصْعَدُ وَيَتَطَوَّرُ')}: الْمُتَعَلِّمُ يَرْقى بِعِلْمِهِ.</p>
+   <p class="ar">• ${w('أَقْراني','مَنْ هُمْ في مِثْلِ عُمُري: زُمَلائي وَأَصْحابي')}: أَتَنافَسُ مَعَ أَقْراني.</p>
+   <p class="ar">• ${w('التِّقْنِيَةُ','الْأَجْهِزَةُ وَالْأَدَواتُ الْحَديثَةُ')} · ${w('الْأَوامِرُ','ما نَطْلُبُهُ مِنَ الْحاسوبِ أَنْ يَفْعَلَهُ')} · ${w('الْإِجازَةُ','أَيّامُ الرّاحَةِ مِنَ الْمَدْرَسَةِ')}</p>
+   ${QZ('مَعْنى «أَقْراني»:',['زُمَلائي في مِثْلِ عُمُري','أَجْدادي','أَساتِذَتي'],0)}`,
+  `<span class="eyebrow">الْفَهْمُ</span><h2>أُجيبُ وَأُفَكِّرُ</h2>
+   ${QZ('ماذا يُريدُ الِابْنُ مِنْ أَبيهِ؟',['حاسوبًا','دَرّاجَةً','كِتابًا'],0)}
+   ${QZ('أَيُّ اسْتِخْدامٍ لِلْحاسوبِ نافِعٌ؟',['الْبَحْثُ عَنْ مَعْلومَةٍ لِلدَّرْسِ','اللَّعِبُ طَوالَ اللَّيْلِ','تَرْكُ الْواجِباتِ'],0)}
+   <p>🧒 بِمَ تَصِفُ الطِّفْلَ؟ ${R('ذَكِيٌّ، مُحِبٌّ لِلتَّعَلُّمِ، يُحْسِنُ الْإِقْناعَ.')}</p>
+   <p>📏 ما الْقَواعِدُ الَّتي تَقْتَرِحُها لِاسْتِخْدامِ الْحاسوبِ؟ ${R('وَقْتٌ مُحَدَّدٌ · بَرامِجُ نافِعَةٌ · جِلْسَةٌ صَحيحَةٌ · راحَةٌ لِلْعَيْنَيْنِ')}</p>`,
+  `<span class="eyebrow">النَّمَطُ اللُّغَوِيُّ</span><h2>أَسْماءُ الْإِشارَةِ</h2>
+   <div data-fn="ishara"></div>
+   <div class="rule">💡 هذا لِلْمُفْرَدِ الْمُذَكَّرِ · هذه لِلْمُفْرَدِ الْمُؤَنَّثِ · هذانِ لِلْمُثَنّى الْمُذَكَّرِ · هاتانِ لِلْمُثَنّى الْمُؤَنَّثِ · هؤلاءِ لِلْجَمْعِ الْعاقِلِ.</div>`,
+  `<span class="eyebrow">أَسْماءُ الْإِشارَةِ</span><h2>أُحَوِّلُ إِلى الْمُثَنّى</h2>
+   <p class="ar">• هذا جِهازٌ ← ${R('هذانِ جِهازانِ')}</p>
+   <p class="ar">• هذه شاشَةٌ ← ${R('هاتانِ شاشَتانِ')}</p>
+   <p class="ar">• هذا تَطْبيقٌ ← ${R('هذانِ تَطْبيقانِ')}</p>
+   ${QZ('«___ الطُّلّابُ يَتَعَلَّمونَ الْبَرْمَجَةَ.»',['هؤلاءِ','هذا','هاتانِ'],0)}`,
+  `<span class="eyebrow">الْإِمْلاءُ</span><h2>مُراجَعَةٌ</h2>
+   <div class="tbl-wrap"><table class="tbl"><tr><th>تاءٌ مَرْبوطَةٌ</th><th>تاءٌ مَفْتوحَةٌ</th><th>هاءٌ</th><th>تَنْوينٌ</th><th>«الْ»</th><th>ى / ي</th></tr>
+   <tr><td>شاشَةٌ · تِقْنِيَةٌ</td><td>بَيْتٌ · أَصْواتٌ</td><td>أَباهُ · وَجْهُ</td><td>عِلْمٌ · جِهازًا</td><td>الْحاسوبُ · الشّاشَةُ</td><td>عَلى · حاسوبي</td></tr></table></div>
+   ${QZ('كَلِمَةٌ آخِرُها تاءٌ مَرْبوطَةٌ:',['شاشَةٌ','بَيْتٌ','أَباهُ'],0)}`,
+  `<span class="eyebrow">الْخَطُّ</span><h2>الْعَيْنُ وَالْغَيْنُ بِخَطِّ النَّسْخِ</h2>
+   ${TRACE('ع|غ|غيمة|يزرع|يطيع|عمان')}`,
+  `<span class="eyebrow">التَّعْبيرُ</span><h2>بِنْيَةُ النَّصِّ السَّرْدِيِّ (٣)</h2>
+   ${CARDS([['🟢','الْبِدايَةُ','الزَّمانُ وَالْمَكانُ · الطِّفْلُ يَطْلُبُ مِنْ أَبيهِ شِراءَ حاسوبٍ · الْأَبُ يَسْأَلُهُ عَنْ فَوائِدِهِ'],['🟠','الْوَسَطُ','الطِّفْلُ يُوَضِّحُ لِأَبيهِ فَوائِدَ الْحاسوبِ'],['🔵','النِّهايَةُ','مُوافَقَةُ الْأَبِ وَفَرْحَةُ الطِّفْلِ بِالْحاسوبِ الْجَديدِ']])}
+   <div class="rule">✏️ أَرْبِطُ الْأَحْداثَ بِكَلِماتٍ مِثْلِ: في يَوْمٍ مِنَ الْأَيّامِ · ثُمَّ · بَعْدَ ذَلِكَ · وَفي النِّهايَةِ.</div>`
+ ],
+ parts:{
+  pres:{name:'حاسوبي وَأَنا',hint:'أَفْكارُ النَّصِّ وَالْمُفْرَداتُ وَأَسْماءُ الْإِشارَةِ وَالْإِمْلاءُ'},
+  pre:{name:'نافِعٌ أَمْ غَيْرُ نافِعٍ؟',hint:'نُصَنِّفُ اسْتِخْداماتِ الْحاسوبِ',run(W,done){
+    sortGame(W,done,[['👍','اسْتِخْدامٌ نافِعٌ'],['👎','اسْتِخْدامٌ غَيْرُ نافِعٍ']],[
+      ['أَبْحَثُ عَنْ مَعْلومَةٍ لِدَرْسي',0],['أُشاهِدُ دَرْسًا تَعْليمِيًّا',0],['أَرْسُمُ لَوْحَةً جَميلَةً',0],['أَلْعَبُ لُعْبَةً تُنَمّي التَّفْكيرَ',0],['أَكْتُبُ قِصَّةً قَصيرَةً',0],
+      ['أَسْهَرُ أَمامَ الشّاشَةِ طَوالَ اللَّيْلِ',1],['أَتْرُكُ واجِباتي لِأَلْعَبَ',1],['أَجْلِسُ قَريبًا جِدًّا مِنَ الشّاشَةِ',1],['أُضَيِّعُ وَقْتَ الْإِجازَةِ كُلَّهُ في اللَّعِبِ',1]],
+      {ico:'💻',intro:'صنّف كل استخدام للحاسوب: نافع 👍 أم غير نافع 👎؟',msg:'أنت تستخدم الحاسوب بذكاء! 💻'});
+  }},
+  post:{name:'هذا أَمْ هذه؟',hint:'نَخْتارُ اسْمَ الْإِشارَةِ الْمُناسِبَ لِلصّورَةِ',run(W,done){
+    seqQuiz(W,done,shuffle([
+      ['«___ حاسوبٌ مَحْمولٌ.»',['هذا','هذه','هؤلاءِ'],0,3,'💻'],
+      ['«___ شاشَةٌ كَبيرَةٌ.»',['هذه','هذا','هذانِ'],0,3,'🖥️'],
+      ['«___ جِهازانِ حَديثانِ.»',['هذانِ','هاتانِ','هذا'],0,3,'📱📱'],
+      ['«___ لَوْحَتانِ مُلَوَّنَتانِ.»',['هاتانِ','هذانِ','هذه'],0,3,'🖼️🖼️'],
+      ['«___ طُلّابٌ مُجْتَهِدونَ.»',['هؤلاءِ','هذا','هاتانِ'],0,3,'🧒🧒🧒'],
+      ['«___ فَأْرَةُ الْحاسوبِ.»',['هذه','هذا','هؤلاءِ'],0,3,'🖱️'],
+      ['«___ طالِبَتانِ تَتَعَلَّمانِ.»',['هاتانِ','هذانِ','هؤلاءِ'],0,3,'👧👧'],
+      ['«___ مِفْتاحٌ في لَوْحَةِ الْمَفاتيحِ.»',['هذا','هذه','هذانِ'],0,3,'⌨️']]),
+      {ico:'👉',intro:'انظر إلى الصورة، واختر اسم الإشارة المناسب.',msg:'أتقنتَ أسماء الإشارة! 👉'});
+  }},
+  game:{name:'افْتَحْ قُفْلَ الشّاشَةِ',hint:'كُلُّ إِجابَةٍ صَحيحَةٍ تُضيءُ رَقْمًا مِنْ كَلِمَةِ السِّرِّ',run(W,done){
+    journey(W,done,shuffle([
+      ['كَلِمَةٌ آخِرُها تاءٌ مَرْبوطَةٌ:',['تِقْنِيَةٌ','أَصْواتٌ','أَباهُ'],0],
+      ['كَلِمَةٌ آخِرُها تاءٌ مَفْتوحَةٌ:',['بَيْتٌ','شاشَةٌ','لُعْبَةٌ'],0],
+      ['كَلِمَةٌ آخِرُها هاءٌ:',['أَباهُ','رِحْلَةٌ','صَوْتٌ'],0],
+      ['كَلِمَةٌ فيها تَنْوينُ فَتْحٍ:',['جِهازًا','جِهازٌ','جِهازٍ'],0],
+      ['كَلِمَةٌ آخِرُها أَلِفٌ مَقْصورَةٌ:',['عَلى','حاسوبي','كُرْسِيٌّ'],0],
+      ['فَ + الْحاسوبُ = ؟',['فَالْحاسوبُ','فَلْحاسوبُ','فَحاسوبُ'],0],
+      ['كَ + الْبَرْقِ = ؟',['كَالْبَرْقِ','كَلْبَرْقِ','كَبَرْقِ'],0],
+      ['مَعْنى «يَرْقى»:',['يَصْعَدُ وَيَتَطَوَّرُ','يَنامُ','يَرْجِعُ'],0],
+      ['ماذا يُريدُ الطِّفْلُ مِنْ أَبيهِ؟',['حاسوبًا لِيَتَعَلَّمَ وَيُبْدِعَ','لُعْبَةً بِلا فائِدَةٍ','رِحْلَةً بَحْرِيَّةً'],0],
+      ['اسْمُ الْإِشارَةِ لِلْمُثَنّى الْمُؤَنَّثِ:',['هاتانِ','هذانِ','هؤلاءِ'],0]]),
+      {ico:'🔐',intro:'شاشة الحاسوب مقفلة! كل إجابة تضيء رقمًا من كلمة السر 🔢',unit:'الرَّقْمُ',msg:'فتحتَ الشاشة! 💻🔓',
+       scene:N=>{const node=el(`<div style="max-width:420px;margin:0 auto;background:#1D2946;border-radius:22px;padding:16px;border:6px solid #9AA6C2"><div style="text-align:center;font-size:40px" class="lk">🔒</div><div class="pins" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px">${Array.from({length:N},()=>'<span style="width:22px;height:22px;border-radius:50%;background:#3a4668;display:inline-block;transition:.3s"></span>').join('')}</div></div>`);
+         const pins=$$('.pins span',node);return{node,update(k,wrong){if(wrong){node.animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}],{duration:350});return;}
+           pins.forEach((p,i)=>{p.style.background=i<k?'#3DDC84':'#3a4668';});if(k===N)$('.lk',node).textContent='🔓';}};}});
+  }}
+ }
+});
+
+/* =====================================================
+   M6 — أنشد وأحفظ: مجد القلم
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m6',color:'#8466E6',emo:'🖋️',kind:'أُنْشِدُ وَأَحْفَظُ',title:'مَجْدُ الْقَلَمِ',
+ desc:'نَشيدٌ يُعَظِّمُ الْقَلَمَ وَالْقِراءَةَ وَالْعِلْمَ، وَيَدْعو إِلى الطُّموحِ وَبُلوغِ الْقِمَمِ.',
+ slides:[
+  COVER('🖋️','أُنْشِدُ وَأَحْفَظُ','مَجْدُ الْقَلَمِ','أَحْمَدُ بْنُ هِلالٍ الْعَبْرِيُّ'),
+  `<span class="eyebrow">قَبْلَ الْإِنْشادِ</span><h2>ماذا يَصْنَعُ الْقَلَمُ؟</h2>
+   <div style="text-align:center;font-size:clamp(60px,12vw,100px);line-height:1.1">🖋️📖🏫⛰️</div>
+   <p>🗣️ لِماذا نُحِبُّ الْقَلَمَ؟ ${R('بِهِ نَكْتُبُ وَنَتَعَلَّمُ وَنُعَبِّرُ عَنْ أَفْكارِنا.')}</p>
+   <p>🎵 أَسْتَمِعُ إِلى النَّشيدِ مِنْ كِتابي، ثُمَّ أُنْشِدُهُ بِصَوْتٍ واضِحٍ مُعَبِّرٍ.</p>
+   <div data-fn="audio"></div>`,
+  `<span class="eyebrow">أَفْكارُ النَّشيدِ</span><h2>مِنَ الْقَلَمِ إِلى الْقِمَمِ</h2>
+   ${CARDS([['🖋️','الْقَلَمُ','وَسيلَةٌ لِلْعِلْمِ وَالتَّعْبيرِ'],['📖','الْقِراءَةُ','مُهِمَّةٌ في حَياةِ الْإِنْسانِ وَتُعَلِّمُنا الْقِيَمَ'],['🏫','الْمَدْرَسَةُ','مَكانُ الْعِلْمِ'],['🎓','الْعِلْمُ','يَرْفَعُ مَكانَةَ الْإِنْسانِ'],['😊','السَّعادَةُ','مَعَ التَّعَلُّمِ وَالنَّجاحِ'],['⛰️','الْقِمَمُ','صورَةٌ لِلتَّفَوُّقِ وَالطُّموحِ']])}
+   <p style="font-size:14px;color:var(--ink2)">📝 نَصُّ النَّشيدِ كامِلًا في كِتابِ الطّالِبِ؛ نُنْشِدُهُ وَنَحْفَظُهُ مِنْهُ.</p>`,
+  `<span class="eyebrow">أَفْهَمُ</span><h2>أُجيبُ</h2>
+   ${QZ('ما مَوْضوعُ النَّشيدِ؟',['قيمَةُ الْقَلَمِ وَالْقِراءَةِ وَالْعِلْمِ','رِحْلَةٌ بَحْرِيَّةٌ','إِعادَةُ التَّدْويرِ'],0)}
+   <p>📖 كَيْفَ نَتَعَلَّمُ عَنْ طَريقِ الْقِراءَةِ؟ ${R('نَعْرِفُ مَعْلوماتٍ جَديدَةً، وَنَتَعَلَّمُ الْقِيَمَ مِنَ الْقِصَصِ وَالْكُتُبِ.')}</p>
+   <p>⛰️ ما الْمَقْصودُ بِالسَّعْيِ إِلى الْقِمَمِ؟ ${R('الطُّموحُ وَالِاجْتِهادُ لِنَصِلَ إِلى التَّفَوُّقِ وَالنَّجاحِ.')}</p>
+   <p>🔗 ما الْعَلاقَةُ بَيْنَ الْقِراءَةِ وَالْعِلْمِ؟ ${R('الْقِراءَةُ طَريقُ الْعِلْمِ، وَالْعِلْمُ طَريقُ التَّقَدُّمِ.')}</p>`,
+  `<span class="eyebrow">الْقِيَمُ</span><h2>ماذا تَعَلَّمْتُ مِنَ النَّشيدِ؟</h2>
+   ${CARDS([['❤️','حُبُّ الْعِلْمِ',''],['📚','حُبُّ الْقِراءَةِ',''],['🖋️','الِاعْتِزازُ بِالْقَلَمِ',''],['💪','الِاجْتِهادُ',''],['🚀','الطُّموحُ',''],['🔁','التَّعَلُّمُ الْمُسْتَمِرُّ','']])}
+   <div class="rule">🎵 أُنْشِدُ مَعَ زُمَلائي بِصَوْتٍ واضِحٍ وَمُعَبِّرٍ، وَأَحْفَظُ الْأَبْياتَ الْمَطْلوبَةَ.</div>`
+ ],
+ parts:{
+  pres:{name:'نَشيدُ الْقَلَمِ',hint:'أَفْكارُ النَّشيدِ وَقِيَمُهُ وَأَسْئِلَتُهُ'},
+  pre:{name:'أَصِلُ الْفِكْرَةَ',hint:'نَرْبِطُ كُلَّ كَلِمَةٍ بِفِكْرَتِها في النَّشيدِ',run(W,done){
+    matchGame(W,done,[['🖋️ الْقَلَمُ','وَسيلَةٌ لِلْعِلْمِ وَالتَّعْبيرِ'],['📖 الْقِراءَةُ','تُعَلِّمُنا الْمَعْرِفَةَ وَالْقِيَمَ'],['🏫 الْمَدْرَسَةُ','مَكانُ الْعِلْمِ'],['🎓 الْعِلْمُ','يَرْفَعُ مَكانَةَ الْإِنْسانِ'],['⛰️ الْقِمَمُ','التَّفَوُّقُ وَالطُّموحُ']],
+      {ico:'🔗',intro:'اضغط كلمة من اليمين، ثم اضغط فكرتها في النشيد.',msg:'وصلتَ أفكار النشيد كلها! 🖋️'});
+  }},
+  post:{name:'يَدْعو إِلَيْهِ النَّشيدُ؟',hint:'نُمَيِّزُ ما يَدْعو إِلَيْهِ النَّشيدُ مِمّا لا يَدْعو إِلَيْهِ',run(W,done){
+    sortGame(W,done,[['✅','يَدْعو إِلَيْهِ النَّشيدُ'],['❌','لا يَدْعو إِلَيْهِ']],[
+      ['حُبُّ الْقِراءَةِ',0],['الِاجْتِهادُ في الدِّراسَةِ',0],['الطُّموحُ وَبُلوغُ الْقِمَمِ',0],['الِاعْتِزازُ بِالْقَلَمِ',0],['التَّمَسُّكُ بِالْقِيَمِ',0],
+      ['تَرْكُ الْكُتُبِ',1],['الْكَسَلُ عَنِ التَّعَلُّمِ',1],['إِهْمالُ الْمَدْرَسَةِ',1],['الِاكْتِفاءُ بِالْقَليلِ مِنَ الْعِلْمِ',1]],
+      {ico:'🖋️',intro:'هل يدعو النشيد إلى هذا؟ ضع كل بطاقة في سلتها.',msg:'فهمتَ رسالة «مجد القلم»! 🎓'});
+  }},
+  game:{name:'اصْعَدْ إِلى الْقِمَّةِ',hint:'كُلُّ إِجابَةٍ تَرْفَعُكَ دَرَجَةً نَحْوَ الْقِمَّةِ',run(W,done){
+    journey(W,done,shuffle([
+      ['ما الْفِكْرَةُ الرَّئيسَةُ لِلنَّشيدِ؟',['تَعْظيمُ الْقَلَمِ وَالْقِراءَةِ وَالْعِلْمِ','وَصْفُ الْبَحْرِ','فَوائِدُ الْحاسوبِ'],0],
+      ['شاعِرُ النَّشيدِ:',['أَحْمَدُ بْنُ هِلالٍ الْعَبْرِيُّ','أَحْمَدُ بْنُ ماجِدٍ','سَلامَةُ مُحَمَّد سَلامَة'],0],
+      ['الْقِراءَةُ لا تَمْنَحُنا الْمَعْرِفَةَ فَقَطْ، بَلْ تُعَلِّمُنا ...',['الْقِيَمَ','الْكَسَلَ','السَّهَرَ'],0],
+      ['بِالْعِلْمِ وَالْمَعْرِفَةِ يَسْتَطيعُ الْإِنْسانُ ...',['التَّقَدُّمَ','التَّأَخُّرَ','النِّسْيانَ'],0],
+      ['«السَّعْيُ إِلى الْقِمَمِ» صورَةٌ لِـ:',['الطُّموحِ وَالتَّفَوُّقِ','تَسَلُّقِ الْجِبالِ فَقَطْ','الرّاحَةِ'],0],
+      ['الْمَدْرَسَةُ في النَّشيدِ:',['مَكانٌ لِلْعِلْمِ','مَكانٌ لِلنَّوْمِ','مَكانٌ لِلسّوقِ'],0],
+      ['أَيُّ قيمَةٍ يَدْعو إِلَيْها النَّشيدُ؟',['الِاجْتِهادُ','الْإِهْمالُ','الْغُرورُ'],0],
+      ['كَيْفَ أُنْشِدُ النَّشيدَ؟',['بِصَوْتٍ واضِحٍ مُعَبِّرٍ','بِصَوْتٍ مُنْخَفِضٍ جِدًّا','بِلا انْتِباهٍ'],0]]),
+      {ico:'⛰️',intro:'اصعد الجبل درجة درجة حتى تصل إلى القمة! 🚩',unit:'الدَّرَجَةُ',msg:'وصلتَ إلى القمة بالعلم والقلم! 🚩',
+       scene:N=>{const node=el(`<div style="position:relative;height:clamp(170px,30vw,240px);border-radius:24px;overflow:hidden;background:linear-gradient(#CFEFFF,#F3FAFF)"><svg viewBox="0 0 100 60" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><path d="M0 60 L50 6 L100 60Z" fill="#9C8BE8"/><path d="M42 15 L50 6 L58 15 L54 13 L50 16 L46 13Z" fill="#fff"/></svg><span style="position:absolute;left:50%;top:2%;transform:translateX(-50%);font-size:26px">🚩</span><span class="mv" style="position:absolute;left:12%;bottom:4%;font-size:clamp(30px,5vw,42px);transition:left .9s,bottom .9s">🧒</span></div>`);
+         const mv=$('.mv',node);return{node,update(k,wrong){if(wrong){mv.animate([{transform:'rotate(-14deg)'},{transform:'rotate(14deg)'},{transform:'none'}],{duration:600});return;}const f=k/N;mv.style.left=(12+34*f)+'%';mv.style.bottom=(4+72*f)+'%';}};}});
+  }}
+ }
+});
+
+/* =====================================================
+   M7 — تحدي علوم واكتشافات
+   ===================================================== */
+LESSONS.push({
+ ax:2,id:'m7',color:'#E4485A',emo:'🏆',kind:'خِتامُ الْمِحْوَرِ',title:'تَحَدّي عُلومٍ وَاكْتِشافاتٍ',
+ desc:'مُراجَعَةٌ شامِلَةٌ لِلْمِحْوَرِ: الِاسْتِماعُ وَالشِّعارُ وَالدُّروسُ الثَّلاثَةُ وَالنَّشيدُ وَالْقَواعِدُ وَالْإِمْلاءُ.',
+ slides:[
+  COVER('🏆','خِتامُ الْمِحْوَرِ','تَحَدّي عُلومٍ وَاكْتِشافاتٍ','نُراجِعُ كُلَّ ما تَعَلَّمْناهُ في الْمِحْوَرِ'),
+  `<span class="eyebrow">خَريطَةُ الْمِحْوَرِ</span><h2>رِحْلَتُنا في «عُلومٍ وَاكْتِشافاتٍ»</h2>
+   ${CARDS([['🔦','ضَوْءٌ في يَدَيْكَ','التَّجْرِبَةُ وَالدِّقَّةُ وَالِاكْتِشافُ'],['🐍','قِراءَةُ شِعارٍ','الرُّموزُ وَدَلالَتُها'],['⛵','رِحْلَةُ السِّنْدِبادِ الثّامِنَةُ','الْمِلاحَةُ الْعُمانِيَّةُ وَالصَّبْرُ'],['📄','قِصَّةُ وَرَقَةٍ','إِعادَةُ التَّدْويرِ وَالْبيئَةُ'],['💻','حاسوبي','التِّقْنِيَةُ النّافِعَةُ'],['🖋️','مَجْدُ الْقَلَمِ','الْقِراءَةُ وَالْعِلْمُ وَالطُّموحُ']])}`,
+  `<span class="eyebrow">الْقَواعِدُ</span><h2>ما تَعَلَّمْناهُ مِنَ الْأَنْماطِ</h2>
+   ${CARDS([['🔤','الْجُمْلَةُ الْفِعْلِيَّةُ','فِعْلٌ + فاعِلٌ: تَسيرُ السَّفينَةُ'],['🔢','الْأَعْدادُ ١١–١٩','ثَلاثَةَ عَشَرَ كِتابًا · ثَلاثَ عَشْرَةَ وَرَقَةً'],['👉','أَسْماءُ الْإِشارَةِ','هذا · هذه · هذانِ · هاتانِ · هؤلاءِ']])}`,
+  `<span class="eyebrow">الْإِمْلاءُ وَالْخَطُّ</span><h2>ما تَعَلَّمْناهُ في الْكِتابَةِ</h2>
+   ${CARDS([['🅰️','الْحُروفُ مَعَ «الْ»','بِالْبَحْرِ · فَالْبَحْرُ · كَالْبَحْرِ · لِلْبَحْرِ'],['ى','ى / ي','عَلى · مُسْتَشْفى / الْوادي · كُرْسِيٌّ'],['✍️','خَطُّ النَّسْخِ','م · ن · ك · ل · ع · غ']])}
+   <div class="rule">✏️ التَّعْبيرُ: الْقِصَّةُ لَها بِدايَةٌ وَوَسَطٌ وَنِهايَةٌ.</div>`
+ ],
+ parts:{
+  pres:{name:'خَريطَةُ الْمِحْوَرِ',hint:'نَسْتَرْجِعُ دُروسَ الْمِحْوَرِ وَمَهاراتِهِ'},
+  pre:{name:'لِأَيِّ دَرْسٍ؟',hint:'نَصِلُ كُلَّ فِكْرَةٍ بِالدَّرْسِ الَّذي جاءَتْ فيهِ',run(W,done){
+    matchGame(W,done,[['⛈️ عاصِفَةٌ وَأَشْرِعَةٌ وَبَحّارَةٌ','رِحْلَةُ السِّنْدِبادِ الثّامِنَةُ'],['♻️ فَرْزٌ وَمِكْبَسٌ وَصَهْرٌ','قِصَّةُ وَرَقَةٍ'],['⌨️ أَوامِرُ وَشاشَةٌ وَأَقْرانٌ','حاسوبي'],['🧪 أَدَواتٌ وَدِقَّةٌ وَاكْتِشافٌ','ضَوْءٌ في يَدَيْكَ'],['💊 أَفْعى وَكَأْسٌ','قِراءَةُ شِعارٍ'],['⛰️ قَلَمٌ وَقِراءَةٌ وَقِمَمٌ','مَجْدُ الْقَلَمِ']],
+      {ico:'🧩',intro:'اضغط الفكرة من اليمين، ثم اضغط الدرس الذي جاءت فيه.',msg:'تتذكّر دروس المحور جيدًا! 🧩'});
+  }},
+  post:{name:'أُصَنِّفُ الْكَلِماتِ',hint:'نُصَنِّفُ الْكَلِماتِ حَسَبَ نِهايَتِها',run(W,done){
+    sortGame(W,done,[['ة','تاءٌ مَرْبوطَةٌ'],['ت','تاءٌ مَفْتوحَةٌ'],['ى','أَلِفٌ مَقْصورَةٌ'],['ي','ياءٌ']],[
+      ['سَفينَةٌ',0],['رِحْلَةٌ',0],['وَرَقَةٌ',0],['بَيْتٌ',1],['صَوْتٌ',1],['أَبْحَرَتْ',1],['مُسْتَشْفى',2],['عَلى',2],['حَلْوى',2],['الْوادي',3],['حاسوبي',3],['كُرْسِيٌّ',3]],
+      {ico:'✍️',intro:'ضع كل كلمة في سلة نهايتها.',msg:'أتقنتَ مراجعة الإملاء! ✍️'});
+  }},
+  game:{name:'التَّحَدّي الْكَبيرُ',hint:'أَسْئِلَةٌ مِنْ كُلِّ الْمِحْوَرِ: هَلْ تَصِلُ إِلى الْكَأْسِ؟',run(W,done){
+    journey(W,done,shuffle([
+      ['ما الْخُطْوَةُ الْأولى في التَّجْرِبَةِ؟',['أُحْضِرُ الْأَدَواتِ','أَتَوَصَّلُ إِلى اكْتِشافٍ','أَلْتَزِمُ الْوَقْتَ'],0],
+      ['شِعارُ الْأَفْعى وَالْكَأْسِ يَدُلُّ عَلى:',['الصَّيْدَلِيَّةِ','الْمَكْتَبَةِ','الْمَطارِ'],0],
+      ['مِنْ أَيْنَ انْطَلَقَتْ «صُحارُ»؟',['مِنْ ميناءِ مَسْقَطَ','مِنْ بَحْرِ الصّينِ','مِنَ الْيَمَنِ'],0],
+      ['الْجُمْلَةُ الْفِعْلِيَّةُ:',['تَهُبُّ الرّيحُ','الرّيحُ شَديدَةٌ','الْجَوُّ مُمْطِرٌ'],0],
+      ['لِ + الْقَلَمِ = ؟',['لِلْقَلَمِ','لِالْقَلَمِ','لَقَلَمِ'],0],
+      ['ماذا أَصْبَحَتْ وَرَقَةٌ في النِّهايَةِ؟',['جُزْءًا مِنْ كِتابٍ جَميلٍ','عُلْبَةً','زُجاجَةً'],0],
+      ['اخْتَرِ الصَّحيحَ:',['خَمْسَ عَشْرَةَ وَرَقَةً','خَمْسَةَ عَشَرَ وَرَقَةً','خَمْسَ عَشَرَ وَرَقَةٍ'],0],
+      ['اخْتَرِ الصَّحيحَ:',['اثْنا عَشَرَ كِتابًا','اثْنَتا عَشْرَةَ كِتابًا','اثْنا عَشْرَةَ كِتابًا'],0],
+      ['أُكْمِلُ: «ذَهَبْنا إِلى الْمُسْتَشْفـ__»',['ى','ي'],0,2],
+      ['«___ طالِبَتانِ نَشيطَتانِ.»',['هاتانِ','هذانِ','هؤلاءِ'],0],
+      ['مَعْنى «أَقْراني»:',['زُمَلائي في مِثْلِ عُمُري','أَهْلي','جيراني الْكِبارُ'],0],
+      ['الْقِراءَةُ في نَشيدِ «مَجْدِ الْقَلَمِ» تُعَلِّمُنا:',['الْقِيَمَ وَالْمَعْرِفَةَ','الْكَسَلَ','السَّهَرَ'],0],
+      ['أَجْزاءُ الْقِصَّةِ:',['بِدايَةٌ وَوَسَطٌ وَنِهايَةٌ','عُنْوانٌ فَقَطْ','صورَةٌ وَرَسْمٌ'],0],
+      ['حَرْفانِ تَدَرَّبْنا عَلَيْهِما في خَطِّ «حاسوبي»:',['الْعَيْنُ وَالْغَيْنُ','الْميمُ وَالنّونُ','الْكافُ وَاللّامُ'],0]]).slice(0,12),
+      {ico:'🏆',intro:'التحدي الكبير! أجب عن أسئلة من كل المحور لتصل إلى الكأس 🏆',unit:'السُّؤالُ',msg:'فزتَ بتحدي «علوم واكتشافات»! 🏆',
+       scene:trackScene({bg:'linear-gradient(90deg,#FFF1C9,#FDE3E6)',start:'🚩',goal:'🏆',mover:'🏃',fx:'💥',flip:false})});
+  }}
+ }
+});
+
 </script>
 <script>
 renderHome();
