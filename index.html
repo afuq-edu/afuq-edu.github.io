@@ -127,13 +127,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 <footer>© منصة أفق التعليمية</footer>
 <script>
 (function(){
-  var MATH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h6M7.5 4v6M13.5 7h6M4.5 15.5l5 5M9.5 15.5l-5 5M13.5 16h6M13.5 20h6"/></svg>', ENG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h13"/><path d="M8.5 13l2.5-6 2.5 6M9.3 11h3.4"/></svg>';
+  var SCI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3M8 15h8"/></svg>', MATH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h6M7.5 4v6M13.5 7h6M4.5 15.5l5 5M9.5 15.5l-5 5M13.5 16h6M13.5 20h6"/></svg>', ENG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h13"/><path d="M8.5 13l2.5-6 2.5 6M9.3 11h3.4"/></svg>';
   var G=[[1,'الأول','#0E8C8C'],[2,'الثاني','#D98A0B'],[3,'الثالث','#C2367A'],[4,'الرابع','#3B5BDB'],[5,'الخامس','#1F9D55'],[6,'السادس','#B8322F'],
          [7,'السابع','#0B7285'],[8,'الثامن','#9C36B5'],[9,'التاسع','#E8590C'],[10,'العاشر','#2B8A3E'],[11,'الحادي عشر','#7048E8'],[12,'الثاني عشر','#495057']];
   var AR='٠١٢٣٤٥٦٧٨٩';
   function ar(n){return String(n).replace(/[0-9]/g,function(d){return AR[d]})}
   var SUBJ={
-    1:[['math/','الرياضيات',MATH,'ملف التحضير · أرقام وأشكال · مسابقات كاهوت']],
+    1:[['math/','الرياضيات',MATH,'ملف التحضير · أرقام وأشكال · مسابقات كاهوت'],['science/','العلوم',SCI,'ملف التحضير · مُستكشِف العلوم · مسابقات كاهوت']],
     2:[['math/','الرياضيات',MATH,'ملف التحضير · عالم الأرقام · مسابقات كاهوت']],
     3:[['math/','الرياضيات',MATH,'ملف التحضير · مدينة الأرقام · مسابقات كاهوت']],
     4:[['math/','الرياضيات',MATH,'ملف التحضير · مرسى الأرقام · مسابقات كاهوت']],
