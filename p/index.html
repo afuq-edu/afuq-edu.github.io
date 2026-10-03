@@ -158,7 +158,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     var b=el('div','bad'); b.append(el('b',null,'هذا الرابط غير مكتمل')); b.append(document.createElement('br'));
     b.append(document.createTextNode('تواصل معنا على '+PHONE+' للحصول على رابط صحيح.')); root.append(b); return;
   }
-  root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','هذا ما جُهّز لك. الأقسام تفتح مباشرة دون رمز.'));
+  root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
