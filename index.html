@@ -71,6 +71,30 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 .contact svg{color:var(--brand)}
 .card .go{font-size:14px;font-weight:700;color:var(--c)}
 .back{color:var(--brand);font-weight:700;text-decoration:none}
+
+/* grade picker: small spaced circles; subjects appear under the picked grade */
+.picker{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 12px;justify-items:center;margin:4px 0 8px}
+@media (min-width:640px){.picker{grid-template-columns:repeat(6,1fr);gap:26px 16px;max-width:640px}}
+.gbtn{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;padding:4px;cursor:pointer;color:var(--ink);border-radius:14px}
+.gbtn .dot{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:700;line-height:1;color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--card));border:1.5px solid color-mix(in srgb,var(--c) 35%,transparent);transition:transform .15s,background .15s,color .15s}
+.gbtn .lbl{font-size:13px;color:var(--muted);font-weight:600;white-space:nowrap}
+.gbtn:hover .dot{transform:translateY(-2px)}
+.gbtn[aria-pressed="true"] .dot{background:var(--c);color:var(--card);border-color:var(--c)}
+.gbtn[aria-pressed="true"] .lbl{color:var(--ink)}
+.gbtn.empty .dot{opacity:.55}
+@media (prefers-reduced-motion:reduce){.gbtn .dot{transition:none}}
+.subjects{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 18px 8px}
+.subjects h2{font-size:18px;margin:0 0 6px}
+.subjects .hint{margin:0 0 6px;color:var(--muted);font-size:14px}
+.subj{display:flex;align-items:center;gap:14px;padding:14px 4px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.subj:first-of-type{border-top:0}
+.subj .sic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.subj .sic svg{width:19px;height:19px}
+.subj b{display:block;font-size:16px}
+.subj small{display:block;color:var(--muted);font-size:13.5px}
+.subj .arr{margin-inline-start:auto;color:var(--c);font-weight:700;font-size:14px;white-space:nowrap}
+.subj:hover b{color:var(--c)}
+.soon{padding:14px 4px 16px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -79,51 +103,20 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     <a class="logo" href="./" aria-label="منصة أفق التعليمية" style="text-decoration:none">أ</a>
     <div class="title">
       <h1>منصة أفق التعليمية</h1>
-      <p>اختر الصف</p>
+      <p>اختر الصف ثم المادة</p>
     </div>
     <a class="contact" href="tel:76506037"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> رقم التواصل:</span> <b>76506037</b></a>
   </div>
 </header>
 
 <main>
-  <h2>الصفوف</h2>
-  <div class="grid">
-    <a class="card" style="--c:#0E8C8C" href="1/">
-      <div class="hd"><span class="ic">١</span><h3>الصف الأول</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#D98A0B" href="2/">
-      <div class="hd"><span class="ic">٢</span><h3>الصف الثاني</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#C2367A" href="3/">
-      <div class="hd"><span class="ic">٣</span><h3>الصف الثالث</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#3B5BDB" href="4/">
-      <div class="hd"><span class="ic">٤</span><h3>الصف الرابع</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#1F9D55" href="5/">
-      <div class="hd"><span class="ic">٥</span><h3>الصف الخامس</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#B8322F" href="6/">
-      <div class="hd"><span class="ic">٦</span><h3>الصف السادس</h3></div>
-      <p>الرياضيات</p>
-      <span class="go">ادخل ←</span>
-    </a>
-    <a class="card" style="--c:#7048E8" href="11/">
-      <div class="hd"><span class="ic">١١</span><h3>الصف الحادي عشر</h3></div>
-      <p>اللغة الإنجليزية</p>
-      <span class="go">ادخل ←</span>
-    </a>
-  </div>
+  <h2>اختر الصف</h2>
+  <div class="picker" id="picker" role="group" aria-label="الصفوف"></div>
+  <section class="subjects" id="subjects" aria-live="polite">
+    <h2 id="sTitle">المواد</h2>
+    <p class="hint" id="sHint">اختر صفًا من الأعلى لتظهر مواده هنا.</p>
+    <div id="sList"></div>
+  </section>
 
   <div class="note">
     <b>لغير المشتركين:</b> للحصول على رمز الدخول تواصل معنا على الرقم
@@ -132,5 +125,52 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 </main>
 
 <footer>© منصة أفق التعليمية</footer>
+<script>
+(function(){
+  var MATH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h6M7.5 4v6M13.5 7h6M4.5 15.5l5 5M9.5 15.5l-5 5M13.5 16h6M13.5 20h6"/></svg>', ENG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h13"/><path d="M8.5 13l2.5-6 2.5 6M9.3 11h3.4"/></svg>';
+  var G=[[1,'الأول','#0E8C8C'],[2,'الثاني','#D98A0B'],[3,'الثالث','#C2367A'],[4,'الرابع','#3B5BDB'],[5,'الخامس','#1F9D55'],[6,'السادس','#B8322F'],
+         [7,'السابع','#0B7285'],[8,'الثامن','#9C36B5'],[9,'التاسع','#E8590C'],[10,'العاشر','#2B8A3E'],[11,'الحادي عشر','#7048E8'],[12,'الثاني عشر','#495057']];
+  var AR='٠١٢٣٤٥٦٧٨٩';
+  function ar(n){return String(n).replace(/[0-9]/g,function(d){return AR[d]})}
+  var SUBJ={
+    1:[['math/','الرياضيات',MATH,'ملف التحضير · أرقام وأشكال · مسابقات كاهوت']],
+    2:[['math/','الرياضيات',MATH,'ملف التحضير · عالم الأرقام · مسابقات كاهوت']],
+    3:[['math/','الرياضيات',MATH,'ملف التحضير · مدينة الأرقام · مسابقات كاهوت']],
+    4:[['math/','الرياضيات',MATH,'ملف التحضير · مرسى الأرقام · مسابقات كاهوت']],
+    5:[['math/','الرياضيات',MATH,'ملف التحضير · مسابقات كاهوت']],
+    6:[['math/','الرياضيات',MATH,'ملف التحضير · مسابقات كاهوت']],
+    11:[['english/','اللغة الإنجليزية',ENG,'My English Passport – Semester A']]
+  };
+  var picker=document.getElementById('picker'), list=document.getElementById('sList'), cur=null;
+  G.forEach(function(g){
+    var b=document.createElement('button'); b.type='button'; b.className='gbtn'+(SUBJ[g[0]]?'':' empty');
+    b.style.setProperty('--c',g[2]); b.setAttribute('aria-pressed','false'); b.dataset.g=g[0];
+    b.setAttribute('aria-label','الصف '+g[1]);
+    var d=document.createElement('span'); d.className='dot'; d.textContent=ar(g[0]);
+    var l=document.createElement('span'); l.className='lbl'; l.textContent=g[1];
+    b.append(d,l); b.addEventListener('click',function(){select(g[0],true)}); picker.appendChild(b);
+  });
+  function select(n,scroll){
+    var g=G.filter(function(x){return x[0]===n})[0]; if(!g) return; cur=n;
+    picker.querySelectorAll('.gbtn').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.g)===n))});
+    var box=document.getElementById('subjects'); box.style.setProperty('--c',g[2]);
+    document.getElementById('sTitle').textContent='مواد الصف '+g[1];
+    var subs=SUBJ[n]||[]; list.replaceChildren();
+    document.getElementById('sHint').hidden=true;
+    if(!subs.length){ var p=document.createElement('p'); p.className='soon'; p.textContent='لا توجد مواد لهذا الصف بعد، وستُضاف قريبًا.'; list.appendChild(p); }
+    subs.forEach(function(s){
+      var a=document.createElement('a'); a.className='subj'; a.href=n+'/'+s[0];
+      a.innerHTML='<span class="sic">'+s[2]+'</span>';
+      var t=document.createElement('span'); var b=document.createElement('b'); b.textContent=s[1]; var sm=document.createElement('small'); sm.textContent=s[3]; t.append(b,sm);
+      var ar_=document.createElement('span'); ar_.className='arr'; ar_.textContent='ادخل ←';
+      a.append(t,ar_); list.appendChild(a);
+    });
+    try{history.replaceState(null,'','#g'+n)}catch(e){}
+    if(scroll && window.matchMedia('(max-width:640px)').matches) box.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  var m=(location.hash.match(/^#g(\d+)$/)||[])[1]||new URLSearchParams(location.search).get('g');
+  if(m) select(Number(m),false);
+})();
+</script>
 </body>
 </html>
