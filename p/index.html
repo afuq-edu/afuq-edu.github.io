@@ -141,18 +141,20 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
   // e.g. #4mn7m11e.2KPYrdmF2K8 ; the name is base64url UTF-8. The long form (#to=..&i=..) is still accepted.
   var SUBJ={m:'math',v:'advmath',b:'basicmath',e:'english',a:'arabic',s:'science',f:'physics',c:'chemistry',l:'biology',i:'islamic',o:'social',t:'arts'};
-  var raw=decodeURIComponent(location.hash.slice(1)), to='', all=false, want=[];
+  var raw=decodeURIComponent(location.hash.slice(1)), to='', all=false, want=[], kcode='';
   function b64(t){ try{ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; return new TextDecoder().decode(Uint8Array.from(atob(t),function(c){return c.charCodeAt(0)})); }catch(e){ return ''; } }
   if(/(^|&)(to|i|all)=/.test(raw)){
     var h=new URLSearchParams(raw); to=h.get('to')||''; all=h.get('all')==='1';
     want=(h.get('i')||'').split(';').map(function(x){ var m=x.split(':'); return [(m[0]||''), (m[1]||'all')]; });
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
-    if(code==='*') all=true;
+    if(/^k[0-9a-z]{3,10}$/.test(code)) kcode=code;
+    else if(code==='*') all=true;
     else { var re=/(\d+)([a-z])([a-z]*)/g, m; while((m=re.exec(code))){ if(!SUBJ[m[2]]) continue;
       want.push([m[1]+'/'+SUBJ[m[2]], m[3]?m[3].split('').join('.'):'all']); } }
   }
   to=to.trim().slice(0,60);
+  function render(){
   var items=want.map(function(w){
     var path=w[0].replace(/^\/+/,''); if(path && !/\/$/.test(path)) path+='/';
     var c=CAT[path]; if(!c) return null;
@@ -183,6 +185,17 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     });
     root.append(box);
   });
+  }
+  // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
+  // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
+  if(kcode){
+    fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
+      var e=j&&j[kcode];
+      if(e==='*') all=true;
+      else if(typeof e==='string' && e) want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; });
+      render();
+    }).catch(function(){ render(); });
+  } else render();
 })();
 </script>
 </body>
