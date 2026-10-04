@@ -5,39 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>الواجبات – اللغة العربية – الصف الحادي عشر</title>
 <style>
-:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--acc:#D98A0B}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}}
-:root[data-theme="dark"]{--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}
+:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--ok:#1F9D55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F}}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
 header{background:var(--card);border-bottom:1px solid var(--line)}
-.top{max-width:960px;margin:0 auto;padding:18px 16px;display:flex;align-items:center;gap:14px}
-.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;text-decoration:none;flex:none}
-.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}
-.top p{margin:0;color:var(--muted);font-size:14.5px}
-.top a.back{color:var(--brand);text-decoration:none;font-weight:700}
-main{flex:1;display:grid;place-items:center;padding:32px 16px}
-.box{max-width:440px;width:100%;text-align:center;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--acc);border-radius:18px;padding:32px 22px}
-.ic{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
-.ic svg{width:38px;height:38px}
-.box h2{margin:0 0 6px;font-size:26px}
-.box p{margin:0;color:var(--muted)}
-.box a{display:inline-block;margin-top:18px;background:var(--brand);color:var(--brand-ink);text-decoration:none;font-weight:700;padding:.6em 1.4em;border-radius:12px}
-footer{text-align:center;color:var(--muted);font-size:14px;padding:18px 16px}
-footer b{direction:ltr;unicode-bidi:isolate;color:var(--brand)}
+.top{max-width:820px;margin:0 auto;padding:16px;display:flex;align-items:center;gap:14px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;flex:none}
+.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}.top p{margin:0;color:var(--muted);font-size:14.5px}
+main{max-width:820px;margin:0 auto;padding:20px 16px 56px}
+.note{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:14px 16px;color:var(--muted);font-size:15px;margin:0 0 20px}.note b{color:var(--ink)}
+h2{font-size:18px;margin:22px 0 10px}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:0 0 8px}
+.row .t{flex:1;min-width:0;font-weight:700}
+.btn{font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:7px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.go{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}.btn.done{color:var(--ok);border-color:var(--ok)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 24px}
 </style>
 </head>
 <body>
-<header><div class="top">
-  <span class="logo">أ</span>
-  <div><h1>الواجبات</h1><p><a class="back" href="../">→ اللغة العربية</a> · الصف الحادي عشر</p></div>
-</div></header>
-<main><div class="box">
-  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></div>
-  <h2>ستتوفر قريبًا</h2>
-  <p>نعمل على إعداد واجبات اللغة العربية للصف الحادي عشر، وستظهر هنا فور جاهزيتها.</p>
-  <a href="../">العودة إلى المادة</a>
-</div></main>
-<footer>© منصة أفق التعليمية · للتواصل: <b>76506037</b></footer>
+<header><div class="top"><span class="logo">أ</span><div><h1>الواجبات</h1><p>اللغة العربية · الصف الحادي عشر · واجب تفاعلي لكل درس</p></div></div></header>
+<main>
+<div class="note"><b>للمعلم:</b> لكل درس رابط دائم. اضغط «نسخ الرابط» وضعه في منصة نور ليحلّه الطلاب مباشرة بلا رمز. يختار الطالب بين 🏁 سباق ضد الوقت و🎯 صيد الإجابة و📝 نشاط، ويحلّ 10 أسئلة ثم تظهر له شهادة إنجاز يصوّرها ويرفعها في نور. وعند فتح الدرس تجد روابط كل طريقة منفردة.</div>
+<div id="list"></div>
+</main>
+<footer>© منصة أفق التعليمية · للتواصل: 76506037</footer>
+<script>
+(function(){
+var L=[{"id":"l1","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الأول","title":"الأدب: خصائص الشعر الجاهلي"},{"id":"l2","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الأول","title":"النصوص: من معلقة طرفة"},{"id":"l3","unit":"المفيد – النحو والصرف","title":"النحو والصرف: مراجعة"},{"id":"l4","unit":"المؤنس – الباب الثالث: المطالعة (القضايا الحضارية والإنسانية)","title":"المطالعة: نهضة التعليم في عُمان"},{"id":"l5","unit":"المؤنس – الباب الثاني: النقد الأدبي – المحور الأول","title":"النقد: نشأة النقد عند العرب"},{"id":"l6","unit":"المفيد – البلاغة","title":"البلاغة: مراجعة"},{"id":"l7","unit":"المفيد – النحو والصرف","title":"الصرف: اسم الفاعل"},{"id":"l8","unit":"المؤنس – الباب الرابع: التعبير – الدرس الأول","title":"التعبير: منهجية التعبير"},{"id":"l9","unit":"المفيد – النحو والصرف","title":"الصرف: صيغ المبالغة"},{"id":"l10","unit":"المفيد – البلاغة","title":"البلاغة: علم البيان"},{"id":"l11","unit":"المفيد – العروض","title":"العروض: مراجعة"},{"id":"l12","unit":"المؤنس – الباب الرابع: التعبير – الدرس الثاني","title":"التعبير: التدريب على التخطيط"},{"id":"l13","unit":"المفيد – النحو والصرف","title":"النحو: عمل اسم الفاعل"},{"id":"l14","unit":"المفيد – البلاغة","title":"البلاغة: التشبيه مفهومه وأركانه"},{"id":"l15","unit":"المؤنس – الباب الثاني: النقد الأدبي – المحور الثاني","title":"النقد: طبقات فحول الشعراء"},{"id":"l16","unit":"المؤنس – الباب الثالث: المطالعة (القضايا الحضارية والإنسانية)","title":"المطالعة: الحوار مع الآخر"},{"id":"l17","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الثاني","title":"الأدب: خصائص النثر القرآني"},{"id":"l18","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الثاني","title":"النصوص: سورة يوسف"},{"id":"l19","unit":"المؤنس – الباب الرابع: التعبير – الدرس الثالث","title":"التعبير: كتابة المقدمة"},{"id":"l20","unit":"المفيد – النحو والصرف","title":"الصرف: اسم المفعول"},{"id":"l21","unit":"المفيد – النحو والصرف","title":"النحو: عمل اسم المفعول"},{"id":"l22","unit":"المفيد – البلاغة","title":"البلاغة: أقسام التشبيه"},{"id":"l23","unit":"المفيد – العروض","title":"العروض: بحر الطويل"},{"id":"l24","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الثالث","title":"الأدب: خصائص الغزل الحضري"},{"id":"l25","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الثالث","title":"النصوص: عدمتك يا قلب"},{"id":"l26","unit":"المؤنس – الباب الرابع: التعبير – الدرس الرابع","title":"التعبير: كتابة الجوهر"},{"id":"l27","unit":"المؤنس – الباب الثالث: المطالعة (القضايا الحضارية والإنسانية)","title":"المطالعة: من أجل ثقافة معاصرة"},{"id":"l28","unit":"المفيد – النحو والصرف","title":"الصرف: الصفة المشبهة"},{"id":"l29","unit":"المفيد – النحو والصرف","title":"النحو: عمل الصفة المشبهة"},{"id":"l30","unit":"المفيد – البلاغة","title":"البلاغة: التشبيه التمثيلي"},{"id":"l31","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الرابع","title":"الأدب: النقد الاجتماعي من خلال الحكاية المثلية"},{"id":"l32","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الرابع","title":"النصوص: مثل الغراب والأسود"},{"id":"l33","unit":"المفيد – النحو والصرف","title":"الصرف: اسم التفضيل"},{"id":"l34","unit":"المفيد – النحو والصرف","title":"النحو: عمل اسم التفضيل"},{"id":"l35","unit":"المؤنس – الباب الرابع: التعبير – الدرس الخامس","title":"التعبير: كتابة الخاتمة"},{"id":"l36","unit":"المؤنس – الباب الثاني: النقد الأدبي – المحور الثاني","title":"النقد: الشعر والشعراء"},{"id":"l37","unit":"المفيد – البلاغة","title":"البلاغة: التشبيه الضمني"},{"id":"l38","unit":"المفيد – العروض","title":"العروض: بحر البسيط"},{"id":"l39","unit":"المؤنس – الباب الرابع: التعبير – الدرس السادس","title":"التعبير: التعبير السردي الوصفي"},{"id":"l40","unit":"المؤنس – الباب الأول: الأدب والنصوص – المحور الرابع","title":"النصوص: قاضي البصرة"},{"id":"l41","unit":"المفيد – البلاغة","title":"البلاغة: التشبيه المقلوب"},{"id":"l42","unit":"المفيد – البلاغة","title":"البلاغة: التمهيد: المجاز"},{"id":"l43","unit":"المؤنس – الباب الثالث: المطالعة (القضايا الحضارية والإنسانية)","title":"المطالعة: بين الأجيال"},{"id":"l44","unit":"المؤنس – الباب الرابع: التعبير – الدرس السابع","title":"التعبير: التعبير الحواري"},{"id":"l45","unit":"المؤنس – الباب الثاني: النقد الأدبي – المحور الثالث","title":"النقد: تدريب على التحليل الأدبي"},{"id":"l46","unit":"المفيد – البلاغة","title":"البلاغة: الحقيقة والمجاز"},{"id":"l47","unit":"المؤنس – الباب الرابع: التعبير – الدرس الثامن","title":"التعبير: التعبير التحليلي"}], box=document.getElementById('list'), cur='';
+L.forEach(function(l){
+  if(l.unit!==cur){cur=l.unit;var h=document.createElement('h2');var hb=document.createElement('bdi');hb.textContent=cur;h.appendChild(hb);box.appendChild(h)}
+  var r=document.createElement('div');r.className='row';
+  var t=document.createElement('span');t.className='t';var tb=document.createElement('bdi');tb.textContent=l.title;t.appendChild(tb);
+  var o=document.createElement('a');o.className='btn go';o.href=l.id+'/';o.textContent='فتح';
+  var c=document.createElement('button');c.type='button';c.className='btn';c.textContent='نسخ الرابط';
+  c.onclick=function(){var u=new URL(l.id+'/',location.href).href;
+    function ok(){c.textContent='✔ تم النسخ';c.classList.add('done');setTimeout(function(){c.textContent='نسخ الرابط';c.classList.remove('done')},1800)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,fb)}else fb();
+    function fb(){var a=document.createElement('textarea');a.value=u;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){prompt('انسخ الرابط:',u)}a.remove()}};
+  r.append(t,o,c);box.appendChild(r)});
+})();
+</script>
 </body>
 </html>

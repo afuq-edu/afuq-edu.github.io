@@ -3,41 +3,48 @@
 <head>
 <meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>الواجبات – كيمياء – الصف الحادي عشر</title>
+<title>الواجبات – الكيمياء – الصف الحادي عشر</title>
 <style>
-:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--acc:#D98A0B}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}}
-:root[data-theme="dark"]{--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}
+:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--ok:#1F9D55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F}}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
 header{background:var(--card);border-bottom:1px solid var(--line)}
-.top{max-width:960px;margin:0 auto;padding:18px 16px;display:flex;align-items:center;gap:14px}
-.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;text-decoration:none;flex:none}
-.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}
-.top p{margin:0;color:var(--muted);font-size:14.5px}
-.top a.back{color:var(--brand);text-decoration:none;font-weight:700}
-main{flex:1;display:grid;place-items:center;padding:32px 16px}
-.box{max-width:440px;width:100%;text-align:center;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--acc);border-radius:18px;padding:32px 22px}
-.ic{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
-.ic svg{width:38px;height:38px}
-.box h2{margin:0 0 6px;font-size:26px}
-.box p{margin:0;color:var(--muted)}
-.box a{display:inline-block;margin-top:18px;background:var(--brand);color:var(--brand-ink);text-decoration:none;font-weight:700;padding:.6em 1.4em;border-radius:12px}
-footer{text-align:center;color:var(--muted);font-size:14px;padding:18px 16px}
-footer b{direction:ltr;unicode-bidi:isolate;color:var(--brand)}
+.top{max-width:820px;margin:0 auto;padding:16px;display:flex;align-items:center;gap:14px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;flex:none}
+.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}.top p{margin:0;color:var(--muted);font-size:14.5px}
+main{max-width:820px;margin:0 auto;padding:20px 16px 56px}
+.note{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:14px 16px;color:var(--muted);font-size:15px;margin:0 0 20px}.note b{color:var(--ink)}
+h2{font-size:18px;margin:22px 0 10px}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:0 0 8px}
+.row .t{flex:1;min-width:0;font-weight:700}
+.btn{font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:7px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.go{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}.btn.done{color:var(--ok);border-color:var(--ok)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 24px}
 </style>
 </head>
 <body>
-<header><div class="top">
-  <span class="logo">أ</span>
-  <div><h1>الواجبات</h1><p><a class="back" href="../">→ كيمياء</a> · الصف الحادي عشر</p></div>
-</div></header>
-<main><div class="box">
-  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></div>
-  <h2>ستتوفر قريبًا</h2>
-  <p>نعمل على إعداد واجبات كيمياء للصف الحادي عشر، وستظهر هنا فور جاهزيتها.</p>
-  <a href="../">العودة إلى المادة</a>
-</div></main>
-<footer>© منصة أفق التعليمية · للتواصل: <b>76506037</b></footer>
+<header><div class="top"><span class="logo">أ</span><div><h1>الواجبات</h1><p>الكيمياء · الصف الحادي عشر · واجب تفاعلي لكل درس</p></div></div></header>
+<main>
+<div class="note"><b>للمعلم:</b> لكل درس رابط دائم. اضغط «نسخ الرابط» وضعه في منصة نور ليحلّه الطلاب مباشرة بلا رمز. يختار الطالب بين 🏁 سباق ضد الوقت و🎯 صيد الإجابة و📝 نشاط، ويحلّ 10 أسئلة ثم تظهر له شهادة إنجاز يصوّرها ويرفعها في نور. وعند فتح الدرس تجد روابط كل طريقة منفردة.</div>
+<div id="list"></div>
+</main>
+<footer>© منصة أفق التعليمية · للتواصل: 76506037</footer>
+<script>
+(function(){
+var L=[{"id":"1-1","unit":"التركيب الذرّي","title":"مكوّنات الذرّة"},{"id":"1-2","unit":"التركيب الذرّي","title":"مستويات الطاقة الفرعية والأفلاك الذرّية"},{"id":"1-3","unit":"التركيب الذرّي","title":"التوزيع الإلكتروني"},{"id":"1-4","unit":"التركيب الذرّي","title":"تدرّج الخصائص ودوريتها في الجدول الدوري"},{"id":"1-5","unit":"التركيب الذرّي","title":"طاقة التأيّن (IE)"},{"id":"2-1","unit":"حسابات التناسب الكيميائي","title":"الصيغ الأوّلية والجزيئية"},{"id":"2-2","unit":"حسابات التناسب الكيميائي","title":"حسابات كتل المواد المتفاعلة والناتجة"},{"id":"2-3","unit":"حسابات التناسب الكيميائي","title":"الحجم المولي والتناسب الكيميائي"},{"id":"2-4","unit":"حسابات التناسب الكيميائي","title":"المعايرة والتناسب الكيميائي"},{"id":"3-1","unit":"الترابط الكيميائي","title":"أنواع الترابط الكيميائي"},{"id":"3-2","unit":"الترابط الكيميائي","title":"أشكال الجزيئات"},{"id":"3-3","unit":"الترابط الكيميائي","title":"تهجين الأفلاك الذرّية"},{"id":"3-4","unit":"الترابط الكيميائي","title":"طول وطاقة الرابطة"},{"id":"3-5","unit":"الترابط الكيميائي","title":"السالبية الكهربائية والقطبية"},{"id":"3-6","unit":"الترابط الكيميائي","title":"القوى بين الجزيئات"},{"id":"3-7","unit":"الترابط الكيميائي","title":"الرابطة الهيدروجينية"},{"id":"3-8","unit":"الترابط الكيميائي","title":"الروابط والخصائص الفيزيائية"},{"id":"4-1","unit":"تفاعلات الأكسدة–اختزال","title":"أعداد التأكسد"},{"id":"4-2","unit":"تفاعلات الأكسدة–اختزال","title":"تفاعلات الأكسدة–اختزال"},{"id":"4-3","unit":"تفاعلات الأكسدة–اختزال","title":"وزن المعادلات الكيميائية باستخدام أعداد التأكسد"},{"id":"5-1","unit":"الاتزان الكيميائي","title":"التفاعلات المنعكسة والاتزان"},{"id":"5-2","unit":"الاتزان الكيميائي","title":"حالة الاتزان"},{"id":"5-3","unit":"الاتزان الكيميائي","title":"معادلات الاتزان وثابت الاتزان (Kc)"},{"id":"5-4","unit":"الاتزان الكيميائي","title":"الاتزان في تفاعلات الغازات وثابت الاتزان (Kp)"},{"id":"5-5","unit":"الاتزان الكيميائي","title":"الاتزان والصناعات الكيميائية"}], box=document.getElementById('list'), cur='';
+L.forEach(function(l){
+  if(l.unit!==cur){cur=l.unit;var h=document.createElement('h2');var hb=document.createElement('bdi');hb.textContent=cur;h.appendChild(hb);box.appendChild(h)}
+  var r=document.createElement('div');r.className='row';
+  var t=document.createElement('span');t.className='t';var tb=document.createElement('bdi');tb.textContent=l.title;t.appendChild(tb);
+  var o=document.createElement('a');o.className='btn go';o.href=l.id+'/';o.textContent='فتح';
+  var c=document.createElement('button');c.type='button';c.className='btn';c.textContent='نسخ الرابط';
+  c.onclick=function(){var u=new URL(l.id+'/',location.href).href;
+    function ok(){c.textContent='✔ تم النسخ';c.classList.add('done');setTimeout(function(){c.textContent='نسخ الرابط';c.classList.remove('done')},1800)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,fb)}else fb();
+    function fb(){var a=document.createElement('textarea');a.value=u;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){prompt('انسخ الرابط:',u)}a.remove()}};
+  r.append(t,o,c);box.appendChild(r)});
+})();
+</script>
 </body>
 </html>
