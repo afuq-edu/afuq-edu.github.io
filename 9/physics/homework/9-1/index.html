@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>واجب: الدرس 9-1: التوصيل – الفيزياء – الصف التاسع</title>
+<script src="/assets/hwcommon.js"></script>
+<style>
+h2{font-size:20px;margin:6px 0 14px;text-align:center}
+.mode{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin:0 0 6px}
+.mode:hover{border-color:var(--brand)}
+.mode .e{font-size:44px;line-height:1;flex:none}.mode b{display:block;font-size:22px}.mode small{color:var(--muted);font-size:15px}
+.cp{font:inherit;font-size:13px;font-weight:700;border-radius:10px;padding:4px 12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;margin:0 0 14px;display:block;margin-inline-start:auto}
+.cp.done{color:var(--ok);border-color:var(--ok)}
+.note{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:12px 14px;color:var(--muted);font-size:14px;margin-top:10px}.note b{color:var(--ink)}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="logo">أ</span><div><h1><bdi>الدرس 9-1: التوصيل</bdi></h1><p>واجب منزلي · الفيزياء · الصف التاسع</p></div></div></header>
+<main>
+<h2>اختر طريقة الحل</h2>
+<a class="mode" href="race/"><span class="e">🏁</span><span><b>سباق ضد الوقت</b><small>أجب بسرعة لتتقدم الكرة نحو العلم</small></span></a>
+<button class="cp" type="button" data-u="race/">نسخ رابط السباق</button>
+<a class="mode" href="catch/"><span class="e">🎯</span><span><b>صيد الإجابة</b><small>الإجابات تنزل من السماء، المس الصحيحة</small></span></a>
+<button class="cp" type="button" data-u="catch/">نسخ رابط الصيد</button>
+<a class="mode" href="activity/"><span class="e">📝</span><span><b>نشاط</b><small>أسئلة هادئة واحدًا بعد الآخر</small></span></a>
+<button class="cp" type="button" data-u="activity/">نسخ رابط النشاط</button>
+<div class="note"><b>للمعلم:</b> انسخ رابط الطريقة التي تريدها وضعه في نور، أو انسخ رابط هذه الصفحة ليختار الطالب بنفسه. في كل طريقة 10 أسئلة وتنتهي بشهادة إنجاز يصوّرها الطالب ويرفعها في نور.</div>
+</main>
+<script>
+Array.prototype.forEach.call(document.querySelectorAll('.cp'),function(c){var t=c.textContent;c.onclick=function(){var u=new URL(c.getAttribute('data-u'),location.href).href;
+ function ok(){c.textContent='✔ تم النسخ';c.classList.add('done');setTimeout(function(){c.textContent=t;c.classList.remove('done')},1800)}
+ function fb(){var a=document.createElement('textarea');a.value=u;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){prompt('انسخ الرابط:',u)}a.remove()}
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(ok,fb);else fb()}});
+</script>
+</body>
+</html>
