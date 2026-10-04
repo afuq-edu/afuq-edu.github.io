@@ -5,8 +5,9 @@
 (function(){
   var K='afuq-pkg-home', P='afuq-pkg-paths';
   var s=document.currentScript, role=s&&s.getAttribute('data-role'), going=false;
-  try{ if(/[?&]afuq-exit\b/.test(location.search)){ localStorage.removeItem(K); localStorage.removeItem(P); return; } }catch(e){ return; }
-  function state(){ try{ var h=localStorage.getItem(K)||''; return h?{home:h,paths:JSON.parse(localStorage.getItem(P)||'[]')}:null; }catch(e){ return null; } }
+  try{ if(/[?&]afuq-exit\b/.test(location.search)){ localStorage.removeItem(K); localStorage.removeItem(P); try{ sessionStorage.removeItem(K); sessionStorage.removeItem(P); }catch(e){} return; } }catch(e){ return; }
+  function get(k){ var v=''; try{ v=localStorage.getItem(k)||''; }catch(e){} if(!v){ try{ v=sessionStorage.getItem(k)||''; }catch(e){} } return v; }
+  function state(){ try{ var h=get(K); return h?{home:h,paths:JSON.parse(get(P)||'[]')}:null; }catch(e){ return null; } }
   function out(home){ if(going) return; going=true; document.documentElement.style.display='none'; location.replace(home); }
   function allowed(st){ var here=location.pathname.replace(/index\.html$/,''); return st.paths.some(function(p){ return here.indexOf('/'+p)===0; }); }
   function ui(st){
