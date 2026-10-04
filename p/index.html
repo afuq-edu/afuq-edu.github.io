@@ -166,6 +166,15 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   }).filter(Boolean);
   root.replaceChildren();
   if(to) document.getElementById('sub').textContent='رابط خاص بـ '+to;
+  // Package mode: remember this page as the visitor's home and the only paths they may open (see /assets/pkgmode.js).
+  try{
+    if(all){ localStorage.removeItem('afuq-pkg-home'); localStorage.removeItem('afuq-pkg-paths'); }
+    else if(items.length){
+      var ok=[]; items.forEach(function(it){ it.parts.forEach(function(p){ ok.push(it.path+(p[0]==='page'?'':p[0]+'/')); }); });
+      localStorage.setItem('afuq-pkg-home',location.href); localStorage.setItem('afuq-pkg-paths',JSON.stringify(ok));
+      var lg=document.querySelector('.logo'); if(lg){ lg.removeAttribute('href'); lg.style.cursor='default'; }
+    }
+  }catch(e){}
   if(all){
     Object.keys(CAT).forEach(function(p){ var c=CAT[p]; c.parts.forEach(function(x){ if(x[2]) unlock(c.lock+x[0]) }) });
     root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','تم فتح المنصة كاملة لك على هذا الجهاز، دون الحاجة إلى رمز.'));
