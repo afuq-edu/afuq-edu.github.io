@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مسابقة الفعل المضارع المرفوع والمنصوب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&family=Noto+Naskh+Arabic:wght@500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --ink:#26353A; --muted:#6E7F82; --line:#DCE4E1;
+  --accent:#4A7C76; --accent-ink:#FFFFFF; --accent-soft:#E3EDEA; --accent2:#8DB1AB; --accent3:#C4D8D4;
+  --bad:#A0716A; --bad-soft:#F4E9E6;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#1D2628; --surface:#263235; --ink:#E4EBE9; --muted:#9AABAA; --line:#36443F;
+  --accent:#7FB3AB; --accent-ink:#13201F; --accent-soft:#2D3E3C; --accent2:#5E8A84; --accent3:#3F5754;
+  --bad:#C49189; --bad-soft:#3A2D2B; } }
+:root[data-theme="dark"]{
+  --bg:#1D2628; --surface:#263235; --ink:#E4EBE9; --muted:#9AABAA; --line:#36443F;
+  --accent:#7FB3AB; --accent-ink:#13201F; --accent-soft:#2D3E3C; --accent2:#5E8A84; --accent3:#3F5754;
+  --bad:#C49189; --bad-soft:#3A2D2B; }
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Tajawal',system-ui,'Segoe UI',Tahoma,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#app{min-height:100%;max-width:1400px;margin:0 auto;padding:14px clamp(10px,2vw,28px);display:flex;flex-direction:column}
+.naskh{font-family:'Noto Naskh Arabic','Amiri',serif}
+
+/* buttons */
+.btn{border:0;border-radius:10px;padding:12px 30px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:clamp(17px,1.6vw,21px);transition:filter .2s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px)}
+.btn.gold{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.ibtn{border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;padding:7px 14px;font-weight:700;font-size:14px}
+.ibtn:hover{color:var(--ink);border-color:var(--accent2)}
+
+/* setup */
+.setup{flex:1;display:flex;flex-direction:column;align-items:center;gap:22px;padding:2vh 0}
+.hero{text-align:center}
+.hero h1{margin:0;font-weight:800;font-size:clamp(30px,4.4vw,56px);line-height:1.2}
+.hero p{margin:6px 0 0;color:var(--muted);font-size:clamp(16px,1.6vw,20px)}
+.pair{display:flex;gap:clamp(14px,4vw,60px);justify-content:center;align-items:flex-end;margin:18px 0 4px}
+.pair figure{margin:0;text-align:center}
+.pair .w{font-family:'Noto Naskh Arabic',serif;font-weight:700;font-size:clamp(42px,7vw,92px);line-height:1.5;display:block}
+.pair figcaption{display:inline-block;margin-top:2px;padding:4px 16px;border-radius:40px;font-weight:700;font-size:clamp(14px,1.4vw,17px);background:var(--accent-soft);color:var(--accent)}
+.pair .nas .w{color:var(--accent)}
+.pair .arrow{font-size:clamp(26px,3.6vw,46px);color:var(--accent2);padding-bottom:clamp(30px,4vw,56px)}
+.panel{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,2.4vw,28px);width:min(760px,100%);display:grid;gap:18px}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row>label,.lbl{font-weight:700;font-size:17px;min-width:130px}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:40px;height:40px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--accent);font-size:22px;font-weight:700}
+.stepper b{min-width:34px;text-align:center;font-size:24px}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.names input{font:inherit;font-weight:700;font-size:16px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;color:var(--ink);background:var(--bg);width:100%}
+.names input:focus{border-color:var(--accent);outline:none}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:40px;padding:7px 16px;font-weight:700}
+.chips button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.check{display:flex;align-items:center;gap:8px;font-weight:700}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.actions .btn:not(.gold){background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.how{max-width:760px;color:var(--muted);text-align:center;line-height:1.9;margin:0;font-size:16px}
+
+/* question */
+.qs{flex:1;display:flex;flex-direction:column;gap:14px;min-height:calc(100vh - 28px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.qnum{color:var(--muted);padding:7px 4px;font-weight:700;font-size:17px}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.qcard{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,2vw,26px) clamp(16px,3vw,40px);text-align:center}
+.qtext{margin:0;font-weight:700;font-size:clamp(21px,2.7vw,36px);line-height:1.45}
+.ex{margin:8px 0 0;font-family:'Noto Naskh Arabic','Amiri',serif;font-weight:700;font-size:clamp(26px,3.5vw,50px);line-height:1.9}
+.ex.quran{font-family:'Amiri',serif;font-weight:400}
+mark.v{background:none;color:var(--accent);text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.35em;text-decoration-color:var(--accent2)}
+.why{margin:14px auto 0;max-width:62ch;text-align:start;background:var(--accent-soft);border-inline-start:4px solid var(--accent);padding:10px 16px;border-radius:8px;font-weight:500;font-size:clamp(16px,1.7vw,21px);line-height:1.8}
+.mid{flex:1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;min-height:120px}
+.timer{position:relative;width:clamp(86px,8.5vw,120px);aspect-ratio:1}
+.timer svg{width:100%;height:100%;transform:rotate(-90deg)}
+.timer .trk{stroke:var(--line)}
+.timer .bar{stroke:var(--accent);transition:stroke .3s}
+.timer.low .bar{stroke:var(--bad)}
+.timer b{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:clamp(28px,3.2vw,44px)}
+.turnbox{text-align:center;min-width:110px;background:var(--surface);border:1.5px solid var(--accent);color:var(--ink);border-radius:12px;padding:8px 16px}
+.turnbox span{display:block;font-weight:500;font-size:14px;color:var(--muted)}
+.turnbox b{display:block;font-weight:800;font-size:clamp(20px,2.3vw,30px);line-height:1.3;color:var(--accent)}
+.center{display:flex;justify-content:center;align-items:center}
+.ready{width:min(520px,90%);text-align:center}
+.ready p{margin:0 0 12px;font-weight:700;font-size:clamp(20px,2.3vw,28px)}
+.rbar{height:8px;background:var(--line);border-radius:8px;overflow:hidden}
+.rbar i{display:block;height:100%;width:0;background:var(--accent);border-radius:8px}
+.verdict{display:flex;align-items:center;gap:14px;padding:12px 26px;border-radius:12px;font-weight:800;font-size:clamp(22px,2.8vw,36px);animation:pop .4s both}
+.verdict.good{background:var(--accent-soft);color:var(--accent)}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.verdict b{background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:2px 14px}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{min-height:clamp(70px,12vh,124px);border-radius:12px;display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);padding:10px clamp(14px,1.8vw,24px);background:var(--surface);color:var(--ink);border:1.5px solid var(--line);font-family:inherit;text-align:start;width:100%;font-weight:700;font-size:clamp(20px,2.4vw,34px);line-height:1.45;transition:opacity .35s,border-color .2s,background .2s}
+.tile svg{width:clamp(24px,2.8vw,40px);height:clamp(24px,2.8vw,40px);flex:none;color:var(--accent2)}
+.tile .t{flex:1}
+.tile .t.naskh{font-size:1.05em}
+.tile .mk{flex:none;font-size:1.1em;font-weight:800;width:1.4em;text-align:center}
+.tile.hide .t,.tile.hide .mk{opacity:0}
+.tile[data-act]{cursor:pointer}
+.tile[data-act]:hover{border-color:var(--accent2);background:var(--accent-soft)}
+.tile[data-act]:active{transform:translateY(1px)}
+.tile:disabled{cursor:default}
+.tile.off{opacity:.4}
+.tile.off .mk{color:var(--muted)}
+.tile.chosen{opacity:.85;border-color:var(--bad);background:var(--bad-soft)}
+.tile.chosen .mk{color:var(--bad)}
+.tile.ok{border-color:var(--accent);background:var(--accent-soft)}
+.tile.ok svg,.tile.ok .mk{color:var(--accent)}
+
+.teams{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.team{display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:6px 14px}
+.team .tn{font-weight:700;font-size:16px}
+.team.now{border-color:var(--accent)}
+.team.wait{opacity:.6}
+.team.good{border-color:var(--accent);background:var(--accent-soft)}
+.team.bad{border-color:var(--bad);background:var(--bad-soft)}
+.team .pts{font-weight:800;color:var(--muted)}
+.fire{color:var(--muted);font-weight:700;font-size:14px}
+.next{display:flex;justify-content:center;padding:4px 0 8px}
+
+/* board */
+.board{flex:1;display:flex;flex-direction:column;align-items:center;gap:16px;padding:3vh 0}
+.board h2{margin:0;font-weight:800;font-size:clamp(28px,3.4vw,44px)}
+.list{width:min(860px,100%);display:grid;gap:8px}
+.ritem{display:grid;grid-template-columns:48px 1fr auto auto;align-items:center;gap:12px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 18px;font-size:clamp(18px,2vw,25px);font-weight:700;animation:slide .45s both}
+.ritem.first{background:var(--accent-soft);border-color:var(--accent)}
+.ritem .rk{font-weight:800;font-size:1.15em;text-align:center;color:var(--accent)}
+.ritem .mv{font-size:14px;font-weight:700;color:var(--muted)}
+.ritem .sc{font-weight:800;min-width:4ch;text-align:end}
+@keyframes slide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* final */
+.final{flex:1;display:flex;flex-direction:column;align-items:center;gap:18px;padding:2vh 0}
+.final h2{margin:0;font-weight:800;font-size:clamp(30px,3.8vw,50px)}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:clamp(8px,1.6vw,18px);width:min(780px,100%);height:clamp(260px,46vh,420px)}
+.pod{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;animation:rise .8s both}
+.pod .nm{font-weight:800;font-size:clamp(18px,2.1vw,28px);text-align:center;margin-bottom:8px}
+.pod .blk{width:100%;border-radius:12px 12px 0 0;display:flex;flex-direction:column;align-items:center;padding-top:16px}
+.pod .pl{font-weight:800;font-size:clamp(34px,4.2vw,60px);line-height:1}
+.pod .ps{font-weight:700;font-size:clamp(15px,1.6vw,19px);margin-top:6px}
+.p1{order:2}.p1 .blk{height:72%;background:var(--accent);color:var(--accent-ink)}
+.p2{order:1;animation-delay:.25s}.p2 .blk{height:54%;background:var(--accent2);color:var(--accent-ink)}
+.p3{order:3;animation-delay:.5s}.p3 .blk{height:40%;background:var(--accent3);color:var(--ink)}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:5}
+
+@media (max-width:700px){
+  .answers{grid-template-columns:1fr}
+  .mid{grid-template-columns:auto 1fr auto;gap:8px}
+  .ritem{grid-template-columns:36px 1fr auto;}
+  .ritem .mv{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<canvas id="fx"></canvas>
+<script>
+/* ===================== الأسئلة ===================== */
+/* ex: الجملة المضبوطة، وما بين { } يُلوَّن. a: رقم الإجابة الصحيحة (يبدأ من 0) */
+const Q = [
+ {q:"ما حكم الفعل المضارع الملوّن؟", ex:"{يَذْهَبُ} أحمدُ إلى المدرسةِ مبكرًا.", o:["مرفوع","منصوب","مجزوم","مبنيّ"], a:0,
+  why:"مرفوع لأنه لم يسبقه ناصب ولا جازم، وعلامة رفعه الضمة الظاهرة على آخره."},
+ {q:"ما علامة رفع الفعل الملوّن؟", ex:"{يَقْرَأُ} الطالبُ القصةَ باهتمامٍ.", o:["الضمة","الفتحة","السكون","ثبوت النون"], a:0,
+  why:"«يقرأُ» مرفوع وعلامة رفعه الضمة الظاهرة على آخره."},
+ {q:"ما الحرف الذي نصب الفعل المضارع؟", ex:"لَنْ يتأخّرَ المجتهدُ عن موعدِهِ.", o:["لَنْ","عَنْ","المجتهدُ","موعدِه"], a:0, nk:true,
+  why:"«لن» حرف نصب، نصب الفعل «يتأخّرَ» وعلامة نصبه الفتحة."},
+ {q:"اختر الضبط الصحيح للفعل الناقص:", ex:"أُحِبُّ أنْ ...... الكتبَ المفيدةَ.", o:["أقرأُ","أقرأَ","أقرأْ","أقرأِ"], a:1, nk:true,
+  why:"سبقه الحرف الناصب «أنْ» فيُنصب، وعلامة نصبه الفتحة: أنْ أقرأَ."},
+ {q:"اختر الفعل المناسب للفراغ:", ex:"ذاكرتُ دروسي كي ...... في الاختبارِ.", o:["أنجحُ","أنجحَ","أنجحْ","نجحتُ"], a:1, nk:true,
+  why:"«كي» من نواصب المضارع، فالصواب: كي أنجحَ."},
+ {q:"الفعل الملوّن مضبوط ضبطًا صحيحًا.", ex:"لن {يلعبُ} الطفلُ في الشارعِ.", o:["صواب","خطأ"], a:1,
+  why:"خطأ، والصواب «لن يلعبَ» لأن الفعل مسبوق بالناصب «لن»."},
+ {q:"أيّ الجمل الآتية فيها فعل مضارع منصوب؟", o:["يكتبُ التلميذُ الدرسَ","لن يكتبَ التلميذُ بقلمِ الرصاصِ","التلميذُ يكتبُ بخطٍّ جميلٍ","كتبَ التلميذُ الواجبَ"], a:1, nk:true,
+  why:"«لن يكتبَ»: فعل مضارع منصوب بـ«لن» وعلامة نصبه الفتحة."},
+ {q:"أيّ الجمل الآتية فيها فعل مضارع مرفوع؟", o:["لن نُهملَ واجباتِنا","نُحافظُ على نظافةِ الفصلِ","جئتُ لأتعلّمَ","أريدُ أنْ أنجحَ"], a:1, nk:true,
+  why:"«نحافظُ» لم يسبقه ناصب ولا جازم فهو مرفوع بالضمة، وبقية الأفعال منصوبة."},
+ {q:"ما الذي نصب الفعل المضارع في الجملة؟", ex:"جئتُ إلى المكتبةِ {لِأتعلّمَ}.", o:["لام التعليل","إلى","أنْ","كي"], a:0,
+  why:"اللام في «لِأتعلّمَ» لام التعليل، وهي من نواصب المضارع."},
+ {q:"اختر الفعل المناسب للفراغ:", ex:"اقرأْ كثيرًا حتى ...... ثقافتُك.", o:["تتّسعُ","تتّسعَ","تتّسعْ","اتّسعتْ"], a:1, nk:true,
+  why:"«حتى» من نواصب المضارع، فالصواب: حتى تتّسعَ."},
+ {q:"أيّ مما يلي ليس من نواصب الفعل المضارع؟", o:["أنْ","لنْ","كيْ","لمْ"], a:3, nk:true,
+  why:"«لم» حرف جزم وليست حرف نصب، أما أنْ ولنْ وكيْ فمن النواصب."},
+ {q:"في ضبط الفعل الملوّن خطأ، فما صوابه؟", ex:"أريدُ أنْ {أساعدُ} أمّي في البيتِ.", o:["أساعدَ","أساعدْ","أساعدِ","ساعدتُ"], a:0, nk:true,
+  why:"الفعل مسبوق بالناصب «أنْ» فيجب نصبه: أنْ أساعدَ."},
+ {q:"يُرفع الفعل المضارع إذا لم يسبقه ناصب ولا جازم.", o:["صواب","خطأ"], a:0,
+  why:"صواب، فالأصل في الفعل المضارع الرفع ما لم يسبقه ناصب أو جازم."},
+ {q:"ما علامة رفع الفعل الملوّن؟", ex:"الطلابُ {يكتبون} الدرسَ.", o:["الضمة","ثبوت النون","الواو","الفتحة"], a:1,
+  why:"«يكتبون» من الأفعال الخمسة، يُرفع بثبوت النون."},
+ {q:"اختر الفعل المناسب للفراغ:", ex:"لن ...... المخلصون بجهدِهم.", o:["يبخلون","يبخلوا","يبخلُ","بخلوا"], a:1, nk:true,
+  why:"«يبخلوا» من الأفعال الخمسة، منصوب بـ«لن» وعلامة نصبه حذف النون."},
+ {q:"ما حكم الفعل الملوّن وعلامة إعرابه؟", ex:"الطالبتان {تتعاونان} في إعدادِ المشروعِ.", o:["مرفوع بثبوت النون","منصوب بحذف النون","مرفوع بالضمة","منصوب بالفتحة"], a:0,
+  why:"لم يسبقه ناصب ولا جازم، وهو من الأفعال الخمسة فيُرفع بثبوت النون."},
+ {q:"ما علامة نصب الفعل الملوّن؟", ex:"يا هندُ، لن {تتركي} واجبَكِ.", o:["الفتحة","حذف النون","الكسرة","الياء"], a:1,
+  why:"«تتركي» من الأفعال الخمسة (أصله تتركين)، نُصب بـ«لن» وعلامة نصبه حذف النون."},
+ {q:"ما الفعل المضارع المرفوع في الآية الكريمة؟", ex:"﴿لَن تَنَالُوا الْبِرَّ حَتَّىٰ تُنفِقُوا مِمَّا تُحِبُّونَ﴾", quran:true, o:["تنالوا","تنفقوا","تحبون","البرّ"], a:2, nk:true,
+  why:"«تنالوا» منصوب بلن، و«تنفقوا» منصوب بحتى، أما «تحبون» فمرفوع بثبوت النون."},
+ {q:"اختر الحرف الناصب المناسب للفراغ:", ex:"يجتهدُ الطالبُ ...... يتفوّقَ.", o:["كي","لمْ","قد","لا"], a:0, nk:true,
+  why:"«كي» تفيد التعليل وتنصب الفعل المضارع: كي يتفوّقَ."},
+ {q:"ما حكم الفعل الملوّن؟", ex:"المسلمُ لا {يكذبُ}.", o:["مرفوع، و«لا» هنا نافية لا تنصب","منصوب بـ«لا»","مجزوم بـ«لا»","مبنيّ على الضم"], a:0,
+  why:"«لا» النافية ليست من النواصب، فيبقى الفعل مرفوعًا بالضمة."}
+];
+
+/* ===================== أدوات ===================== */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const LS = 'mudari-kahoot-v1';
+const DEF_NAMES = ['النجوم','الصقور','المبدعون','الفرسان','الأبطال','العباقرة','الرواد','المتألقون'];
+const SH = {
+  tri:'<path d="M16 3 L30 28 H2 Z"/>',
+  dia:'<path d="M16 1 L31 16 L16 31 L1 16 Z"/>',
+  cir:'<circle cx="16" cy="16" r="14"/>',
+  sq:'<rect x="3" y="3" width="26" height="26" rx="3"/>'
+};
+const BASE = ['tri','dia','cir','sq'];
+const pal = n => n === 2 ? [BASE[1], BASE[0]] : BASE.slice(0, n);
+const shape = s => `<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">${SH[s]}</svg>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = s => esc(s).replace(/\{([^}]+)\}/g, '<mark class="v">$1</mark>');
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+let S = { settings:{ teams:4, time:30, shuffle:true }, names:DEF_NAMES.slice(), teams:[], order:[], qi:0, phase:'setup', prevRank:[] };
+const run = { elapsed:0, last:0, paused:false, raf:0, readyTo:0, lastSec:null };
+
+function save(){ try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const r = localStorage.getItem(LS); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+function clearSave(){ try{ localStorage.removeItem(LS); }catch(e){} }
+
+/* ===================== الصوت ===================== */
+let AC = null, muted = false, mus = null, step = 0;
+function ac(){
+  try{
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+  }catch(e){}
+  return AC;
+}
+function tone(f, d = .15, type = 'sine', v = .12, delay = 0, f2){
+  if (muted) return; const c = ac(); if (!c) return;
+  const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t);
+  if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+  g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .03);
+}
+const CH = [[440,523.25,659.25],[349.23,440,523.25],[523.25,659.25,783.99],[392,493.88,587.33]];
+const BS = [110,87.31,130.81,98];
+const ARP = [0,1,2,1,0,1,2,1];
+function startMusic(){
+  if (muted || mus) return;
+  mus = setInterval(() => {
+    const ci = Math.floor(step / 8) % 4, k = step % 8;
+    tone(CH[ci][ARP[k]] * (k > 3 ? 2 : 1), .12, 'triangle', .035);
+    if (k % 2 === 0) tone(BS[ci], .2, 'sine', .09);
+    if (k % 4 === 0) tone(150, .12, 'sine', .14, 0, 45);
+    step++;
+  }, 150);
+}
+function stopMusic(){ clearInterval(mus); mus = null; }
+const sfx = {
+  pop(){ tone(620,.09,'triangle',.16,0,980); },
+  tick(){ tone(1250,.05,'square',.04); },
+  ok(){ [523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.12,i*.09)); },
+  gong(){ tone(196,.9,'sawtooth',.05); tone(147,1,'triangle',.12); },
+  drum(){ for (let i=0;i<10;i++) tone(120,.08,'sine',.12,i*.07,60); },
+  fanfare(){ [[523,0],[659,.15],[784,.3],[1047,.5],[784,.75],[1047,.9]].forEach(([f,d])=>{ tone(f,.35,'square',.05,d); tone(f/2,.35,'triangle',.08,d); }); }
+};
+
+/* ===================== شاشة الإعداد ===================== */
+function renderSetup(){
+  stopMusic(); stopFx();
+  const saved = load();
+  const canResume = saved && saved.teams && saved.teams.length && !['setup','final'].includes(saved.phase);
+  const n = S.settings.teams;
+  app.innerHTML = `
+  <div class="top" style="justify-content:flex-end"><button class="ibtn" data-act="fs">ملء الشاشة</button></div>
+  <section class="setup">
+    <div class="hero">
+      <h1>مسابقة الفعل المضارع</h1>
+      <p>تطبيقات على المرفوع والمنصوب، تقويم ختامي في ${Q.length} سؤالًا</p>
+      <div class="pair">
+        <figure class="raf"><span class="w">يَفْهَمُ</span><figcaption>مرفوع</figcaption></figure>
+        <span class="arrow" aria-hidden="true">⟵</span>
+        <figure class="nas"><span class="w">لَنْ يَفْهَمَ</span><figcaption>منصوب</figcaption></figure>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="row"><span class="lbl">عدد المجموعات</span>
+        <div class="stepper"><button data-act="dec" aria-label="إنقاص">−</button><b>${n}</b><button data-act="inc" aria-label="زيادة">+</button></div>
+      </div>
+      <div class="names">${Array.from({length:n},(_,i)=>`<input data-name="${i}" value="${esc(S.names[i]||DEF_NAMES[i])}" aria-label="اسم المجموعة ${i+1}" maxlength="18">`).join('')}</div>
+      <div class="row"><span class="lbl">وقت السؤال</span>
+        <div class="chips">${[20,30,45,60].map(t=>`<button data-act="time" data-v="${t}" aria-pressed="${S.settings.time===t}">${t} ثانية</button>`).join('')}</div>
+      </div>
+      <label class="check"><input type="checkbox" id="shf" ${S.settings.shuffle?'checked':''}> ترتيب عشوائي للأسئلة</label>
+      <div class="actions">
+        <button class="btn gold" data-act="start">ابدأ المسابقة</button>
+        ${canResume ? `<button class="btn" data-act="resume">متابعة المسابقة المحفوظة (السؤال ${saved.qi+1})</button>` : ''}
+      </div>
+    </div>
+    <p class="how">كل سؤال لمجموعة واحدة بالتناوب، وتُوزَّع الأسئلة بالتساوي على المجموعات. تختار المجموعة إجابتها بالضغط على المربع الملوّن في الشاشة أو بالأرقام من 1 إلى 4، فالأسرع بالإجابة الصحيحة يحصد نقاطًا أكثر، والإجابات الصحيحة المتتالية تمنح نقاطًا إضافية.</p>
+  </section>`;
+  app.querySelectorAll('[data-name]').forEach(inp => inp.addEventListener('input', e => { S.names[+e.target.dataset.name] = e.target.value; }));
+  $('#shf').addEventListener('change', e => { S.settings.shuffle = e.target.checked; });
+}
+
+function startGame(){
+  const n = S.settings.teams;
+  S.teams = Array.from({length:n}, (_,i) => ({ name:(S.names[i]||'').trim() || DEF_NAMES[i], score:0, streak:0, ans:null, t:null, last:0 }));
+  S.order = Q.map((_,i)=>i); if (S.settings.shuffle) shuffle(S.order);
+  S.order = S.order.slice(0, Math.floor(Q.length / n) * n);
+  S.qi = 0; S.prevRank = S.teams.map((_,i)=>i);
+  showQuestion();
+}
+
+/* ===================== السؤال ===================== */
+const curQ = () => Q[S.order[S.qi]];
+const turn = () => S.qi % S.teams.length;
+
+function showQuestion(){
+  stopFx();
+  S.teams.forEach(t => { t.ans = null; t.t = null; t.last = 0; });
+  S.phase = 'ready'; save();
+  renderQuestion();
+  sfx.drum();
+  const bar = $('.rbar i');
+  requestAnimationFrame(() => { if (bar){ bar.style.transition = 'width 3s linear'; bar.style.width = '100%'; } });
+  clearTimeout(run.readyTo);
+  run.readyTo = setTimeout(beginAnswer, 3000);
+}
+
+function beginAnswer(){
+  if (S.phase !== 'ready') return;
+  clearTimeout(run.readyTo);
+  S.phase = 'answer';
+  run.elapsed = 0; run.paused = false; run.lastSec = null;
+  renderQuestion();
+  startMusic();
+  run.last = performance.now();
+  cancelAnimationFrame(run.raf);
+  run.raf = requestAnimationFrame(loop);
+}
+
+function loop(now){
+  if (S.phase !== 'answer') return;
+  if (!run.paused) run.elapsed += (now - run.last) / 1000;
+  run.last = now;
+  const T = S.settings.time, left = Math.max(0, T - run.elapsed), sec = Math.ceil(left);
+  const num = $('#tnum'), ring = $('#tring'), tm = $('.timer');
+  if (num) num.textContent = sec;
+  if (ring) ring.style.strokeDashoffset = (1 - left / T) * 276.46;
+  if (tm) tm.classList.toggle('low', left <= 5);
+  if (sec !== run.lastSec){ if (sec <= 5 && sec > 0 && run.lastSec !== null && !run.paused) sfx.tick(); run.lastSec = sec; }
+  if (left <= 0){ endQuestion(); return; }
+  run.raf = requestAnimationFrame(loop);
+}
+
+function pick(ti, opt){
+  if (S.phase !== 'answer' || ti !== turn()) return;
+  const t = S.teams[ti]; if (t.ans !== null) return;
+  t.ans = opt; t.t = run.elapsed; sfx.pop();
+  setTimeout(endQuestion, 350);
+}
+
+function rankOf(){ return S.teams.map((t,i)=>i).sort((a,b)=>S.teams[b].score - S.teams[a].score); }
+
+function endQuestion(){
+  if (S.phase !== 'answer') return;
+  cancelAnimationFrame(run.raf); stopMusic();
+  const q = curQ(), T = S.settings.time;
+  S.prevRank = rankOf();
+  const t = S.teams[turn()], anyOk = t.ans === q.a;
+  if (anyOk){
+    t.streak++;
+    const base = Math.round(1000 * (1 - Math.min(t.t, T) / T / 2));
+    const bonus = Math.min(t.streak - 1, 5) * 100;
+    t.last = base + bonus; t.score += t.last;
+  } else { t.streak = 0; t.last = 0; }
+  S.phase = 'reveal'; save();
+  renderQuestion();
+  anyOk ? sfx.ok() : sfx.gong();
+}
+
+function renderQuestion(){
+  const q = curQ(), P = pal(q.o.length), ph = S.phase;
+  const reveal = ph === 'reveal';
+  let mid;
+  if (ph === 'ready'){
+    mid = `<div class="center"><div class="ready"><p>دور مجموعة ${esc(S.teams[turn()].name)}، استعدّوا…</p><div class="rbar"><i></i></div></div></div>`;
+  } else if (reveal){
+    const tt = S.teams[turn()], good = tt.ans === q.a;
+    mid = `<div class="center"><div class="verdict ${good?'good':'bad'}">${good ? '✓ إجابة صحيحة' : (tt.ans === null ? 'انتهى الوقت' : '✗ إجابة خاطئة')}${good ? `<b>+${tt.last}</b>` : ''}${good && tt.streak > 1 ? `<span class="fire">🔥 ${tt.streak}</span>` : ''}</div></div>`;
+  } else {
+    mid = '<div></div>';
+  }
+  const T = S.settings.time;
+  app.innerHTML = `
+  <section class="qs">
+    <div class="top">
+      <span class="qnum">السؤال ${S.qi+1} من ${S.order.length}</span>
+      <div class="tools">
+        <button class="ibtn" data-act="mute">${muted ? 'تشغيل الصوت' : 'كتم الصوت'}</button>
+        ${ph==='answer' ? `<button class="ibtn" data-act="pause">${run.paused ? 'استئناف' : 'إيقاف مؤقت'}</button><button class="ibtn" data-act="endq">إنهاء الوقت</button>` : ''}
+        <button class="ibtn" data-act="fs">ملء الشاشة</button>
+        <button class="ibtn" data-act="home">الإعدادات</button>
+      </div>
+    </div>
+    <div class="qcard">
+      <p class="qtext">${esc(q.q)}</p>
+      ${q.ex ? `<p class="ex ${q.quran?'quran':''}">${fmt(q.ex)}</p>` : ''}
+      ${reveal && q.why ? `<p class="why">${esc(q.why)}</p>` : ''}
+    </div>
+    <div class="mid">
+      ${ph==='answer' ? `<div class="timer"><svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="44" fill="none" stroke-width="9"/><circle id="tring" class="bar" cx="50" cy="50" r="44" fill="none" stroke-width="9" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><b id="tnum">${T}</b></div>` : '<div></div>'}
+      ${mid}
+      <div class="turnbox"><span>الدور على</span><b>${esc(S.teams[turn()].name)}</b></div>
+    </div>
+    <div class="answers">${q.o.map((o,i)=>`
+      <button class="tile ${ph==='ready'?'hide':''} ${reveal?(i===q.a?'ok':'off'):''} ${reveal&&S.teams[turn()].ans===i&&i!==q.a?'chosen':''}" ${ph==='answer' ? `data-act="pick" data-t="${turn()}" data-o="${i}"` : 'disabled'}>
+        ${shape(P[i])}<span class="t ${q.nk?'naskh':''}">${esc(o)}</span><span class="mk">${reveal?(i===q.a?'✓':'✗'):''}</span>
+      </button>`).join('')}
+    </div>
+    <div class="teams" id="teams"></div>
+    ${reveal ? `<div class="next"><button class="btn gold" data-act="board">لوحة الترتيب</button></div>` : ''}
+  </section>`;
+  renderTeams();
+  if (ph === 'ready') $('.ready').addEventListener('click', beginAnswer);
+}
+
+function renderTeams(){
+  const box = $('#teams'); if (!box) return;
+  const q = curQ(), cur = turn();
+  box.innerHTML = S.teams.map((t,i) => {
+    let cls = i === cur ? 'now' : 'wait';
+    if (i === cur && S.phase === 'reveal') cls = t.ans === q.a ? 'good' : 'bad';
+    return `<div class="team ${cls}"><span class="tn">${esc(t.name)}</span><span class="pts">${t.score}</span>${t.streak > 1 ? `<span class="fire">🔥 ${t.streak}</span>` : ''}</div>`;
+  }).join('');
+}
+
+/* ===================== لوحة الترتيب ===================== */
+function renderBoard(){
+  stopMusic();
+  S.phase = 'board'; save();
+  const r = rankOf(), last = S.qi + 1 >= S.order.length;
+  app.innerHTML = `
+  <section class="board">
+    <h2>لوحة الترتيب</h2>
+    <div class="list">${r.map((ti,k)=>{
+      const t = S.teams[ti], before = S.prevRank.indexOf(ti);
+      const mv = before > k ? `<span class="mv up">▲ ${before-k}</span>` : before < k ? `<span class="mv down">▼ ${k-before}</span>` : '<span class="mv"></span>';
+      return `<div class="ritem ${k===0?'first':''}" style="animation-delay:${k*.08}s">
+        <span class="rk">${k+1}</span><span>${esc(t.name)} ${t.streak>1?`<span class="fire">🔥 ${t.streak}</span>`:''}</span>${mv}<span class="sc">${t.score}</span></div>`;
+    }).join('')}</div>
+    <button class="btn gold" data-act="next">${last ? 'النتيجة النهائية' : 'السؤال التالي'}</button>
+  </section>`;
+}
+
+function next(){
+  S.qi++;
+  if (S.qi >= S.order.length) renderFinal(); else showQuestion();
+}
+
+/* ===================== النتيجة النهائية ===================== */
+function renderFinal(){
+  stopMusic();
+  S.phase = 'final'; save();
+  const r = rankOf();
+  const pod = [0,1,2].filter(k => r[k] !== undefined).map(k => {
+    const t = S.teams[r[k]];
+    return `<div class="pod p${k+1}"><span class="nm">${esc(t.name)}</span><div class="blk"><span class="pl">${k+1}</span><span class="ps">${t.score} نقطة</span></div></div>`;
+  }).join('');
+  const rest = r.slice(3).map((ti,k)=>`<div class="ritem"><span class="rk">${k+4}</span><span>${esc(S.teams[ti].name)}</span><span class="mv"></span><span class="sc">${S.teams[ti].score}</span></div>`).join('');
+  app.innerHTML = `
+  <section class="final">
+    <h2>منصة التتويج</h2>
+    <div class="podium">${pod}</div>
+    ${rest ? `<div class="list">${rest}</div>` : ''}
+    <div class="actions"><button class="btn gold" data-act="again">مسابقة جديدة</button></div>
+  </section>`;
+  sfx.fanfare();
+  confetti();
+}
+
+/* ===================== قصاصات الاحتفال ===================== */
+let fxRaf = 0;
+function stopFx(){ cancelAnimationFrame(fxRaf); const c = $('#fx'); c.getContext('2d').clearRect(0,0,c.width,c.height); }
+function confetti(){
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = $('#fx'), x = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  const cs = getComputedStyle(document.documentElement), cols = ['--accent','--accent2','--accent3'].map(v => cs.getPropertyValue(v).trim());
+  const ps = Array.from({length:180}, () => ({ x:Math.random()*c.width, y:-20-Math.random()*c.height*.6, vx:(Math.random()-.5)*2, vy:2+Math.random()*3, r:Math.random()*6.28, vr:(Math.random()-.5)*.2, w:6+Math.random()*7, col:cols[Math.floor(Math.random()*cols.length)] }));
+  const t0 = performance.now();
+  (function draw(now){
+    x.clearRect(0,0,c.width,c.height);
+    ps.forEach(p => { p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.fillStyle = p.col; x.fillRect(-p.w/2,-p.w/4,p.w,p.w/2); x.restore(); });
+    if (now - t0 < 6000) fxRaf = requestAnimationFrame(draw); else x.clearRect(0,0,c.width,c.height);
+  })(t0);
+}
+
+/* ===================== التحكم ===================== */
+const ACT = {
+  inc(){ S.settings.teams = Math.min(8, S.settings.teams + 1); renderSetup(); },
+  dec(){ S.settings.teams = Math.max(2, S.settings.teams - 1); renderSetup(); },
+  time(b){ S.settings.time = +b.dataset.v; renderSetup(); },
+  start(){ startGame(); },
+  resume(){
+    const s = load(); if (!s) return; S = s;
+    if (S.phase === 'board') renderBoard();
+    else if (S.phase === 'reveal') renderQuestion();
+    else showQuestion();
+  },
+  pick(b){ pick(+b.dataset.t, +b.dataset.o); },
+  mute(){
+    muted = !muted;
+    if (muted) stopMusic(); else if (S.phase === 'answer' && !run.paused) startMusic();
+    const btn = document.querySelector('[data-act="mute"]'); if (btn) btn.textContent = muted ? 'تشغيل الصوت' : 'كتم الصوت';
+  },
+  pause(b){
+    run.paused = !run.paused;
+    run.paused ? stopMusic() : startMusic();
+    b.textContent = run.paused ? 'استئناف' : 'إيقاف مؤقت';
+  },
+  endq(){ endQuestion(); },
+  board(){ renderBoard(); },
+  next(){ next(); },
+  again(){ clearSave(); S.phase = 'setup'; renderSetup(); },
+  home(){
+    if (!confirm('العودة إلى الإعدادات؟ تبقى المسابقة محفوظة ويمكن متابعتها.')) return;
+    cancelAnimationFrame(run.raf); clearTimeout(run.readyTo); stopMusic();
+    if (S.phase === 'answer' || S.phase === 'ready') S.phase = 'ready';
+    save();
+    S = { settings:S.settings, names:S.names, teams:[], order:[], qi:0, phase:'setup', prevRank:[] };
+    renderSetup();
+  },
+  fs(){
+    try{
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+    }catch(e){}
+  }
+};
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  ac();
+  const f = ACT[b.dataset.act]; if (f) f(b, e);
+});
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input,textarea')) return;
+  if (S.phase === 'answer' && /^[1-4]$/.test(e.key) && +e.key <= curQ().o.length){ ac(); pick(turn(), +e.key - 1); return; }
+  if (e.key !== ' ' && e.key !== 'Enter') return;
+  if (S.phase === 'ready'){ e.preventDefault(); beginAnswer(); }
+  else if (S.phase === 'reveal'){ e.preventDefault(); renderBoard(); }
+  else if (S.phase === 'board'){ e.preventDefault(); next(); }
+});
+
+renderSetup();
+</script>
+</body>
+</html>
