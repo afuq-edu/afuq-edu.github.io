@@ -32,7 +32,7 @@ main{max-width:720px;margin:0 auto;padding:16px 16px 48px}\
   HW.setMute=function(m){ muted=!!m; try{ localStorage.setItem('afuq-hw-mute',muted?'1':'0'); }catch(e){} };
   function tone(f,d,t,v){ try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); var o=AC.createOscillator(),g=AC.createGain(); o.type=t||'sine'; o.frequency.value=f; g.gain.value=v||.12; o.connect(g); g.connect(AC.destination); var n=AC.currentTime; g.gain.setValueAtTime(v||.12,n); g.gain.exponentialRampToValueAtTime(.0001,n+d); o.start(n); o.stop(n+d); }catch(e){} }
   HW.sound=function(k){ if(muted) return; if(k==='ok'){ tone(660,.12); setTimeout(function(){ tone(880,.18); },110); } else if(k==='no'){ tone(200,.28,'sawtooth',.08); } else if(k==='tick'){ tone(500,.05,'square',.05); } else if(k==='win'){ [523,659,784,1047].forEach(function(f,i){ setTimeout(function(){ tone(f,.2); },i*130); }); } };
-  HW.speak=function(text){ try{ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang='ar'; u.rate=.85; speechSynthesis.speak(u); }catch(e){} };
+  HW.speak=function(text){ try{ speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang=window.HW_LANG||'ar'; u.rate=.85; speechSynthesis.speak(u); }catch(e){} };
   HW.canSpeak='speechSynthesis' in window;
   HW.stars=function(c,n){ return c>=n*0.9?3:c>=n*0.6?2:1; };
 
@@ -53,7 +53,7 @@ main{max-width:720px;margin:0 auto;padding:16px 16px 48px}\
     function cert(){
       var n=nm.value.trim(); if(!n){ nm.focus(); nm.style.borderColor='var(--bad)'; return; }
       nm.style.borderColor=''; try{ localStorage.setItem('afuq-hw-name',n); }catch(e){}
-      HW.$('cn').textContent=n; m.querySelector('.ct').textContent='على إتمام واجب «'+o.title+'»';
+      HW.$('cn').textContent=n; m.querySelector('.ct').textContent='على إتمام واجب «\u2068'+o.title+'\u2069»';
       m.querySelector('.s').textContent=star; m.querySelector('.cc').textContent='الدرجة: '+o.correct+' من '+o.total+(o.points!=null?' · النقاط: '+o.points:'');
       var d=''; try{ d=new Date().toLocaleDateString('ar-OM',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ d=new Date().toDateString(); }
       m.querySelector('.cd').textContent=d; m.querySelector('.f').textContent='منصة أفق التعليمية · '+o.sub;

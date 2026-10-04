@@ -17,7 +17,7 @@ main{max-width:720px;margin:0 auto;padding:18px 16px 48px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px}
 .bar{display:flex;gap:6px;margin:0 0 14px}.bar i{flex:1;height:10px;border-radius:99px;background:var(--line)}.bar i.on{background:var(--brand)}.bar i.ok{background:var(--ok)}.bar i.no{background:var(--bad)}
 .count{color:var(--muted);font-size:15px;margin:0 0 6px}
-.q{font-size:clamp(24px,6.5vw,34px);font-weight:800;line-height:1.6;margin:6px 0 18px}
+.q,.opt{direction:rtl}.q{font-size:clamp(24px,6.5vw,34px);font-weight:800;line-height:1.6;margin:6px 0 18px}
 .say{float:left;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 12px;font-size:22px;cursor:pointer;color:inherit}
 .opts{display:grid;gap:12px}
 .opt{font:inherit;font-size:clamp(20px,5.5vw,26px);font-weight:700;text-align:start;padding:16px 18px;border-radius:16px;border:3px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;min-height:64px}
@@ -37,13 +37,13 @@ main{max-width:720px;margin:0 auto;padding:18px 16px 48px}
 </style>
 </head>
 <body>
-<header><div class="top"><span class="logo">أ</span><div><h1>حرف ع (العين): موعد على العشاء</h1><p><a href="../" style="color:var(--brand);font-weight:700;text-decoration:none">→ طرق الحل</a> · واجب منزلي · اللغة العربية</p></div></div></header>
+<header><div class="top"><span class="logo">أ</span><div><h1><bdi>حرف ع (العين): موعد على العشاء</bdi></h1><p><a href="../" style="color:var(--brand);font-weight:700;text-decoration:none">→ طرق الحل</a> · واجب منزلي · اللغة العربية</p></div></div></header>
 <main>
 <div class="card" id="quiz"><p class="count" id="cnt"></p><div class="bar" id="bar"></div><button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button><div class="q" id="q"></div><div class="opts" id="opts"></div><div class="fb" id="fb" aria-live="polite"></div><button class="btn" id="next" type="button" hidden>التالي</button></div>
 <div class="card end" id="end" hidden>
 <div class="stars" id="stars"></div><p class="score" id="score"></p><p id="msg" style="font-size:20px;margin:6px 0"></p>
 <div class="name"><label for="nm">اكتب اسمك لتظهر شهادة الإنجاز:</label><input id="nm" maxlength="30" autocomplete="name" placeholder="اسمي"></div>
-<div class="cert" id="cert"><p class="t">🏅 شهادة إنجاز</p><p>تُمنح الطالبة / الطالب</p><p class="n" id="cn"></p><p>على إتمام واجب «حرف ع (العين): موعد على العشاء»</p><p class="s" id="cs"></p><p id="cc" style="font-weight:800"></p><p id="cd"></p><p class="f">منصة أفق التعليمية · اللغة العربية – الصف الأول</p></div>
+<div class="cert" id="cert"><p class="t">🏅 شهادة إنجاز</p><p>تُمنح الطالبة / الطالب</p><p class="n" id="cn"></p><p>على إتمام واجب «<bdi>حرف ع (العين): موعد على العشاء</bdi>»</p><p class="s" id="cs"></p><p id="cc" style="font-weight:800"></p><p id="cd"></p><p class="f">منصة أفق التعليمية · اللغة العربية – الصف الأول</p></div>
 <div class="row"><button class="btn" id="show" type="button">عرض الشهادة</button><button class="btn alt" id="prt" type="button" hidden>🖨 طباعة الشهادة</button><button class="btn alt" id="again" type="button">↻ أعد المحاولة</button></div>
 <p class="hint" id="shot" hidden>للتسليم: صوّر الشهادة (لقطة شاشة) وأرفقها في منصة نور.</p>
 </div>
