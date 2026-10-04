@@ -148,8 +148,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     want=(h.get('i')||'').split(';').map(function(x){ var m=x.split(':'); return [(m[0]||''), (m[1]||'all')]; });
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
-    if(/^k[0-9a-z]{3,10}$/.test(code)) kcode=code;
-    else if(code==='*') all=true;
+    // #k<id>-<items> carries its materials too, so a new stable link works before packages.json is synced.
+    var km=/^(k[0-9a-z]{3,10})(?:-(.*))?$/.exec(code);
+    if(km){ kcode=km[1]; code=km[2]||''; }
+    if(code==='*') all=true;
     else { var re=/(\d+)([a-z])([a-z]*)/g, m; while((m=re.exec(code))){ if(!SUBJ[m[2]]) continue;
       want.push([m[1]+'/'+SUBJ[m[2]], m[3]?m[3].split('').join('.'):'all']); } }
   }
@@ -191,8 +193,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   if(kcode){
     fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
       var e=j&&j[kcode];
-      if(e==='*') all=true;
-      else if(typeof e==='string' && e) want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; });
+      if(e==='*'){ all=true; want=[]; }
+      else if(typeof e==='string' && e){ all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
       render();
     }).catch(function(){ render(); });
   } else render();
