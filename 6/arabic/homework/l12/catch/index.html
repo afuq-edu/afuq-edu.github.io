@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>صيد الإجابة: الأنشطة النحوية: المبني للمعلوم والمبني للمجهول – اللغة العربية – الصف السادس</title>
+<script>window.HW_LANG="ar";</script><script src="/assets/hwcommon.js"></script>
+<style>
+.hud{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:18px;margin:0 0 8px}.pts{color:var(--gold);font-size:22px}
+.q,.bub{direction:rtl}.q{font-size:clamp(22px,6vw,32px);font-weight:800;line-height:1.55;margin:4px 0 10px;min-height:2.4em}
+.say{float:left;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 12px;font-size:22px;cursor:pointer;color:inherit}
+.stage{position:relative;height:min(58vh,440px);min-height:300px;overflow:hidden;border-radius:18px;border:2px solid var(--line);background:linear-gradient(#BFE3FF,#EAF6FF 70%,#CFEFC2 70%,#CFEFC2);}
+@media (prefers-color-scheme:dark){.stage{background:linear-gradient(#1B2C52,#223966 70%,#1E4A2B 70%,#1E4A2B)}}
+.cloud{position:absolute;font-size:44px;opacity:.7;top:8px}.cloud.a{inset-inline-start:8%}.cloud.b{inset-inline-start:62%;top:34px}
+.bub{position:absolute;top:-96px;width:47%;min-height:66px;padding:10px 12px;border-radius:999px;border:3px solid #fff;background:#FFD166;color:#16213A;font:inherit;font-size:clamp(19px,5vw,25px);font-weight:800;text-align:center;cursor:pointer;box-shadow:0 6px 14px #0003;animation:fall linear forwards;line-height:1.35;display:grid;place-items:center}
+.bub.l0{inset-inline-end:2%;background:#FFD166}.bub.l1{inset-inline-start:2%;background:#8ED1FC}
+@keyframes fall{to{transform:translateY(var(--drop))}}
+.bub.ok{background:#7BE0A0!important}.bub.no{background:#FF8A8A!important}
+@keyframes pop{to{transform:translateY(var(--cur,0)) scale(1.35);opacity:0}}
+.fb{margin:10px 0 0;font-size:21px;font-weight:800;min-height:32px;text-align:center}.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.go{text-align:center;padding:26px 16px}.go h2{font-size:30px;margin:0 0 6px}.go p{font-size:19px;color:var(--muted);margin:0 0 6px}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>الأنشطة النحوية: المبني للمعلوم والمبني للمجهول</bdi></p></div></div></header>
+<main>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>7 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card" id="game" hidden>
+<div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
+<button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
+<div class="q" id="q"></div>
+<div class="stage" id="stage"><span class="cloud a">☁️</span><span class="cloud b">☁️</span></div>
+<div class="fb" id="fb" aria-live="polite"></div>
+</div>
+<div id="end" hidden></div>
+</main>
+<script>
+(function(){
+var BANK=[{"t":"mc","q":"أي الجمل فعلها مبني للمجهول؟","o":["كُتبت الآياتُ بخط الثلث","كتب الخطاطُ الآيات","يكتب الطالب الدرس","اكتبْ واجبك"],"a":0},{"t":"mc","q":"المبني للمجهول من (يَبني):","o":["يُبنى","بَنى","يَبنون","ابنِ"],"a":0},{"t":"tf","q":"في المضارع المبني للمجهول يُكسر ما قبل آخره.","o":["صواب ✔","خطأ ✘"],"a":1},{"t":"tf","q":"في الماضي المبني للمجهول يُضم أوله ويُكسر ما قبل آخره.","o":["صواب ✔","خطأ ✘"],"a":0},{"t":"mc","q":"المبني للمجهول من (فَتَحَ):","o":["فُتِحَ","يَفتَحُ","افتَحْ","فاتح"],"a":0},{"t":"mc","q":"الفعل المبني للمجهول هو فعل:","o":["حُذف فاعله وأقيم غيره مقامه","ذُكر فاعله","لا مفعول له","فعل أمر"],"a":0},{"t":"mc","q":"حوّل: (صنع الوستادُ السفينةَ)","o":["صُنِعَت السفينةُ","صَنَعَت السفينةُ","صُنِعَ الوستادُ","يَصنعُ السفينةَ"],"a":0}], TITLE='الأنشطة النحوية: المبني للمعلوم والمبني للمجهول', SUB='اللغة العربية – الصف السادس', FALL=10;
+var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
+function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+ var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
+ var drop=stage.clientHeight+16;
+ list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
+function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
+function hit(b){if(busy||b.disabled)return;b.disabled=true;
+ if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
+ else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
+function next(){if(i+1<N){i++;show()}else end()}
+function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}
+function start(){i=0;correct=0;points=0;$('pts').textContent='0 نقطة';$('intro').hidden=true;$('end').hidden=true;$('game').hidden=false;show();window.scrollTo(0,0)}
+if(HW.canSpeak){$('say').hidden=false;$('say').onclick=function(){HW.speak($('q').textContent)}}
+$('start').onclick=start;
+})();
+</script>
+</body>
+</html>

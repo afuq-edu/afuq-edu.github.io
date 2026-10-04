@@ -5,39 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>الواجبات – اللغة الإنجليزية – الصف السادس</title>
 <style>
-:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--acc:#D98A0B}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}}
-:root[data-theme="dark"]{--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--acc:#F2B035}
+:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--ok:#1F9D55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F}}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7}
 header{background:var(--card);border-bottom:1px solid var(--line)}
-.top{max-width:960px;margin:0 auto;padding:18px 16px;display:flex;align-items:center;gap:14px}
-.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;text-decoration:none;flex:none}
-.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}
-.top p{margin:0;color:var(--muted);font-size:14.5px}
-.top a.back{color:var(--brand);text-decoration:none;font-weight:700}
-main{flex:1;display:grid;place-items:center;padding:32px 16px}
-.box{max-width:440px;width:100%;text-align:center;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--acc);border-radius:18px;padding:32px 22px}
-.ic{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,transparent)}
-.ic svg{width:38px;height:38px}
-.box h2{margin:0 0 6px;font-size:26px}
-.box p{margin:0;color:var(--muted)}
-.box a{display:inline-block;margin-top:18px;background:var(--brand);color:var(--brand-ink);text-decoration:none;font-weight:700;padding:.6em 1.4em;border-radius:12px}
-footer{text-align:center;color:var(--muted);font-size:14px;padding:18px 16px}
-footer b{direction:ltr;unicode-bidi:isolate;color:var(--brand)}
+.top{max-width:820px;margin:0 auto;padding:16px;display:flex;align-items:center;gap:14px}
+.logo{width:48px;height:48px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:24px;font-weight:800;flex:none}
+.top h1{margin:0;font-size:clamp(20px,4vw,26px);line-height:1.3}.top p{margin:0;color:var(--muted);font-size:14.5px}
+main{max-width:820px;margin:0 auto;padding:20px 16px 56px}
+.note{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:14px 16px;color:var(--muted);font-size:15px;margin:0 0 20px}.note b{color:var(--ink)}
+h2{font-size:18px;margin:22px 0 10px}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:0 0 8px}
+.row .t{flex:1;min-width:0;font-weight:700}
+.btn{font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:7px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn.go{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}.btn.done{color:var(--ok);border-color:var(--ok)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 16px 24px}
 </style>
 </head>
 <body>
-<header><div class="top">
-  <span class="logo">أ</span>
-  <div><h1>الواجبات</h1><p><a class="back" href="../">→ اللغة الإنجليزية</a> · الصف السادس</p></div>
-</div></header>
-<main><div class="box">
-  <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></div>
-  <h2>ستتوفر قريبًا</h2>
-  <p>نعمل على إعداد واجبات اللغة الإنجليزية للصف السادس، وستظهر هنا فور جاهزيتها.</p>
-  <a href="../">العودة إلى المادة</a>
-</div></main>
-<footer>© منصة أفق التعليمية · للتواصل: <b>76506037</b></footer>
+<header><div class="top"><span class="logo">أ</span><div><h1>الواجبات</h1><p>اللغة الإنجليزية · الصف السادس · واجب تفاعلي لكل درس</p></div></div></header>
+<main>
+<div class="note"><b>للمعلم:</b> لكل درس رابط دائم. اضغط «نسخ الرابط» وضعه في منصة نور ليحلّه الطلاب مباشرة بلا رمز. يختار الطالب بين 🏁 سباق ضد الوقت و🎯 صيد الإجابة و📝 نشاط، ويحلّ 10 أسئلة ثم تظهر له شهادة إنجاز يصوّرها ويرفعها في نور. وعند فتح الدرس تجد روابط كل طريقة منفردة.</div>
+<div id="list"></div>
+</main>
+<footer>© منصة أفق التعليمية · للتواصل: 76506037</footer>
+<script>
+(function(){
+var L=[{"id":"wl1","unit":"Welcome: The WOW! Team","title":"Welcome – Lesson 1: Meet the WOW! Magazine"},{"id":"wl2","unit":"Welcome: The WOW! Team","title":"Welcome – Lesson 2: The WOW! Team (adjectives)"},{"id":"u1l1","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 1: Vocabulary – Sports"},{"id":"u1l2","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 2: Team Talk – How often do you do sports?"},{"id":"u1l3","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 3: Grammar – Present simple and Present continuous"},{"id":"u1l4","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 4: Book club – A picture story"},{"id":"u1l5","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 5: Vocabulary and Grammar – Hobbies and state verbs"},{"id":"u1l6","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 6: Culture and Project – Sports and hobbies around the world"},{"id":"u1l7","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 7: English in action – Making and responding to suggestions"},{"id":"u1l8","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 8: Literacy – Reading an interview"},{"id":"u1l9","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 9: Writing – An interview"},{"id":"u1l10","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 10: Over to you! and Review"},{"id":"u1l11","unit":"Unit 1: Free-time fun","title":"Unit 1 – Lesson 11: Get ready for… (exam practice)"},{"id":"u1gr1","unit":"Unit 1: Free-time fun","title":"Unit 1 – Graded reader 1: Let’s Play Volleyball!"},{"id":"u1gr2","unit":"Unit 1: Free-time fun","title":"Unit 1 – Graded reader 2: The Blue Butterfly"},{"id":"u2l1","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 1: Vocabulary – Devices"},{"id":"u2l2","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 2: Team Talk – A problem with technology"},{"id":"u2l3","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 3: Grammar – could/couldn’t, had to/didn’t have to"},{"id":"u2l4","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 4: Book club – A poem"},{"id":"u2l5","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 5: Vocabulary and Grammar – Using technology and comparative adverbs"},{"id":"u2l6","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 6: Culture and Project – Technology helps us"},{"id":"u2l7","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 7: English in action – Asking for help"},{"id":"u2l8","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 8: Literacy – Reading reviews"},{"id":"u2l9","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 9: Writing – A review"},{"id":"u2l10","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 10: Over to you! and Review"},{"id":"u2l11","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 11: Get ready for… (exam practice)"},{"id":"u2gr1","unit":"Unit 2: Technology","title":"Unit 2 – Graded reader 1: The Lost Phone"},{"id":"u2gr2","unit":"Unit 2: Technology","title":"Unit 2 – Graded reader 2: The Animal App"},{"id":"u2l12","unit":"Unit 2: Technology","title":"Unit 2 – Lesson 12: Fun corner (optional lesson)"},{"id":"u2con","unit":"Unit 2: Technology","title":"Unit 2 – Consolidation: Grammar, vocabulary and progress"},{"id":"u3l1","unit":"Unit 3: Places","title":"Unit 3 – Lesson 1: Vocabulary – Places and buildings"},{"id":"u3l2","unit":"Unit 3: Places","title":"Unit 3 – Lesson 2: Team Talk – Finding the sports centre"},{"id":"u3l3","unit":"Unit 3: Places","title":"Unit 3 – Lesson 3: Grammar – Relative pronouns"},{"id":"u3l4","unit":"Unit 3: Places","title":"Unit 3 – Lesson 4: Book club – A mystery story"},{"id":"u3l5","unit":"Unit 3: Places","title":"Unit 3 – Lesson 5: Vocabulary and Grammar – Parts of buildings and the Past continuous"},{"id":"u3l6","unit":"Unit 3: Places","title":"Unit 3 – Lesson 6: Culture and Project – Ancient cities in our region"},{"id":"u3l7","unit":"Unit 3: Places","title":"Unit 3 – Lesson 7: English in action – Giving directions in a building"},{"id":"u3l8","unit":"Unit 3: Places","title":"Unit 3 – Lesson 8: Literacy – Reading a short story"},{"id":"u3l9","unit":"Unit 3: Places","title":"Unit 3 – Lesson 9: Writing – A short story"},{"id":"u3l10","unit":"Unit 3: Places","title":"Unit 3 – Lessons 10–11: Over to you!, Review and Get ready for…"},{"id":"u3gr1","unit":"Unit 3: Places","title":"Unit 3 – Graded reader 1: ‘Be an Architect’ Day"},{"id":"lc1","unit":"WOW! Learning Club 1","title":"Learning Club 1 – Lesson 1: Language booster – Places and directions"},{"id":"lcs","unit":"WOW! Learning Club 1","title":"Learning Club 1 – Lessons 2–3: CLIL Science – How can we classify technology?"}], box=document.getElementById('list'), cur='';
+L.forEach(function(l){
+  if(l.unit!==cur){cur=l.unit;var h=document.createElement('h2');var hb=document.createElement('bdi');hb.textContent=cur;h.appendChild(hb);box.appendChild(h)}
+  var r=document.createElement('div');r.className='row';
+  var t=document.createElement('span');t.className='t';var tb=document.createElement('bdi');tb.textContent=l.title;t.appendChild(tb);
+  var o=document.createElement('a');o.className='btn go';o.href=l.id+'/';o.textContent='فتح';
+  var c=document.createElement('button');c.type='button';c.className='btn';c.textContent='نسخ الرابط';
+  c.onclick=function(){var u=new URL(l.id+'/',location.href).href;
+    function ok(){c.textContent='✔ تم النسخ';c.classList.add('done');setTimeout(function(){c.textContent='نسخ الرابط';c.classList.remove('done')},1800)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,fb)}else fb();
+    function fb(){var a=document.createElement('textarea');a.value=u;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){prompt('انسخ الرابط:',u)}a.remove()}};
+  r.append(t,o,c);box.appendChild(r)});
+})();
+</script>
 </body>
 </html>
