@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>واجب: قراءة وكتابة وتجزئة الأعداد – الرياضيات – الصف الرابع</title>
+<style>
+:root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--ok:#1F9D55;--okbg:#E3F6EA;--bad:#D64545;--badbg:#FBE7E7;--gold:#E8A317}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F;--okbg:#12301F;--bad:#FF6B6B;--badbg:#3A1A1E;--gold:#F2B035}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7;min-height:100vh}
+header{background:var(--card);border-bottom:1px solid var(--line)}
+.top{max-width:720px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:12px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-size:22px;font-weight:800;flex:none}
+.top h1{margin:0;font-size:clamp(17px,4.5vw,22px);line-height:1.35}.top p{margin:0;color:var(--muted);font-size:14px}
+main{max-width:720px;margin:0 auto;padding:18px 16px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px}
+.bar{display:flex;gap:6px;margin:0 0 14px}.bar i{flex:1;height:10px;border-radius:99px;background:var(--line)}.bar i.on{background:var(--brand)}.bar i.ok{background:var(--ok)}.bar i.no{background:var(--bad)}
+.count{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q,.opt{direction:rtl}.q{font-size:clamp(24px,6.5vw,34px);font-weight:800;line-height:1.6;margin:6px 0 18px}
+.say{float:left;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 12px;font-size:22px;cursor:pointer;color:inherit}
+.opts{display:grid;gap:12px}
+.opt{font:inherit;font-size:clamp(20px,5.5vw,26px);font-weight:700;text-align:start;padding:16px 18px;border-radius:16px;border:3px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;min-height:64px}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.no{border-color:var(--bad);background:var(--badbg)}.opt:disabled{cursor:default}
+.fb{margin:16px 0 0;font-size:22px;font-weight:800;min-height:34px}.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.btn{font:inherit;font-weight:800;font-size:20px;border:0;border-radius:16px;padding:14px 26px;background:var(--brand);color:var(--brand-ink);cursor:pointer;margin-top:12px}
+.btn.alt{background:var(--bg);color:var(--ink);border:2px solid var(--line)}
+.end{text-align:center}.stars{font-size:48px;letter-spacing:6px;margin:4px 0}.score{font-size:30px;font-weight:800;margin:0}
+.name{margin:16px 0 4px;text-align:start}.name label{font-weight:700;display:block;margin-bottom:6px}
+.name input{width:100%;font:inherit;font-size:22px;padding:12px 14px;border:3px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+.cert{display:none;margin:18px 0 0;padding:20px 16px;border:6px double var(--gold);border-radius:18px;text-align:center;background:var(--card)}
+.cert.on{display:block}.cert .t{font-size:28px;font-weight:800;color:var(--gold);margin:0}.cert .n{font-size:30px;font-weight:800;margin:6px 0;word-break:break-word}.cert p{margin:4px 0;font-size:19px}.cert .s{font-size:44px;margin:0}.cert .f{font-size:14px;color:var(--muted);margin-top:10px}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
+.hint{color:var(--muted);font-size:14px;margin:12px 0 0;text-align:center}
+@media print{header,.row,.hint,.name,.end>.stars,.end>.score,.end>.btn,#quiz{display:none!important}body{background:#fff}.cert.on{display:block;border-color:#999;margin:0}}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="logo">أ</span><div><h1><bdi>قراءة وكتابة وتجزئة الأعداد</bdi></h1><p><a href="../" style="color:var(--brand);font-weight:700;text-decoration:none">→ طرق الحل</a> · واجب منزلي · الرياضيات</p></div></div></header>
+<main>
+<div class="card" id="quiz"><p class="count" id="cnt"></p><div class="bar" id="bar"></div><button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button><div class="q" id="q"></div><div class="opts" id="opts"></div><div class="fb" id="fb" aria-live="polite"></div><button class="btn" id="next" type="button" hidden>التالي</button></div>
+<div class="card end" id="end" hidden>
+<div class="stars" id="stars"></div><p class="score" id="score"></p><p id="msg" style="font-size:20px;margin:6px 0"></p>
+<div class="name"><label for="nm">اكتب اسمك لتظهر شهادة الإنجاز:</label><input id="nm" maxlength="30" autocomplete="name" placeholder="اسمي"></div>
+<div class="cert" id="cert"><p class="t">🏅 شهادة إنجاز</p><p>تُمنح الطالبة / الطالب</p><p class="n" id="cn"></p><p>على إتمام واجب «<bdi>قراءة وكتابة وتجزئة الأعداد</bdi>»</p><p class="s" id="cs"></p><p id="cc" style="font-weight:800"></p><p id="cd"></p><p class="f">منصة أفق التعليمية · الرياضيات – الصف الرابع</p></div>
+<div class="row"><button class="btn" id="show" type="button">عرض الشهادة</button><button class="btn alt" id="prt" type="button" hidden>🖨 طباعة الشهادة</button><button class="btn alt" id="again" type="button">↻ أعد المحاولة</button></div>
+<p class="hint" id="shot" hidden>للتسليم: صوّر الشهادة (لقطة شاشة) وأرفقها في منصة نور.</p>
+</div>
+</main>
+<script>
+(function(){
+var BANK=[{"t":"tf","q":"عشر مئات تساوي ألفًا.","o":["صواب ✔","خطأ ✘"],"a":0},{"t":"mc","q":"ما قيمة الرقم 3 في العدد 8362؟","o":["300","3000","30","3"],"a":0},{"t":"mc","q":"74 مائة تساوي:","o":["74000","7400","740","7040"],"a":1},{"t":"tf","q":"العدد الأصغر بمائة من 980 هو 880.","o":["صواب ✔","خطأ ✘"],"a":0},{"t":"mc","q":"ما قيمة الرقم 4 في العدد 4623؟","o":["4","400","4000","40"],"a":2},{"t":"mc","q":"أكبر عدد من البطاقات 4 و9 و2 و7 هو:","o":["9472","7942","9724","9742"],"a":3},{"t":"tf","q":"البطاقة «39 عشرة» قيمتها 3900.","o":["صواب ✔","خطأ ✘"],"a":1},{"t":"mc","q":"من أنا؟ بين 2500 و3000، مئاتي 6، عشراتي أقل من مئاتي بواحد، آحادي صفر.","o":["2650","2560","2605","3650"],"a":0},{"t":"mc","q":"أي صيغة تحليلية تمثّل العدد 9009؟","o":["9000 + 90","900 + 9","9000 + 900 + 9","9000 + 9"],"a":3},{"t":"mc","q":"أي عدد فيه الرقم 4 في المئات والرقم 2 في الآحاد؟","o":["4265","5426","5462","4652"],"a":2}];
+var N=BANK.length,i=0,score=0,res=[],busy=false;
+function $(id){return document.getElementById(id)}
+function sh(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
+function tf(q){return q.t==='tf'}
+function build(){$('bar').innerHTML='';for(var k=0;k<N;k++)$('bar').appendChild(document.createElement('i'))}
+function bar(){var b=$('bar').children;for(var k=0;k<N;k++)b[k].className=res[k]===1?'ok':res[k]===0?'no':(k===i?'on':'')}
+function show(){busy=false;var q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;bar();$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';$('next').hidden=true;
+ var box=$('opts');box.innerHTML='';var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});if(!tf(q))list=sh(list);
+ list.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='opt';b.textContent=o.t;b.onclick=function(){pick(b,o.ok)};b._ok=o.ok;box.appendChild(b)})}
+function pick(b,ok){if(busy)return;busy=true;res[i]=ok?1:0;if(ok)score++;
+ Array.prototype.forEach.call($('opts').children,function(x){x.disabled=true;if(x._ok)x.classList.add('ok');else if(x===b)x.classList.add('no')});
+ $('fb').textContent=ok?'أحسنت! إجابة صحيحة ✔':'الإجابة الصحيحة باللون الأخضر';$('fb').className='fb '+(ok?'ok':'no');bar();
+ $('next').textContent=i+1<N?'التالي':'عرض النتيجة';$('next').hidden=false;$('next').focus()}
+function end(){$('quiz').hidden=true;$('end').hidden=false;var st=score>=N*0.9?3:score>=N*0.6?2:1;
+ $('stars').textContent=new Array(st+1).join('⭐');$('score').textContent='نتيجتك: '+score+' من '+N;
+ $('msg').textContent=st===3?'ممتاز! أنت رائع':st===2?'جيد جدًا، واصل التقدم':'حاول مرة أخرى لتحصل على نجوم أكثر';
+ $('cert').classList.remove('on');$('prt').hidden=true;$('shot').hidden=true;$('show').hidden=false;
+ try{$('nm').value=localStorage.getItem('afuq-hw-name')||''}catch(e){}window.scrollTo(0,0)}
+function cert(){var n=$('nm').value.trim();if(!n){$('nm').focus();$('nm').style.borderColor='var(--bad)';return}
+ $('nm').style.borderColor='';try{localStorage.setItem('afuq-hw-name',n)}catch(e){}
+ var st=score>=N*0.9?3:score>=N*0.6?2:1;$('cn').textContent=n;$('cs').textContent=new Array(st+1).join('⭐');$('cc').textContent='الدرجة: '+score+' من '+N;
+ var d='';try{d=new Date().toLocaleDateString('ar-OM',{year:'numeric',month:'long',day:'numeric'})}catch(e){d=new Date().toDateString()}$('cd').textContent=d;
+ $('cert').classList.add('on');$('prt').hidden=false;$('shot').hidden=false;$('show').hidden=true;$('cert').scrollIntoView({behavior:'smooth',block:'center'})}
+function start(){i=0;score=0;res=[];BANK=BANK.slice();$('quiz').hidden=false;$('end').hidden=true;build();show();window.scrollTo(0,0)}
+$('next').onclick=function(){if(i+1<N){i++;show()}else end()};
+$('show').onclick=cert;$('prt').onclick=function(){window.print()};$('again').onclick=start;
+$('nm').addEventListener('keydown',function(e){if(e.key==='Enter')cert()});
+if('speechSynthesis' in window){$('say').hidden=false;$('say').onclick=function(){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance($('q').textContent);u.lang='ar';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}}
+start();
+})();
+</script>
+</body>
+</html>
