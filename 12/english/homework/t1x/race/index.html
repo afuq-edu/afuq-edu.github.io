@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سباق ضد الوقت: Across Cultures · Reading for Pleasure · Review and Reference – اللغة الإنجليزية – الصف الثاني عشر</title>
+<script>window.HW_LANG="en-US";</script><script src="/assets/hwcommon.js"></script>
+<style>
+.track{position:relative;height:46px;background:linear-gradient(to left,#BFE8C9 calc(var(--p,0)*(100% - 22px) + 22px),var(--bg) 0);transition:background .6s;border:2px solid var(--line);border-radius:99px;margin:0 0 12px;overflow:hidden}
+.ball{position:absolute;top:3px;inset-inline-start:calc(var(--p,0)*(100% - 44px));font-size:32px;line-height:38px;transition:inset-inline-start .6s ease}
+.flag{position:absolute;top:4px;inset-inline-end:8px;font-size:30px;line-height:36px}
+.hud{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:18px;margin:0 0 8px}
+.pts{color:var(--gold);font-size:22px}
+.tm{height:14px;border-radius:99px;background:var(--line);overflow:hidden;margin:0 0 14px}.tm i{display:block;height:100%;width:100%;background:var(--ok);transition:width .1s linear,background .3s}
+.q,.opt{direction:ltr}.q{font-size:clamp(24px,6.5vw,34px);font-weight:800;line-height:1.6;margin:6px 0 16px}
+.say{float:left;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:6px 12px;font-size:22px;cursor:pointer;color:inherit}
+.opts{display:grid;gap:12px}
+.opt{font:inherit;font-size:clamp(20px,5.5vw,26px);font-weight:700;text-align:start;padding:16px 18px;border-radius:16px;border:3px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;min-height:64px}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.no{border-color:var(--bad);background:var(--badbg)}.opt:disabled{cursor:default}
+.fb{margin:12px 0 0;font-size:22px;font-weight:800;min-height:34px}.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.go{text-align:center;padding:26px 16px}.go h2{font-size:30px;margin:0 0 6px}.go p{font-size:19px;color:var(--muted);margin:0 0 6px}
+</style>
+</head>
+<body>
+<header><div class="top"><span class="logo">أ</span><div><h1>🏁 سباق ضد الوقت</h1><p><a href="../">→ طرق الحل</a> · <bdi>Across Cultures · Reading for Pleasure · Review and Reference</bdi></p></div></div></header>
+<main>
+<div class="card go" id="intro"><h2>هيا نتسابق!</h2><p>أجب عن 10 أسئلة قبل انتهاء الوقت.</p><p>كل إجابة صحيحة تدفع الكرة ⚽ نحو العلم 🏁</p><button class="btn" id="start" type="button">ابدأ السباق</button></div>
+<div class="card" id="game" hidden>
+<div class="track" aria-hidden="true"><span class="ball" id="ball">⚽</span><span class="flag">🏁</span></div>
+<div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
+<div class="tm"><i id="tm"></i></div>
+<button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
+<div class="q" id="q"></div><div class="opts" id="opts"></div><div class="fb" id="fb" aria-live="polite"></div>
+</div>
+<div id="end" hidden></div>
+</main>
+<script>
+(function(){
+var BANK=[{"t":"mc","q":"‘Caveat emptor’ is a …","o":["Latin expression","Spanish slogan","French word","Greek name"],"a":0},{"t":"mc","q":"Campbell’s used marbles to make the soup look …","o":["full of vegetables","hot","cheap","green"],"a":0},{"t":"mc","q":"The Nile is a river in …","o":["Egypt","France","Canada","Spain"],"a":0},{"t":"mc","q":"‘Ritual’ means …","o":["religious ceremony","shopping","a sale","a text"],"a":0},{"t":"tf","q":"Egypt lies at the point where Africa and Asia meet.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"‘Affluent’ means …","o":["having plenty of money","poor","fast","old"],"a":0},{"t":"mc","q":"Instead of ice-cream, advertisers may use …","o":["shaving cream","cheese","milk","butter"],"a":0},{"t":"tf","q":"‘Dramatically’ means slowly and slightly.","o":["True ✓","False ✗"],"a":1},{"t":"tf","q":"McDonald’s won the court case in the US.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"Al-Azhar University was founded about …","o":["970 CE","1900 CE","600 BCE","1500 CE"],"a":0}], TITLE='Across Cultures · Reading for Pleasure · Review and Reference', SUB='اللغة الإنجليزية – الصف الثاني عشر', SEC=20;
+var N=BANK.length,i=0,correct=0,points=0,streak=0,left=SEC,timer=null,busy=false,$=HW.$;
+function tf(q){return q.t==='tf'}
+function show(){busy=false;var q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';
+ var box=$('opts');box.innerHTML='';var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});if(!tf(q))list=HW.shuffle(list);
+ list.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='opt';b.textContent=o.t;b._ok=o.ok;b.onclick=function(){pick(b,o.ok)};box.appendChild(b)});
+ left=SEC;tick();clearInterval(timer);timer=setInterval(function(){left-=.1;if(left<=0){left=0;tick();clearInterval(timer);if(!busy)finish(null,false,true)}else tick()},100)}
+function tick(){var f=$('tm');f.style.width=(left/SEC*100)+'%';f.style.background=left<5?'var(--bad)':left<9?'var(--gold)':'var(--ok)'}
+function reveal(){Array.prototype.forEach.call($('opts').children,function(x){x.disabled=true;if(x._ok)x.classList.add('ok')})}
+function pick(b,ok){if(busy)return;finish(b,ok,false)}
+function finish(b,ok,timeout){busy=true;clearInterval(timer);reveal();if(b&&!ok)b.classList.add('no');
+ if(ok){correct++;streak++;var gain=10+Math.ceil(left/SEC*10)+(streak%3===0?5:0);points+=gain;HW.sound('ok');$('fb').textContent='أحسنت! +'+gain;$('fb').className='fb ok';$('ball').parentNode.style.setProperty('--p',correct/N);$('ball').style.setProperty('--p',correct/N)}
+ else{streak=0;HW.sound('no');$('fb').textContent=timeout?'انتهى الوقت! الإجابة الصحيحة باللون الأخضر':'الإجابة الصحيحة باللون الأخضر';$('fb').className='fb no'}
+ $('pts').textContent=points+' نقطة';
+ setTimeout(function(){if(i+1<N){i++;show()}else end()},ok?900:1700)}
+function end(){$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (سباق ضد الوقت)',sub:SUB,onAgain:start})}
+function start(){i=0;correct=0;points=0;streak=0;$('ball').style.setProperty('--p',0);$('pts').textContent='0 نقطة';$('intro').hidden=true;$('end').hidden=true;$('game').hidden=false;show();window.scrollTo(0,0)}
+if(HW.canSpeak){$('say').hidden=false;$('say').onclick=function(){HW.speak($('q').textContent)}}
+$('start').onclick=start;
+})();
+</script>
+</body>
+</html>
