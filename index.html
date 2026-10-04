@@ -86,6 +86,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 .subjects{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 18px 8px}
 .subjects h2{font-size:18px;margin:0 0 6px}
 .subjects .hint{margin:0 0 6px;color:var(--muted);font-size:14px}
+.ann{margin:0 0 10px;padding:6px 10px;border-inline-start:3px solid var(--c2);background:var(--bg);border-radius:8px;color:var(--muted);font-size:13px;line-height:1.7}.ann[hidden]{display:none}
 .subj{display:flex;align-items:center;gap:14px;padding:14px 4px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
 .subj:first-of-type{border-top:0}
 .subj .sic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
@@ -115,6 +116,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   <section class="subjects" id="subjects" aria-live="polite">
     <h2 id="sTitle">المواد</h2>
     <p class="hint" id="sHint">اختر صفًا من الأعلى لتظهر مواده هنا.</p>
+    <p class="ann" id="ann" hidden></p>
     <div id="sList"></div>
   </section>
 
@@ -187,6 +189,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   var m=(location.hash.match(/^#g(\d+)$/)||[])[1]||new URLSearchParams(location.search).get('g');
   if(m) select(Number(m),false);
 })();
+</script>
+<script>
+(function(){var a=document.getElementById('ann');if(!a)return;fetch('announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.text){a.textContent=j.text;a.hidden=false}}).catch(function(){})})();
 </script>
 </body>
 </html>
