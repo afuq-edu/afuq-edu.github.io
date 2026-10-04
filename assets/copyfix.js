@@ -90,7 +90,7 @@
   var TAG = /<\/?(table|thead|tbody|tr|td|th|br|p|div|span|b|strong|i|em|u|ol|ul|li|h[1-6]|small|sup|sub|section)\b[^>]*>/i;
 
   /* ---------- field context: which card's copy button was pressed ---------- */
-  var COPY_BTN = /^[^\u0621-\u064Aa-zA-Z]*(نسخ|انسخ|تم النسخ)/;
+  var COPY_BTN = /^[^\u0621-\u064Aa-zA-Z]*(نسخ|انسخ|تم النسخ|Copy|Copied)/;
   function isCopyBtn(b) { return b && b.tagName === 'BUTTON' && COPY_BTN.test(b.textContent || ''); }
   function cardOf(btn) {
     var c = btn;
