@@ -47,6 +47,7 @@ h2{font-size:20px;margin:0 0 16px}
 .card p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
 .tag{align-self:flex-start;font-size:13px;font-weight:700;border-radius:999px;padding:3px 12px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
 
+.ann{margin:0 0 12px;padding:6px 10px;border-inline-start:3px solid #F2B035;background:var(--card);border-radius:8px;color:var(--muted);font-size:13px;line-height:1.7}.ann[hidden]{display:none}
 .note{margin-top:28px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);font-size:15px}
 .note b{color:var(--ink)}
 .note a{color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate}
@@ -187,6 +188,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     b.append(document.createTextNode('تواصل معنا على '+PHONE+' للحصول على رابط صحيح.')); root.append(b); return;
   }
   root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
+  var ann=el('p','ann'); ann.hidden=true; root.append(ann);
+  fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){ if(j&&j.text){ ann.textContent=j.text; ann.hidden=false; } }).catch(function(){});
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
