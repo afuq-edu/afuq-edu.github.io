@@ -100,7 +100,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     <button class="card" style="--c:var(--c2)" data-id="homework">
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><h3>الواجبات</h3></div>
       <p>واجبات الدراسات الاجتماعية – الصف السادس</p>
-      <span class="tag">واجب تفاعلي لكل درس</span>
+      <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> برابط المعلم</span>
     </button>
   </div>
 
@@ -131,7 +131,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   var SECTIONS={
     prep:{title:'ملف التحضير',hash:null},
     kahoot:{title:'مسابقات كاهوت',hash:'fcd647aca9ee1134a1db2eb2bfff2fe2969739c6ea742c11e6cfa032371a2071'},
-    homework:{title:'الواجبات',hash:null}
+    homework:{title:'الواجبات',hash:'e41ada428b68cde959e27cebfb9402759d4ed2828a5ddb7dd134a4cf821d27e4',linkOnly:true}
   };
   var dlg=document.getElementById('dlg'), form=document.getElementById('form'),
       input=document.getElementById('code'), msg=document.getElementById('msg'), current=null;
@@ -159,9 +159,12 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     var s=SECTIONS[id]; if(!s)return;
     if(!s.hash||isUnlocked(id)){go(id);return}
     current=id;
-    document.getElementById('dlgTitle').textContent=s.title+' – أدخل الرمز';
+    var lo=!!s.linkOnly, dp=form.querySelector('p'), gb=form.querySelector('.go');
+    document.getElementById('dlgTitle').textContent=lo?s.title:s.title+' – أدخل الرمز';
+    if(dp){ if(!dp.dataset.t) dp.dataset.t=dp.textContent; dp.textContent=lo?'هذا القسم متاح عبر الرابط الخاص بالمعلم فقط. للحصول على رابط خاص تواصل معنا على الرقم 76506037.':dp.dataset.t; }
+    input.style.display=lo?'none':''; if(gb) gb.style.display=lo?'none':'';
     input.value='';input.classList.remove('err');msg.textContent='';
-    dlg.showModal();input.focus();
+    dlg.showModal(); if(!lo) input.focus();
   }
 
   document.querySelectorAll('.card').forEach(function(b){
