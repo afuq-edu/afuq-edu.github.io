@@ -413,10 +413,14 @@ const SND={
 
 /* ======================= SPEECH ======================= */
 let arVoice=null;
-function loadVoices(){try{const v=speechSynthesis.getVoices();arVoice=v.find(x=>/^ar/i.test(x.lang))||null}catch(e){}}
-if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
-function speak(t){if(!arVoice||muted)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.voice=arVoice;u.lang=arVoice.lang;u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
-function sayBtn(text){const b=tx('button','pill','🔊 استمع');b.type='button';b.onclick=()=>speak(text);if(!arVoice)b.style.display='none';return b}
+function loadVoices(){try{const v=speechSynthesis.getVoices();arVoice=v.find(x=>/^ar([-_]|$)/i.test(x.lang))||v.find(x=>/arab|عرب/i.test(x.name))||null;document.querySelectorAll('.pill[data-say]').forEach(b=>b.style.display='')}catch(e){}}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;setTimeout(loadVoices,500);setTimeout(loadVoices,1500)}
+/* browsers keep audio locked until the first tap/click: unlock it once so effects and speech work on computers too */
+function unlockAudio(){try{const a=ac();if(a){const b=a.createBuffer(1,1,22050),s=a.createBufferSource();s.buffer=b;s.connect(a.destination);s.start(0)}if('speechSynthesis'in window)speechSynthesis.resume()}catch(e){}}
+['pointerdown','keydown','touchstart'].forEach(ev=>addEventListener(ev,function f(){unlockAudio();removeEventListener(ev,f)},{passive:true}));
+let noVoiceToast=false;
+function speak(t){if(muted||!('speechSynthesis'in window))return;try{speechSynthesis.cancel();speechSynthesis.resume();if(!arVoice&&!noVoiceToast){noVoiceToast=true;say('إن لم تسمع الصوت: أضف صوتًا عربيًا في إعدادات الجهاز، أو جرّب متصفح Edge')}const u=new SpeechSynthesisUtterance(t);if(arVoice){u.voice=arVoice;u.lang=arVoice.lang}else u.lang='ar-SA';u.rate=.85;u.volume=1;setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},60)}catch(e){}}
+function sayBtn(text){const b=tx('button','pill','🔊 استمع');b.type='button';b.setAttribute('data-say','1');b.onclick=()=>speak(text);if(!('speechSynthesis'in window))b.style.display='none';return b}
 
 /* ======================= STARS (per-viewer) ======================= */
 let STARS={};
