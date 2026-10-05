@@ -95,22 +95,22 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     <button class="card" style="--c:var(--c2)" data-id="explorer">
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3M8 15h8"/></svg></span><h3>مختبر الأحياء التفاعلي</h3></div>
       <p>أحياء الصف التاسع – أنشطة تفاعلية</p>
-      <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> للمشتركين</span>
+          <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> الباقة الذهبية</span>
     </button>
     <button class="card" style="--c:var(--c3)" data-id="kahoot">
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span><h3>مسابقات كاهوت</h3></div>
       <p>مسابقة المجموعات – الأحياء – الصف التاسع</p>
-      <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> للمشتركين</span>
+          <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> الباقة الذهبية</span>
     </button>
     <button class="card" style="--c:var(--c2)" data-id="homework">
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg></span><h3>الواجبات</h3></div>
       <p>واجبات أحياء – الصف التاسع</p>
-      <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> برابط المعلم</span>
+          <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> الباقة الذهبية</span>
     </button>
   </div>
 
   <div class="note">
-    <b>لغير المشتركين:</b> للحصول على رمز الدخول تواصل معنا على الرقم
+    <b>للترقية إلى الباقة الذهبية:</b> تواصل معنا على الرقم
     <a href="tel:76506037">76506037</a>
   </div>
 </main>
@@ -119,14 +119,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 
 <dialog id="dlg">
   <form class="dlg" method="dialog" id="form">
-    <h3 id="dlgTitle">أدخل الرمز</h3>
-    <p>هذا القسم للمشتركين. أدخل رمز الدخول للمتابعة.</p>
-    <input id="code" inputmode="numeric" autocomplete="off" aria-label="رمز الدخول" required>
-    <div class="msg" id="msg" role="alert"></div>
-    <div class="get">ليس لديك رمز؟ تواصل على <a href="tel:76506037">76506037</a></div>
+    <h3 id="dlgTitle"></h3>
+    <p>هذا القسم مخصص للباقة الذهبية.</p>
+    <div class="get">للترقية تواصل معنا على الرقم <a href="tel:76506037">76506037</a></div>
     <div class="row">
-      <button type="button" id="cancel">إلغاء</button>
-      <button type="submit" class="go">دخول</button>
+      <button type="button" id="cancel">إغلاق</button>
     </div>
   </form>
 </dialog>
@@ -135,57 +132,28 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 (function(){
   var SECTIONS={
     prep:{title:'ملف التحضير',hash:null},
-    explorer:{title:'مختبر الأحياء التفاعلي',hash:'40e90363321b9ee3a4cff4991e38124ffd1d71864beb9da28937efcb45776ba8'},
-    kahoot:{title:'مسابقات كاهوت',hash:'fcd647aca9ee1134a1db2eb2bfff2fe2969739c6ea742c11e6cfa032371a2071'},
-    homework:{title:'الواجبات',hash:'e41ada428b68cde959e27cebfb9402759d4ed2828a5ddb7dd134a4cf821d27e4',linkOnly:true}
+    explorer:{title:'مختبر الأحياء التفاعلي',hash:null},
+    kahoot:{title:'مسابقات كاهوت',hash:null},
+    homework:{title:'الواجبات',hash:null}
   };
-  var dlg=document.getElementById('dlg'), form=document.getElementById('form'),
-      input=document.getElementById('code'), msg=document.getElementById('msg'), current=null;
-
+  var dlg=document.getElementById('dlg');
   function key(id){return 'ofuq-g9l-unlock-'+id}
   function isUnlocked(id){
     try{if(localStorage.getItem(key(id))==='1')return true}catch(e){}
     try{if(sessionStorage.getItem(key(id))==='1')return true}catch(e){}
     return false;
   }
-  function unlock(id){
-    try{localStorage.setItem(key(id),'1')}catch(e){}
-    try{sessionStorage.setItem(key(id),'1')}catch(e){}
-  }
   function go(id){location.href=id+'/'}
-  function sha256(text){
-    return crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)).then(function(buf){
-      return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
-    });
-  }
-  function toLatinDigits(s){
-    return s.replace(/[٠-٩]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.indexOf(d)}).replace(/[۰-۹]/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)}).trim();
-  }
   function open(id){
     var s=SECTIONS[id]; if(!s)return;
-    if(!s.hash||isUnlocked(id)){go(id);return}
-    current=id;
-    var lo=!!s.linkOnly, dp=form.querySelector('p'), gb=form.querySelector('.go');
-    document.getElementById('dlgTitle').textContent=lo?s.title:s.title+' – أدخل الرمز';
-    if(dp){ if(!dp.dataset.t) dp.dataset.t=dp.textContent; dp.textContent=lo?'هذا القسم متاح عبر الرابط الخاص بالمعلم فقط. للحصول على رابط خاص تواصل معنا على الرقم 76506037.':dp.dataset.t; }
-    input.style.display=lo?'none':''; if(gb) gb.style.display=lo?'none':'';
-    input.value='';input.classList.remove('err');msg.textContent='';
-    dlg.showModal(); if(!lo) input.focus();
+    if(id==='prep'||isUnlocked(id)){go(id);return}
+    document.getElementById('dlgTitle').textContent=s.title;
+    dlg.showModal();
   }
-
   document.querySelectorAll('.card').forEach(function(b){
     b.addEventListener('click',function(){open(b.dataset.id)});
   });
   document.getElementById('cancel').addEventListener('click',function(){dlg.close()});
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var id=current;
-    sha256('ofuq:'+toLatinDigits(input.value)).then(function(h){
-      if(h===SECTIONS[id].hash){unlock(id);dlg.close();go(id)}
-      else{input.classList.add('err');msg.textContent='الرمز غير صحيح، حاول مرة أخرى';input.select()}
-    });
-  });
-
   var lock=new URLSearchParams(location.search).get('lock');
   if(lock&&SECTIONS[lock]){history.replaceState(null,'',location.pathname);open(lock)}
 })();
