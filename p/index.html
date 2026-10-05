@@ -201,6 +201,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     root.append(box);
   });
   }
+  // Pasting another custom link into a tab that already shows one only changes the hash: reload so the new link's package is shown.
+  window.addEventListener('hashchange',function(){ location.reload(); });
   // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
   // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
   if(kcode){
