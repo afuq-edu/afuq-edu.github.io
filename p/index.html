@@ -207,8 +207,12 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     b.append(document.createTextNode('تواصل معنا على '+PHONE+' للحصول على رابط صحيح.')); root.append(b); return;
   }
   root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
-  var ann=el('p','ann'); ann.hidden=true; root.append(ann);
-  fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){ if(j&&j.text){ ann.textContent=j.text; ann.hidden=false; } }).catch(function(){});
+  var ann=el('div'); root.append(ann);
+  fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
+    if(!j) return;
+    // newest notice first: the gold-package notice (custom), then the general one (text)
+    [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
+  }).catch(function(){});
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
