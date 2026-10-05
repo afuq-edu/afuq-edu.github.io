@@ -7,6 +7,7 @@
 (function(){
   var K='afuq-pkg-home', P='afuq-pkg-paths';
   var s=document.currentScript, role=s&&s.getAttribute('data-role'), going=false;
+  if(/^\/\d+\/[a-z]+\/homework\/[^\/]+\//.test(location.pathname)) role='open'; /* student lesson links are never redirected */
   try{ if(/[?&]afuq-exit\b/.test(location.search)){ localStorage.removeItem(K); localStorage.removeItem(P); try{ sessionStorage.removeItem(K); sessionStorage.removeItem(P); sessionStorage.removeItem('afuq-pkg-all'); }catch(e){} return; } }catch(e){ return; }
   function rd(S,k){ try{ return window[S].getItem(k)||''; }catch(e){ return ''; } }
   function state(){
