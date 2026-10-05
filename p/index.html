@@ -203,6 +203,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   }
   // Pasting another custom link into a tab that already shows one only changes the hash: reload so the new link's package is shown.
   window.addEventListener('hashchange',function(){ location.reload(); });
+  // Some phones reuse an open tab for a new link, or restore it from memory; whenever the address no longer matches
+  // the link this page was built for, rebuild it so the newest link always wins over the previous one.
+  var builtFor=location.hash;
+  function stale(){ if(location.hash!==builtFor) location.reload(); }
+  window.addEventListener('pageshow',function(e){ if(e.persisted) location.reload(); });
+  window.addEventListener('focus',stale);
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
   // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
   // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
   if(kcode){
