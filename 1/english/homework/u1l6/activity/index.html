@@ -50,7 +50,7 @@ main{max-width:720px;margin:0 auto;padding:18px 16px 48px}
 </main>
 <script>
 (function(){
-var BANK=[{"t":"mc","q":"👦 What's this?","o":["cat","sister","boy"],"a":2},{"t":"mc","q":"👩 What's this?","o":["mum","dad","girl"],"a":0},{"t":"mc","q":"👩 What's this?","o":["mum","sister","dad"],"a":0},{"t":"mc","q":"🐱 What's this?","o":["boy","girl","cat"],"a":2},{"t":"mc","q":"🏹 What's the first sound?","o":["s","p","a"],"a":2},{"t":"mc","q":"🏹 What's the first sound?","o":["s","a","t"],"a":1},{"t":"tf","q":"👧 This is a girl.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"👩 This is a boy.","o":["True ✓","False ✗"],"a":1},{"t":"tf","q":"👨 This is my sister.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Blend the sounds: t – a – p","o":["tap","pat","nap"],"a":0}];
+var BANK=[{"t":"mc","q":"👦 What's this?","o":["cat","sister","boy"],"a":2},{"t":"mc","q":"👩 What's this?","o":["mum","dad","girl"],"a":0},{"t":"mc","q":"👩 What's this?","o":["mum","sister","dad"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “boy”?","o":["ولد","غابة","واجب منزلي","تنس"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “cat”?","o":["قطة","دشداشة","التكنولوجيا","سجائر"],"a":0},{"t":"mc","q":"🏹 What's the first sound?","o":["s","a","t"],"a":1},{"t":"tf","q":"👧 This is a girl.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"👩 This is a boy.","o":["True ✓","False ✗"],"a":1},{"t":"tf","q":"👨 This is my sister.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Blend the sounds: t – a – p","o":["tap","pat","nap"],"a":0}];
 var N=BANK.length,i=0,score=0,res=[],busy=false;
 function $(id){return document.getElementById(id)}
 function sh(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}

@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>Lesson 6: Culture and Project – Famous railways</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -37,18 +37,20 @@
 <script>
 (function(){
 var BANK=[{"t":"tf","q":"For the project, you draw the route of a railway on a map.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"The Haramain railway connects Makkah and Madinah.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"The route ___ in Moscow and finishes in Vladivostok.","o":["starts","start","starting"],"a":0},{"t":"mc","q":"Why should you sound interested when you present?","o":["so other people will be interested too","so you finish quickly","so nobody listens","so you can read the notes"],"a":0},{"t":"mc","q":"Trains on the Haramain line are designed to run in temperatures of…","o":["50°C","5°C","-50°C","100°C"],"a":0},{"t":"mc","q":"How fast can Haramain trains travel?","o":["300 kilometres an hour","30 kilometres an hour","3,000 kilometres an hour","100 kilometres an hour"],"a":0},{"t":"tf","q":"The Trans-Siberian railway goes from Moscow to Vladivostok.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"Which information do you need for the railway map?","o":["where it starts and finishes, how long it is, and what you can see","only the price","only the name","the driver’s name"],"a":0},{"t":"mc","q":"What is special about Lake Baikal?","o":["It’s the deepest lake in the world.","It’s the biggest desert.","It’s in Saudi Arabia.","It’s the smallest lake."],"a":0},{"t":"mc","q":"How many places are there where camels can cross the Haramain railway?","o":["12","50","2","300"],"a":0}], TITLE='Lesson 6: Culture and Project – Famous railways', SUB='اللغة الإنجليزية – الصف السابع', FALL=12;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}

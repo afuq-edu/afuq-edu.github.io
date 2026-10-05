@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>حرف ق (القاف): هذه قريتي</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -37,18 +37,20 @@
 <script>
 (function(){
 var BANK=[{"t":"mc","q":"ما المدّ في المقطع «قا»؟","o":["المد بالألف","المد بالواو","المد بالياء","لا يوجد مد"],"a":0},{"t":"mc","q":"ما الكلمة الأولى في جملة «هذهِ قَرْيَتي.»؟","o":["هذه","قريتي","طبق","قلم"],"a":0},{"t":"mc","q":"أي كلمة تبدأ بحرف القاف؟","o":["قَلَمٌ","طَماطِمُ","سُلَّمٌ","بَيْتٌ"],"a":0},{"t":"tf","q":"كلمة «قِطّةٌ» تبدأ بحرف القاف.","o":["صواب","خطأ"],"a":0},{"t":"mc","q":"أين يقع حرف القاف في كلمة «بَقَرةٌ»؟","o":["في وسطها","في أولها","في آخرها","لا يوجد فيها"],"a":0},{"t":"mc","q":"ما القيمة التي يدعو إليها نص «هذه قريتي»؟","o":["المحافظة على نظافة البيئة","شكر الله على نعمة الغذاء","إفشاء السلام بين الناس","الانتماء إلى الأسرة واحترام أفرادها"],"a":0},{"t":"tf","q":"المقطع «قي» فيه مدّ بالألف.","o":["صواب","خطأ"],"a":1},{"t":"tf","q":"كلمة «بُسْتانٌ» فيها حرف القاف.","o":["صواب","خطأ"],"a":1},{"t":"mc","q":"أكمل كتابة الكلمة: ح___يبة","o":["ق","و","ح"],"a":0},{"t":"mc","q":"أكمل الجملة: «هذه ___»","o":["قريتي","ملعقة","سوق"],"a":0}], TITLE='حرف ق (القاف): هذه قريتي', SUB='اللغة العربية – الصف الأول', FALL=10;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}

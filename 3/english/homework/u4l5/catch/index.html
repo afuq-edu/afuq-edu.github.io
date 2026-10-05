@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>Unit 4 – Lesson 5: Culture (the yellow school bus)</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -36,19 +36,21 @@
 </main>
 <script>
 (function(){
-var BANK=[{"t":"mc","q":"What question do we ask?","o":["How do you go to school?","How old are you?","What's your name?","How much is it?"],"a":0},{"t":"mc","q":"🛑 What is it?","o":["stop","go","bus","car"],"a":0},{"t":"mc","q":"🚌 What colour are school buses in the United States?","o":["yellow","red","blue","green"],"a":0},{"t":"tf","q":"The tallest bar shows the most common transport.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"What do we make in the project?","o":["a graph","a menu","a poster of clothes","a sports book"],"a":0},{"t":"mc","q":"Who takes the students to school?","o":["bus drivers","pilots","chefs","doctors"],"a":0},{"t":"mc","q":"\"In our group, four students go to school by car.\" How many go by car?","o":["4","2","3","5"],"a":0},{"t":"tf","q":"Cars don't stop for school buses.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Bars: bus 5, car 3, walk 1. Which is the most common?","o":["bus","car","walk","train"],"a":0},{"t":"tf","q":"We count the students for each transport.","o":["True ✓","False ✗"],"a":0}], TITLE='Unit 4 – Lesson 5: Culture (the yellow school bus)', SUB='اللغة الإنجليزية – الصف الثالث', FALL=12;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var BANK=[{"t":"mc","q":"What is the Arabic meaning of the word “stop”?","o":["يتوقف","يشتري","يشرح","يسترخي"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “bus”?","o":["حافلة","منقار","تنس","حاسوب محمول"],"a":0},{"t":"mc","q":"🚌 What colour are school buses in the United States?","o":["yellow","red","blue","green"],"a":0},{"t":"tf","q":"The tallest bar shows the most common transport.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"What do we make in the project?","o":["a graph","a menu","a poster of clothes","a sports book"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “yellow”?","o":["أصفر","أزرق","وردي","أسود"],"a":0},{"t":"mc","q":"\"In our group, four students go to school by car.\" How many go by car?","o":["4","2","3","5"],"a":0},{"t":"tf","q":"Cars don't stop for school buses.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Bars: bus 5, car 3, walk 1. Which is the most common?","o":["bus","car","walk","train"],"a":0},{"t":"tf","q":"We count the students for each transport.","o":["True ✓","False ✗"],"a":0}], TITLE='Unit 4 – Lesson 5: Culture (the yellow school bus)', SUB='اللغة الإنجليزية – الصف الثالث', FALL=12;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}

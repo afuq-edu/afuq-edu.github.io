@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>Lesson 5: Vocabulary and Grammar – Transport verbs; Present simple for the future</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -36,19 +36,21 @@
 </main>
 <script>
 (function(){
-var BANK=[{"t":"mc","q":"We ___ in fifteen minutes. (plane comes down)","o":["land","lands","landing"],"a":0},{"t":"mc","q":"Which word matches this meaning? “To use a train to go somewhere”","o":["travel by train","catch a bus","take off","leave"],"a":0},{"t":"mc","q":"Which word matches this meaning? “When a plane comes down from the sky to the ground”","o":["land","arrive","take a seat","travel by train"],"a":0},{"t":"mc","q":"Which word matches this meaning? “To get to a place at the end of a journey”","o":["arrive","leave","pack your suitcase","catch a bus"],"a":0},{"t":"tf","q":"We use the Present simple for timetables and fixed plans.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"Everyone showed their boarding pass before they could ___ the plane.","o":["get on","take off","leave"],"a":0},{"t":"tf","q":"“The plane takes off at 6 a.m.” uses the Present simple for the future.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"“leave” means to put your clothes and things into your suitcase before a trip.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"I love to ___ because I can look out of the window.","o":["travel by train","get on","land"],"a":0},{"t":"mc","q":"When we arrive, nobody will want to ___ the train.","o":["get off","land","explore"],"a":0}], TITLE='Lesson 5: Vocabulary and Grammar – Transport verbs; Present simple for the future', SUB='اللغة الإنجليزية – الصف السابع', FALL=12;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var BANK=[{"t":"mc","q":"We ___ in fifteen minutes. (plane comes down)","o":["land","lands","landing"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “arrive”?","o":["يصل","يسمع","ينطق","يتوقف"],"a":0},{"t":"mc","q":"Which word matches this meaning? “When a plane comes down from the sky to the ground”","o":["land","arrive","take a seat","travel by train"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “explore”?","o":["يستكشف","يسمع","يصرخ","يسترخي"],"a":0},{"t":"tf","q":"We use the Present simple for timetables and fixed plans.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"Everyone showed their boarding pass before they could ___ the plane.","o":["get on","take off","leave"],"a":0},{"t":"tf","q":"“The plane takes off at 6 a.m.” uses the Present simple for the future.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"“leave” means to put your clothes and things into your suitcase before a trip.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"I love to ___ because I can look out of the window.","o":["travel by train","get on","land"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “leaves”?","o":["أوراق الشجر","إيصال","ذقن","شباشب"],"a":0}], TITLE='Lesson 5: Vocabulary and Grammar – Transport verbs; Present simple for the future', SUB='اللغة الإنجليزية – الصف السابع', FALL=12;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}

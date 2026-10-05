@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>البلاد العربية مطلع العصور الحديثة</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -37,18 +37,20 @@
 <script>
 (function(){
 var BANK=[{"t":"mc","q":"مر البرتغاليون في طريقهم إلى الهند بـ:","o":["رأس الرجاء الصالح","قناة السويس","مضيق هرمز أولًا","البحر الأسود"],"a":0},{"t":"mc","q":"المخطوطات هي:","o":["كل ما كان مكتوبًا بخط اليد من الكتب","الكتب المطبوعة حديثًا","الخرائط الرقمية","الصور الفضائية"],"a":0},{"t":"tf","q":"انبهر البرتغاليون بمظاهر الحضارة الزاهرة في مدن شرق أفريقيا.","o":["صواب ✔","خطأ ✘"],"a":0},{"t":"mc","q":"اتخذت الدولة العثمانية مدينة ____ عاصمة لها.","o":["إسطنبول","بغداد","القاهرة","دمشق"],"a":0},{"t":"mc","q":"قامت الدولة الكثيرية في ____ وامتد نفوذها شمالًا.","o":["حضرموت","البحرين","العراق","الشام"],"a":0},{"t":"mc","q":"أهم مدينة أوروبية أعيد إليها تصدير السلع هي مدينة ____ الإيطالية.","o":["البندقية","باريس","لشبونة","لندن"],"a":0},{"t":"mc","q":"عاشت أوروبا قبل الكشوفات الجغرافية مرحلة عرفت بـ ____ الأوروبية.","o":["النهضة","العزلة","الصحراء","الهجرة"],"a":0},{"t":"mc","q":"من العوامل التي ساعدت الأوروبيين على التوسع اكتشاف ____ واستخدامها.","o":["البوصلة","الكهرباء","الطائرة","الهاتف"],"a":0},{"t":"tf","q":"تعد الدولة الصفوية من القوى التي نشأت داخل البلاد العربية.","o":["صواب ✔","خطأ ✘"],"a":1},{"t":"tf","q":"كانت الكشوفات الجغرافية رحلات سلمية للتبادل الثقافي فقط.","o":["صواب ✔","خطأ ✘"],"a":1}], TITLE='البلاد العربية مطلع العصور الحديثة', SUB='الدراسات الاجتماعية – الصف الثامن', FALL=10;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}

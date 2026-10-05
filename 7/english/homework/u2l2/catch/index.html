@@ -24,7 +24,7 @@
 <body>
 <header><div class="top"><span class="logo">أ</span><div><h1>🎯 صيد الإجابة</h1><p><a href="../">→ طرق الحل</a> · <bdi>Lesson 2: Team Talk – Watch out! It’s so cute!</bdi></p></div></div></header>
 <main>
-<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
+<div class="card go" id="intro"><h2>هيا نصطاد!</h2><p>اقرأ السؤال، ثم المس الإجابة الصحيحة وهي تنزل من السماء.</p><p>10 أسئلة، لكل إجابة صحيحة 10 نقاط. لك محاولتان لكل سؤال، فإذا أخطأت مرتين تُحسب إجابتك خاطئة.</p><button class="btn" id="start" type="button">ابدأ اللعب</button></div>
 <div class="card" id="game" hidden>
 <div class="hud"><span id="cnt"></span><span class="pts" id="pts">0 نقطة</span></div>
 <button class="say" id="say" type="button" aria-label="استمع إلى السؤال" hidden>🔊</button>
@@ -36,19 +36,21 @@
 </main>
 <script>
 (function(){
-var BANK=[{"t":"mc","q":"___! There’s a scorpion near your foot!","o":["Watch out","It’s so cute","Good plan"],"a":0},{"t":"mc","q":"Look at this baby rabbit! It’s so ___!","o":["cute","scared","watch"],"a":0},{"t":"tf","q":"Bayan has seen lots of animals.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Why can’t it be a bear?","o":["Bears don’t live there.","It has wings.","It is too big.","It has scales."],"a":0},{"t":"mc","q":"Why can’t it be a bird?","o":["It doesn’t have wings.","It has fur.","It is moving.","It is brown."],"a":0},{"t":"tf","q":"The hedgehog has small paws and whiskers.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"Emily thinks it could be a bird because she can hear birds.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"How does Bayan know it’s a hedgehog?","o":["It has spines.","It has a long tongue.","It can fly.","It is very big."],"a":0},{"t":"mc","q":"Why does Emily say they shouldn’t touch it?","o":["It may be scared.","It might bite.","It is dirty.","It is asleep."],"a":0},{"t":"mc","q":"Why hasn’t Bayan seen any animals yet?","o":["You have to look carefully and listen.","There are no animals there.","She is not interested.","It is night time."],"a":0}], TITLE='Lesson 2: Team Talk – Watch out! It’s so cute!', SUB='اللغة الإنجليزية – الصف السابع', FALL=12;
-var N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
+var BANK=[{"t":"mc","q":"___! There’s a scorpion near your foot!","o":["Watch out","It’s so cute","Good plan"],"a":0},{"t":"mc","q":"Look at this baby rabbit! It’s so ___!","o":["cute","scared","watch"],"a":0},{"t":"tf","q":"Bayan has seen lots of animals.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Why can’t it be a bear?","o":["Bears don’t live there.","It has wings.","It is too big.","It has scales."],"a":0},{"t":"mc","q":"Why can’t it be a bird?","o":["It doesn’t have wings.","It has fur.","It is moving.","It is brown."],"a":0},{"t":"tf","q":"The hedgehog has small paws and whiskers.","o":["True ✓","False ✗"],"a":0},{"t":"tf","q":"Emily thinks it could be a bird because she can hear birds.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"What is the Arabic meaning of the word “cute”?","o":["لطيف","شمسي","عديم الوزن","ضعيف"],"a":0},{"t":"mc","q":"Why does Emily say they shouldn’t touch it?","o":["It may be scared.","It might bite.","It is dirty.","It is asleep."],"a":0},{"t":"mc","q":"Why hasn’t Bayan seen any animals yet?","o":["You have to look carefully and listen.","There are no animals there.","She is not interested.","It is night time."],"a":0}], TITLE='Lesson 2: Team Talk – Watch out! It’s so cute!', SUB='اللغة الإنجليزية – الصف السابع', FALL=12;
+var wrong=0,N=BANK.length,i=0,correct=0,points=0,busy=false,$=HW.$,stage=$('stage'),gen=0;
 function clearBubs(){Array.prototype.slice.call(stage.querySelectorAll('.bub')).forEach(function(b){b.remove()})}
-function show(){busy=false;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
+function show(){busy=false;wrong=0;gen++;var my=gen,q=BANK[i];$('cnt').textContent='السؤال '+(i+1)+' من '+N;$('q').textContent=q.q;$('fb').textContent='';$('fb').className='fb';clearBubs();
  var list=q.o.map(function(t,k){return{t:t,ok:k===q.a}});list=HW.shuffle(list);
  var drop=stage.clientHeight+16;
  list.forEach(function(o,k){var b=document.createElement('button');b.type='button';b.className='bub l'+(k%2);b.textContent=o.t;b._ok=o.ok;if(o.t.length>26)b.style.fontSize='17px';
-  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=FALL+'s';b.style.animationDelay=(Math.floor(k/2)*1.8+(k%2)*0.35)+'s';
+  b.style.setProperty('--drop',drop+'px');b.style.animationDuration=(FALL*0.55).toFixed(1)+'s';b.style.animationDelay=(Math.floor(k/2)*1.1+(k%2)*0.25)+'s';
   b.onclick=function(){hit(b)};b.addEventListener('animationend',function(e){if(e.animationName==='fall')landed(b,my)});stage.appendChild(b)})}
 function pop(b){b.style.setProperty('--cur',(b.getBoundingClientRect().top-stage.getBoundingClientRect().top+96)+'px');b.style.animationName='pop';b.style.animationDuration='.45s';b.style.animationDelay='0s'}
 function hit(b){if(busy||b.disabled)return;b.disabled=true;
  if(b._ok){busy=true;correct++;points+=10;HW.sound('ok');pop(b);b.classList.add('ok');$('fb').textContent='أحسنت! صيد موفق +10';$('fb').className='fb ok';$('pts').textContent=points+' نقطة';setTimeout(next,900)}
- else{HW.sound('no');pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);$('fb').textContent='حاول مرة أخرى';$('fb').className='fb no'}}
+ else{HW.sound('no');wrong++;pop(b);b.classList.add('no');setTimeout(function(){b.remove()},450);
+  if(wrong>=2){busy=true;gen++;clearBubs();var q=BANK[i];$('fb').textContent='أخطأت مرتين، الإجابة الصحيحة: '+q.o[q.a];$('fb').className='fb no';setTimeout(next,2200)}
+  else{$('fb').textContent='حاول مرة أخرى (بقيت لك محاولة واحدة)';$('fb').className='fb no'}}}
 function landed(b,my){if(my!==gen||busy)return;if(b._ok){busy=true;HW.sound('no');b.disabled=true;b.classList.add('ok');$('fb').textContent='فاتتك الإجابة الصحيحة: '+b.textContent;$('fb').className='fb no';setTimeout(next,1800)}else b.remove()}
 function next(){if(i+1<N){i++;show()}else end()}
 function end(){gen++;clearBubs();$('game').hidden=true;HW.end({mount:$('end'),correct:correct,total:N,points:points,title:TITLE+' (صيد الإجابة)',sub:SUB,onAgain:start})}
