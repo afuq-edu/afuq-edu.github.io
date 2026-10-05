@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة سلطانة | تحدي الدراسات الاجتماعية للصف التاسع</title>
+<meta name="description" content="نشاط تفاعلي من أربع مراحل لمراجعة الفصل الدراسي الأول في الدراسات الاجتماعية للصف التاسع">
+<meta name="theme-color" content="#0E3C48">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="رحلة سلطانة">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Readex+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#E6EFEE; --surface:#FFFFFF; --ink:#12323B; --muted:#55707A;
+  --sea:#1A6A78; --on-sea:#FFFFFF; --deep:#0E3C48; --sun:#E1952B; --sun-soft:#FCEFD8; --gold:#9E6516;
+  --ok:#1D7A51; --ok-bg:#E0F2E8; --bad:#AF3246; --bad-bg:#FBE5E9;
+  --line:#C9DCD9; --chip:#F0F6F5; --land:#E5D4A8; --water:#C8E2E6; --coast:#B89B5E;
+  --shadow:0 1px 2px rgba(14,60,72,.07),0 8px 24px rgba(14,60,72,.08);
+  --fd:'Aref Ruqaa','Times New Roman',serif;
+  --fb:'Readex Pro',Tahoma,'Segoe UI',Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1D23; --surface:#12303A; --ink:#E4EFEE; --muted:#9BB4B9;
+    --sea:#5CB2BF; --on-sea:#06222A; --deep:#E4EFEE; --sun:#F0B04F; --sun-soft:#3A2E19; --gold:#F0B04F;
+    --ok:#62CC97; --ok-bg:#123427; --bad:#F2899A; --bad-bg:#3A1A22;
+    --line:#26464F; --chip:#183A44; --land:#4B4533; --water:#163F4A; --coast:#8C7A4E;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1D23; --surface:#12303A; --ink:#E4EFEE; --muted:#9BB4B9;
+  --sea:#5CB2BF; --on-sea:#06222A; --deep:#E4EFEE; --sun:#F0B04F; --sun-soft:#3A2E19; --gold:#F0B04F;
+  --ok:#62CC97; --ok-bg:#123427; --bad:#F2899A; --bad-bg:#3A1A22;
+  --line:#26464F; --chip:#183A44; --land:#4B4533; --water:#163F4A; --coast:#8C7A4E;
+  --shadow:none;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:17px;line-height:1.75;-webkit-tap-highlight-color:transparent}
+#app{max-width:760px;margin:0 auto;padding:16px 16px 120px}
+img,svg{max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.title-d{font-family:var(--fd);font-weight:700;color:var(--deep);line-height:1.3;margin:0}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:12px 26px;border-radius:14px;border:2px solid transparent;font-weight:600;font-size:18px;cursor:pointer;transition:transform .12s ease,background .2s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--sea);color:var(--on-sea)}
+.btn.primary:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.wide{width:100%}
+.linkbtn{background:none;border:0;color:var(--sea);text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:10px;font-size:16px}
+
+/* start */
+.start{text-align:center;padding-top:12px}
+.hero-art{max-width:360px;margin:0 auto}
+.hero-art svg{display:block;border-radius:0 0 28px 28px}
+.dhow .sky{fill:transparent}
+.dhow .sunc{fill:var(--sun);opacity:.9}
+.dhow .hull{fill:var(--deep)}
+.dhow .mast{stroke:var(--deep);stroke-width:4;stroke-linecap:round}
+.dhow .sail{fill:var(--surface);stroke:var(--deep);stroke-width:3;stroke-linejoin:round}
+.dhow .flag{fill:#C8102E}
+.dhow .w1{fill:var(--sea);opacity:.85}
+.dhow .w2{fill:var(--sea);opacity:.45}
+.boatg{animation:bob 4s ease-in-out infinite;transform-origin:120px 110px}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(4px) rotate(1.2deg)}}
+.subj{display:inline-block;margin:6px 0 2px;color:var(--muted);font-size:15px}
+.start h1{font-size:clamp(46px,11vw,72px)}
+.lead{max-width:34em;margin:10px auto 26px;color:var(--ink);font-size:18px}
+.startbox{background:var(--surface);border-radius:20px;padding:22px;box-shadow:var(--shadow);text-align:right;max-width:460px;margin:0 auto;border:1px solid var(--line)}
+.startbox label{display:block;font-weight:600;margin-bottom:8px}
+.namein{width:100%;min-height:56px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);padding:10px 16px;font:inherit;font-size:19px;margin-bottom:14px}
+.namein:focus{border-color:var(--sea);outline:none}
+.err{color:var(--bad);font-size:15px;min-height:1.5em;margin:-6px 0 8px}
+.resume{margin:0 0 14px}
+.stagesmini{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px auto 0;padding:0;list-style:none;color:var(--muted);font-size:14px}
+.stagesmini li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+/* map */
+.maphead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:6px 0 14px}
+.hello{margin:0;color:var(--muted)}
+.maphead .title-d{font-size:38px}
+.pts{flex:none;background:var(--sun-soft);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:600;font-size:15px;white-space:nowrap}
+.prog{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:8px}
+.prog-top{display:flex;justify-content:space-between;font-weight:600}
+.bar{height:12px;border-radius:99px;background:var(--chip);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sun),var(--sea));border-radius:99px;transition:width .6s ease}
+[dir="rtl"] .bar i{margin-right:0;margin-left:auto;background:linear-gradient(270deg,var(--sea),var(--sun))}
+.route{list-style:none;margin:0;padding:0}
+.stop{display:flex;flex-direction:column}
+.stop.right{align-items:flex-start}
+.stop.left{align-items:flex-end}
+.conn{width:100%;height:56px;display:block}
+.conn path{fill:none;stroke:var(--sea);stroke-width:3;stroke-dasharray:2 9;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.7}
+.node{position:relative;display:flex;align-items:center;gap:14px;width:min(78%,430px);text-align:right;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:14px 16px;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s ease,border-color .2s}
+.node:hover{transform:translateY(-2px)}
+.badge{flex:none;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:var(--chip);border:2px solid var(--line)}
+.ntext{display:flex;flex-direction:column;line-height:1.4}
+.nnum{font-size:14px;color:var(--muted)}
+.nname{font-family:var(--fd);font-size:27px;color:var(--deep)}
+.nstat{font-size:14px;color:var(--muted);margin-top:2px}
+.stop.done .node{border-color:var(--ok)}
+.stop.done .badge{background:var(--ok-bg);border-color:var(--ok)}
+.stop.done .nstat{color:var(--ok);font-weight:600}
+.stop.current .node{border-color:var(--sun);box-shadow:0 0 0 4px var(--sun-soft),var(--shadow)}
+.stop.locked .node{opacity:.62;box-shadow:none;cursor:not-allowed}
+.stop.locked .node:hover{transform:none}
+.stop.locked .badge{filter:grayscale(1)}
+.boat{position:absolute;top:-34px;inset-inline-end:14px;width:62px;pointer-events:none}
+.just-unlocked .badge{animation:pop .8s ease}
+@keyframes pop{0%{transform:scale(.6) rotate(-10deg)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.mapfoot{margin-top:26px}
+
+/* question */
+.qhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 8px}
+.qhead .btn{min-height:44px;padding:6px 14px;font-size:15px}
+.qmeta{text-align:center;line-height:1.35}
+.sname{display:block;font-family:var(--fd);font-size:22px;color:var(--deep)}
+.qcount{font-size:14px;color:var(--muted)}
+.dots{display:flex;gap:6px;justify-content:center;margin:0 0 14px;padding:0;list-style:none}
+.dots li{width:26px;height:8px;border-radius:99px;background:var(--line)}
+.dots li.cur{background:var(--sun)}
+.dots li.ok{background:var(--ok)}
+.dots li.bad{background:var(--bad)}
+.qcard{background:var(--surface);border-radius:22px;padding:20px 18px 22px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.qtop{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:14px;background:var(--chip);color:var(--sea);border-radius:999px;padding:3px 12px;font-weight:600}
+.bonus{font-size:14px;background:var(--sun-soft);color:var(--ink);border-radius:999px;padding:3px 12px;font-weight:600}
+.prompt{font-size:21px;line-height:1.65;margin:4px 0 12px;font-weight:600}
+.ctx{background:var(--sun-soft);border-radius:14px;padding:10px 14px;margin:0 0 12px;font-size:16px}
+.stmt{border-inline-start:5px solid var(--sea);background:var(--chip);padding:12px 16px;border-radius:12px;font-size:19px;margin:0 0 14px}
+.visual{margin:6px 0 16px;display:flex;justify-content:center}
+.visual > *{max-width:100%}
+.hint{color:var(--muted);font-size:15px;margin:0}
+.picked{margin:4px 0 0}
+
+/* options */
+.opts{display:grid;gap:10px}
+.opts.cards{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:12px;text-align:right;min-height:58px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--chip);cursor:pointer;font-size:18px;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--sea)}
+.opts.cards .opt{flex-direction:column;justify-content:center;text-align:center;padding:12px 8px}
+.ol{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);font-weight:700;font-size:16px}
+.opt.sel{border-color:var(--sun);background:var(--sun-soft)}
+.opt.sel .ol{background:var(--sun);border-color:var(--sun);color:#1b1206}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .ol{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.opt.bad .ol{background:var(--bad);border-color:var(--bad);color:#fff}
+.opts.tf{grid-template-columns:1fr 1fr}
+.opts.tf .opt{justify-content:center;font-size:20px;font-weight:600;min-height:64px}
+.mini{width:100%;height:auto;border-radius:10px;display:block}
+
+/* maps & charts (svg) */
+.svgmap{width:100%;max-width:340px;height:auto;border-radius:16px;border:1px solid var(--line)}
+.water{fill:var(--water)}
+.land{fill:var(--land);stroke:var(--coast);stroke-width:1.5}
+.island{fill:#7DB46C;stroke:#4E7F40;stroke-width:1.5}
+.lbl{fill:var(--ink);font-family:var(--fb);font-size:15px;font-weight:600}
+.lbl.s{font-size:13px}
+.lbl.sea{fill:var(--sea);font-size:16px;font-style:normal}
+.city{fill:var(--deep)}
+.north{fill:var(--ink)}
+.hs{cursor:pointer}
+.hs .hit{fill:transparent;stroke:transparent;stroke-width:3;stroke-dasharray:4 4}
+.hs:hover .hit,.hs:focus-visible .hit{stroke:var(--sea);fill:rgba(26,106,120,.10)}
+.hs:focus-visible{outline:none}
+.hs.hs-sel .hit{stroke:var(--sun);fill:rgba(225,149,43,.22)}
+.hs.hs-ok .hit{stroke:var(--ok);fill:rgba(29,122,81,.22);stroke-dasharray:none}
+.hs.hs-bad .hit{stroke:var(--bad);fill:rgba(175,50,70,.2);stroke-dasharray:none}
+.hs.locked{cursor:default}
+.arrow{fill:none;stroke:var(--sun);stroke-width:5;stroke-linecap:round}
+.ahead{fill:var(--sun)}
+.chart{width:100%;max-width:520px;height:auto}
+.grid{stroke:var(--line);stroke-width:1}
+.axis{stroke:var(--muted);stroke-width:1.5}
+.ax{fill:var(--muted);font-size:12px;font-family:var(--fb)}
+.ax2{fill:var(--ink);font-size:14px;font-weight:600;font-family:var(--fb)}
+.val{fill:var(--ink);font-size:12px;font-weight:600;font-family:var(--fb)}
+.b1{fill:var(--sea)}
+.b2{fill:var(--sun)}
+
+/* data table */
+.dt{border-collapse:collapse;width:100%;max-width:520px;font-size:16px;background:var(--surface);border-radius:12px;overflow:hidden}
+.dt th,.dt td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+.dt th{background:var(--chip);color:var(--sea);font-weight:600}
+.dt td.n{direction:ltr;font-variant-numeric:tabular-nums}
+.tblwrap{overflow-x:auto;width:100%;display:flex;justify-content:center}
+.datacard{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:520px}
+.datacard div{background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center}
+.datacard b{display:block;font-size:22px;direction:ltr;font-variant-numeric:tabular-nums}
+.datacard span{font-size:14px;color:var(--muted)}
+
+/* concept map & steps (spot the error) */
+.cmap{width:100%;text-align:center}
+.cm-root{display:inline-block;background:var(--sea);color:var(--on-sea);border-radius:14px;padding:8px 18px;font-weight:600}
+.cm-branches{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;position:relative}
+.cm-col{border:2px dashed var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.cm-head{font-weight:700;color:var(--sea)}
+.cm-leaf,.sbtn{display:flex;align-items:center;gap:10px;justify-content:center;min-height:52px;padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:var(--chip);cursor:pointer;font-size:16px;text-align:center;width:100%}
+.steps-err{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;width:100%}
+.sbtn{justify-content:flex-start;text-align:right}
+.sn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:14px}
+.hs-sel.cm-leaf,.hs-sel.sbtn{border-color:var(--sun);background:var(--sun-soft)}
+.hs-ok.cm-leaf,.hs-ok.sbtn{border-color:var(--ok);background:var(--ok-bg)}
+.hs-bad.cm-leaf,.hs-bad.sbtn{border-color:var(--bad);background:var(--bad-bg)}
+button.locked{cursor:default}
+
+/* assign (drag & drop) */
+.slots{display:grid;gap:10px}
+.slots.bins{grid-template-columns:1fr 1fr}
+.slot{border:2px dashed var(--line);border-radius:16px;padding:10px;background:var(--bg);cursor:pointer;transition:border-color .15s,background .15s}
+.slots.pairs .slot{display:grid;grid-template-columns:1fr minmax(120px,40%);gap:10px;align-items:center}
+.slot-label{font-size:16px;line-height:1.55}
+.slots.bins .slot-label{font-weight:700;color:var(--sea);text-align:center;margin-bottom:6px}
+.slot-drop{min-height:52px;border-radius:12px;background:var(--surface);border:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px;padding:5px;align-content:flex-start}
+.slots.bins .slot-drop{min-height:120px}
+.slot.hot{border-color:var(--sun);background:var(--sun-soft)}
+.armed .slot{border-color:var(--sun)}
+.bank{margin-top:14px;padding:12px;border-radius:16px;background:var(--chip);border:1px solid var(--line)}
+.bank-hint{font-size:14px;color:var(--muted);margin-bottom:8px}
+.bank-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:48px}
+.chip{min-height:46px;padding:7px 14px;border-radius:12px;border:2px solid var(--sea);background:var(--surface);cursor:grab;font-size:16px;font-weight:500;touch-action:none;user-select:none;-webkit-user-select:none;line-height:1.4;text-align:center}
+.slot-drop .chip{width:100%}
+.slots.bins .slot-drop .chip{width:auto;flex:1 1 auto}
+.chip.picked{background:var(--sun);border-color:var(--sun);color:#1b1206}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.bad{border-color:var(--bad);background:var(--bad-bg);text-decoration:line-through;text-decoration-thickness:2px}
+.chip:disabled{cursor:default;opacity:1;color:var(--ink)}
+.ghost-chip{position:fixed;z-index:50;pointer-events:none;transform:translate(-50%,-60%) rotate(-3deg);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+
+/* order */
+.seq{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:8px}
+.seq li{display:flex;align-items:center;gap:10px}
+.seq .num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--sea);color:var(--on-sea);font-weight:700}
+.seq .empty{flex:1;min-height:50px;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;padding:0 14px;color:var(--muted);font-size:15px}
+.seq .chip{flex:1;text-align:right;cursor:pointer}
+.pool{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-radius:16px;background:var(--chip);border:1px solid var(--line);min-height:70px}
+.pool .chip{cursor:pointer}
+.pool:empty::before{content:'رتّبتِ جميع العناصر. اضغطي «تأكيد الإجابة» أو انقري عنصرًا لإعادته.';color:var(--muted);font-size:14px}
+
+/* numeric */
+.numrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nlab{font-weight:600}
+.numin{width:190px;min-height:56px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:22px;text-align:center;direction:ltr;padding:6px 10px}
+.numin:focus{border-color:var(--sea);outline:none}
+.numin.ok{border-color:var(--ok);background:var(--ok-bg)}
+.numin.bad{border-color:var(--bad);background:var(--bad-bg)}
+.unit{color:var(--muted)}
+.parts{display:flex;flex-direction:column;gap:14px}
+.part{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--bg)}
+.plab{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-weight:500}
+.pl{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sun);color:#1b1206;display:grid;place-items:center;font-weight:700}
+.sopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sopt{min-height:50px;border-radius:12px;border:2px solid var(--line);background:var(--surface);cursor:pointer;font-size:16px}
+.sopt.sel{border-color:var(--sun);background:var(--sun-soft)}
+.sopt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.sopt.bad{border-color:var(--bad);background:var(--bad-bg)}
+.sopt:disabled{cursor:default}
+
+/* feedback */
+.fb:empty{display:none}
+.fb{margin-top:16px;border-radius:16px;padding:14px 16px;font-size:17px;animation:rise .35s ease}
+.fb.good{background:var(--ok-bg);border:2px solid var(--ok)}
+.fb.wrong{background:var(--bad-bg);border:2px solid var(--bad)}
+.fb .fbt{font-weight:700}
+.fb.good .fbt{color:var(--ok)}
+.fb.wrong .fbt{color:var(--bad)}
+.fb p{margin:0}
+.fb ul{margin:6px 0;padding-inline-start:20px}
+.solve{margin-top:10px;padding-top:10px;border-top:1px dashed currentColor}
+.solve b{display:block;margin-bottom:4px}
+.solve ol{margin:0;padding-inline-start:22px}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* action bar */
+.actbar{position:fixed;inset-inline:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:20}
+.actbar .btn{display:flex;width:100%;max-width:728px;margin:0 auto;box-shadow:var(--shadow)}
+
+/* overlay */
+.overlay{position:fixed;inset:0;background:rgba(6,30,36,.55);display:grid;place-items:center;padding:20px;z-index:40;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border-radius:24px;padding:28px 22px;max-width:440px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:rise .4s ease}
+.unlock{font-size:58px;line-height:1;margin-bottom:8px;animation:pop .8s ease}
+.modal h2{font-size:22px;line-height:1.6;margin:0 0 8px}
+.modal p{color:var(--muted);margin:0 0 18px}
+
+/* final */
+.final{text-align:center}
+.final-art{font-size:64px;line-height:1.2;margin-top:10px}
+.final .title-d{font-size:clamp(34px,8vw,52px)}
+.fname{font-family:var(--fd);font-size:34px;color:var(--gold);margin:6px 0 16px}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 16px}
+.res div:last-child:nth-child(odd){grid-column:1/-1}
+.res div{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 8px}
+.res dt{font-size:14px;color:var(--muted)}
+.res dd{margin:0;font-size:24px;font-weight:700}
+.level{background:var(--sun-soft);border-radius:18px;padding:14px;margin-bottom:18px;font-size:22px}
+.level .stars{display:block;font-size:28px;letter-spacing:4px}
+.level p{font-size:16px;margin:6px 0 0}
+.row2{margin-top:10px}
+
+/* certificate */
+.certbar{display:flex;gap:10px;justify-content:space-between;margin:4px 0 8px}
+.printhint{font-size:14px;color:var(--muted);margin:0 0 12px}
+.cert-wrap{container-type:inline-size;width:100%}
+.cert{position:relative;width:100%;aspect-ratio:297/210;background:#FFFDF8;color:#163A43;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);overflow:hidden;padding:2.2cqi;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cert-in{position:relative;height:100%;border:.45cqi double #0E3C48;outline:.15cqi solid #C9902F;outline-offset:-1.2cqi;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3cqi 6cqi}
+.corner{position:absolute;width:5cqi;height:5cqi}
+.corner.tl{top:1.6cqi;left:1.6cqi}.corner.tr{top:1.6cqi;right:1.6cqi}.corner.bl{bottom:1.6cqi;left:1.6cqi}.corner.br{bottom:1.6cqi;right:1.6cqi}
+.corner path{fill:#C9902F}
+.cert .cdhow{width:9cqi;margin-bottom:.4cqi}
+.cert .cdhow .hull,.cert .cdhow .mast{fill:#0E3C48;stroke:#0E3C48}
+.cert .cdhow .sail{fill:#FFFDF8;stroke:#0E3C48}
+.cert .cdhow .w1{fill:#1A6A78}
+.cert .cdhow .w2{fill:#1A6A78;opacity:.45}
+.cert .cdhow .flag{fill:#C8102E}
+.ct{font-family:var(--fd);font-size:6.4cqi;line-height:1.2;color:#0E3C48;margin:0}
+.cl{font-size:1.85cqi;margin:.8cqi 0 0;color:#36555D}
+.cn{font-family:var(--fd);font-size:5cqi;line-height:1.3;color:#A8701B;margin:.3cqi 0 .2cqi;border-bottom:.12cqi solid #C9902F;padding:0 4cqi .3cqi}
+.cu{font-size:2.4cqi;font-weight:700;color:#0E3C48;margin:.4cqi 0 0}
+.cinfo{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2cqi;width:100%;margin:2cqi 0 1.2cqi}
+.cinfo div{border:.1cqi solid #D7C49A;border-radius:1cqi;padding:.8cqi .4cqi;background:#FBF4E4}
+.cinfo span{display:block;font-size:1.45cqi;color:#5B6F72}
+.cinfo b{font-size:1.9cqi;color:#0E3C48}
+.cq{font-family:var(--fd);font-size:2.6cqi;color:#1A6A78;margin:0}
+.csign{display:flex;justify-content:space-between;width:100%;margin-top:1.8cqi;font-size:1.5cqi;color:#5B6F72}
+.csign span{border-top:.1cqi solid #8DA2A6;padding-top:.4cqi;min-width:22cqi}
+
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60}
+#toast{position:fixed;inset-inline:16px;bottom:calc(96px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:460px;background:var(--deep);color:var(--bg);border-radius:14px;padding:12px 16px;text-align:center;z-index:70;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none}
+#toast.show{opacity:1;transform:none}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  .prompt{font-size:19px}
+  .node{width:88%}
+  .nname{font-size:24px}
+  .sname{font-size:19px;white-space:nowrap}
+  .qhead .btn{padding:6px 10px}
+  .res{grid-template-columns:1fr 1fr}
+  .badge{width:54px;height:54px;font-size:26px}
+  .slots.pairs .slot{grid-template-columns:1fr}
+  .slots.bins{grid-template-columns:1fr}
+  .slots.bins .slot-drop{min-height:64px}
+  .cm-branches{grid-template-columns:1fr}
+  .opts.cards{grid-template-columns:1fr 1fr;gap:8px}
+  .sopts{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+@media print{
+  @page{size:A4 landscape;margin:0}
+  :root{padding:0}
+  html,body{background:#fff!important;height:auto}
+  #app{max-width:none;margin:0;padding:0}
+  .no-print,#toast,#fx,.actbar{display:none!important}
+  .certscreen > :not(.cert-wrap){display:none!important}
+  .cert-wrap{width:297mm}
+  .cert{width:297mm;height:210mm;aspect-ratio:auto;border-radius:0;box-shadow:none}
+}
+.installbtn{margin-top:14px}
+.installbtn[hidden]{display:none}
+</style>
+</head>
+<body>
+<main id="app" aria-live="polite"></main>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="toast" role="status"></div>
+
+<script>
+/* ============ بيانات النشاط ============ */
+const SUBJECT='الدراسات الاجتماعية', GRADE='التاسع';
+const UNIT='مراجعة الفصل الدراسي الأول في الدراسات الاجتماعية';
+const ORD=['الأولى','الثانية','الثالثة','الرابعة'];
+const STORE='rihlat-sultana-ss9-v1';
+
+/* ---------- رسوم توضيحية ---------- */
+function dhowSVG(cls){
+  return `<svg class="dhow ${cls||''}" viewBox="0 0 240 150" aria-hidden="true" style="direction:ltr">
+  ${cls?'':'<circle cx="190" cy="38" r="20" class="sunc"/>'}
+  <path class="w2" d="M0 108 Q 30 100 60 108 T 120 108 T 180 108 T 240 108 V150 H0Z"/>
+  <g class="boatg">
+    <path class="hull" d="M44 98 Q 120 106 200 92 L 178 120 Q 120 127 64 120 Z"/>
+    <line class="mast" x1="120" y1="100" x2="114" y2="16"/>
+    <path class="sail" d="M114 20 Q 152 58 168 90 L 62 90 Q 96 60 114 20 Z"/>
+    <path class="flag" d="M114 14 L 132 19 L 114 25 Z"/>
+  </g>
+  <path class="w1" d="M0 120 Q 20 112 40 120 T 80 120 T 120 120 T 160 120 T 200 120 T 240 120 V150 H0Z"/>
+</svg>`;
+}
+
+/* خريطة ساحل شرقي أفريقيا (مقياس تقريبي: 72 بكسل لكل درجة) */
+function eaMap(mode){
+  const isl={
+    lamu:'241,24 251,27 250,39 240,36',
+    pemba:'168,219 175,233 173,255 164,262 160,244 164,226',
+    zanzibar:'130,276 137,291 148,312 144,330 133,327 126,305 122,287',
+    mafia:'162,417 173,431 167,442 155,438 153,424'
+  };
+  const c={lamu:[246,31],pemba:[167,241],zanzibar:[135,304],mafia:[163,430]};
+  const nm={lamu:'لامو',pemba:'بمبا',zanzibar:'زنجبار',mafia:'مافيا'};
+  const hot=mode==='hot';
+  let g='';
+  for(const k in isl){
+    g+=`<g class="isl${hot?' hs':''}" ${hot?`data-hs="${k}" tabindex="0" role="button" aria-pressed="false" aria-label="جزيرة"`:''}>${hot?`<circle class="hit" cx="${c[k][0]}" cy="${c[k][1]}" r="27"/>`:''}<polygon class="island" points="${isl[k]}"/></g>`;
+    if(!hot) g+=`<text class="lbl" x="${c[k][0]+22}" y="${c[k][1]+5}" text-anchor="start">${nm[k]}</text>`;
+  }
+  return `<svg class="svgmap" viewBox="0 0 360 540" style="direction:ltr" role="img" aria-label="خريطة ساحل شرقي أفريقيا وجزره">
+  <rect width="360" height="540" class="water"/>
+  <polygon class="land" points="262,0 252,10 245,32 194,82 187,96 166,132 156,158 137,197 115,231 101,269 94,312 128,356 137,392 130,435 130,464 144,510 152,540 0,540 0,0"/>
+  <circle class="city" cx="156" cy="158" r="5"/><text class="lbl s" x="146" y="163" text-anchor="end">ممباسا</text>
+  <circle class="city" cx="144" cy="510" r="5"/><text class="lbl s" x="134" y="515" text-anchor="end">كلوة</text>
+  <text class="lbl" x="58" y="230" text-anchor="middle">شرقي</text><text class="lbl" x="58" y="252" text-anchor="middle">أفريقيا</text>
+  <text class="lbl sea" x="275" y="360" text-anchor="middle">المحيط</text><text class="lbl sea" x="275" y="382" text-anchor="middle">الهندي</text>
+  <g transform="translate(322,40)"><path class="north" d="M0 -18 L9 10 L0 4 L-9 10 Z"/><text class="lbl s" x="0" y="30" text-anchor="middle">الشمال</text></g>
+  ${g}
+</svg>`;
+}
+
+/* خرائط مصغرة لاتجاه الرياح الموسمية */
+function mon(kind,uid){
+  const a={swne:'M64 120 Q 100 94 150 66',nesw:'M152 62 Q 112 88 66 116',we:'M72 98 L 184 98',ns:'M130 12 L 130 128'};
+  return `<svg class="mini" viewBox="0 0 200 140" style="direction:ltr" aria-hidden="true">
+  <defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path class="ahead" d="M0 0 L10 5 L0 10 z"/></marker></defs>
+  <rect width="200" height="140" class="water"/>
+  <polygon class="land" points="108,0 200,0 200,60 170,64 142,42 120,20"/>
+  <polygon class="land" points="0,46 40,50 64,72 82,140 0,140"/>
+  <text class="lbl s" x="172" y="30" text-anchor="middle">عُمان</text>
+  <text class="lbl s" x="32" y="112" text-anchor="middle">شرقي</text><text class="lbl s" x="32" y="128" text-anchor="middle">أفريقيا</text>
+  <path d="${a[kind]}" class="arrow" marker-end="url(#ah${uid})"/>
+</svg>`;
+}
+
+/* رسم بياني: معدلات المواليد والوفيات الخام بالألف */
+function birthChart(){
+  const d=[['الإمارات',24,2],['مصر',26,6],['سوريا',33,6],['الجزائر',29,6]];
+  const base=196,k=4.6;
+  let s=`<svg class="chart" viewBox="0 0 360 230" style="direction:ltr" role="img" aria-label="رسم بياني لمعدلات المواليد والوفيات الخام بالألف: الإمارات 24 و2، مصر 26 و6، سوريا 33 و6، الجزائر 29 و6">`;
+  for(const v of [10,20,30]) s+=`<line class="grid" x1="40" x2="352" y1="${base-v*k}" y2="${base-v*k}"/><text class="ax" x="34" y="${base-v*k+4}" text-anchor="end">${v}</text>`;
+  s+=`<line class="axis" x1="40" x2="352" y1="${base}" y2="${base}"/>`;
+  d.forEach((r,i)=>{const x=292-i*78;
+    s+=`<rect class="b1" x="${x}" y="${base-r[1]*k}" width="24" height="${r[1]*k}" rx="3"/><text class="val" x="${x+12}" y="${base-r[1]*k-5}" text-anchor="middle">${r[1]}</text>`;
+    s+=`<rect class="b2" x="${x+28}" y="${base-r[2]*k}" width="24" height="${r[2]*k}" rx="3"/><text class="val" x="${x+40}" y="${base-r[2]*k-5}" text-anchor="middle">${r[2]}</text>`;
+    s+=`<text class="ax2" x="${x+26}" y="${base+22}" text-anchor="middle">${r[0]}</text>`;});
+  s+=`<rect class="b1" x="338" y="6" width="13" height="13" rx="2"/><text class="ax" x="332" y="17" text-anchor="end">معدل المواليد الخام (بالألف)</text>
+      <rect class="b2" x="168" y="6" width="13" height="13" rx="2"/><text class="ax" x="162" y="17" text-anchor="end">معدل الوفيات الخام (بالألف)</text></svg>`;
+  return s;
+}
+
+const govTable=`<div class="tblwrap"><table class="dt"><caption class="hint" style="caption-side:bottom;padding-top:6px">بيانات تعداد 2010م</caption>
+<thead><tr><th>المحافظة</th><th>المساحة (كم²)</th><th>عدد السكان (نسمة)</th></tr></thead>
+<tbody><tr><td>مسقط</td><td class="n">3,500</td><td class="n">775,878</td></tr>
+<tr><td>مسندم</td><td class="n">1,800</td><td class="n">31,425</td></tr>
+<tr><td>الداخلية</td><td class="n">31,900</td><td class="n">326,651</td></tr></tbody></table></div>`;
+
+const omanCard=`<div class="datacard">
+<div><b>4,933,850</b><span>عدد السكان (نسمة)</span></div>
+<div><b>309,500</b><span>المساحة (كم²) تقريبًا</span></div>
+<div><b>69,653</b><span>عدد المواليد</span></div>
+<div><b>9,008</b><span>عدد الوفيات</span></div></div>`;
+
+/* ---------- المراحل والأسئلة ---------- */
+const STAGES=[
+{ name:'بوابة المعرفة', icon:'🏛️', desc:'المفاهيم والحقائق الأساسية', q:[
+  {type:'mcq',tag:'اختيار من متعدد',pts:10,
+   p:'يُعدّ المصدر الأساسي لدراسة التغيرات والخصائص السكانية في مجتمع ما:',
+   o:['المسوحات بالعينة','سجلات المدارس','التعداد السكاني','التسجيل الحيوي'],a:2,
+   ans:'التعداد السكاني',
+   why:'التعداد يجمع البيانات بكل تفاصيلها عن جميع أفراد المجتمع في وقت محدد، فيعطي صورة شاملة عن السكان.'},
+  {type:'tf',tag:'صح أم خطأ',pts:10,
+   p:'حدّدي صحة العبارة الآتية:',
+   st:'تُعدّ شهادة الميلاد وعقد الزواج من أمثلة التسجيل الحيوي.',t:true,
+   why:'التسجيل الحيوي يوثّق الأحداث الحيوية للإنسان منذ ولادته حتى وفاته، مثل الميلاد والزواج والطلاق والوفاة.'},
+  {type:'assign',tag:'سحب وإفلات',pts:10,
+   p:'اسحبي كل مصطلح إلى تعريفه المناسب، أو انقري المصطلح ثم انقري مكانه.',
+   chips:['النمو السكاني','الكثافة السكانية','صافي الهجرة','العالم الإسلامي'],
+   slots:[
+    {l:'العلاقة بين عدد السكان والمساحة الأرضية التي يعيشون عليها.',a:[1]},
+    {l:'زيادة أعداد السكان من سنة إلى أخرى نتيجة زيادة المواليد وانخفاض الوفيات والهجرة.',a:[0]},
+    {l:'مجموعة الدول التي يشكّل المسلمون فيها أكثر من 50% من جملة السكان.',a:[3]},
+    {l:'الفرق بين عدد المهاجرين القادمين إلى الدولة والمغادرين منها.',a:[2]}],
+   why:'كل مصطلح يصف علاقة محددة: الكثافة تربط السكان بالمساحة، والنمو يقيس التغير عبر السنوات، وصافي الهجرة يقارن القادمين بالمغادرين.'},
+  {type:'hot',tag:'تحديد على الخريطة',pts:10,
+   p:'انقري على الجزيرة التي أُطلق عليها «الجزيرة الخضراء».',
+   v:eaMap('hot'),a:'pemba',names:{lamu:'جزيرة لامو',pemba:'جزيرة بمبا',zanzibar:'جزيرة زنجبار',mafia:'جزيرة مافيا'},
+   ans:'جزيرة بمبا، الواقعة شمال زنجبار',
+   why:'بمبا اشتهرت بخصوبة أرضها وكثرة أشجارها ومزارع القرنفل، فسُمّيت الجزيرة الخضراء.'},
+  {type:'mcq',cards:true,tag:'اختيار من بطاقات',pts:10,
+   p:'المدينة التي يوجد بها المقر الرئيس لمنظمة التعاون الإسلامي:',
+   o:['الرباط','جدة','مكة المكرمة','مسقط'],a:1,ans:'جدة',
+   why:'مقر المنظمة في جدة، أما الرباط فهي المدينة التي عُقدت فيها أول قمة إسلامية عام 1969م.'},
+  {type:'tf',tag:'صح أم خطأ',pts:10,
+   p:'حدّدي صحة العبارة الآتية:',
+   st:'بدأ حكم أسرة البوسعيد في عُمان في القرن التاسع عشر الميلادي.',t:false,
+   why:'حكم أسرة البوسعيد بدأ عام 1744م، أي في القرن الثامن عشر الميلادي.'},
+  {type:'mcq',tag:'اختيار من متعدد',pts:10,
+   p:'السفينة العُمانية التي أبحر بها أحمد بن النعمان الكعبي إلى نيويورك عام 1840م:',
+   o:['فكتوريا','شاه علم','سلطانة','ليفربول'],a:2,ans:'سلطانة',
+   why:'رحلة السفينة سلطانة عام 1840م كانت لتوطيد العلاقات بين عُمان والولايات المتحدة الأمريكية في عهد السيد سعيد بن سلطان، ومنها أخذت هذه الرحلة اسمها.'}
+]},
+{ name:'ميدان التطبيق', icon:'🧭', desc:'خرائط وبيانات ومواقف', q:[
+  {type:'mcq',tag:'سؤال موقف',pts:10,
+   p:'أراد خليل إعداد دراسة عن الباحثين عن عمل في مجتمعه. ما أنسب طريقة له للحصول على البيانات؟',
+   o:['التعداد السكاني','سجلات المدارس','المسوحات بالعينة','التسجيل الحيوي'],a:2,ans:'المسوحات بالعينة',
+   why:'المسوحات بالعينة تدرس موضوعًا محددًا على جزء مختار من المجتمع، فهي أسرع وأقل تكلفة من حصر جميع السكان.'},
+  {type:'assign',tag:'ربط بين العناصر',pts:10,
+   p:'ضعي كل مصدر للبيانات السكانية أمام الموقف الذي يناسبه:',
+   chips:['التسجيل الحيوي','التعداد السكاني','المسوحات بالعينة','سجلات المدارس'],
+   slots:[
+    {l:'حصر عدد جميع سكان سلطنة عُمان ومساكنهم في عام 2020م.',a:[1]},
+    {l:'تسجيل مولود جديد في سجل الأحوال المدنية.',a:[0]},
+    {l:'معرفة أعداد طلبة الصف التاسع في مدارس المحافظة.',a:[3]},
+    {l:'سؤال 500 أسرة مختارة عن عدد أفرادها العاملين.',a:[2]}],
+   why:'التعداد يشمل الجميع، والتسجيل الحيوي يوثّق الأحداث الحيوية، والمسح يُجرى على عينة، وسجلات المدارس مصدر ثانوي يخص الطلبة.'},
+  {type:'num',tag:'مسألة حسابية',pts:10,
+   p:'في إحدى الدول بلغ عدد المواليد 45,000 مولود، وعدد الوفيات 12,000 حالة خلال عام واحد. احسبي الزيادة الطبيعية.',
+   lab:'الزيادة الطبيعية =',unit:'نسمة',a:33000,tol:0,ans:'33,000 نسمة',
+   why:'الزيادة الطبيعية هي الفرق بين عدد المواليد وعدد الوفيات.',
+   steps:['الزيادة الطبيعية = عدد المواليد − عدد الوفيات','نطرح 12,000 من 45,000','الناتج: 33,000 نسمة']},
+  {type:'mcq',cards:true,tag:'قراءة خرائط',pts:10,
+   p:'أي خريطة تُظهر الاتجاه الصحيح للرياح التي استعان بها التجار العُمانيون في رحلة العودة من شرقي أفريقيا إلى عُمان في شهر أبريل؟',
+   o:[mon('nesw',1),mon('we',2),mon('swne',3),mon('ns',4)],a:2,ans:'الخريطة (ج)',
+   why:'في أبريل تهب الرياح الموسمية من الجنوب الغربي فتدفع السفن نحو الشمال الشرقي إلى عُمان، أما في نوفمبر فتهب من الشمال الشرقي فتنقلها من عُمان إلى شرقي أفريقيا.'},
+  {type:'order',tag:'ترتيب على الخريطة',pts:10,
+   p:'ادرسي الخريطة، ثم رتّبي الجزر من الشمال إلى الجنوب بالنقر عليها بالترتيب:',
+   v:eaMap('label'),items:['بمبا','زنجبار','مافيا'],
+   why:'عند قراءة الخريطة من الأعلى (الشمال) إلى الأسفل (الجنوب) تظهر بمبا أولًا ثم زنجبار ثم مافيا.'},
+  {type:'assign',tag:'ربط بين العناصر',pts:10,
+   p:'صِلي كل طريق من طرق القوافل العربية في شرقي أفريقيا بمساره:',
+   chips:['الطريق الشمالي','الطريق الأوسط','الطريق الجنوبي'],
+   slots:[
+    {l:'من الموانئ المقابلة لزنجبار إلى تابورا.',a:[1]},
+    {l:'من كلوة إلى بحيرة نياسا.',a:[2]},
+    {l:'من ممباسا وماليندي إلى هضبة البحيرات.',a:[0]}],
+   why:'الطريق الأوسط ينطلق من الساحل المقابل لزنجبار وهو أهم الطرق، والشمالي يبدأ من ممباسا وماليندي وهو أخطرها، والجنوبي يبدأ من كلوة.'},
+  {type:'assign',tag:'سحب وإفلات',pts:10,
+   p:'اسحبي اسم كل منظمة إلى المهمة التي تختص بها:',
+   chips:['منظمة العمل الدولية','منظمة الأغذية والزراعة (الفاو)','منظمة الصحة العالمية','اليونسكو'],
+   slots:[
+    {l:'رفع مستوى التغذية وحفظ المنتجات الغذائية.',a:[1]},
+    {l:'مراقبة تفشي الأمراض السارية وحماية صحة الأمومة والطفولة.',a:[2]},
+    {l:'تحديد ساعات العمل وحماية العمال من إصابات العمل.',a:[0]},
+    {l:'التعاون الدولي في مجالات التربية والعلوم والثقافة.',a:[3]}],
+   why:'لكل منظمة من منظمات الأمم المتحدة اختصاص محدد يظهر في اسمها: العمل، والأغذية والزراعة، والصحة، والتربية والعلوم والثقافة.'}
+]},
+{ name:'غرفة التفكير', icon:'💡', desc:'مقارنة وتحليل واكتشاف الخطأ', q:[
+  {type:'order',tag:'استنتاج من رسم بياني',pts:15,
+   p:'اعتمادًا على الرسم البياني، رتّبي الدول تصاعديًا حسب الزيادة الطبيعية (من الأقل إلى الأكثر):',
+   v:birthChart(),items:['مصر','الإمارات','الجزائر','سوريا'],
+   why:'الزيادة الطبيعية تساوي معدل المواليد ناقص معدل الوفيات، والفروق هي: مصر 20، الإمارات 22، الجزائر 23، سوريا 27 في الألف.',
+   steps:['مصر: 26 − 6 = 20 في الألف','الإمارات: 24 − 2 = 22 في الألف','الجزائر: 29 − 6 = 23 في الألف','سوريا: 33 − 6 = 27 في الألف']},
+  {type:'hot',tag:'اكتشفي الخطأ',pts:10,
+   p:'في هذا المخطط بطاقة واحدة وُضعت في المكان الخطأ. انقري عليها.',
+   v:`<div class="cmap"><div class="cm-root">مصادر البيانات السكانية</div><div class="cm-branches">
+     <div class="cm-col"><div class="cm-head">مصادر أساسية</div>
+       <button class="cm-leaf" data-hs="census" aria-pressed="false">التعداد السكاني</button>
+       <button class="cm-leaf" data-hs="school" aria-pressed="false">سجلات المدارس</button>
+       <button class="cm-leaf" data-hs="vital" aria-pressed="false">التسجيل الحيوي</button></div>
+     <div class="cm-col"><div class="cm-head">مصادر ثانوية</div>
+       <button class="cm-leaf" data-hs="gov" aria-pressed="false">سجلات المؤسسات الحكومية والأهلية</button></div>
+   </div></div>`,
+   a:'school',names:{census:'التعداد السكاني',school:'سجلات المدارس',vital:'التسجيل الحيوي',gov:'سجلات المؤسسات الحكومية والأهلية'},
+   ans:'«سجلات المدارس»؛ مكانها الصحيح ضمن المصادر الثانوية',
+   why:'المصادر الأساسية هي التعداد والتسجيل الحيوي والمسوحات بالعينة، أما سجلات المدارس وسجلات المؤسسات فمصادر ثانوية.'},
+  {type:'hot',tag:'اكتشفي الخطأ',pts:10,
+   p:'حسبت مريم الكثافة السكانية لمحافظة الداخلية (عدد السكان 326,651 نسمة، والمساحة 31,900 كم²). انقري على الخطوة التي بدأ فيها الخطأ.',
+   v:`<ol class="steps-err">
+     <li><button class="sbtn" data-hs="s1" aria-pressed="false"><span class="sn">1</span><span>الكثافة السكانية = عدد السكان ÷ المساحة</span></button></li>
+     <li><button class="sbtn" data-hs="s2" aria-pressed="false"><span class="sn">2</span><span>قسمتُ 31,900 (المساحة) على 326,651 (عدد السكان)</span></button></li>
+     <li><button class="sbtn" data-hs="s3" aria-pressed="false"><span class="sn">3</span><span>الناتج ≈ 0.1 نسمة/كم²</span></button></li>
+     <li><button class="sbtn" data-hs="s4" aria-pressed="false"><span class="sn">4</span><span>إذن يعيش أقل من شخص واحد في كل كيلومتر مربع.</span></button></li></ol>`,
+   a:'s2',names:{s1:'الخطوة 1',s2:'الخطوة 2',s3:'الخطوة 3',s4:'الخطوة 4'},
+   ans:'الخطوة 2',
+   why:'القانون في الخطوة 1 صحيح، لكن مريم قسمت المساحة على عدد السكان بدل العكس، فجاءت الخطوتان 3 و4 خاطئتين نتيجة لذلك. الصحيح: 326,651 ÷ 31,900 ≈ 10.2 نسمة/كم².'},
+  {type:'mcq',tag:'ماذا سيحدث إذا…؟',pts:10,
+   p:'ماذا سيحدث إذا ارتفع معدل المواليد في دولة ما وانخفض معدل الوفيات فيها، مع ثبات الهجرة؟',
+   o:['تنخفض الكثافة السكانية في الدولة','تزداد الزيادة الطبيعية فيرتفع النمو السكاني','يقل عدد السكان تدريجيًا','لا يتأثر عدد السكان'],a:1,
+   ans:'تزداد الزيادة الطبيعية فيرتفع النمو السكاني',
+   why:'الزيادة الطبيعية هي الفرق بين المواليد والوفيات، فارتفاع المواليد مع انخفاض الوفيات يوسّع هذا الفرق ويزيد عدد السكان.'},
+  {type:'mcq',tag:'اختيار السبب',pts:10,
+   p:'الدافع الأقوى الذي جعل السيد سعيد بن سلطان يفضّل الإقامة الدائمة في جزيرة زنجبار:',
+   o:['السياسي','الثقافي','الاقتصادي','الاجتماعي'],a:2,ans:'الدافع الاقتصادي',
+   why:'موقع زنجبار المتوسط بين موانئ شرقي أفريقيا وميناؤها الكبير الصالح للملاحة جعلاها مركزًا تجاريًا مهمًا.'},
+  {type:'assign',multi:true,tag:'تصنيف ومقارنة',pts:15,
+   p:'قارني بين التعداد السكاني والمسوحات بالعينة: صنّفي كل عبارة في العمود المناسب.',
+   chips:['يشمل جميع أفراد المجتمع','يُجرى على جزء مختار من المجتمع','بياناته أكثر دقة وشمولًا','أسرع وأقل تكلفة','من أمثلته مسح الخصوبة','نُفّذ في عُمان في أعوام مثل 2010م و2020م'],
+   slots:[{l:'التعداد السكاني',a:[0,2,5]},{l:'المسوحات بالعينة',a:[1,3,4]}],
+   why:'التعداد يحصر الجميع فيكون أدق وأشمل لكنه مكلف ويُجرى على فترات، أما المسح فيكتفي بعينة لموضوع محدد فيكون أسرع وأقل تكلفة.'},
+  {type:'assign',tag:'ربط الشخصيات',pts:10,
+   p:'صِلي كل شخصية عُمانية بالعمل الذي اشتهرت به:',
+   chips:['أحمد بن النعمان الكعبي','السلطان برغش بن سعيد','حميد بن محمد المرجبي','الشيخ محيي الدين القحطاني'],
+   slots:[
+    {l:'أنشأ المطبعة السلطانية في زنجبار.',a:[1]},
+    {l:'لعب دورًا عالميًا في تجارة العاج وأسس إمارة في أعالي الكونغو.',a:[2]},
+    {l:'من أبرز قضاة زنجبار، وكان موضع تقدير في شرقي أفريقيا.',a:[3]},
+    {l:'قاد رحلة السفينة سلطانة إلى نيويورك عام 1840م.',a:[0]}],
+   why:'كل شخصية ارتبطت بمجال: الكعبي بالعلاقات مع أمريكا، وبرغش بالطباعة، والمرجبي بتجارة العاج، والقحطاني بالقضاء.'}
+]},
+{ name:'التحدي النهائي', icon:'🏆', desc:'مهمة شاملة في المركز الوطني للإحصاء', q:[
+  {type:'num',tag:'مهمة: تحليل بيانات',pts:10,
+   ctx:'📋 مهمتك: أنتِ متدربة في المركز الوطني للإحصاء والمعلومات، وطُلب منكِ تحليل بيانات تعداد 2010م لثلاث محافظات.',
+   p:'احسبي الكثافة السكانية لمحافظة مسقط، وقرّبي الناتج إلى منزلة عشرية واحدة.',
+   v:govTable,lab:'الكثافة =',unit:'نسمة/كم²',a:221.68,tol:0.15,ans:'221.7 نسمة/كم² تقريبًا',
+   why:'الكثافة السكانية = عدد السكان ÷ المساحة.',
+   steps:['نقسم عدد السكان 775,878 على المساحة 3,500','الناتج ≈ 221.68','بعد التقريب: 221.7 نسمة/كم²']},
+  {type:'order',tag:'ترتيب بناءً على حساب',pts:15,
+   ctx:'📋 تابعي المهمة باستخدام بيانات الجدول نفسه.',
+   p:'رتّبي المحافظات الثلاث تنازليًا حسب الكثافة السكانية (من الأعلى إلى الأقل):',
+   v:govTable,items:['مسقط','مسندم','الداخلية'],
+   why:'كثافة مسقط ≈ 221.7، ومسندم ≈ 17.5، والداخلية ≈ 10.2 نسمة/كم². لاحظي أن الداخلية أكثر سكانًا من مسندم لكن مساحتها الكبيرة جدًا تجعل كثافتها أقل.',
+   steps:['مسقط: 775,878 ÷ 3,500 ≈ 221.7','مسندم: 31,425 ÷ 1,800 ≈ 17.5','الداخلية: 326,651 ÷ 31,900 ≈ 10.2']},
+  {type:'mcq',tag:'تفسير البيانات',pts:10,
+   p:'ما السبب الأرجح لارتفاع الكثافة السكانية في محافظة مسقط مقارنة بغيرها؟',
+   v:govTable,
+   o:['اتساع مساحتها مقارنة بالمحافظات الأخرى','قسوة الظروف المناخية فيها','تركّز الخدمات وفرص العمل فيها مع صغر مساحتها','قلة عدد سكانها'],a:2,
+   ans:'تركّز الخدمات وفرص العمل فيها مع صغر مساحتها',
+   why:'مسقط تجذب السكان بتوفر الخدمات والأنشطة الاقتصادية، ومساحتها صغيرة، فيرتفع عدد السكان في كل كيلومتر مربع.'},
+  {type:'mcq',cards:true,tag:'اتخاذ قرار',pts:10,
+   p:'اقترحت إدارة المركز بناء مستشفى جديد لتخفيف الضغط على الخدمات الصحية. بناءً على الكثافة السكانية، أي محافظة تُقدَّم أولًا؟',
+   o:['مسقط','مسندم','الداخلية','المحافظات الثلاث بالتساوي'],a:0,ans:'مسقط',
+   why:'ارتفاع الكثافة السكانية يعني ضغطًا أكبر على المستشفيات والمدارس والطرق، ومسقط هي الأعلى كثافة بفارق كبير.'},
+  {type:'order',tag:'لغز الخط الزمني',pts:15,
+   p:'رتّبي الأحداث من الأقدم إلى الأحدث:',
+   items:['بداية حكم أسرة البوسعيد في عُمان','رحلة السفينة سلطانة إلى نيويورك','وفاة السيد سعيد بن سلطان قرب جزر سيشل','انضمام سلطنة عُمان إلى منظمة اليونسكو','منح السلطان قابوس جائزة السلام الدولية'],
+   ans:'البوسعيد (1744م)، ثم سلطانة (1840م)، ثم وفاة السيد سعيد (1856م)، ثم الانضمام إلى اليونسكو (1972م)، ثم جائزة السلام الدولية (1998م)',
+   why:'هذه الأحداث تمتد من القرن الثامن عشر إلى أواخر القرن العشرين بالترتيب: 1744م، 1840م، 1856م، 1972م، 1998م.'},
+  {type:'multi',tag:'🏆 التحدي الكبير',pts:20,
+   ctx:'هذه بيانات سلطنة عُمان لعام 2022م. أجيبي عن الأجزاء الثلاثة لتكملي الرحلة.',
+   p:'التحدي الكبير: حلّلي بيانات سلطنة عُمان',
+   v:omanCard,
+   parts:[
+    {k:'num',lab:'احسبي الزيادة الطبيعية في سلطنة عُمان عام 2022م.',unit:'نسمة',a:60645,tol:0},
+    {k:'num',lab:'احسبي معدل الوفيات الخام بالألف، وقرّبي الناتج إلى منزلة عشرية واحدة.',unit:'في الألف',a:1.83,tol:0.04},
+    {k:'sel',lab:'إذا علمتِ أن الكثافة التي تقل عن 20 نسمة/كم² تُصنَّف منخفضة جدًا، فما نوع الكثافة السكانية في سلطنة عُمان؟',o:['منخفضة جدًا','منخفضة','مرتفعة','مرتفعة جدًا'],a:0}],
+   ans:'(أ) 60,645 نسمة، (ب) 1.8 في الألف، (ج) منخفضة جدًا',
+   why:'الزيادة الطبيعية = المواليد − الوفيات، ومعدل الوفيات الخام = (الوفيات ÷ السكان) × 1000، والكثافة = السكان ÷ المساحة ≈ 15.9 نسمة/كم²، وهي أقل من 20.',
+   steps:['(أ) نطرح 9,008 من 69,653 فيكون الناتج 60,645 نسمة','(ب) نقسم 9,008 على 4,933,850 ثم نضرب في 1000 فيكون الناتج ≈ 1.8 في الألف','(ج) نقسم 4,933,850 على 309,500 فتكون الكثافة ≈ 15.9 نسمة/كم²، أي منخفضة جدًا']}
+]}
+];
+
+/* ============ المحرك ============ */
+const app=document.getElementById('app');
+const L=['أ','ب','ج','د'];
+const TOTALQ=STAGES.reduce((a,s)=>a+s.q.length,0);
+const MAXP=STAGES.reduce((a,s)=>a+s.q.reduce((b,q)=>b+q.pts,0),0);
+let S=load();
+let W={resp:null,ready:false};
+
+function load(){try{const r=localStorage.getItem(STORE);return r?JSON.parse(r):null}catch(e){return null}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(S))}catch(e){}}
+function wipe(){try{localStorage.removeItem(STORE)}catch(e){} S=null}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const qid=(si,qi)=>si+'-'+qi;
+const answered=(si,qi)=>!!(S&&S.ans[qid(si,qi)]);
+function stageDone(si){return STAGES[si].q.every((_,qi)=>answered(si,qi))}
+function unlocked(si){return si===0||stageDone(si-1)}
+function curStage(){for(let i=0;i<STAGES.length;i++) if(!stageDone(i)) return i; return STAGES.length}
+function stats(){let c=0,w=0,p=0,n=0;for(const k in S.ans){n++;const a=S.ans[k];a.c?c++:w++;p+=a.p}return{c,w,p,n,pct:Math.round(p/MAXP*100)}}
+function stagePts(si){let p=0,m=0;STAGES[si].q.forEach((q,qi)=>{m+=q.pts;const a=S.ans[qid(si,qi)];if(a)p+=a.p});return{p,m}}
+function level(p){
+  if(p>=90) return{t:'متقنة',s:'⭐⭐⭐'};
+  if(p>=80) return{t:'متميزة',s:'⭐⭐'};
+  if(p>=70) return{t:'جيدة جدًا',s:'⭐'};
+  return{t:'أحسنتِ المحاولة',s:'',msg:'راجعي التغذية الراجعة وطوّري فهمك للمفاهيم.'};
+}
+function toNum(s){
+  if(s==null) return NaN;
+  s=String(s).trim().replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/٫/g,'.').replace(/[,،٬\s]/g,'');
+  return s===''?NaN:Number(s);
+}
+function seeded(n,seed){
+  let h=2166136261;for(const ch of seed){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
+  const r=()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};
+  const a=[...Array(n).keys()];
+  for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  if(a.every((v,i)=>v===i)) a.push(a.shift());
+  return a;
+}
+let toastT;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600)}
+function top0(){window.scrollTo({top:0})}
+
+/* ---------- شاشة البداية ---------- */
+function showStart(){
+  const has=S&&S.name;
+  app.innerHTML=`<section class="start">
+    <div class="hero-art">${dhowSVG()}</div>
+    <span class="subj">${SUBJECT} للصف ${GRADE}</span>
+    <h1 class="title-d">رحلة سلطانة</h1>
+    <p class="lead">أبحري في أربع محطات تراجعين فيها السكان، والوجود العُماني في شرقي أفريقيا، وعلاقات عُمان بالعالم. كل محطة تُكملينها تفتح التي بعدها.</p>
+    <div class="startbox">${has?`
+      <p class="resume">لديكِ رحلة محفوظة باسم <b>${esc(S.name)}</b>.</p>
+      <button class="btn primary wide" id="go">متابعة الرحلة</button>
+      <div style="text-align:center;margin-top:6px"><button class="linkbtn" id="newp">طالبة أخرى؟ ابدئي رحلة جديدة</button></div>`:`
+      <label for="nm">اكتبي اسمك</label>
+      <input id="nm" class="namein" autocomplete="off" maxlength="40" placeholder="الاسم الثلاثي">
+      <p class="err" id="er"></p>
+      <button class="btn primary wide" id="go">ابدئي التحدي</button>`}
+    </div>
+    <ul class="stagesmini">${STAGES.map(s=>`<li>${s.icon} ${s.name}</li>`).join('')}</ul>
+    <button class="btn ghost installbtn" id="inst" ${deferredInstall?'':'hidden'}>📲 تثبيت التطبيق على الجهاز</button>
+  </section>`;
+  if(has){
+    go.onclick=()=>{showMap();top0()};
+    let armed=false;
+    newp.onclick=()=>{
+      if(!armed){armed=true;newp.textContent='انقري مرة أخرى للتأكيد: سيُحذف التقدم المحفوظ لـ'+S.name;return}
+      wipe();showStart();
+    };
+  }else{
+    const nm=document.getElementById('nm'),er=document.getElementById('er');
+    const start=()=>{const v=nm.value.trim().replace(/\s+/g,' ');
+      if(v.length<2){er.textContent='اكتبي اسمك أولًا لتظهر في الشهادة.';nm.focus();return}
+      S={name:v,ans:{},seen:{},doneAt:null};save();showMap();top0()};
+    go.onclick=start;
+    nm.addEventListener('keydown',e=>{if(e.key==='Enter')start()});
+  }
+}
+
+/* ---------- خريطة المراحل ---------- */
+function showMap(justUnlocked){
+  const cs=curStage(),st=stats(),pct=Math.round(st.n/TOTALQ*100);
+  const conn=i=>i===0?'':`<svg class="conn" viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true" style="direction:ltr"><path d="${i%2?'M78 0 C 78 30, 22 26, 22 56':'M22 0 C 22 30, 78 26, 78 56'}"/></svg>`;
+  const items=STAGES.map((s,i)=>{
+    const done=stageDone(i),open=unlocked(i),cur=i===cs;
+    const n=s.q.length,a=s.q.filter((_,qi)=>answered(i,qi)).length,sp=stagePts(i);
+    const stt=done?`✓ مكتملة: ${sp.p} من ${sp.m} نقطة`:!open?'🔒 تُفتح بعد إكمال المرحلة السابقة':a?`جارية: ${a} من ${n} أسئلة`:`مفتوحة: ${n} أسئلة`;
+    const cls=[i%2?'left':'right',done?'done':'',cur?'current':'',!open?'locked':'',justUnlocked===i?'just-unlocked':''].join(' ');
+    return `<li class="stop ${cls}">${conn(i)}<button class="node" data-s="${i}" ${!open?'aria-disabled="true"':''} aria-label="المرحلة ${i+1}: ${s.name}، ${stt}">
+      <span class="badge">${!open?'🔒':s.icon}</span>
+      <span class="ntext"><span class="nnum">المرحلة ${i+1}</span><span class="nname">${s.name}</span><span class="nstat">${stt}</span></span>
+      ${cur?`<span class="boat">${dhowSVG('tiny')}</span>`:''}</button></li>`;
+  }).join('');
+  app.innerHTML=`<section class="map">
+    <header class="maphead"><div><p class="hello">مرحبًا يا ${esc(S.name)}</p><h1 class="title-d">خريطة الرحلة</h1></div><span class="pts">${st.p} نقطة</span></header>
+    <div class="prog" role="group" aria-label="التقدم"><div class="prog-top"><span>${cs<4?`المرحلة ${cs+1} من 4`:'أكملتِ المراحل 4 من 4'}</span><span>${pct}%</span></div><div class="bar"><i style="width:${pct}%"></i></div></div>
+    <ol class="route">${items}</ol>
+    <div class="mapfoot">${cs===4?`<button class="btn primary wide" id="fin">عرض النتيجة والشهادة</button>`:''}</div>
+  </section>`;
+  app.querySelectorAll('.node').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.s;
+    if(!unlocked(i)){toast(`أكملي «${STAGES[i-1].name}» أولًا لفتح هذه المرحلة.`);return}
+    const first=STAGES[i].q.findIndex((_,qi)=>!answered(i,qi));
+    renderQ(i,first<0?0:first);top0();
+  });
+  const fin=document.getElementById('fin');if(fin) fin.onclick=()=>{showFinal(false);top0()};
+}
+
+/* ---------- أنواع الأسئلة ---------- */
+const T={
+  mcq:{
+    render(c){const q=c.q;const tf=q.type==='tf';
+      c.ia.innerHTML=`<div class="opts ${q.cards?'cards':''} ${tf?'tf':''}">${q.o.map((o,i)=>`<button class="opt" data-i="${i}" aria-pressed="false">${tf?'':`<span class="ol">${L[i]}</span>`}<span class="ot">${o}</span></button>`).join('')}</div>`;
+      const bs=[...c.ia.querySelectorAll('.opt')];
+      if(c.locked){bs.forEach(b=>b.disabled=true);bs[q.a].classList.add('ok');if(c.resp!==q.a&&bs[c.resp])bs[c.resp].classList.add('bad');return}
+      bs.forEach(b=>b.onclick=()=>{bs.forEach(x=>{x.classList.remove('sel');x.setAttribute('aria-pressed','false')});b.classList.add('sel');b.setAttribute('aria-pressed','true');c.set(+b.dataset.i,true)});
+    },
+    grade:(q,r)=>r===q.a
+  },
+  hot:{
+    render(c){const q=c.q;const els=[...c.card.querySelectorAll('[data-hs]')];
+      c.ia.innerHTML=c.locked?`<p class="picked">اختيارك: <b>${esc(q.names[c.resp]||'')}</b></p>`:`<p class="hint">انقري على العنصر المطلوب، ويمكنك تغيير اختيارك قبل التأكيد.</p><p class="picked">اختيارك: <b>لم تختاري بعد</b></p>`;
+      if(c.locked){els.forEach(e=>{e.classList.add('locked');e.removeAttribute('tabindex');if(e.tagName==='BUTTON')e.disabled=true;
+        if(e.dataset.hs===q.a)e.classList.add('hs-ok');else if(e.dataset.hs===c.resp)e.classList.add('hs-bad')});return}
+      const pk=c.ia.querySelector('.picked b');
+      const pick=e=>{els.forEach(x=>{x.classList.remove('hs-sel');x.setAttribute('aria-pressed','false')});e.classList.add('hs-sel');e.setAttribute('aria-pressed','true');pk.textContent=q.names[e.dataset.hs];c.set(e.dataset.hs,true)};
+      els.forEach(e=>{e.addEventListener('click',()=>pick(e));if(e.tagName!=='BUTTON')e.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();pick(e)}})});
+    },
+    grade:(q,r)=>r===q.a
+  },
+  assign:{
+    render(c){const q=c.q,n=q.chips.length;
+      const place=c.locked?c.resp.slice():Array(n).fill(-1);
+      const order=seeded(n,c.id);
+      let picked=null;
+      c.ia.innerHTML=`<div class="slots ${q.multi?'bins':'pairs'}">${q.slots.map((s,i)=>`<div class="slot" data-slot="${i}" ${c.locked?'':'tabindex="0" role="button"'} aria-label="${esc(s.l)}"><div class="slot-label">${s.l}</div><div class="slot-drop"></div></div>`).join('')}</div>
+        ${c.locked?'':`<div class="bank" data-bank><div class="bank-hint">اسحبي البطاقة إلى مكانها، أو انقريها ثم انقري المكان. انقري بطاقة موضوعة لإعادتها.</div><div class="bank-chips"></div></div>`}`;
+      const slotsEl=c.ia.querySelector('.slots');
+      const draw=()=>{
+        c.ia.querySelectorAll('.slot-drop').forEach(d=>d.innerHTML='');
+        const bank=c.ia.querySelector('.bank-chips');if(bank)bank.innerHTML='';
+        order.forEach(i=>{
+          const b=document.createElement('button');b.className='chip';b.dataset.c=i;b.textContent=q.chips[i];
+          if(c.locked){b.disabled=true;b.classList.add(q.slots[place[i]].a.includes(i)?'ok':'bad')}
+          if(picked===i)b.classList.add('picked');
+          if(place[i]>=0)c.ia.querySelector(`.slot[data-slot="${place[i]}"] .slot-drop`).appendChild(b);else bank.appendChild(b);
+          if(!c.locked)wire(b,i);
+        });
+        slotsEl.classList.toggle('armed',picked!==null);
+        if(!c.locked)c.set(place.slice(),place.every(p=>p>=0));
+      };
+      const put=(i,s)=>{if(!q.multi){const occ=place.indexOf(s);if(occ>=0&&occ!==i)place[occ]=-1}place[i]=s;picked=null;draw()};
+      const tap=i=>{if(place[i]>=0){place[i]=-1;picked=null}else picked=picked===i?null:i;draw()};
+      const wire=(b,i)=>{
+        b.addEventListener('click',e=>{if(e.detail===0)tap(i)});
+        b.addEventListener('pointerdown',e=>{
+          if(e.button&&e.button!==0)return;
+          const sx=e.clientX,sy=e.clientY;let ghost=null,over=null;
+          try{b.setPointerCapture(e.pointerId)}catch(_){}
+          const mv=ev=>{
+            if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>8){ghost=b.cloneNode(true);ghost.classList.add('ghost-chip','picked');document.body.appendChild(ghost);b.style.opacity='.35'}
+            if(ghost){ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';
+              const t=document.elementFromPoint(ev.clientX,ev.clientY);const sl=t&&t.closest('.slot');
+              if(over&&over!==sl)over.classList.remove('hot');if(sl&&c.ia.contains(sl)){sl.classList.add('hot');over=sl}else over=null}
+          };
+          const up=ev=>{
+            b.removeEventListener('pointermove',mv);b.removeEventListener('pointerup',up);b.removeEventListener('pointercancel',up);
+            if(over)over.classList.remove('hot');
+            if(ghost){ghost.remove();b.style.opacity='';
+              const t=document.elementFromPoint(ev.clientX,ev.clientY);const sl=t&&t.closest('.slot');
+              if(sl&&c.ia.contains(sl))put(i,+sl.dataset.slot);
+              else if(t&&t.closest('[data-bank]')){place[i]=-1;picked=null;draw()}
+            }else if(ev.type==='pointerup')tap(i);
+          };
+          b.addEventListener('pointermove',mv);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);
+        });
+      };
+      if(!c.locked){
+        c.ia.querySelectorAll('.slot').forEach(sl=>{
+          const act=e=>{if(e.target.closest('.chip'))return;if(picked!==null)put(picked,+sl.dataset.slot);else toast('اختاري بطاقة أولًا ثم انقري هذا المكان.')};
+          sl.addEventListener('click',act);
+          sl.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act(e)}});
+        });
+      }
+      draw();
+    },
+    grade:(q,r)=>r.every((s,i)=>s>=0&&q.slots[s].a.includes(i)),
+    ansList(q){
+      if(q.multi) return q.slots.map(s=>`<li><b>${s.l}:</b> ${s.a.map(i=>q.chips[i]).join('، ')}</li>`).join('');
+      return q.slots.map(s=>`<li><b>${q.chips[s.a[0]]}:</b> ${s.l}</li>`).join('');
+    }
+  },
+  order:{
+    render(c){const q=c.q,n=q.items.length;
+      const seq=c.locked?c.resp.slice():[];
+      const disp=seeded(n,c.id);
+      c.ia.innerHTML=`<ol class="seq"></ol>${c.locked?'':'<div class="pool" aria-label="العناصر المتبقية"></div><p class="hint" style="margin-top:8px">انقري العناصر بالترتيب المطلوب، وانقري عنصرًا مرتّبًا لإعادته.</p>'}`;
+      const seqEl=c.ia.querySelector('.seq'),pool=c.ia.querySelector('.pool');
+      const draw=()=>{
+        seqEl.innerHTML='';
+        for(let k=0;k<n;k++){const li=document.createElement('li');li.innerHTML=`<span class="num">${k+1}</span>`;
+          if(seq[k]!==undefined){const b=document.createElement('button');b.className='chip';b.textContent=q.items[seq[k]];
+            if(c.locked){b.disabled=true;b.classList.add(seq[k]===k?'ok':'bad')}else b.onclick=()=>{seq.splice(k,1);draw()};
+            li.appendChild(b)}else{const e=document.createElement('span');e.className='empty';e.textContent='…';li.appendChild(e)}
+          seqEl.appendChild(li)}
+        if(pool){pool.innerHTML='';disp.forEach(i=>{if(seq.includes(i))return;const b=document.createElement('button');b.className='chip';b.textContent=q.items[i];b.onclick=()=>{seq.push(i);draw()};pool.appendChild(b)})}
+        if(!c.locked)c.set(seq.slice(),seq.length===n);
+      };
+      draw();
+    },
+    grade:(q,r)=>r.length===q.items.length&&r.every((v,i)=>v===i)
+  },
+  num:{
+    render(c){const q=c.q;
+      c.ia.innerHTML=`<div class="numrow"><label class="nlab" for="ni">${q.lab||'الناتج ='}</label><input id="ni" class="numin" dir="ltr" inputmode="decimal" autocomplete="off" placeholder="?" ${c.locked?'disabled':''} value="${c.locked?esc(c.resp):''}"><span class="unit">${q.unit||''}</span></div>${c.locked?'':'<p class="hint" style="margin-top:8px">اكتبي الرقم فقط، ويمكنك استخدام الأرقام العربية أو الإنجليزية.</p>'}`;
+      const inp=c.ia.querySelector('input');
+      if(c.locked){inp.classList.add(T.num.grade(q,c.resp)?'ok':'bad');return}
+      inp.addEventListener('input',()=>{const v=inp.value;c.set(v,!isNaN(toNum(v)))});
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&W.ready)document.getElementById('act').click()});
+    },
+    grade:(q,r)=>Math.abs(toNum(r)-q.a)<=(q.tol||0)+1e-9
+  },
+  multi:{
+    render(c){const q=c.q;const r=c.locked?c.resp.slice():q.parts.map(()=>null);
+      c.ia.innerHTML=`<div class="parts">${q.parts.map((p,i)=>`<div class="part"><div class="plab"><span class="pl">${L[i]}</span><span>${p.lab}</span></div>${p.k==='num'
+        ?`<div class="numrow"><input class="numin" data-p="${i}" dir="ltr" inputmode="decimal" autocomplete="off" placeholder="?" aria-label="${esc(p.lab)}" ${c.locked?'disabled':''} value="${c.locked?esc(r[i]):''}"><span class="unit">${p.unit||''}</span></div>`
+        :`<div class="sopts">${p.o.map((o,j)=>`<button class="sopt" data-p="${i}" data-j="${j}" aria-pressed="false">${o}</button>`).join('')}</div>`}</div>`).join('')}</div>`;
+      const ok=(p,v)=>p.k==='num'?Math.abs(toNum(v)-p.a)<=(p.tol||0)+1e-9:v===p.a;
+      if(c.locked){
+        c.ia.querySelectorAll('.numin').forEach(inp=>{const i=+inp.dataset.p;inp.classList.add(ok(q.parts[i],r[i])?'ok':'bad')});
+        c.ia.querySelectorAll('.sopt').forEach(b=>{const i=+b.dataset.p,j=+b.dataset.j;b.disabled=true;if(j===q.parts[i].a)b.classList.add('ok');else if(j===r[i])b.classList.add('bad')});
+        return}
+      const upd=()=>c.set(r.slice(),q.parts.every((p,i)=>p.k==='num'?!isNaN(toNum(r[i])):r[i]!==null));
+      c.ia.querySelectorAll('.numin').forEach(inp=>inp.addEventListener('input',()=>{r[+inp.dataset.p]=inp.value;upd()}));
+      c.ia.querySelectorAll('.sopt').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;c.ia.querySelectorAll(`.sopt[data-p="${i}"]`).forEach(x=>{x.classList.remove('sel');x.setAttribute('aria-pressed','false')});b.classList.add('sel');b.setAttribute('aria-pressed','true');r[i]=+b.dataset.j;upd()});
+    },
+    grade:(q,r)=>q.parts.every((p,i)=>p.k==='num'?Math.abs(toNum(r[i])-p.a)<=(p.tol||0)+1e-9:r[i]===p.a)
+  }
+};
+T.tf=T.mcq;
+
+/* تجهيز أسئلة صح وخطأ */
+STAGES.forEach(s=>s.q.forEach(q=>{if(q.type==='tf'){q.o=['✓ صح','✗ خطأ'];q.a=q.t?0:1;q.ans=q.t?'«صح»':'«خطأ»'}}));
+
+function correctText(q){
+  if(q.type==='assign') return `<ul>${T.assign.ansList(q)}</ul>`;
+  if(q.type==='order'&&!q.ans) return q.items.join('، ثم ');
+  return q.ans;
+}
+function fbHTML(q,ok){
+  const steps=q.steps?`<div class="solve"><b>خطوات الحل:</b><ol>${q.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>`:'';
+  if(ok) return `<p><b class="fbt">✅ أحسنتِ، إجابة صحيحة؛</b> لأن ${q.why}</p>${steps}`;
+  const ct=correctText(q);
+  if(ct.startsWith('<ul>')) return `<p><b class="fbt">💡 ليست الإجابة الصحيحة.</b> الإجابة الصحيحة هي:</p>${ct}<p>لأن ${q.why}</p>${steps}`;
+  return `<p><b class="fbt">💡 ليست الإجابة الصحيحة.</b> الإجابة الصحيحة هي ${ct}؛ لأن ${q.why}</p>${steps}`;
+}
+
+/* ---------- شاشة السؤال ---------- */
+function renderQ(si,qi,fresh){
+  const st=STAGES[si],q=st.q[qi],id=qid(si,qi),done=S.ans[id];
+  W={resp:null,ready:false};
+  const pts=stats().p;
+  const dots=st.q.map((_,k)=>{const a=S.ans[qid(si,k)];return `<li class="${a?(a.c?'ok':'bad'):''} ${k===qi?'cur':''}"></li>`}).join('');
+  app.innerHTML=`<header class="qhead"><button class="btn ghost" id="back" aria-label="العودة إلى خريطة الرحلة">🗺️ الخريطة</button>
+    <div class="qmeta"><span class="sname">${st.icon} ${st.name}</span><span class="qcount">السؤال ${qi+1} من ${st.q.length}</span></div>
+    <span class="pts">${pts} نقطة</span></header>
+    <ol class="dots" aria-hidden="true">${dots}</ol>
+    <article class="qcard">
+      <div class="qtop"><span class="tag">${q.tag}</span>${q.pts>10?`<span class="bonus">تحدٍّ متقدم: ${q.pts} نقطة</span>`:''}</div>
+      ${q.ctx?`<p class="ctx">${q.ctx}</p>`:''}
+      <h2 class="prompt">${q.p}</h2>
+      ${q.st?`<p class="stmt">${q.st}</p>`:''}
+      ${q.v?`<div class="visual">${q.v}</div>`:''}
+      <div class="ia"></div>
+      <div class="fb" id="fb"></div>
+    </article>
+    <div class="actbar"><button class="btn primary" id="act" ${done?'':'disabled'}>${done?nextLabel(si,qi):'تأكيد الإجابة'}</button></div>`;
+  const card=app.querySelector('.qcard'),ia=app.querySelector('.ia'),act=document.getElementById('act'),fb=document.getElementById('fb');
+  document.getElementById('back').onclick=()=>{showMap();top0()};
+  const ctx={q,id,card,ia,locked:!!done,resp:done?done.r:null,set:(r,ready)=>{W.resp=r;W.ready=ready;act.disabled=!ready}};
+  T[q.type].render(ctx);
+  if(done){
+    fb.className='fb '+(done.c?'good':'wrong');fb.innerHTML=fbHTML(q,done.c);
+    act.onclick=()=>{next(si,qi);};
+    if(fresh) setTimeout(()=>fb.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}),60);
+  }else{
+    act.onclick=()=>{
+      if(!W.ready||S.ans[id]) return;
+      const ok=T[q.type].grade(q,W.resp);
+      S.ans[id]={r:W.resp,c:ok,p:ok?q.pts:0};save();
+      renderQ(si,qi,true);
+    };
+  }
+}
+function nextLabel(si,qi){
+  if(qi+1<STAGES[si].q.length) return 'السؤال التالي';
+  return si===STAGES.length-1?'عرض النتيجة':'إنهاء المرحلة';
+}
+function next(si,qi){
+  if(qi+1<STAGES[si].q.length){renderQ(si,qi+1);top0();return}
+  const last=si===STAGES.length-1;
+  if(!S.seen[si]){S.seen[si]=1;
+    if(last){S.doneAt=S.doneAt||Date.now();save();showFinal(true);top0();return}
+    save();stageOverlay(si);return}
+  if(last){showFinal(false)}else showMap();
+  top0();
+}
+function stageOverlay(si){
+  const sp=stagePts(si);
+  const o=document.createElement('div');o.className='overlay';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
+  o.innerHTML=`<div class="modal"><div class="unlock">🔓</div><h2>تم اجتياز المرحلة ${ORD[si]}، لقد فُتحت المرحلة ${ORD[si+1]}.</h2><p>نقاطك في «${STAGES[si].name}»: ${sp.p} من ${sp.m}</p><button class="btn primary wide" id="om">انطلقي إلى ${STAGES[si+1].name}</button></div>`;
+  document.body.appendChild(o);
+  const b=o.querySelector('#om');b.focus();
+  b.onclick=()=>{o.remove();showMap(si+1);top0()};
+}
+
+/* ---------- شاشة الإنجاز ---------- */
+function showFinal(celebrate){
+  const st=stats(),lv=level(st.pct);
+  app.innerHTML=`<section class="final">
+    <div class="final-art" aria-hidden="true">🎉</div>
+    <h1 class="title-d">أكملتِ التحدي بنجاح</h1>
+    <p class="fname">${esc(S.name)}</p>
+    <dl class="res">
+      <div><dt>الدرجة</dt><dd>${st.p} من ${MAXP}</dd></div>
+      <div><dt>النسبة</dt><dd>${st.pct}%</dd></div>
+      <div><dt>الإجابات الصحيحة</dt><dd>${st.c}</dd></div>
+      <div><dt>الإجابات غير الصحيحة</dt><dd>${st.w}</dd></div>
+      <div><dt>المراحل المكتملة</dt><dd>4/4</dd></div>
+    </dl>
+    <div class="level">${lv.s?`<span class="stars" aria-hidden="true">${lv.s}</span>`:''}<b>مستوى الأداء: ${lv.t}</b>${lv.msg?`<p>${lv.msg}</p>`:''}</div>
+    <button class="btn primary wide" id="gc">الحصول على شهادتي</button>
+    <div class="row2"><button class="btn ghost wide" id="rv">مراجعة إجاباتي على الخريطة</button></div>
+  </section>`;
+  gc.onclick=()=>{showCert();top0()};
+  rv.onclick=()=>{showMap();top0()};
+  if(celebrate) confetti();
+}
+
+/* ---------- الشهادة ---------- */
+function showCert(){
+  const st=stats(),lv=level(st.pct);
+  const date=new Date(S.doneAt||Date.now()).toLocaleDateString('ar-OM',{year:'numeric',month:'long',day:'numeric'});
+  const corner=`<svg viewBox="0 0 40 40"><path d="M20 0 L24 16 L40 20 L24 24 L20 40 L16 24 L0 20 L16 16 Z"/></svg>`;
+  app.innerHTML=`<section class="certscreen">
+    <div class="certbar no-print"><button class="btn ghost" id="bk">رجوع</button><button class="btn primary" id="pr">🖨️ طباعة أو حفظ PDF</button></div>
+    <p class="printhint no-print">لحفظ الشهادة PDF: اضغطي «طباعة» ثم اختاري «حفظ بتنسيق PDF»، واجعلي اتجاه الورقة أفقيًا.</p>
+    <div class="cert-wrap"><div class="cert"><div class="cert-in">
+      <span class="corner tl">${corner}</span><span class="corner tr">${corner}</span><span class="corner bl">${corner}</span><span class="corner br">${corner}</span>
+      <div class="cdhow">${dhowSVG('tiny')}</div>
+      <h1 class="ct">شهادة إنجاز</h1>
+      <p class="cl">تشهد هذه الشهادة بأن الطالبة:</p>
+      <p class="cn">${esc(S.name)}</p>
+      <p class="cl">قد أتمّت بنجاح التحدي التعليمي:</p>
+      <p class="cu">رحلة سلطانة: ${UNIT}</p>
+      <div class="cinfo">
+        <div><span>الصف</span><b>${GRADE}</b></div>
+        <div><span>النتيجة</span><b>${st.pct}%</b></div>
+        <div><span>مستوى الإنجاز</span><b>${lv.t} ${lv.s}</b></div>
+        <div><span>التاريخ</span><b>${date}</b></div>
+      </div>
+      <p class="cq">تعلّمتِ، طبّقتِ، فكّرتِ، وأنجزتِ… استمري في التميّز.</p>
+      <div class="csign"><span>معلمة المادة</span><span>إدارة المدرسة</span></div>
+    </div></div></div>
+  </section>`;
+  bk.onclick=()=>{showFinal(false);top0()};
+  pr.onclick=()=>window.print();
+}
+
+/* ---------- مؤثر احتفالي ---------- */
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv=document.getElementById('fx'),x=cv.getContext('2d');
+  const W0=cv.width=innerWidth*devicePixelRatio,H0=cv.height=innerHeight*devicePixelRatio;
+  const cols=['#1A6A78','#E1952B','#1D7A51','#C8102E','#F4D58D','#5CB2BF'];
+  const P=Array.from({length:90},()=>({x:Math.random()*W0,y:-Math.random()*H0*.5,vx:(Math.random()-.5)*2*devicePixelRatio,vy:(2+Math.random()*3)*devicePixelRatio,s:(5+Math.random()*6)*devicePixelRatio,r:Math.random()*6,vr:(Math.random()-.5)*.2,c:cols[Math.floor(Math.random()*cols.length)]}));
+  const t0=performance.now();
+  (function f(t){const e=t-t0;x.clearRect(0,0,W0,H0);x.globalAlpha=Math.max(0,1-Math.max(0,e-2200)/800);
+    P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});
+    if(e<3000)requestAnimationFrame(f);else x.clearRect(0,0,W0,H0)})(t0);
+}
+
+/* ---------- تشغيل ---------- */
+showStart();
+
+/* ---------- تطبيق قابل للتثبيت (PWA) ---------- */
+var deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredInstall=e;
+  const b=document.getElementById('inst');if(b)b.hidden=false;
+});
+document.addEventListener('click',async e=>{
+  if(!e.target.closest('#inst')||!deferredInstall)return;
+  deferredInstall.prompt();
+  await deferredInstall.userChoice;deferredInstall=null;
+  const b=document.getElementById('inst');if(b)b.hidden=true;
+});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('تم تثبيت التطبيق على جهازك.')});
+</script>
+</body>
+</html>
