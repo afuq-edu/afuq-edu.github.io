@@ -19,6 +19,7 @@
   }
   function check(){
     var st=state(); if(!st) return;
+    if(role==='open' && !allowed(st)) return; /* standalone page: never redirect, only add the back button when it belongs to the visitor's package */
     if(role==='gate' || !allowed(st)) return out(st.home);
     if(document.body) ui(st); else document.addEventListener('DOMContentLoaded',function(){ ui(st); });
   }
