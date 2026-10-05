@@ -142,10 +142,21 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
   // e.g. #4mn7m11e.2KPYrdmF2K8 ; the name is base64url UTF-8. The long form (#to=..&i=..) is still accepted.
   var SUBJ={m:'math',v:'advmath',b:'basicmath',e:'english',a:'arabic',s:'science',f:'physics',c:'chemistry',l:'biology',i:'islamic',o:'social',t:'arts',w:'homeland',x:'it',y:'pe',z:'sport'};
-  var raw=decodeURIComponent(location.hash.slice(1)), to='', all=false, want=[], kcode='';
+  // Listeners first, so even a broken link can never stop a newly pasted one from loading in this tab.
+  // Pasting another custom link into a tab that already shows one only changes the hash: reload for the new link.
+  window.addEventListener('hashchange',function(){ location.reload(); });
+  // Some phones reuse an open tab for a new link, or restore it from memory; whenever the address no longer matches
+  // the link this page was built for, rebuild it so the newest link always wins over the previous one.
+  var builtFor=location.hash;
+  function stale(){ if(location.hash!==builtFor) location.reload(); }
+  window.addEventListener('pageshow',function(e){ if(e.persisted) location.reload(); });
+  window.addEventListener('focus',stale);
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
+  var hraw=location.hash.slice(1), raw=hraw; try{ raw=decodeURIComponent(hraw); }catch(e){}
+  var to='', all=false, want=[], kcode='';
   function b64(t){ try{ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; return new TextDecoder().decode(Uint8Array.from(atob(t),function(c){return c.charCodeAt(0)})); }catch(e){ return ''; } }
   if(/(^|&)(to|i|all)=/.test(raw)){
-    var h=new URLSearchParams(raw); to=h.get('to')||''; all=h.get('all')==='1';
+    var h=new URLSearchParams(/(^|&)(to|i|all)=/.test(hraw)?hraw:raw); to=h.get('to')||''; all=h.get('all')==='1';
     want=(h.get('i')||'').split(';').map(function(x){ var m=x.split(':'); return [(m[0]||''), (m[1]||'all')]; });
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
@@ -167,19 +178,27 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   }).filter(Boolean);
   root.replaceChildren();
   if(to) document.getElementById('sub').textContent='الباقة الذهبية · '+to;
-  // Package mode: remember this page as the visitor's home and the only paths they may open (see /assets/pkgmode.js).
-  try{
-    if(all){ localStorage.removeItem('afuq-pkg-home'); localStorage.removeItem('afuq-pkg-paths'); try{ sessionStorage.removeItem('afuq-pkg-home'); sessionStorage.removeItem('afuq-pkg-paths'); }catch(e){} }
-    else if(items.length){
-      var ok=[]; items.forEach(function(it){ it.parts.forEach(function(p){ ok.push(it.path+(p[0]==='page'?'':p[0]+'/')); }); });
-      localStorage.setItem('afuq-pkg-home',location.href); localStorage.setItem('afuq-pkg-paths',JSON.stringify(ok));
-      try{ sessionStorage.setItem('afuq-pkg-home',location.href); sessionStorage.setItem('afuq-pkg-paths',JSON.stringify(ok)); }catch(e){}
-      var lg=document.querySelector('.logo'); if(lg){ lg.removeAttribute('href'); lg.style.cursor='default'; }
-    }
-  }catch(e){}
+  // Package mode (see /assets/pkgmode.js): this tab always follows this link (sessionStorage). The device-wide copy
+  // (localStorage, used by tabs that have no link of their own) changes only when a link is newly opened — not when an
+  // old tab is reloaded or restored, or when the visitor is bounced back here from a page outside the package.
+  var fresh=true; try{ fresh=!(history.state&&history.state.afuqPkg); }catch(e){}
+  try{ if(sessionStorage.getItem('afuq-pkg-ret')==='1'){ fresh=false; sessionStorage.removeItem('afuq-pkg-ret'); } }catch(e){}
+  function put(n,k,v){ try{ if(v==null) window[n].removeItem(k); else window[n].setItem(k,v); return true; }catch(e){ return false; } }
+  if(all){
+    put('sessionStorage','afuq-pkg-home',null); put('sessionStorage','afuq-pkg-paths',null); put('sessionStorage','afuq-pkg-all','1');
+    if(fresh){ put('localStorage','afuq-pkg-home',null); put('localStorage','afuq-pkg-paths',null); }
+  } else if(items.length){
+    var ok=[]; items.forEach(function(it){ it.parts.forEach(function(p){ ok.push(it.path+(p[0]==='page'?'':p[0]+'/')); }); });
+    var oj=JSON.stringify(ok);
+    put('sessionStorage','afuq-pkg-home',location.href); put('sessionStorage','afuq-pkg-paths',oj); put('sessionStorage','afuq-pkg-all',null);
+    if(fresh && !(put('localStorage','afuq-pkg-home',location.href) && put('localStorage','afuq-pkg-paths',oj))){ put('localStorage','afuq-pkg-home',null); put('localStorage','afuq-pkg-paths',null); }
+    var lg=document.querySelector('.logo'); if(lg){ lg.removeAttribute('href'); lg.style.cursor='default'; }
+  }
+  try{ var hs={}, cs=history.state; if(cs&&typeof cs==='object') for(var x in cs) hs[x]=cs[x]; hs.afuqPkg=1; history.replaceState(hs,''); }catch(e){}
   if(all){
     Object.keys(CAT).forEach(function(p){ var c=CAT[p]; c.parts.forEach(function(x){ if(x[2]) unlock(c.lock+x[0]) }) });
-    root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','تم فتح المنصة كاملة لك على هذا الجهاز، دون الحاجة إلى رمز.'));
+    unlock('afuq-all');
+    root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','تم تفعيل الباقة الذهبية كاملة لك على هذا الجهاز.'));
     var a=el('a','cta','ادخل المنصة ←'); a.href='../'; root.append(a);
     return;
   }
@@ -201,24 +220,27 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     root.append(box);
   });
   }
-  // Pasting another custom link into a tab that already shows one only changes the hash: reload so the new link's package is shown.
-  window.addEventListener('hashchange',function(){ location.reload(); });
-  // Some phones reuse an open tab for a new link, or restore it from memory; whenever the address no longer matches
-  // the link this page was built for, rebuild it so the newest link always wins over the previous one.
-  var builtFor=location.hash;
-  function stale(){ if(location.hash!==builtFor) location.reload(); }
-  window.addEventListener('pageshow',function(e){ if(e.persisted) location.reload(); });
-  window.addEventListener('focus',stale);
-  document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
   // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
   // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
   if(kcode){
-    fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
-      var e=j&&j[kcode];
+    var tries=0;
+    var apply=function(e){
       if(e==='*'){ all=true; want=[]; }
       else if(typeof e==='string' && e){ all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
-      render();
-    }).catch(function(){ render(); });
+    };
+    var load=function(){
+      fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
+        var e=j&&j[kcode];
+        if(typeof e==='string' && e){ try{ localStorage.setItem('afuq-pkg-k:'+kcode,e); }catch(x){} }
+        apply(e); render();
+      }).catch(function(){
+        if(tries++<1){ setTimeout(load,1500); return; }
+        // offline or blocked: use what this device saw last time for the same link
+        var c=null; try{ c=localStorage.getItem('afuq-pkg-k:'+kcode); }catch(x){} if(c) apply(c);
+        render();
+      });
+    };
+    load();
   } else render();
 })();
 </script>

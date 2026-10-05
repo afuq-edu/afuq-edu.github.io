@@ -132,11 +132,12 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   };
   var dlg=document.getElementById('dlg');
   function key(id){return 'ofuq-g8i-unlock-'+id}
-  function isUnlocked(id){
-    try{if(localStorage.getItem(key(id))==='1')return true}catch(e){}
-    try{if(sessionStorage.getItem(key(id))==='1')return true}catch(e){}
+  function on(k){
+    try{if(localStorage.getItem(k)==='1')return true}catch(e){}
+    try{if(sessionStorage.getItem(k)==='1')return true}catch(e){}
     return false;
   }
+  function isUnlocked(id){ return on(key(id))||on('afuq-all'); }
   function go(id){location.href=id+'/'}
   function open(id){
     var s=SECTIONS[id]; if(!s)return;

@@ -1,14 +1,28 @@
 /* Custom-link (package) mode. A visitor who opened a custom link /p/#… sees only that package:
    the platform hub, programs, grade/subject portals and any section outside the package send them back to the
    package page; allowed section pages get a "back" button and their "../" links point at the package page.
-   Re-checked on bfcache restores and when another tab changes the mode. /?afuq-exit ends the mode on this device. */
+   Re-checked on bfcache restores. Each tab follows the link it was opened with (sessionStorage); localStorage only holds
+   the link opened most recently on the device, for tabs that have none, so another tab never pulls this one away.
+   /?afuq-exit ends the mode on this device. */
 (function(){
   var K='afuq-pkg-home', P='afuq-pkg-paths';
   var s=document.currentScript, role=s&&s.getAttribute('data-role'), going=false;
-  try{ if(/[?&]afuq-exit\b/.test(location.search)){ localStorage.removeItem(K); localStorage.removeItem(P); try{ sessionStorage.removeItem(K); sessionStorage.removeItem(P); }catch(e){} return; } }catch(e){ return; }
-  function get(k){ var v=''; try{ v=localStorage.getItem(k)||''; }catch(e){} if(!v){ try{ v=sessionStorage.getItem(k)||''; }catch(e){} } return v; }
-  function state(){ try{ var h=get(K); return h?{home:h,paths:JSON.parse(get(P)||'[]')}:null; }catch(e){ return null; } }
-  function out(home){ if(going) return; going=true; document.documentElement.style.display='none'; location.replace(home); }
+  try{ if(/[?&]afuq-exit\b/.test(location.search)){ localStorage.removeItem(K); localStorage.removeItem(P); try{ sessionStorage.removeItem(K); sessionStorage.removeItem(P); sessionStorage.removeItem('afuq-pkg-all'); }catch(e){} return; } }catch(e){ return; }
+  function rd(S,k){ try{ return window[S].getItem(k)||''; }catch(e){ return ''; } }
+  function state(){
+    try{
+      var h=rd('sessionStorage',K), src='sessionStorage';
+      if(!h){
+        if(rd('sessionStorage','afuq-pkg-all')==='1') return null; /* this tab opened a full-platform link */
+        h=rd('localStorage',K); src='localStorage';
+      }
+      if(!h) return null;
+      var p=rd(src,P)||'[]';
+      if(src==='localStorage'){ try{ sessionStorage.setItem(K,h); sessionStorage.setItem(P,p); }catch(e){} } /* from now on this tab keeps its own link */
+      return {home:h,paths:JSON.parse(p)};
+    }catch(e){ return null; }
+  }
+  function out(home){ if(going) return; going=true; try{ sessionStorage.setItem('afuq-pkg-ret','1'); }catch(e){} /* an automatic bounce must not make this link the device's newest */ document.documentElement.style.display='none'; location.replace(home); }
   function allowed(st){ var here=location.pathname.replace(/index\.html$/,''); return st.paths.some(function(p){ return here.indexOf('/'+p)===0; }); }
   function ui(st){
     Array.prototype.forEach.call(document.querySelectorAll('a[href="../"]'),function(a){ a.setAttribute('href',st.home); });
@@ -25,5 +39,4 @@
   }
   check();
   window.addEventListener('pageshow',function(e){ if(e.persisted) check(); });
-  window.addEventListener('storage',function(e){ if(e.key===K||e.key===P) check(); });
 })();
