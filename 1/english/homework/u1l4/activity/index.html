@@ -50,7 +50,7 @@ main{max-width:720px;margin:0 auto;padding:18px 16px 48px}
 </main>
 <script>
 (function(){
-var BANK=[{"t":"mc","q":"🐱 What's this?","o":["girl","cat","boy"],"a":1},{"t":"mc","q":"👨 What's this?","o":["dad","brother","girl"],"a":0},{"t":"mc","q":"cat","o":["قطة","فحم","قلم تلوين","الكرة الطائرة"],"a":0},{"t":"mc","q":"dad","o":["أب","غسّالة الأطباق","فرشاة أسنان","كتاب"],"a":0},{"t":"mc","q":"👧 What's this?","o":["girl","mum","friend"],"a":0},{"t":"tf","q":"🏹 It starts with /p/.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"friend","o":["صديق","خبز","عامل نظافة","مستشفى"],"a":0},{"t":"tf","q":"👦 This is my brother.","o":["True ✓","False ✗"],"a":0},{"t":"mc","q":"Which one starts with /p/?","o":["sing","teddy","pin"],"a":2},{"t":"tf","q":"👦 This is my brother.","o":["True ✓","False ✗"],"a":0}];
+var BANK=[{"t":"mc","q":"🐱 What's this?","o":["girl","cat","boy"],"a":1},{"t":"mc","q":"👨 What's this?","o":["dad","brother","girl"],"a":0},{"t":"mc","q":"cat","o":["قطة","فحم","قلم تلوين","الكرة الطائرة"],"a":0},{"t":"mc","q":"dad","o":["أب","غسّالة الأطباق","فرشاة أسنان","كتاب"],"a":0},{"t":"mc","q":"👧 What's this?","o":["girl","mum","friend"],"a":0},{"t":"tf","q":"🏹 It starts with /p/.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"friend","o":["صديق","خبز","عامل نظافة","مستشفى"],"a":0},{"t":"tf","q":"👦 This is my sister.","o":["True ✓","False ✗"],"a":1},{"t":"mc","q":"Which one starts with /p/?","o":["sing","teddy","pin"],"a":2},{"t":"tf","q":"👦 This is my brother.","o":["True ✓","False ✗"],"a":0}];
 var N=BANK.length,i=0,score=0,res=[],busy=false;
 function $(id){return document.getElementById(id)}
 function sh(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
