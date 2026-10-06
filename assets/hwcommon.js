@@ -56,7 +56,7 @@ main{max-width:720px;margin:0 auto;padding:16px 16px 48px}\
       HW.$('cn').textContent=n; m.querySelector('.ct').textContent='على إتمام واجب «\u2068'+o.title+'\u2069»';
       m.querySelector('.s').textContent=star; m.querySelector('.cc').textContent='الدرجة: '+o.correct+' من '+o.total+(o.points!=null?' · النقاط: '+o.points:'');
       var d=''; try{ d=new Date().toLocaleDateString('ar-OM',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ d=new Date().toDateString(); }
-      m.querySelector('.cd').textContent=d; m.querySelector('.f').textContent='منصة أفق التعليمية · '+o.sub;
+      m.querySelector('.cd').textContent=d; m.querySelector('.f').textContent=o.sub;
       HW.$('cert').classList.add('on'); HW.$('prt').hidden=false; HW.$('shot').hidden=false; HW.$('show').hidden=true;
       HW.$('cert').scrollIntoView({behavior:'smooth',block:'center'});
     }
