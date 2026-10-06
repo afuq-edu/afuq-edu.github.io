@@ -159,7 +159,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   window.addEventListener('focus',stale);
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
   var hraw=location.hash.slice(1), raw=hraw; try{ raw=decodeURIComponent(hraw); }catch(e){}
-  var to='', all=false, want=[], kcode='';
+  var to='', all=false, want=[], kcode='', plain=false;
   function b64(t){ try{ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; return new TextDecoder().decode(Uint8Array.from(atob(t),function(c){return c.charCodeAt(0)})); }catch(e){ return ''; } }
   if(/(^|&)(to|i|all)=/.test(raw)){
     var h=new URLSearchParams(/(^|&)(to|i|all)=/.test(hraw)?hraw:raw); to=h.get('to')||''; all=h.get('all')==='1';
@@ -169,6 +169,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     // #k<id>-<items> carries its materials too, so a new stable link works before packages.json is synced.
     var km=/^(k[0-9a-z]{3,10})(?:-(.*))?$/.exec(code);
     if(km){ kcode=km[1]; code=km[2]||''; }
+    if(/!$/.test(code)){ plain=true; code=code.slice(0,-1); } /* trailing ! = plain link: no gold-package label, gift or notices */
     if(code==='*') all=true;
     else { var re=/(\d+)([a-z])([a-z]*)/g, m; while((m=re.exec(code))){ if(!SUBJ[m[2]]) continue;
       want.push([m[1]+'/'+SUBJ[m[2]], m[3]?m[3].split('').join('.'):'all']); } }
@@ -183,7 +184,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     return parts.length?{path:path,c:c,parts:parts}:null;
   }).filter(Boolean);
   root.replaceChildren();
-  if(to) document.getElementById('sub').textContent='الباقة الذهبية · '+to;
+  if(plain){ document.getElementById('sub').textContent='الواجبات التفاعلية'; var ct=document.querySelector('.contact'); if(ct) ct.style.display='none'; }
+  else if(to) document.getElementById('sub').textContent='الباقة الذهبية · '+to;
   // Package mode (see /assets/pkgmode.js): this tab always follows this link (sessionStorage). The device-wide copy
   // (localStorage, used by tabs that have no link of their own) changes only when a link is newly opened — not when an
   // old tab is reloaded or restored, or when the visitor is bounced back here from a page outside the package.
@@ -228,14 +230,14 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     var b=el('div','bad'); b.append(el('b',null,'هذا الرابط غير مكتمل')); b.append(document.createElement('br'));
     b.append(document.createTextNode('تواصل معنا على '+PHONE+' للحصول على رابط صحيح.')); root.append(b); return;
   }
-  root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
+  if(!plain) root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
   var ann=el('div'); root.append(ann);
-  fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
+  if(!plain) fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
     if(!j) return;
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
-  root.append(gift());
+  if(!plain) root.append(gift());
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
