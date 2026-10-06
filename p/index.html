@@ -223,7 +223,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     Object.keys(CAT).forEach(function(p){ var c=CAT[p]; c.parts.forEach(function(x){ if(x[2]) unlock(c.lock+x[0]) }) });
     unlock('afuq-all');
     root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','تم تفعيل الباقة الذهبية كاملة لك على هذا الجهاز.'));
-    var a=el('a','cta','ادخل المنصة ←'); a.href='../'; root.append(a, gift());
+    var a=el('a','cta','ادخل المنصة ←'); a.href='../'; root.append(a); if(kcode||to) root.append(gift());
     return;
   }
   if(!items.length){
@@ -237,7 +237,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
-  if(!plain) root.append(gift());
+  if(!plain && (kcode||to)) root.append(gift()); /* gift only for registered / named gold links */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
