@@ -71,6 +71,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 .contact svg{color:var(--brand)}
 .card .go{font-size:14px;font-weight:700;color:var(--c)}
 .back{color:var(--brand);font-weight:700;text-decoration:none}
+.gifts{margin-top:28px}.gifts h2{margin:0 0 4px;font-size:20px}.gifts .hint{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+.xgift{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 10px;padding:14px 16px;border:1px solid #F2B035;border-radius:14px;background:var(--card);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.xgift b{display:block;font-size:16px}.xgift small{color:var(--muted);font-size:13px}.xgift .gi{font-size:26px}
 </style>
 </head>
 <body>
@@ -103,6 +106,14 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
           <span class="tag"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> الباقة الذهبية</span>
     </button>
   </div>
+
+  <section class="gifts" id="gifts">
+    <h2>🎁 هدايا الباقة الذهبية</h2>
+    <p class="hint">تطبيقات هدية لمشتركي الباقة الذهبية.</p>
+    <button type="button" class="xgift" data-g="منصة المعلم"><span class="gi">🎁</span><span><b>منصة المعلم</b><small>🔒 للباقة الذهبية فقط</small></span></button>
+    <button type="button" class="xgift" data-g="الجرس"><span class="gi">🎁</span><span><b>الجرس</b><small>🔒 للباقة الذهبية فقط</small></span></button>
+    <dialog id="xgdlg"><div class="dlg"><h3 id="xgname"></h3><p>هذه الهدية مخصصة لمشتركي الباقة الذهبية. للترقية تواصل معنا على الرقم <a href="tel:76506037" style="color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate">76506037</a>.</p><button type="button" id="xgclose" style="width:100%;padding:11px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;cursor:pointer">إغلاق</button></div></dialog>
+  </section>
 
   <div class="note">
     <b>للترقية إلى الباقة الذهبية:</b> تواصل معنا على الرقم
@@ -151,6 +162,17 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   document.getElementById('cancel').addEventListener('click',function(){dlg.close()});
   var lock=new URLSearchParams(location.search).get('lock');
   if(lock&&SECTIONS[lock]){history.replaceState(null,'',location.pathname);open(lock)}
+})();
+</script>
+<script>
+(function(){
+  function gold(){ try{ return localStorage.getItem('afuq-all')==='1'||sessionStorage.getItem('afuq-all')==='1'; }catch(e){ return false; } }
+  var box=document.getElementById('gifts'); if(!box) return; if(gold()){ box.hidden=true; return; }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.xgift'), d=document.getElementById('xgdlg'), n=document.getElementById('xgname');
+    if(b&&d){ n.textContent='🎁 '+b.getAttribute('data-g'); if(!d.open) d.showModal(); return; }
+    if(e.target.id==='xgclose'&&d) d.close();
+  });
 })();
 </script>
 </body>
