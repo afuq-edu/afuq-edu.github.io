@@ -207,14 +207,15 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     {name:'منصة المعلم', desc:'تطبيق مساعد للمعلم، هدية خاصة لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://22-tan-gamma.vercel.app/', note:'يمكن استخدامه على الهاتف، لكن للحصول على واجهة أفضل يوصى باستخدامه على جهاز تابلت أو كمبيوتر.'},
     {name:'الجرس', desc:'تطبيق الجرس، الهدية الثانية لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://afuq-edu.github.io/111/jaras/', note:'يعمل على الهاتف والتابلت والكمبيوتر.'}
   ];
-  function gifts(){ var f=document.createDocumentFragment(); GIFTS.forEach(function(g){ f.append(gift(g)); }); return f; }
-  function gift(g){
+  function gifts(locked){ var f=document.createDocumentFragment(); GIFTS.forEach(function(g){ f.append(gift(g,locked)); }); return f; }
+  function gift(g,locked){
     var b=el('button','gift'); b.type='button';
-    b.innerHTML='<span class="gi">🎁</span><span><b></b><small>هدية للباقة الذهبية</small></span>'; b.querySelector('b').textContent=g.name;
+    b.innerHTML='<span class="gi">🎁</span><span><b></b><small></small></span>'; b.querySelector('small').textContent=locked?'🔒 للباقة الذهبية فقط':'هدية للباقة الذهبية'; b.querySelector('b').textContent=g.name;
     var d=document.createElement('dialog'); d.className='gdlg';
     var w=el('div','dlg'); w.append(el('h3',null,'🎁 '+g.name));
     w.append(el('p',null,g.desc));
     w.append(el('p',null,g.note));
+    if(locked){ w.append(el('p',null,'هذه الهدية مخصصة لمشتركي الباقة الذهبية. للترقية تواصل معنا على الرقم '+PHONE+'.')); var x0=el('button','gx','إغلاق'); x0.type='button'; w.append(x0); d.append(w); b.append(d); b.onclick=function(e){ if(d.contains(e.target)&&e.target!==d) return; d.showModal(); }; x0.onclick=function(e){ e.stopPropagation(); d.close(); }; return b; }
     var lb=el('label'); var cb=document.createElement('input'); cb.type='checkbox'; cb.style.cssText='width:auto;letter-spacing:0;margin-top:5px';
     lb.append(cb, el('span',null,'أتعهد بعدم نشر هذا الرابط أو مشاركته مع أي شخص.')); w.append(lb);
     var go=el('a','go','افتح '+g.name+' ←'); go.href=g.url; go.target='_blank'; go.rel='noopener'; go.setAttribute('aria-disabled','true'); w.append(go);
@@ -228,7 +229,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     Object.keys(CAT).forEach(function(p){ var c=CAT[p]; c.parts.forEach(function(x){ if(x[2]) unlock(c.lock+x[0]) }) });
     unlock('afuq-all');
     root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'), el('p','lead','تم تفعيل الباقة الذهبية كاملة لك على هذا الجهاز.'));
-    var a=el('a','cta','ادخل المنصة ←'); a.href='../'; root.append(a); if(kcode||to) root.append(gifts());
+    var a=el('a','cta','ادخل المنصة ←'); a.href='../'; root.append(a, gifts(false));
     return;
   }
   if(!items.length){
@@ -242,7 +243,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
-  if(!plain && (kcode||to)) root.append(gifts()); /* gifts only for registered / named gold links */
+  if(!plain) root.append(gifts(!(kcode||to))); /* gifts show on every link; usable only on registered / named (gold) links */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
