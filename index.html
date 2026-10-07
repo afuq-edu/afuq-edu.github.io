@@ -46,6 +46,9 @@ h2{font-size:20px;margin:0 0 16px}
 .card p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
 .tag{align-self:flex-start;font-size:13px;font-weight:700;border-radius:999px;padding:3px 12px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
 
+.gifts{margin-top:28px}.gifts h2{margin:0 0 4px}.gifts .hint{margin:0 0 12px}
+.xgift{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 10px;padding:14px 16px;border:1px solid #F2B035;border-radius:14px;background:var(--card);color:var(--ink);font:inherit;text-align:start;cursor:pointer}
+.xgift b{display:block;font-size:16px}.xgift small{color:var(--muted);font-size:13px}.xgift .gi{font-size:26px}
 .note{margin-top:28px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);font-size:15px}
 .note b{color:var(--ink)}
 .note a{color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate}
@@ -126,6 +129,14 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     <a class="subj" href="programs/senior-teacher/" style="--c:#2F6FB3"><span class="sic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M8 14h3M8 17h6"/></svg></span><span><b>منصة المعلم الأول</b><small>المعلمات · خطة المادة · الإنماء المهني · الاجتماعات · التحصيل الدراسي</small></span><span class="arr">افتح ←</span></a>
   </section>
 
+  <section class="gifts" id="gifts">
+    <h2>🎁 هدايا الباقة الذهبية</h2>
+    <p class="hint">تطبيقات هدية لمشتركي الباقة الذهبية.</p>
+    <button type="button" class="xgift" data-g="منصة المعلم"><span class="gi">🎁</span><span><b>منصة المعلم</b><small>🔒 للباقة الذهبية فقط</small></span></button>
+    <button type="button" class="xgift" data-g="الجرس"><span class="gi">🎁</span><span><b>الجرس</b><small>🔒 للباقة الذهبية فقط</small></span></button>
+    <dialog id="xgdlg"><div class="dlg"><h3 id="xgname"></h3><p>هذه الهدية مخصصة لمشتركي الباقة الذهبية. للترقية تواصل معنا على الرقم <a href="tel:76506037" style="color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate">76506037</a>.</p><button type="button" id="xgclose" style="width:100%;padding:11px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;cursor:pointer">إغلاق</button></div></dialog>
+  </section>
+
   <div class="note">
     <b>للترقية إلى الباقة الذهبية:</b> تواصل معنا على الرقم
     <a href="tel:76506037">76506037</a>
@@ -192,6 +203,17 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 </script>
 <script>
 (function(){var a=document.getElementById('ann');if(!a)return;fetch('announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){if(j&&j.text){a.textContent=j.text;a.hidden=false}}).catch(function(){})})();
+</script>
+<script>
+(function(){
+  function gold(){ try{ return localStorage.getItem('afuq-all')==='1'||sessionStorage.getItem('afuq-all')==='1'; }catch(e){ return false; } }
+  var box=document.getElementById('gifts'); if(!box) return; if(gold()){ box.hidden=true; return; }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.xgift'), d=document.getElementById('xgdlg'), n=document.getElementById('xgname');
+    if(b&&d){ n.textContent='🎁 '+b.getAttribute('data-g'); if(!d.open) d.showModal(); return; }
+    if(e.target.id==='xgclose'&&d) d.close();
+  });
+})();
 </script>
 </body>
 </html>
