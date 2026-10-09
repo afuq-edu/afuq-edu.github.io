@@ -184,7 +184,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     return parts.length?{path:path,c:c,parts:parts}:null;
   }).filter(Boolean);
   root.replaceChildren();
-  if(plain){ document.getElementById('sub').textContent='الواجبات التفاعلية'; var ct=document.querySelector('.contact'); if(ct) ct.style.display='none'; }
+  if(plain){ document.getElementById('sub').textContent='المواد التعليمية'; var ct=document.querySelector('.contact'); if(ct) ct.style.display='none'; }
   else if(to) document.getElementById('sub').textContent='الباقة الذهبية · '+to;
   // Package mode (see /assets/pkgmode.js): this tab always follows this link (sessionStorage). The device-wide copy
   // (localStorage, used by tabs that have no link of their own) changes only when a link is newly opened — not when an
@@ -261,7 +261,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     var tries=0;
     var apply=function(e){
       if(e==='*'){ all=true; want=[]; }
-      else if(typeof e==='string' && e){ all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
+      else if(typeof e==='string' && e){ if(/!$/.test(e)){ plain=true; e=e.slice(0,-1); } all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
     };
     var load=function(){
       fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
