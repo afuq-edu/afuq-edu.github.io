@@ -112,6 +112,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 .box h2{font-size:17px;margin:0 0 4px;color:var(--c)}
 .row{display:flex;align-items:center;gap:14px;padding:13px 2px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
 .box h2+.row{border-top:0}
+button.row{width:100%;background:none;border:0;border-top:1px solid var(--line);font:inherit;color:inherit;text-align:start;cursor:pointer}
+button.row .sic,button.row b{opacity:.6}
 .row .sic{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
 .row .sic svg{width:19px;height:19px}
 .row b{font-size:15.5px}
@@ -175,6 +177,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
       want.push([m[1]+'/'+SUBJ[m[2]], m[3]?m[3].split('').join('.'):'all']); } }
   }
   to=to.trim().slice(0,60);
+  function goldDlg(title){
+    var d=document.getElementById('goldDlg');
+    if(!d){ d=document.createElement('dialog'); d.id='goldDlg'; d.innerHTML='<div class="dlg"><h3 id="goldT"></h3><p>هذا القسم مخصص للباقة الذهبية. للترقية تواصل معنا على الرقم <a href="tel:'+PHONE+'" style="color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate">'+PHONE+'</a>.</p><button type="button" id="goldX" style="width:100%;padding:11px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;cursor:pointer">إغلاق</button></div>'; document.body.appendChild(d); d.querySelector('#goldX').onclick=function(){ d.close(); }; }
+    d.querySelector('#goldT').textContent='🔒 '+title; d.showModal();
+  }
   function render(){
   var items=want.map(function(w){
     var path=w[0].replace(/^\/+/,''); if(path && !/\/$/.test(path)) path+='/';
@@ -251,6 +258,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
       var a=el('a','row'); a.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
       var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; a.append(s, el('b',null,p[1]), el('span','arr','افتح ←'));
       box.append(a);
+    });
+    if(plain) it.c.parts.forEach(function(p){
+      if(it.parts.some(function(q){return q[0]===p[0]})) return;
+      var r=el('button','row'); r.type='button';
+      var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; r.append(s, el('b',null,p[1]), el('span','arr','🔒 للباقة الذهبية'));
+      r.onclick=function(){ goldDlg(it.c.title+' – '+p[1]); };
+      box.append(r);
     });
     root.append(box);
   });
