@@ -16,11 +16,10 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 40px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 10px #0001}
 .card h2{margin:0 0 8px;font-size:18px}
 .card p{margin:6px 0;color:var(--muted);font-size:15px}
-.pledge{display:flex;gap:10px;align-items:flex-start;margin:16px 0 12px;padding:12px;background:#FBF3DF;border-radius:12px;font-size:15px;cursor:pointer}
+.pledge{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;padding:12px;background:#FBF3DF;border-radius:12px;font-size:15px;cursor:pointer}
 .pledge input{width:20px;height:20px;margin-top:4px;flex:none}
 .dl{display:block;text-align:center;background:var(--mint);color:#fff;text-decoration:none;font-weight:800;font-size:17px;padding:13px;border-radius:12px}
 .dl[aria-disabled=true]{background:#c9d6d2;color:#fff;pointer-events:none}
-.note{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
@@ -30,19 +29,23 @@ main{max-width:640px;margin:0 auto;padding:18px 16px 40px}
   <p>التربية الإسلامية · ديني حياتي · الصف الأول · الفصل الدراسي الأول</p>
 </header>
 <main>
+  <label class="pledge"><input type="checkbox" id="cb"><span>أتعهد بعدم نشر هذه الملفات أو مشاركتها مع أي شخص خارج الباقة الذهبية.</span></label>
   <div class="card">
     <h2>ملف الأسئلة (PDF)</h2>
     <p>بنك أسئلة مقالية وبصرية لكل درس، يكتبها المعلم على السبورة في التهيئة وأثناء الشرح وختام الدرس، وينقلها الطالب ويحل الواجب في البيت.</p>
     <p>24 درسًا · 335 سؤالًا · 3 مستويات · 4 مراحل لكل درس.</p>
-    <label class="pledge"><input type="checkbox" id="cb"><span>أتعهد بعدم نشر هذا الملف أو مشاركته مع أي شخص خارج الباقة الذهبية.</span></label>
-    <a class="dl" id="dl" href="classroom-board-questions.pdf" download="اسئلة-السبورة-الصفية-التربية-الاسلامية-الصف-الاول.pdf" aria-disabled="true">⬇ تحميل ملف PDF</a>
-    <div class="note">حجم الملف نحو 6.6 ميغابايت.</div>
+    <a class="dl" href="classroom-board-questions.pdf" download="islamic-g1-board-questions.pdf" aria-disabled="true">⬇ تحميل ملف الأسئلة (نحو 6.6 ميغابايت)</a>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h2>شكل السبورة لكل درس (PDF)</h2>
+    <p>إنفوجرافيك لتنظيم السبورة الصفية لكل درس من الدروس الأربعة والعشرين: العنوان والأهداف والمحتوى وأسئلة التهيئة والتقويم والواجب ولوحة نقاط المجموعات.</p>
+    <a class="dl" href="board-layouts.pdf" download="islamic-g1-board-layouts.pdf" aria-disabled="true">⬇ تحميل شكل السبورة (نحو 17 ميغابايت)</a>
   </div>
 </main>
 <script>
-(function(){var cb=document.getElementById('cb'),dl=document.getElementById('dl');
-cb.onchange=function(){dl.setAttribute('aria-disabled',cb.checked?'false':'true')};
-dl.addEventListener('click',function(e){if(dl.getAttribute('aria-disabled')==='true')e.preventDefault()});})();
+(function(){var cb=document.getElementById('cb'),ds=document.querySelectorAll('.dl');
+cb.onchange=function(){Array.prototype.forEach.call(ds,function(d){d.setAttribute('aria-disabled',cb.checked?'false':'true')})};
+Array.prototype.forEach.call(ds,function(d){d.addEventListener('click',function(e){if(d.getAttribute('aria-disabled')==='true')e.preventDefault()})});})();
 </script>
 </body>
 </html>
