@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><script>(function(){var k='ofuq-g1s-unlock-slides';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;document.documentElement.style.display='none';location.replace('../?lock=slides')})()</script>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>علوم الصف الأول التفاعلية</title>
+<meta name="description" content="عروض تفاعلية لدروس العلوم للصف الأول – الفصل الدراسي الأول">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Noto+Naskh+Arabic:wght@500;700&family=Noto+Color+Emoji&display=swap">
+<style>/* Layout: fixed 1280×720 lesson stage scaled to the screen, framed by a slim tool bar and a nav bar. Look: a child's science notebook — squared paper, ink-navy text, sun/leaf/sky phase colours. */
+:root{
+  --paper:#fbfaf3; --grid:#e6ecdf; --ink:#1d2b4a; --ink-2:#4a5878; --line:#d7dccb;
+  --sun:#ffc533; --sun-d:#e09a00; --leaf:#3bb273; --leaf-d:#23864f; --sky:#3d8fe0; --sky-d:#2463a8;
+  --coral:#ff6b5b; --coral-d:#d4402f; --plum:#8a5cd6; --plum-d:#623aa8; --orange:#ff9433;
+  --card:#ffffff; --shade:rgba(29,43,74,.12);
+  --f-display:"Baloo Bhaijaan 2","Noto Naskh Arabic",Tahoma,sans-serif;
+  --f-read:"Noto Naskh Arabic","Baloo Bhaijaan 2",Tahoma,serif;
+  --f-emo:"Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-display);direction:rtl;overflow:hidden;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.emo{font-family:var(--f-emo);line-height:1;font-style:normal}
+.read{font-family:var(--f-read);line-height:1.9}
+[hidden]{display:none!important}
+
+/* ===== HOME ===== */
+#home{position:absolute;inset:0;overflow:auto;padding-block:24px 60px;padding-inline:max(16px,4vw)}
+.h-top{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto 20px}
+.brand{display:flex;gap:14px;align-items:center}
+.brand .badge{width:64px;height:64px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-size:34px;box-shadow:0 4px 0 var(--sun-d)}
+.brand h1{margin:0;font-size:clamp(24px,3.4vw,38px);line-height:1.15}
+.brand p{margin:2px 0 0;color:var(--ink-2);font-size:15px}
+.h-tools{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:2px solid var(--ink);background:var(--card);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+.pill:hover{background:var(--sun)}
+.units{max-width:1200px;margin:0 auto;display:grid;gap:22px}
+.unit{background:var(--card);border:2px solid var(--ink);border-radius:22px;padding:18px;box-shadow:6px 6px 0 var(--shade)}
+.unit-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.unit-n{width:46px;height:46px;border-radius:14px;color:#fff;font-size:26px;font-weight:800;display:grid;place-items:center}
+.unit-h h2{margin:0;font-size:26px}
+.unit-h span{color:var(--ink-2);font-size:15px}
+.lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.ls{border:2px solid var(--line);background:var(--paper);border-radius:16px;padding:12px 14px;text-align:right;display:grid;gap:4px;min-width:0;transition:transform .15s,border-color .15s}
+.ls:hover{transform:translateY(-3px);border-color:var(--ink)}
+.ls .code{font-weight:800;font-size:14px;color:var(--ink-2)}
+.ls .ic{font-size:34px}
+.ls b{font-size:18px;line-height:1.3}
+.ls small{color:var(--ink-2);font-size:13px}
+.ls.review{background:#fff6dc}
+.h-foot{max-width:1200px;margin:22px auto 0;color:var(--ink-2);font-size:14px;line-height:1.8}
+.kbd{display:inline-block;border:1.5px solid var(--ink-2);border-radius:6px;padding:0 6px;font-size:12px;margin:0 2px}
+
+/* ===== PLAYER ===== */
+#player{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;grid-template-columns:minmax(0,1fr)}
+.topbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--ink);color:#fff;min-width:0}
+.topbar .t-home{background:var(--sun);color:var(--ink);border:0;border-radius:10px;padding:6px 12px;font-weight:800}
+.t-title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;font-size:16px}
+.teams{display:flex;gap:6px;flex-wrap:nowrap}
+.team{display:flex;align-items:center;gap:4px;border-radius:999px;padding:2px 4px 2px 10px;font-weight:800;color:#fff;font-size:14px;border:2px solid rgba(255,255,255,.5)}
+.team .sc{background:#fff;color:var(--ink);border-radius:999px;min-width:30px;text-align:center;padding:0 6px;font-size:15px}
+.team button{border:0;background:rgba(255,255,255,.25);border-radius:50%;width:24px;height:24px;font-weight:900;color:#fff;line-height:1}
+.tbtn{background:rgba(255,255,255,.12);border:0;border-radius:10px;color:#fff;padding:6px 9px;font-size:15px;font-weight:700}
+.tbtn:hover,.tbtn.on{background:rgba(255,255,255,.3)}
+.viewport{position:relative;overflow:hidden}
+#stage{position:absolute;width:1280px;height:720px;top:0;left:0;transform-origin:0 0;background:var(--paper);border-radius:18px;box-shadow:0 10px 30px rgba(29,43,74,.18);overflow:hidden;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px}
+.navbar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border-top:2px solid var(--line)}
+.nbtn{border:2px solid var(--ink);background:var(--card);border-radius:12px;padding:6px 16px;font-weight:800;font-size:16px}
+.nbtn.primary{background:var(--leaf);border-color:var(--leaf-d);color:#fff}
+.dots{flex:1;display:flex;gap:4px;align-items:center;overflow-x:auto;padding:4px 0;min-width:0}
+.dot{flex:0 0 auto;height:12px;min-width:12px;border-radius:6px;border:0;opacity:.35;padding:0}
+.dot.cur{opacity:1;min-width:30px}
+.dot.seen{opacity:.7}
+.counter{font-weight:800;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ===== SLIDE FRAME ===== */
+.slide{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr;padding:22px 34px 24px;animation:slideIn .35s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.s-head{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.phase{color:#fff;font-weight:800;font-size:20px;padding:4px 16px 6px;border-radius:12px;white-space:nowrap}
+.s-head h2{margin:0;font-size:38px;line-height:1.2;flex:1}
+.speak{border:2px solid var(--ink);background:var(--card);border-radius:50%;width:48px;height:48px;font-size:22px;flex:0 0 auto}
+.speak:hover{background:var(--sun)}
+.s-body{min-height:0;position:relative}
+.note-panel{position:absolute;inset:auto 20px 20px 20px;background:#fffbe6;border:2px dashed var(--sun-d);border-radius:16px;padding:14px 18px;font-family:var(--f-read);font-size:19px;line-height:1.8;z-index:30;box-shadow:0 8px 20px var(--shade);max-height:60%;overflow:auto}
+.note-panel b{font-family:var(--f-display);color:var(--sun-d)}
+
+.ph-ahdaf{background:var(--ink)} .ph-tahia{background:var(--sun-d)} .ph-ard{background:var(--sky)} .ph-nashat{background:var(--leaf)}
+.ph-taqweem{background:var(--plum)} .ph-ghalq{background:var(--orange)} .ph-wajib{background:var(--coral)} .ph-murajaa{background:var(--plum)}
+
+/* ===== shared widgets ===== */
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:20px;box-shadow:5px 5px 0 var(--shade)}
+.btn{border:2.5px solid var(--ink);background:var(--sun);border-radius:14px;padding:8px 20px;font-weight:800;font-size:22px;box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.g{background:var(--leaf);color:#fff} .btn.b{background:var(--sky);color:#fff} .btn.w{background:var(--card)} .btn.p{background:var(--plum);color:#fff}
+.row{display:flex;gap:14px;align-items:center}
+.center{display:grid;place-items:center}
+.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
+.pop{animation:pop .45s}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.ok{background:#dff6e8!important;border-color:var(--leaf-d)!important}
+.bad{background:#ffe2de!important;border-color:var(--coral-d)!important}
+.hint{font-family:var(--f-read);font-size:20px;color:var(--ink-2)}
+
+/* cover */
+.cover{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;height:100%}
+.cv-l{display:grid;align-content:center;gap:10px;position:relative}
+.cv-code{font-size:26px;font-weight:800;color:var(--ink-2)}
+.cv-title{font-size:58px;line-height:1.15;margin:0}
+.cv-unit{font-size:24px;color:var(--ink-2)}
+.cv-ic{font-size:150px;position:absolute;left:0;bottom:-6px;opacity:.95}
+.cv-r{display:grid;gap:14px;align-content:center}
+.cv-box{padding:16px 20px}
+.cv-box h3{margin:0 0 6px;font-size:24px}
+.cv-box ul{margin:0;padding-inline-start:26px;font-family:var(--f-read);font-size:21px;line-height:1.75}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flow span.ph{color:#fff;border-radius:10px;padding:2px 12px 4px;font-size:17px;font-weight:800}
+.flow i{font-style:normal;color:var(--ink-2);font-weight:800}
+
+/* vocab */
+.vgrid{display:grid;gap:18px;height:100%;align-content:center}
+.vcard{perspective:900px;height:200px;border:0;background:none;padding:0}
+.vin{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.vcard.flip .vin{transform:rotateY(180deg)}
+.vf,.vb{position:absolute;inset:0;backface-visibility:hidden;border:2.5px solid var(--ink);border-radius:22px;display:grid;place-items:center;background:var(--card);box-shadow:5px 5px 0 var(--shade)}
+.vf .emo{font-size:96px}
+.vf small{position:absolute;bottom:8px;font-size:15px;color:var(--ink-2)}
+.vb{transform:rotateY(180deg);background:#fff7d6;gap:0;padding:8px}
+.vb .w{font-family:var(--f-read);font-size:46px;font-weight:700;line-height:1.5}
+.vb .emo{font-size:46px}
+
+/* reveal */
+.rv{display:grid;grid-template-columns:1fr 1.15fr;gap:30px;height:100%;align-items:center}
+.rv.wide{grid-template-columns:1fr}
+.rv-vis{display:grid;place-items:center;height:100%;min-height:0}
+.rv-vis .big{font-size:150px}
+.rv-pts{display:grid;gap:14px;align-content:center}
+.pt{display:flex;gap:14px;align-items:flex-start;padding:12px 18px;font-family:var(--f-read);font-size:27px;line-height:1.7;opacity:0;transform:translateX(-20px);transition:.4s}
+.pt.show{opacity:1;transform:none}
+.pt .emo{font-size:40px;flex:0 0 auto}
+.pt.q{background:#eaf3ff;border:2px solid var(--sky);border-radius:16px}
+.pt .ans{display:block;color:var(--leaf-d);font-weight:700;font-size:24px}
+.pt .abtn{font-family:var(--f-display);font-size:16px;border:2px solid var(--sky);background:#fff;border-radius:10px;padding:0 10px;margin-inline-start:8px}
+.pt.key{background:#fff4cc;border:2px solid var(--sun-d);border-radius:16px;font-weight:700}
+
+/* scene */
+.scene{display:grid;grid-template-columns:1fr 330px;gap:18px;height:100%}
+.sc-box{position:relative;border:2.5px solid var(--ink);border-radius:22px;overflow:hidden}
+.sc-box svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.si{position:absolute;transform:translate(50%,-50%);border:0;background:none;padding:0;line-height:1;transition:transform .2s;filter:drop-shadow(0 3px 2px rgba(0,0,0,.2))}
+.si:hover{transform:translate(50%,-50%) scale(1.15)}
+.si.found::after{content:"✓";position:absolute;top:-6px;left:-6px;background:var(--leaf);color:#fff;border-radius:50%;width:24px;height:24px;font:800 16px/24px var(--f-display);text-align:center}
+.si.found.no::after{content:"✗";background:var(--coral)}
+.bubble{position:absolute;z-index:5;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:8px 14px;font-family:var(--f-read);font-size:21px;line-height:1.6;max-width:300px;box-shadow:4px 4px 0 var(--shade);transform:translate(50%,calc(-100% - 40px));pointer-events:none}
+.bubble b{font-family:var(--f-display);font-size:24px;display:block}
+.sc-side{display:grid;align-content:start;gap:12px}
+.sc-side .card{padding:12px 16px}
+.qlist{margin:0;padding-inline-start:22px;font-family:var(--f-read);font-size:21px;line-height:1.7}
+.meter{font-size:26px;font-weight:800;text-align:center}
+
+/* sort */
+.sort{display:grid;grid-template-rows:1fr auto;gap:16px;height:100%}
+.pool{display:flex;flex-wrap:wrap;gap:12px;align-content:center;justify-content:center;padding:10px;border:2.5px dashed var(--line);border-radius:20px}
+.chip{border:2.5px solid var(--ink);background:var(--card);border-radius:16px;padding:6px 12px;display:grid;justify-items:center;gap:2px;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--shade);touch-action:none;user-select:none}
+.chip .emo{font-size:50px}
+.chip.sel{background:var(--sun);transform:translateY(-4px)}
+.chip.sm .emo{font-size:36px}
+.chip.word{font-family:var(--f-read);font-size:26px;padding:6px 18px}
+.bins{display:grid;gap:16px}
+.bin{border:3px solid var(--ink);border-radius:20px;min-height:150px;padding:8px;display:grid;grid-template-rows:auto 1fr;background:var(--card)}
+.bin-h{display:flex;gap:8px;align-items:center;justify-content:center;font-size:26px;font-weight:800;border-bottom:2px dashed var(--line);padding-bottom:4px}
+.bin-h .emo{font-size:34px}
+.bin-in{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;justify-content:center;padding-top:6px}
+.bin-in .chip{padding:2px 6px;box-shadow:none}
+.bin-in .chip .emo{font-size:30px}
+.bin-in .chip span{font-size:13px}
+.bin.hot{background:#fff4cc}
+.ghost{position:fixed;z-index:999;pointer-events:none;transform:translate(-50%,-50%) scale(1.05);opacity:.9}
+
+/* pick / mcq */
+.pick{display:grid;grid-template-rows:auto 1fr;gap:12px;height:100%}
+.pgrid{display:grid;gap:14px;align-content:center}
+.pcell{border:2.5px solid var(--ink);background:var(--card);border-radius:18px;padding:10px;display:grid;justify-items:center;gap:4px;font-weight:800;font-size:20px;box-shadow:0 4px 0 var(--shade)}
+.pcell .emo{font-size:62px}
+.bar-top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.prompt{font-family:var(--f-read);font-size:28px;font-weight:700}
+.timerbox{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;min-width:90px;text-align:center;background:var(--ink);color:#fff;border-radius:12px;padding:0 12px}
+.mcq{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px;height:100%}
+.mq{font-family:var(--f-read);font-size:34px;font-weight:700;line-height:1.6;text-align:center}
+.mq .emo{font-size:60px;display:block}
+.mopts{display:grid;gap:18px;align-content:center}
+.mopt{border:3px solid var(--ink);background:var(--card);border-radius:22px;padding:14px;display:grid;justify-items:center;gap:6px;font-size:28px;font-weight:800;box-shadow:0 6px 0 var(--shade)}
+.mopt .emo{font-size:84px}
+.mopt.txt{font-family:var(--f-read);font-size:28px}
+.explain{font-family:var(--f-read);font-size:24px;text-align:center;color:var(--leaf-d);font-weight:700;min-height:44px}
+.qnav{display:flex;justify-content:center;gap:10px;align-items:center;font-weight:800;color:var(--ink-2);font-size:18px}
+
+/* tf */
+.tf{display:grid;grid-template-rows:1fr auto auto;gap:18px;height:100%;justify-items:center}
+.tf-card{width:100%;max-width:1000px;align-self:center;padding:24px 30px;text-align:center}
+.tf-card .emo{font-size:96px;display:block;margin-bottom:6px}
+.tf-card p{margin:0;font-family:var(--f-read);font-size:38px;font-weight:700;line-height:1.6}
+.tf-btns{display:flex;gap:40px}
+.tfb{width:170px;height:110px;border-radius:24px;border:3px solid var(--ink);font-size:60px;font-weight:900;color:#fff;box-shadow:0 6px 0 var(--ink)}
+.tfb.y{background:var(--leaf)} .tfb.n{background:var(--coral)}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:80px;height:100%;align-content:center;position:relative;padding:0 40px}
+.mcol{display:grid;gap:12px}
+.mi{width:100%;border:2.5px solid var(--ink);background:var(--card);border-radius:16px;padding:6px 14px;display:flex;align-items:center;gap:12px;font-size:24px;font-weight:800;min-height:76px;box-shadow:0 4px 0 var(--shade)}
+.mi .emo{font-size:46px}
+.mi.sel{background:var(--sun)}
+.mi.done{opacity:.95}
+.mi .tag{margin-inline-start:auto;width:32px;height:32px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:18px}
+svg.lines{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+
+/* order */
+.order{display:grid;grid-template-rows:auto auto 1fr;gap:16px;height:100%}
+.slots{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.slot{width:170px;height:150px;border:3px dashed var(--ink-2);border-radius:20px;display:grid;place-items:center;position:relative;background:rgba(255,255,255,.6)}
+.slot .n{position:absolute;top:-14px;right:-10px;background:var(--ink);color:#fff;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;font-weight:800}
+.slot .chip{box-shadow:none;border:0;background:none}
+.slot.arrow::after{content:"⬅";position:absolute;left:-26px;font-size:24px;color:var(--ink-2)}
+.opool{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:flex-start;align-content:flex-start}
+
+/* activity */
+.act{display:grid;grid-template-columns:340px 1fr;gap:22px;height:100%}
+.act-side{display:grid;gap:14px;align-content:start}
+.mat{padding:14px 16px}
+.mat h3,.steps h3{margin:0 0 8px;font-size:24px}
+.mat ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mat li{display:flex;gap:10px;align-items:center;font-family:var(--f-read);font-size:21px}
+.mat li .emo{font-size:32px}
+.steps{padding:16px 22px;overflow:auto}
+.steps ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;font-family:var(--f-read);font-size:24px;line-height:1.65}
+.steps li::before{content:counter(s);flex:0 0 38px;height:38px;border-radius:50%;background:var(--leaf);color:#fff;display:grid;place-items:center;font:800 20px/1 var(--f-display);margin-top:4px}
+.steps .ask{margin-top:12px;background:#eaf3ff;border-radius:14px;padding:10px 14px;font-family:var(--f-read);font-size:21px;line-height:1.7}
+.code-b{display:inline-block;background:var(--leaf);color:#fff;border-radius:10px;padding:2px 12px;font-weight:800;font-size:18px}
+.tbig{display:grid;gap:8px;justify-items:center;padding:12px}
+.tbig .tm{font-size:54px;font-weight:800;font-variant-numeric:tabular-nums}
+.tbig .row button{font-size:16px;padding:4px 10px}
+
+/* experiment */
+.exp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 300px;gap:18px;height:100%}
+.pot{display:grid;grid-template-rows:auto 1fr;padding:10px;text-align:center}
+.pot h3{margin:0;font-size:24px}
+.pot>div{min-height:0}
+.pot svg{width:100%;height:100%}
+.exp-side{display:grid;gap:12px;align-content:start}
+.exp-side .card{padding:12px 14px}
+input[type=range]{width:100%;accent-color:var(--leaf);height:30px}
+.day{font-size:30px;font-weight:800;text-align:center}
+.popts{display:grid;gap:8px}
+.popts button{border:2.5px solid var(--ink);background:var(--card);border-radius:14px;padding:8px;font-family:var(--f-read);font-size:19px;font-weight:700;text-align:right}
+.concl{font-family:var(--f-read);font-size:21px;line-height:1.7;background:#dff6e8;border:2px solid var(--leaf-d);border-radius:14px;padding:10px 14px}
+
+/* growth */
+.growth{display:grid;grid-template-rows:1fr auto auto;gap:14px;height:100%}
+.gstrip{display:flex;align-items:flex-end;justify-content:center;gap:26px}
+.gst{display:grid;justify-items:center;gap:6px;opacity:.12;transition:.5s;filter:grayscale(1)}
+.gst.on{opacity:1;filter:none}
+.gst .lbl{font-family:var(--f-read);font-size:22px;font-weight:700;background:var(--card);border:2px solid var(--ink);border-radius:12px;padding:0 12px}
+.gst.arrow{opacity:1;filter:none;font-size:40px;color:var(--ink-2);align-self:center}
+.gcap{font-family:var(--f-read);font-size:28px;text-align:center;font-weight:700;min-height:50px}
+
+/* label */
+.label{display:grid;grid-template-columns:1fr 300px;gap:18px;height:100%}
+.lbox{position:relative;border:2.5px solid var(--ink);border-radius:22px;background:var(--card);overflow:hidden}
+.lbox svg{position:absolute;inset:0;width:100%;height:100%}
+.ltag{position:absolute;transform:translate(50%,-50%);min-width:120px;height:46px;border:3px dashed var(--ink-2);border-radius:12px;background:rgba(255,255,255,.92);display:grid;place-items:center;font-family:var(--f-read);font-size:22px;font-weight:700;padding:0 10px}
+.ltag.filled{border-style:solid;border-color:var(--leaf-d);background:#dff6e8}
+.ltag.hot{background:#fff4cc}
+.lwords{display:flex;flex-wrap:wrap;gap:10px;align-content:center;justify-content:center}
+
+/* poll & tally */
+.poll{display:grid;grid-template-rows:auto 1fr;gap:14px;height:100%}
+.pbars{display:flex;gap:22px;align-items:flex-end;justify-content:center;height:100%;padding-bottom:8px}
+.pb{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;width:150px;height:100%}
+.pb .num{font-size:32px;font-weight:800}
+.pb .bar{width:90px;border-radius:14px 14px 4px 4px;border:2.5px solid var(--ink);transition:height .4s;min-height:6px}
+.pb .emo{font-size:58px}
+.pb .nm{font-family:var(--f-read);font-weight:700;font-size:20px}
+.pb .ctl{display:flex;gap:6px}
+.pb .ctl button{width:44px;height:38px;border-radius:10px;border:2px solid var(--ink);background:var(--card);font-size:22px;font-weight:900}
+.tally{display:grid;grid-template-columns:1fr 1fr;gap:24px;height:100%;align-items:center}
+.ttable{border-collapse:separate;border-spacing:0;width:100%;font-size:26px}
+.ttable th{background:var(--sky);color:#fff;padding:8px;font-size:24px}
+.ttable td{border-bottom:2px solid var(--line);padding:8px 14px;text-align:center}
+.ttable td .emo{font-size:56px}
+.ticks{color:var(--coral-d);font-size:36px;letter-spacing:4px;font-weight:900}
+
+/* memory */
+.mem{display:grid;gap:12px;align-content:center;height:100%}
+.mc{perspective:800px;border:0;background:none;padding:0;height:150px}
+.mc .vin{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mc.open .vin,.mc.won .vin{transform:rotateY(180deg)}
+.mc .vf{background:var(--sky);border-color:var(--sky-d)}
+.mc .vf .emo{font-size:56px;opacity:.9}
+.mc .vb{background:#fff;gap:2px}
+.mc .vb .emo{font-size:60px}
+.mc .vb span:last-child{font-size:19px;font-weight:800}
+.mc.won .vb{background:#dff6e8;border-color:var(--leaf-d)}
+
+/* simon, guess, diff */
+.simon{display:grid;grid-template-rows:1fr auto;gap:20px;height:100%;justify-items:center}
+.simon .cmd{align-self:center;text-align:center;padding:30px 50px;min-width:760px}
+.simon .cmd .emo{font-size:120px;display:block}
+.simon .cmd p{margin:6px 0 0;font-family:var(--f-read);font-size:46px;font-weight:700}
+.simon .cmd small{display:block;font-size:30px;color:var(--plum-d);font-weight:800;min-height:44px}
+.guess{display:grid;grid-template-columns:1fr 360px;gap:18px;height:100%}
+.gchars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-content:center}
+.gch{border:2.5px solid var(--ink);background:var(--card);border-radius:18px;padding:8px;display:grid;justify-items:center;gap:2px;position:relative;font-weight:800;font-size:20px}
+.gch .emo{font-size:70px}
+.gch.out{opacity:.25}
+.gch.out::after{content:"✗";position:absolute;inset:0;display:grid;place-items:center;font-size:110px;color:var(--coral-d)}
+.gch.win{background:#dff6e8;border-color:var(--leaf-d)}
+.clues{display:grid;gap:10px;align-content:start}
+.clue{font-family:var(--f-read);font-size:23px;font-weight:700;padding:8px 14px;background:#fff4cc;border:2px solid var(--sun-d);border-radius:14px}
+.diff{display:grid;grid-template-columns:1fr 1fr;gap:40px;height:100%;align-items:center;padding:0 30px}
+.dgrid{display:grid;gap:6px;padding:12px;background:var(--card);border:2.5px solid var(--ink);border-radius:20px}
+.dgrid div,.dgrid button{aspect-ratio:1;display:grid;place-items:center;font-size:52px;border:0;background:#f4f6ee;border-radius:12px;font-family:var(--f-emo);position:relative}
+.dgrid button.hit{outline:5px solid var(--coral);background:#ffe9e5}
+
+/* plate */
+.plate{display:grid;grid-template-columns:1fr 1fr;gap:22px;height:100%}
+.plate-dish{position:relative;display:grid;place-items:center}
+.dish{width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,#fff 55%,#e9eef5 56%,#fff 68%,#dfe5ee 69%);border:3px solid var(--ink);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px;padding:70px}
+.dish .emo{font-size:52px;cursor:pointer}
+.hmeter{width:100%;height:30px;border:2.5px solid var(--ink);border-radius:999px;overflow:hidden;background:#fff}
+.hmeter i{display:block;height:100%;transition:width .4s,background .4s}
+
+/* inquiry chart */
+.blocks{display:flex;gap:40px;justify-content:center;align-items:flex-end;height:100%}
+.bcol{display:grid;justify-items:center;gap:8px}
+.tower{display:flex;flex-direction:column-reverse;gap:3px;min-height:20px}
+.tower i{display:block;width:70px;height:34px;border-radius:6px;border:2px solid rgba(0,0,0,.25)}
+.bcol .pl{font-size:56px}
+.bcol b{font-size:26px}
+
+/* learned / exit / hw */
+.learn{display:grid;grid-template-columns:260px 1fr;gap:24px;height:100%;align-items:center}
+.learn .star{font-size:190px;text-align:center}
+.exit{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;height:100%;align-content:center}
+.ex{padding:16px;display:grid;grid-template-rows:auto 1fr auto auto;gap:10px;min-height:420px}
+.ex .lv{justify-self:start;color:#fff;border-radius:10px;padding:2px 12px;font-weight:800;font-size:18px}
+.ex p{margin:0;font-family:var(--f-read);font-size:25px;font-weight:700;line-height:1.7}
+.ex .emo{font-size:70px;text-align:center}
+.ex .a{font-family:var(--f-read);font-size:21px;color:var(--leaf-d);font-weight:700;background:#dff6e8;border-radius:12px;padding:8px 12px}
+.hw{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:100%;align-content:center}
+.hwi{padding:18px 22px;display:grid;gap:8px}
+.hwi .src{font-weight:800;font-size:18px;color:#fff;border-radius:10px;padding:2px 12px;justify-self:start}
+.hwi b{font-size:28px}
+.hwi p{margin:0;font-family:var(--f-read);font-size:21px;line-height:1.7}
+
+/* overlays */
+.overlay{position:fixed;inset:0;background:rgba(29,43,74,.55);display:grid;place-items:center;z-index:200;padding:16px}
+.modal{background:var(--card);border:3px solid var(--ink);border-radius:24px;padding:22px 26px;max-width:620px;width:100%;max-height:90vh;overflow:auto;text-align:center}
+.modal h3{margin:0 0 10px;font-size:28px}
+.modal .big{font-size:120px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.modal label{display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:18px;margin:8px 0}
+.modal input{font:inherit;font-size:18px;border:2px solid var(--ink);border-radius:10px;padding:4px 10px;width:180px}
+.award{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:150;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:10px 16px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:800;font-size:18px;animation:pop .4s;flex-wrap:wrap;justify-content:center;max-width:calc(100vw - 32px)}
+.award button{border:0;border-radius:999px;color:#fff;padding:6px 14px;font-weight:800;font-size:16px}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:300}
+
+@media (max-width:700px){
+  .t-title{display:none}
+  .topbar{flex-wrap:wrap;row-gap:6px}
+  .teams{order:9;width:100%;overflow-x:auto}
+  .team{font-size:12px;padding-inline-start:6px}
+  .tbtn{padding:5px 6px;font-size:13px}
+  .nbtn{padding:5px 10px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<div id="home"></div>
+<div id="player" hidden>
+  <div class="topbar">
+    <button class="t-home" id="tHome" title="الرئيسية (H)">🏠 الدروس</button>
+    <div class="t-title"></div>
+    <div class="teams"></div>
+    <button class="tbtn" id="tTimer" title="المؤقت (T)">⏱</button>
+    <button class="tbtn" id="tPick" title="اختيار تلميذ (R)">🎲</button>
+    <button class="tbtn" id="tNotes" title="إرشاد المعلم (N)">📝</button>
+    <button class="tbtn" id="tSet" title="الإعدادات">⚙️</button>
+    <button class="tbtn" id="tFs" title="ملء الشاشة (F)">⛶</button>
+  </div>
+  <div class="viewport"><div id="stage"></div></div>
+  <div class="navbar">
+    <button class="nbtn" id="nPrev">→ السابق</button>
+    <div class="dots"></div>
+    <span class="counter"></span>
+    <button class="nbtn primary" id="nNext">التالي ←</button>
+  </div>
+</div>
+<canvas id="fx"></canvas>
+<script>window.UNITS={
+ 1:{n:'١',name:'الوحدة الأولى: الكائنات الحية',sub:'الدروس 1-1 إلى 1-5 · كتاب التلميذ ص 16–25',c:'#3bb273'},
+ 2:{n:'٢',name:'الوحدة الثانية: النباتات',sub:'الدروس 2-1 إلى 2-4 · كتاب التلميذ ص 26–33',c:'#e09a00'},
+ 3:{n:'٣',name:'الوحدة الثالثة: نحن',sub:'الدروس 3-1 إلى 3-5 · كتاب التلميذ ص 34–43',c:'#3d8fe0'},
+ 4:{n:'🔬',name:'مهارات الاستقصاء العلمي',sub:'كتاب التلميذ ص 44–45 · تُستخدم مع دروس الفصل',c:'#8a5cd6'}
+};
+window.LESSONS=[];
+
+/* ================= 1-1 ================= */
+LESSONS.push({id:'1-1',unit:1,icon:'🌳',pages:'16–17',title:'النباتاتُ والحيواناتُ هي كائناتٌ حيّةٌ',
+ goals:['أُسمّي بعض الكائنات الحيّة من حولي.','أذكر أنّ هناك كائنات حيّة وأشياء غير حيّة.','أُسمّي النباتات والحيوانات على أنها كائنات حيّة.'],
+ vocab:['كائناتٌ حيّةٌ','نباتاتٌ','حيواناتٌ','حيٌّ','أشياءُ غيرُ حيّةٍ','أنظُرُ'],
+ slides:[
+ {type:'mystery',ph:'tahia',title:'صندوق الأسرار: مَن في الصندوق؟',say:'صندوق الأسرار. استمعوا للأدلة وخمنوا من في الصندوق',
+  clues:['أعيشُ في البحر بين الشِّعاب.','لوني برتقاليٌّ وأبيض.','آكُلُ وأتنفّسُ وأكبرُ.','أسبحُ بزعانفي الصغيرة.'],ans:'🐠|سمكة المهرّج',opts:['🐠|سمكة المهرّج','🚌|حافلة','🪑|كرسي','🐢|سلحفاة'],
+  note:'اعرض الدليل الأول واطلب من التلاميذ التخمين، ثم أضف دليلًا جديدًا بعد كل محاولة. بعد الكشف اسأل: <b>هل سمكة المهرّج حيّة أم غير حيّة؟ كيف عرفتم؟</b> (تأكل، تتنفس، تكبر، تتحرك). هذا يمهّد لفكرة الدرس.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🌍|كائناتٌ حيّةٌ','🌻|نباتاتٌ','🐇|حيواناتٌ','💚|حيٌّ','🪨|أشياءُ غيرُ حيّةٍ','👀|أنظُرُ'],
+  note:'اقلب كل بطاقة، وانطق الكلمة بوضوح ليرددها التلاميذ. اطلب مثالًا من الصف لكل كلمة: نبتة الصف، صورة حيوان، الطاولة (غير حية).'},
+ {type:'scene',ph:'ard',title:'لننظر إلى الحديقة!',bg:'garden',mode:'living',tip:'اضغط على كل شيء في الصورة: هل هو حيّ أم غير حيّ؟',
+  qs:['هل يمكنك رؤية <b>نباتات حيّة</b>؟','هل يمكنك رؤية <b>حيوانات حيّة</b>؟','هل يمكنك رؤية <b>أشياء غير حيّة</b>؟','الشمس حارّة، لكن هل هي حيّة؟'],
+  items:[['🌳','شجرة',30,36,170,'نبات حيّ يكبر ويحتاج إلى الماء',1],['☀️','الشمس',88,12,80,'الشمس حارّة لكنها غير حيّة',0],['☁️','سحابة',12,12,80,'السحابة تتحرك بالهواء لكنها غير حيّة',0],['🌈','قوس قزح',62,36,90,'جميل لكنه غير حيّ',0],
+   ['🐦','عصفور',44,18,48,'يطير ويأكل ويكبر',1],['🐿️','سنجاب',22,27,46,'يعيش على الشجرة',1],['🦋','فراشة',78,46,50,'',1],['🐝','نحلة',56,28,40,'',1],['🌼','زهرة',70,58,50,'نبات حيّ',1],['🐸','ضفدع',52,60,50,'',1],
+   ['🐌','حلزون',14,60,44,'',1],['🪨','صخرة',86,61,52,'لا تأكل ولا تكبر',0],['🐇','أرنب',33,80,60,'يعيش في جحر تحت الأرض',1],['🪱','دودة',70,86,46,'تعيش في التربة',1]],
+  note:'اطلب من تلميذ أن يختار شيئًا ويضغط عليه، ويقول قبل الضغط: حيّ أم غير حيّ؟ ركّز على الشمس: <b>الشمس حارّة لكنها غير حيّة</b> (كتاب التلميذ ص16). لاحظ مع التلاميذ الحيوانات تحت الأرض (الأرانب والدودة).'},
+ {type:'reveal',ph:'ard',title:'كيف نعرفُ أنّ الشيءَ حيٌّ؟',html:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:center"><div class="card" style="padding:14px"><span class="emo" style="font-size:90px">🐈</span><div style="font-size:26px;font-weight:800">حيّ</div></div><div class="card" style="padding:14px"><span class="emo" style="font-size:90px">🧸</span><div style="font-size:26px;font-weight:800">غير حيّ</div></div></div>',
+  pts:['🍎|الكائن الحيّ <b>يأكلُ ويشربُ</b>.','🌬️|الكائن الحيّ <b>يتنفّسُ</b>.','📏|الكائن الحيّ <b>ينمو ويكبرُ</b>.','🐣|الكائن الحيّ <b>يُنجِبُ صغارًا</b> أو يُعطي بذورًا.','!🌱|النباتاتُ والحيواناتُ <b>كائناتٌ حيّةٌ</b>.','❓|هل تأكل الدمية القطنية؟ هل تكبر؟|لا؛ إذن هي شيء غير حيّ.'],
+  note:'قارن بين القطة والدمية: اسأل عن كل صفة (هل تأكل؟ هل تكبر؟). وضّح أن النبات حيّ رغم أنه لا يمشي، لأنه يحتاج إلى الماء وينمو. اقبل إجابات التلاميذ بلغتهم البسيطة.'},
+ {type:'activity',ph:'nashat',title:'ما الكائناتُ الحيّةُ التي يمكنُ أن نجدَها حولنا؟',code:'نشاط 1-1',sub:'جولة في ساحة المدرسة',min:8,
+  mats:['📒|دفتر','📷|كاميرا رقمية (أو رسم)','✏️|قلم'],
+  steps:['اذهبْ إلى الخارج، وانظُرْ إلى الكائنات الحيّة.','قُمْ بتصوير أو رسم الكائنات الحيّة التي ستجدها.','ابحثْ عن <b>أكبر</b> كائن حيّ يمكن أن تراه.','ابحثْ عن <b>أصغر</b> كائن حيّ يمكن أن تراه.','حاولْ أن تجد <b>ستة</b> كائنات حيّة.'],
+  ask:['ما أكبر كائن حيّ رأيتَه؟','ما أصغر كائن حيّ رأيتَه؟','هل وجدتَ أشياء غير حيّة؟'],
+  note:'قسّم التلاميذ مجموعات صغيرة، ونبّههم إلى عدم لمس الحشرات أو قطف النباتات. عند العودة اعرض بعض الرسوم/الصور وناقش: أين وجدتموها؟ (ورقة العمل 1-1 أ تُستخدم لتسجيل ما وجدوه).'},
+ {type:'sort',ph:'taqweem',title:'صنِّفْ: حيٌّ أم غيرُ حيٍّ؟',bins:[['a','💚','كائنٌ حيٌّ'],['b','🪨','شيءٌ غيرُ حيٍّ']],
+  items:['🐠|سمكة|a','🚌|حافلة|b','🪑|كرسي|b','🌳|شجرة|a','🐈|قطة|a','⚽|كرة|b','🌻|زهرة|a','✏️|قلم|b','🐦|طائر|a','☀️|الشمس|b','🌵|صبّار|a','🧸|دمية|b'],
+  note:'هذه صور كتاب التلميذ ص17 (الحافلة، الكرسي، السمكة) مع إضافات. يأتي التلاميذ بالدور إلى السبورة. عند الخطأ اسأل: هل يأكل؟ هل يكبر؟ ثم يحاول مرة أخرى.'},
+ {type:'mcq',ph:'taqweem',title:'سؤال وجواب',qs:[
+  {q:'أيُّ هذه الأشياء كائنٌ حيٌّ؟',o:['🧸|دمية','🐇|أرنب','🚗|سيارة'],a:1,x:'الأرنب يأكل ويتنفس ويكبر.'},
+  {q:'الشمسُ حارّةٌ. هل هي كائنٌ حيٌّ؟',e:'☀️',o:['|نعم، هي حيّة','|لا، هي شيء غير حيّ'],a:1,x:'الشمس حارّة لكنها غير حيّة.'},
+  {q:'أيُّ هذه الأشياء نباتٌ حيٌّ؟',o:['🌹|وردة','🪨|حجر','🎈|بالون'],a:0,x:'الوردة نبات، والنباتات كائنات حيّة.'},
+  {q:'أيُّها <b>ليس</b> كائنًا حيًّا؟',o:['🐟|سمكة','🌴|نخلة','📺|تلفاز','🐫|جمل'],a:2,x:'التلفاز لا يأكل ولا ينمو.'}],
+  note:'استخدم بطاقات الإجابة أو أصابع اليد (1، 2، 3) ليشارك جميع التلاميذ في الوقت نفسه قبل الضغط على الإجابة.'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['هناكَ <b>كائناتٌ حيّةٌ</b>.','هناكَ <b>أشياءُ غيرُ حيّةٍ</b>.','النباتاتُ والحيواناتُ كائناتٌ حيّةٌ.']},
+ {type:'pick',ph:'ghalq',title:'لعبة السرعة: صيّاد الكائنات الحيّة',prompt:'اضغطْ على كلّ <b>كائنٍ حيٍّ</b> قبل انتهاء الوقت!',time:30,cols:6,
+  items:['🐘|فيل|1','🌷|زهرة|1','🦒|زرافة|1','🐞|دعسوقة|1','🌴|نخلة|1','🐓|ديك|1','👧|طفلة|1','🍄|فطر|1','🪨|حجر|0','🚲|درّاجة|0','⏰|ساعة|0','🎒|حقيبة|0'],
+  note:'العب بنظام الفرق: كل فريق يرسل تلميذًا لدورة مدتها 30 ثانية، ثم أعِد تحميل الشريحة للفريق التالي بالضغط على النقطة نفسها في الشريط السفلي. امنح نقطة للفريق الأسرع.'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🐈','سمِّ كائنًا حيًّا تراه في بيتك.','القطة، العصفور، النبتة… (أي كائن حي صحيح)'],['متوقع','🌳🪨','أيُّهما حيّ: الشجرة أم الصخرة؟','الشجرة حيّة لأنها تنمو وتحتاج إلى الماء، والصخرة غير حيّة.'],['متقدم','🌱','كيف تعرف أنّ النبتة كائن حيّ مع أنها لا تمشي؟','لأنها تنمو وتكبر وتحتاج إلى الماء والضوء، وتعطي بذورًا.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 1-1 (ص 15)','مركز النباتات والحيوانات الأليفة: كيف سيعتني حمد بالنباتات والحيوانات؟ لوّن جميع الكائنات الحيّة في الصورة.'],['ورقة عمل','ورقة العمل 1-1 أ','ما الكائنات الحيّة التي يمكن أن نجدها؟ ارسم أكبر كائن حي وأصغر كائن حي وجدته.'],['ورقة عمل','ورقة العمل 1-1 ب','في المزرعة: ضع دائرة حول الكائنات الحيّة.'],['في البيت','ابحث مع أسرتك','عُدّ الكائنات الحيّة في بيتك أو حديقتك، وارسم واحدًا منها.']]}
+ ]});
+
+/* ================= 1-2 ================= */
+LESSONS.push({id:'1-2',unit:1,icon:'🏞️',pages:'18–19',title:'البيئاتُ المحلّيّةُ',
+ goals:['أذكر أن الكائنات الحيّة تحتاج إلى مكان تعيش فيه.','أُسمّي بعض البيئات المحلية التي تعيش فيها الحيوانات.','أذكر ما توفّره البيئة: المسكن والطعام والماء.'],
+ vocab:['بيئةٌ','مزرعةٌ','حيواناتٌ أليفةٌ','قارِنْ'],
+ slides:[
+ {type:'mcq',ph:'tahia',title:'لعبة: أين بيتي؟',qs:[
+  {q:'أنا سمكة. أين أعيش؟',e:'🐟',o:['🌊|في الماء','🌵|في الصحراء','🌳|فوق الشجرة'],a:0,x:'السمكة تعيش في الماء.'},
+  {q:'أنا جمل. أين أعيش؟',e:'🐫',o:['🧊|في الثلج','🏜️|في الصحراء','🌊|في البحر'],a:1,x:'الجمل يعيش في الصحراء.'},
+  {q:'أنا عصفور. أين أبني بيتي؟',e:'🐦',o:['🪺|عش على الشجرة','🕳️|جحر تحت الماء','🧱|داخل الصخر'],a:0,x:'العصفور يبني عشًّا على الشجرة.'},
+  {q:'أنا قطة أليفة. أين أعيش؟',e:'🐈',o:['🏠|في المنزل مع الناس','🌊|في البحر','🏔️|على قمة الجبل'],a:0,x:'الحيوانات الأليفة تعيش في المنازل.'}],
+  note:'اقرأ السؤال بصوت مرح وتقمّص صوت الحيوان. بعد الأسئلة اسأل: <b>لماذا تحتاج الحيوانات إلى بيت؟</b> واستمع للأفكار دون تصحيح الآن.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🏞️|بيئةٌ','🚜|مزرعةٌ','🐕|حيواناتٌ أليفةٌ','⚖️|قارِنْ']},
+ {type:'reveal',ph:'ard',title:'ما البيئةُ المحلّيّةُ؟',big:'🏡',
+  pts:['!🌍|تحتاجُ جميعُ الكائناتِ الحيّةِ إلى <b>مكانٍ للعيشِ</b> فيه.','🏞️|تُسمّى هذه الأماكنُ <b>البيئاتِ المحلّيّةَ</b>.','🏠|البيئة توفّر <b>المسكنَ</b>.','🍃|البيئة توفّر <b>الطعامَ</b>.','💧|البيئة توفّر <b>الماءَ</b>.'],
+  note:'اربط بحياة التلميذ: بيتك يوفّر لك المسكن، والمطبخ يوفّر الطعام والماء. كذلك البيئة للحيوان. اكتب الكلمات الثلاث (مسكن، طعام، ماء) على السبورة.'},
+ {type:'scene',ph:'ard',title:'انظُرْ إلى الحيواناتِ: أينَ يعيشُ كلٌّ منها؟',bg:'habitat',tip:'اضغط على كل حيوان لتعرف أين يعيش ولماذا.',
+  qs:['أين يعيش كلٌّ منها؟','لماذا تعيش هناك؟','أين تنمو النباتات في الصورة؟'],
+  items:[['🦇','خفّاش',16,50,44,'يعيش في <b>الكهف</b>: مكان مظلم وآمن.'],['🐐','ماعز جبلي',40,34,52,'يعيش على <b>الجبل</b> ويأكل العشب.'],['🦅','نسر',60,10,56,'يطير عاليًا ويبني عشه على <b>المرتفعات</b>.'],['🌳','شجرة',86,42,190,'نبات يعيش في التربة قرب الماء.'],['🦉','بومة',84,30,50,'تعيش في <b>تجويف الشجرة</b>.'],['🪺','عشّ',74,24,44,'بيت الطائر <b>فوق الشجرة</b>.'],
+   ['🦊','ثعلب',78,62,64,'يعيش في <b>جحر</b> ويخرج ليبحث عن طعامه.'],['🐇','أرنب',56,58,50,'يعيش في <b>جحر تحت الأرض</b>.'],['🦌','غزال',30,55,60,'يعيش في المراعي ويأكل العشب.'],['🐆','نمر',22,64,58,'يأتي إلى <b>النهر</b> ليشرب الماء.'],
+   ['🐸','ضفدع',46,72,44,'يعيش <b>قرب الماء</b>.'],['🐟','سمكة',32,84,46,'تعيش في <b>ماء النهر</b>.'],['🐍','أفعى',62,74,46,'تعيش بين العشب والصخور.'],['🍄','فطر',70,70,40,'ينمو في الأماكن الرطبة.']],
+  note:'هذه صورة كتاب التلميذ ص18 بشكل تفاعلي. بعد كل حيوان اسأل: <b>ماذا توفّر له بيئته؟</b> (مسكن، طعام، ماء). نبّه إلى أن الحيوانات توجد في البيئات الطبيعية، وأيضًا في المزرعة وحديقة الحيوانات والمنازل.'},
+ {type:'sort',ph:'ard',title:'أينَ نجدُ الحيوانات أيضًا؟',small:1,bins:[['a','🏞️','بيئة طبيعية'],['b','🚜','المزرعة'],['c','🏠','المنزل (حيوانات أليفة)']],
+  items:['🦊|ثعلب|a','🦅|نسر|a','🐄|بقرة|b','🐑|خروف|b','🐓|دجاجة|b','🐈|قطة|c','🐠|سمكة الحوض|c','🦜|ببغاء|c','🐿️|سنجاب|a'],
+  note:'وضّح أنه يمكن أن نجد الحيوانات في البيئات الطبيعية، وفي المزرعة، وحديقة الحيوانات، أو في المنازل كالحيوانات الأليفة (ص18). تقبّل النقاش: بعض الحيوانات قد تعيش في أكثر من مكان.'},
+ {type:'activity',ph:'nashat',title:'أينَ تنمو النباتاتُ؟',code:'نشاط 1-2 أ',sub:'نبحث عن النباتات حول المدرسة',min:6,mats:['📒|دفتر','📷|كاميرا رقمية'],
+  steps:['فكِّرْ في الأماكن التي تجد فيها النباتات التي تنمو خارجيًا.','اذهبْ إلى الخارج، وانظُرْ إلى النباتات.','أين تنمو؟','لماذا تنمو في هذا المكان؟','قارِنْ بين النباتات التي تجدها في البيئات المختلفة.'],
+  ask:['هل وجدت نباتًا ينمو بين الحجارة؟','أين كانت النباتات أكبر؟ لماذا؟'],
+  note:'وجّه التلاميذ إلى أماكن مختلفة: حوض الزرع، بين الحجارة، قرب صنبور الماء. ناقش أن النباتات تنمو أكثر قرب الماء والضوء. سجّلوا في ورقة العمل 1-2 أ.'},
+ {type:'pick',ph:'nashat',title:'الطيورُ تأتي إلى المدرسة: لنصمّمْ طاولةَ الطيور',prompt:'اختَرْ ما تحتاجُه الطيورُ على طاولتها 🐦',cols:4,
+  items:['💧|وعاء ماء|1','🌾|حبوب|1','🌳|شجرة قريبة للمسكن|1','🍎|قطع فاكهة|1','🍬|حلوى|0','🥤|مشروب غازي|0','🧸|دمية|0','📱|هاتف|0'],
+  note:'نشاط 1-2 ب (ص19): اسأل أولًا: هل سبق أن رأيت طيورًا في المدرسة؟ أين؟ هل يمكن أن نجعل البيئة أفضل لها؟ بعد اللعبة اطلب من كل مجموعة رسم لوحة توضح كيف نساعد الطيور (الطعام، الماء، المسكن).'},
+ {type:'match',ph:'taqweem',title:'صِلْ كلَّ حيوانٍ ببيئتِه المحلّيّة',pairs:[['🐐|عنزة','🌾|حقل'],['🦆|بطّة','🏞️|نهر'],['🦀|سرطان','🏖️|شاطئ البحر'],['🐦|عصفور','🌳|شجرة']],
+  note:'هذا تمرين 1-2 في كتاب النشاط (ص16). اطلب من التلميذ تبرير اختياره: لماذا تعيش البطّة في النهر؟'},
+ {type:'tf',ph:'taqweem',title:'صح أم خطأ؟',qs:[['🐟','تعيش السمكة في الصحراء.',false,'السمكة تعيش في الماء.'],['🏞️','البيئة المحلّيّة توفّر للكائن الحي المسكن والطعام والماء.',true,''],['🐈','القطة من الحيوانات الأليفة التي تعيش في المنازل.',true,''],['🌵','كل الكائنات الحية تعيش في المكان نفسه.',false,'لكل كائن حي بيئته المحلية.']]},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['يعيشُ كلُّ كائنٍ حيٍّ في <b>بيئتِه المحلّيّة</b>.','توفّرُ البيئةُ المحلّيّةُ للكائناتِ الحيّةِ: <b>المسكنَ، والطعامَ، والماءَ</b>.']},
+ {type:'memory',ph:'ghalq',title:'لعبة الذاكرة: الحيوانُ وبيتُه',pairs:[['🐝|نحلة','🍯|خلية'],['🐦|عصفور','🪺|عش'],['🐟|سمكة','🌊|ماء'],['🐫|جمل','🏜️|صحراء'],['🐇|أرنب','🕳️|جحر'],['🐄|بقرة','🚜|مزرعة']],
+  note:'العب بالتناوب بين الفرق: كل فريق يقلب بطاقتين، إذا تطابقتا يحصل على نقطة ويلعب مرة أخرى.'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🐟','أين تعيش السمكة؟','تعيش في الماء (البحر أو النهر).'],['متوقع','🏡','اذكر شيئين توفّرهما البيئة للحيوان.','المسكن، الطعام، الماء.'],['متقدم','🐪','لماذا يستطيع الجمل العيش في الصحراء ولا تستطيع السمكة؟','لأن بيئة الجمل المحلية هي الصحراء ويتحمّل قلة الماء، أما السمكة فتحتاج إلى الماء لتعيش.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 1-2 (ص 16)','صِلْ بخطٍّ بين كل حيوان والبيئة المحلية التي يعيش فيها: عنزة، بطة، سرطان، عصفور.'],['ورقة عمل','ورقة العمل 1-2 أ','أين تنمو النباتات؟ سجّل الأماكن التي وجدت فيها النباتات.'],['ورقة عمل','ورقة العمل 1-2 ب','من يعيش هنا؟ قصّ صور الحيوانات وألصقها في بيئتها المحلية.'],['في البيت','ارسمْ بيئة','ارسم حيوانًا تحبه في بيئته المحلية، وارسم مسكنه وطعامه.']]}
+ ]});
+
+/* ================= 1-3 ================= */
+LESSONS.push({id:'1-3',unit:1,icon:'🐣',pages:'20–21',title:'صغيرُ الإنسانِ وصغيرُ الحيوانِ',
+ goals:['أذكر أن الإنسان والحيوان يُنجبان صغارًا.','أذكر أن صغير الإنسان يكبر ليصبح بالغًا، وصغار الحيوانات تكبر لتصبح بالغة.','أربط بين بعض الحيوانات وصغارها.'],
+ vocab:['صغيرٌ','الإنسانُ','الشِّبلُ','طفلٌ'],
+ slides:[
+ {type:'match',ph:'tahia',title:'لعبة: أينَ أمّي؟',pairs:[['🐣|صوص','🐔|دجاجة'],['🐆|صغير الفهد','🐆|فهد'],['🐐|جَدْي','🐐|ماعز'],['🐸|شرغوف (أبو ذُنَيبة)','🐸|ضفدع'],['🐑|حَمَل','🐑|خروف']],
+  note:'من كتاب التلميذ ص25 سؤال 3. قبل البدء اسأل: هل تشبه الصغار آباءها دائمًا؟ لاحظ مع التلاميذ أن الشرغوف لا يشبه الضفدع، أما صوص الدجاجة فيشبهها قليلًا.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🐥|صغيرٌ','🧑|الإنسانُ','🦁|الشِّبلُ','👶|طفلٌ']},
+ {type:'scene',ph:'ard',title:'في حديقة الحيوانات: كم صغيرًا تَرى؟',bg:'zoo',tip:'اضغط على الحيوانات لتعرف الصغار.',qs:['ما عدد صغار الحيوانات التي تراها؟','هل يمكنك رؤية صغير الأسد الذي يُسمّى <b>الشِّبل</b>؟','هل تشبه جميع صغار الحيوانات آباءها؟'],
+  items:[['🦁','أسد',14,40,90,'الأسد البالغ.'],['🦁','شِبل',24,50,46,'<b>الشبل</b> صغير الأسد.'],['🐘','فيل',80,40,110,'الفيل البالغ.'],['🐘','صغير الفيل',92,50,56,'صغير الفيل يشبه أمه لكنه أصغر.'],['🦭','فقمة',22,78,62,'تعيش في الماء البارد.'],['🦆','بطّة',42,80,52,'البطة الأم.'],['🐥','صغار البط',54,84,36,'صغار البطة: عددها كبير!'],['🐧','بطريق',66,70,60,'البطريق البالغ.'],['🐧','صغير البطريق',72,76,36,'صغير البطريق.'],['🐐','عنزة',60,46,60,'العنزة الأم.'],['🐐','جَدْي',66,52,38,'صغير العنزة.'],['👶','طفل',40,46,48,'<b>طفل</b>: صغير الإنسان في عربته.']],
+  note:'هذه صورة كتاب التلميذ ص20. عُدّوا الصغار معًا بصوت مرتفع. ثم اسأل: من الأم؟ من الصغير؟ كيف عرفت؟ (الحجم).'},
+ {type:'reveal',ph:'ard',title:'تُنجِبُ الحيواناتُ صغارًا',html:'<div style="display:grid;gap:16px"><div class="card" style="padding:12px 18px;display:flex;gap:14px;align-items:center;font-size:24px;font-weight:800"><span class="emo" style="font-size:70px">🤱</span>الإنسان: <span class="emo" style="font-size:54px">👶</span> طفل واحد عادةً</div><div class="card" style="padding:12px 18px;display:flex;gap:10px;align-items:center;font-size:24px;font-weight:800;flex-wrap:wrap"><span class="emo" style="font-size:70px">🐇</span>الأرنب: <span class="emo" style="font-size:34px">🐰🐰🐰🐰🐰🐰🐰🐰</span></div><div class="card" style="padding:12px 18px;display:flex;gap:10px;align-items:center;font-size:24px;font-weight:800;flex-wrap:wrap"><span class="emo" style="font-size:70px">🐔</span>الطيور: <span class="emo" style="font-size:34px">🐣🐣🐣🐣🐣🐣🐣🐣🐣</span></div></div>',
+  pts:['!🐾|تُنجبُ جميعُ الحيواناتِ <b>صغارًا</b>، وتكبرُ هذه الصغارُ لتصبحَ حيواناتٍ <b>بالغةً</b>.','🤱|تُنجبُ الأمُّ عند الإنسانِ عادةً <b>طفلًا واحدًا</b> كلَّ مرّةٍ.','🐇|بعضُ الحيواناتِ تُنجبُ <b>العديدَ من الصغارِ</b> في كلِّ مرّةٍ.','🐣|يمكنُ أن تُنجبَ الطيورُ والأرانبُ <b>ثمانيةً أو تسعةَ</b> صغارٍ في كلِّ مرّةٍ.'],
+  note:'عُدّ صغار الأرنب والطيور مع التلاميذ. اسأل: من لديه أخ أو أخت صغيرة؟ كيف كان عندما وُلد؟ هل كبر الآن؟'},
+ {type:'growth',ph:'ard',title:'يكبرُ الصغيرُ ليصبحَ بالغًا',stages:['👶|رضيع','🧒|طفل','👦|ولد','🧑|شاب','👨|رجل بالغ'],sizes:[70,90,110,130,150],caps:['صغير الإنسان: <b>رضيع</b>','يكبر فيصبح <b>طفلًا</b> يمشي ويلعب','ثم <b>ولدًا</b> يذهب إلى المدرسة','ثم <b>شابًّا</b>','ثم يصبح <b>بالغًا</b>'],done:'يكبرُ صغيرُ الإنسانِ ليصبحَ بالغًا 👨',
+  note:'اضغط «التالي» لكشف كل مرحلة. اسأل: في أي مرحلة أنت الآن؟ ماذا تغيّر في جسمك منذ كنت رضيعًا؟ (طولك، قدمك، يداك).'},
+ {type:'growth',ph:'ard',title:'وتكبرُ صغارُ الحيوانات أيضًا',stages:['🥚|بيضة','🐣|صوص يفقس','🐥|صوص','🐔|دجاجة بالغة'],sizes:[70,90,100,140],caps:['تبدأ الدجاجة بوضع <b>البيض</b>','يفقس <b>الصوص</b> من البيضة','يكبر الصوص يومًا بعد يوم','ويصبح <b>دجاجة بالغة</b>'],done:'تكبرُ صغارُ الحيواناتِ لتصبحَ حيواناتٍ بالغةً 🐔'},
+ {type:'activity',ph:'nashat',title:'صناعةُ حاضنةٍ خاصّةٍ بصغيرِ الحيوانِ',code:'نشاط 1-3',sub:'نصمّم بيتًا آمنًا لحيوان صغير',min:10,mats:['📦|ورق مقوّى','✂️|مقص','🧴|صمغ','🩹|شريط لاصق'],
+  steps:['اخترْ حيوانًا صغيرًا تريد أن تصنع له حاضنة.','قُمْ بصناعة نموذج حاضنة خاصة بصغير الحيوان.','تأكّدْ من أن تتضمّن الحاضنة <b>الطعامَ</b>.','تأكّدْ من أن تتضمّن الحاضنة <b>الماءَ</b>.','تأكّدْ من أن تتضمّن الحاضنة <b>المسكنَ</b>.','اعرضْ حاضنتك على زملائك.'],ask:['ماذا وضعت في الحاضنة؟','لماذا يحتاج الصغير إلى مكان دافئ وآمن؟'],
+  note:'استخدم ورقة العمل 1-3 للتخطيط قبل التنفيذ (اسم الحيوان، ماذا يحتاج). راقب استخدام المقص بأمان.'},
+ {type:'pick',ph:'nashat',title:'ماذا تحتاجُ الحاضنةُ؟',prompt:'اختَرْ ما يحتاجُه صغيرُ الحيوانِ في حاضنتِه',cols:4,items:['🥕|طعام|1','💧|ماء|1','🏠|مسكن|1','🌾|قش دافئ|1','📺|تلفاز|0','🎮|ألعاب إلكترونية|0','🍭|حلوى|0','👟|حذاء|0']},
+ {type:'tf',ph:'taqweem',title:'صح أم خطأ؟',qs:[['👶','يُنجبُ الإنسانُ والحيوانُ صغارًا.',true,''],['🐇','تُنجبُ الأرنبُ صغيرًا واحدًا فقط في كل مرة.',false,'يمكن أن تنجب الأرانب ثمانية أو تسعة صغار.'],['🦁','الشِّبلُ هو صغيرُ الأسد.',true,''],['🧒','يبقى صغيرُ الإنسان صغيرًا ولا يكبر.',false,'يكبر صغير الإنسان ليصبح بالغًا.']]},
+ {type:'growth',ph:'taqweem',title:'أقدامُ هندٍ تكبَر! (تمرين 1-3)',stages:['👣|الشهر الأول','👣|الشهر الثاني','👣|الشهر الثالث','👣|الشهر الرابع'],sizes:[50,70,90,115],caps:['قدم هند في الشهر الأول','في الشهر الثاني أصبحت أكبر','في الشهر الثالث أكبر أيضًا','❓ هل ستحتاج هند إلى حذاء <b>أكبر</b> أم <b>أصغر</b>؟ هل تنمو يداها كما تنمو قدماها؟'],done:'ستحتاج هند إلى حذاء أكبر لأنها تنمو 👟',
+  note:'من تمرين 1-3 في كتاب النشاط (ص17). اسأل: ماذا تُظهر بصمة القدم؟ (أن هندًا تنمو). ثم: هل تنمو يدا هند كما تنمو قدماها؟ (نعم، كل الجسم ينمو).'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['يُنجبُ <b>الإنسانُ والحيوانُ</b> صغارًا.','يكبرُ صغيرُ الإنسانِ ليصبحَ <b>بالغًا</b>، وتكبرُ صغارُ الحيواناتِ لتصبحَ حيواناتٍ <b>بالغةً</b>.']},
+ {type:'memory',ph:'ghalq',title:'لعبة الذاكرة: الصغيرُ وأمُّه',pairs:[['🐣|صوص','🐔|دجاجة'],['🦁|شبل','🦁|لبؤة'],['🐐|جَدي','🐐|عنزة'],['🐮|عِجل','🐄|بقرة'],['🐴|مُهر','🐎|فرس'],['👶|طفل','👩|أم']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🦁','ماذا نسمّي صغير الأسد؟','الشِّبل.'],['متوقع','🐇','هل تنجب الأرانب صغيرًا واحدًا أم صغارًا كثيرة؟','صغارًا كثيرة، قد تصل إلى ثمانية أو تسعة.'],['متقدم','👟','لماذا يشتري لك أهلك حذاءً جديدًا كل سنة؟','لأن قدمي تكبر؛ فأنا أنمو لأصبح بالغًا.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 1-3 (ص 17)','أقدام هند: ماذا تُظهر بصمة القدم؟ ارسم قدمها في الشهر الرابع، وأجب: هل ستحتاج إلى حذاء أكبر أم أصغر؟'],['ورقة عمل','ورقة العمل 1-3','قم بالتخطيط لحاضنة حيوان صغير: اسم الحيوان وما تحتاج إليه الحاضنة.'],['في البيت','صوري وأنا صغير','اطلب من أسرتك صورة لك وأنت رضيع، وقارنها بصورتك الآن.']]}
+ ]});
+
+/* ================= 1-4 ================= */
+LESSONS.push({id:'1-4',unit:1,icon:'🥗',pages:'22–23',title:'الطّعامُ والشّرابُ الصّحّيُّ',
+ goals:['أُسمّي بعض الأطعمة الصحية.','أذكر أن الأطعمة التي فيها كثير من الدهون والسكريات والملح ليست صحية.','أذكر أن الإكثار من شرب الماء أمر صحي.'],
+ vocab:['صحّيٌّ','طعامٌ','دُهونٌ','سُكّرياتٌ','مِلحٌ'],
+ slides:[
+ {type:'mcq',ph:'tahia',title:'ماذا في علبةِ طعامِ مريم وسارة؟',qs:[{q:'أيُّ هذه الأطعمةِ تبدو <b>صحّيّةً أكثر</b>؟',o:['🍎|تفاحة','🍫|شوكولاتة','🧁|كعكة بالكريمة','🥤|مشروب غازي'],a:0,x:'التفاحة من الفواكه، وهي مليئة بالمواد المفيدة.'},{q:'وأيُّ مشروبٍ أفضلُ لجسمك؟',o:['💧|ماء','🥤|مشروب غازي'],a:0,x:'الإكثار من شرب الماء أمر صحي.'},{q:'وأيُّ وجبةٍ أفضلُ للمدرسة؟',o:['🥪|شطيرة وخضار','🍟|بطاطس مقلية','🍬|حلوى'],a:0,x:''}],
+  note:'صورة كتاب التلميذ ص22: علبتا طعام. اسأل قبل الإجابة: <b>هل تودّ أن تنمو بشكل صحي وأن تكون قوي البنية؟</b> ماذا يوجد في علبة طعامك اليوم؟'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['💪|صحّيٌّ','🍽️|طعامٌ','🧈|دُهونٌ','🍬|سُكّرياتٌ','🧂|مِلحٌ']},
+ {type:'reveal',ph:'ard',title:'لكي تنموَ بشكلٍ صحّيٍّ',big:'🥦',
+  pts:['🍎|تناوَلْ الكثيرَ من <b>الطعامِ الصحّيِّ</b> كالفواكهِ والخضراواتِ.','🌱|نحصلُ على الفواكهِ والخضراواتِ من <b>النباتاتِ</b>.','💪|وهي مليئةٌ <b>بالموادِّ المفيدةِ</b> لجسمِ الإنسانِ.','🧈|لا تحتوي على الكثيرِ من <b>الدهونِ والسكّرياتِ والملحِ</b>.','⚠️|الإكثارُ من الدهونِ والسكّرياتِ والملحِ أمرٌ <b>غيرُ صحّيٍّ</b>.','!💧|اشربِ الكثيرَ من <b>الماءِ</b>.'],
+  note:'اعرض فاكهة حقيقية إن أمكن. اسأل: من أين تأتي التفاحة؟ (من شجرة = نبات). اذكر أمثلة لأطعمة فيها دهون كثيرة (المقليات)، وسكريات (الحلويات والمشروبات الغازية)، وملح (رقائق البطاطس).'},
+ {type:'sort',ph:'ard',title:'صنِّفْ الطعامَ',small:1,bins:[['a','✅','طعام صحّيّ'],['b','⚠️','فيه دهون أو سكريات أو ملح كثير']],
+  items:['🍎|تفاحة|a','🥕|جزر|a','🥦|بروكلي|a','🍌|موز|a','💧|ماء|a','🥛|حليب|a','🐟|سمك|a','🍟|بطاطس مقلية|b','🍭|مصاصة|b','🍩|دونات|b','🥤|مشروب غازي|b','🍫|شوكولاتة|b'],
+  note:'وضّح أن الحلويات ليست ممنوعة تمامًا، لكن الإكثار منها غير صحي. يمكن الاستعانة ببطاقات ورقة المصادر 1-4 أ.'},
+ {type:'plate',ph:'nashat',title:'طبقي الصّحّيّ',prompt:'اصنعْ طبقًا صحّيًّا: اضغطْ على الطعامِ لتضيفَه إلى طبقك',foods:['🍎|تفاحة|1','🥕|جزر|1','🥒|خيار|1','🍅|طماطم|1','🍇|عنب|1','🐟|سمك|1','🥚|بيض|1','🍚|أرز|1','🍟|بطاطس مقلية|0','🍰|كعكة|0','🍬|حلوى|0','🥤|مشروب غازي|0'],
+  note:'نشاط 1-4 (ص23): اطلب أولًا من التلاميذ رسم الطعام الذي تناولوه اليوم (ورقة العمل 1-4 أ)، ثم ليصمم تلميذ من كل فريق طبقًا على السبورة. قارنوا: طبقي وطبق الطعام الصحي. مقياس الصحة يتغيّر بحسب الاختيار.'},
+ {type:'activity',ph:'nashat',title:'طبقي الصّحّيّ في الدفتر',code:'نشاط 1-4',sub:'ماذا أكلت اليوم؟',min:6,mats:['🖍️|ألوان','🖼️|صور أطعمة','📄|ورقة العمل 1-4 أ'],
+  steps:['قُمْ برسم طبق الطعام الذي تناولته اليوم.','قُمْ برسم أو لصق صور لهذه الأطعمة.','قارِنْ بين طبق الطعام الخاص بك وطبق طعام صحي.'],ask:['ماذا أكلت اليوم؟','هل في طبقك فاكهة أو خضراوات؟','ماذا تضيف ليصبح طبقك صحيًا أكثر؟']},
+ {type:'mcq',ph:'taqweem',title:'سؤال وجواب',qs:[{q:'من أين نحصلُ على الفواكهِ والخضراوات؟',o:['🌱|من النباتات','🏭|من المصانع','🪨|من الصخور'],a:0,x:'نحصل على الفواكه والخضراوات من النباتات.'},{q:'أيُّ طعامٍ فيه <b>ملحٌ كثيرٌ</b>؟',o:['🍌|موز','🥨|معجنات مملّحة','🥒|خيار'],a:1,x:'الإكثار من الملح غير صحي.'},{q:'أيُّ طعامٍ فيه <b>سكّرٌ كثيرٌ</b>؟',o:['🍭|مصاصة','🥕|جزر','🥚|بيض'],a:0,x:''},{q:'أحمد عطشان بعد اللعب. ماذا يشرب؟',e:'⚽',o:['💧|ماء','🥤|مشروب غازي','☕|قهوة'],a:0,x:'الإكثار من شرب الماء أمر صحي.'}]},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['هناكَ بعضُ الأطعمةِ والمشروباتِ <b>الصحّيّةِ</b>.','لا تُعدُّ الأطعمةُ التي تحتوي على الكثيرِ من الدهونِ والسكّرياتِ والملحِ أطعمةً صحّيّةً.','الإكثارُ من شُربِ <b>الماءِ</b> أمرٌ صحّيٌّ.']},
+ {type:'pick',ph:'ghalq',title:'سباق السلة الصحية',prompt:'ضعْ في السلة الأطعمة <b>الصحّيّة</b> فقط 🧺',time:25,cols:6,items:['🍐|كمثرى|1','🥬|خس|1','🍊|برتقال|1','🫐|توت|1','🥜|مكسرات|1','🥛|لبن|1','🍉|بطيخ|1','🍔|برجر|0','🍿|فشار مملح|0','🍪|بسكويت|0','🧃|عصير محلّى|0','🍦|آيسكريم|0']},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🍌','سمِّ فاكهة تحبّها.','الموز، التفاح، البرتقال… (أي فاكهة).'],['متوقع','🥤','لماذا لا نُكثر من المشروبات الغازية؟','لأنها تحتوي على كثير من السكريات، والإكثار منها غير صحي.'],['متقدم','🍽️','اقترح وجبة صحية لإفطارك في المدرسة.','مثل: شطيرة جبن مع خيار، وتفاحة، وماء.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 1-4 (ص 18)','ضع دائرة حول الطعام الصحي لتساعد أحمد، ثم ارسم أطعمة صحية أخرى من اختيارك.'],['ورقة عمل','ورقة العمل 1-4 أ','طبقي الصحي: ارسم طبقك الصحي.'],['ورقة عمل','ورقة العمل 1-4 ب','إطعام العمالقة: صِل الأطعمة الصحية بالعملاق الأول، وغير الصحية بالعملاق الثاني.'],['في البيت','كوب ماء','عُدّ أكواب الماء التي تشربها اليوم وارسمها.']]}
+ ]});
+
+/* ================= 1-5 ================= */
+LESSONS.push({id:'1-5',unit:1,kind:'review',icon:'🏆',pages:'24–25',title:'تحقّقْ من تقدّمِكَ: الكائناتُ الحيّةُ',
+ goals:['أُصنّف الأشياء إلى كائنات حيّة وأشياء غير حيّة.','أُصنّف الحيوانات بحسب بيئتها المحلية.','أربط بين الحيوان وصغيره.','أختار الأطعمة الصحية.'],
+ slides:[
+ {type:'reveal',ph:'tahia',title:'مسابقة الوحدة الأولى!',big:'🏆',pts:['👥|ننقسم إلى <b>فرق</b>، ولكل إجابة صحيحة نقطة.','🌳|المحطة 1: مكتبة أحمد (حيّ وغير حيّ)','🌊|المحطة 2: البحر والصحراء (البيئات المحلية)','🐣|المحطة 3: الحيوان وصغيره','🥗|المحطة 4: الطعام الصحي'],all:1,
+  note:'اضبط أسماء الفرق من زر الإعدادات ⚙️ قبل البدء، واستخدم أزرار + في الشريط العلوي لاحتساب النقاط.'},
+ {type:'sort',ph:'murajaa',title:'المحطة 1: ساعدْ أحمدَ أمينَ المكتبة!',say:'يعمل أحمد أمين مكتبة. دخل المكتبة فوجد الكتب ساقطة على الأرض. إلى أي رف ينتمي كل كتاب؟',bins:[['a','📗','رفّ كتب عن كائنات حيّة'],['b','📕','رفّ كتب عن أشياء غير حيّة']],
+  items:['🦒|كتاب الزرافة|a','🚂|كتاب القطار|b','🌻|كتاب دوّار الشمس|a','🏰|كتاب القلعة|b','🐬|كتاب الدلفين|a','🚀|كتاب الصاروخ|b','🐜|كتاب النملة|a','⛰️|كتاب الجبال|b'],
+  note:'سؤال 1 (ص24): اقرأ القصة: «يعمل أحمد أمين مكتبة، دخل المكتبة فوجد الكتب ساقطة على الأرض، فهو في حيرة من أمره: إلى أي رف ينتمي كل كتاب؟»'},
+ {type:'sort',ph:'murajaa',title:'المحطة 2: بيئتان محلّيّتان',bins:[['a','🌊','البحر'],['b','🏜️','الصحراء']],
+  items:['🐋|حوت|a','🐠|سمكة|a','🐢|سلحفاة مائية|a','🐬|دلفين|a','🐾|نِمس|b','🐫|جمل|b','🦂|عقرب|b','🐍|أفعى|b'],
+  note:'سؤال 2 (ص24): قُم بتصنيف الحيوانات وفقًا للبيئة المحلية التي تعيش فيها. اطلب التبرير: لماذا يعيش الدلفين في البحر؟'},
+ {type:'match',ph:'murajaa',title:'المحطة 3: صِلْ كلَّ حيوانٍ بصغيره',pairs:[['🐔|دجاجة','🐣|صوص'],['🐆|فهد','🐆|صغار الفهد'],['🐸|ضفدع','🐸|شراغيف'],['🐐|ماعز','🐐|جَدْي']],note:'سؤال 3 (ص25).'},
+ {type:'pick',ph:'murajaa',title:'المحطة 4: أيٌّ من هذه الأطعمةِ صحّيّةٌ؟',prompt:'اضغطْ على الأطعمة الصحّيّة على مائدة الأصدقاء',cols:6,items:['🍍|أناناس|1','🍎|تفاحة|1','🫒|زيتون|1','🐟|سمك|1','🥛|حليب|1','🍚|أرز|1','🥤|مشروب غازي|0','🍫|شوكولاتة|0','🍔|برجر|0','🧈|زبدة كثيرة|0','🍬|سكّر|0','🍗|دجاج|1'],note:'سؤال 4 (ص25): مائدة الأصدقاء. ناقش: الدجاج المشوي صحي، لكن المقلي فيه دهون كثيرة.'},
+ {type:'tf',ph:'murajaa',title:'جولة السرعة: صح أم خطأ؟',qs:[['☀️','الشمس كائن حيّ لأنها حارّة.',false,'الشمس غير حيّة.'],['🌳','الشجرة كائن حيّ.',true,''],['🏞️','البيئة توفّر المسكن والطعام والماء.',true,''],['🐧','يعيش البطريق في الصحراء الحارّة.',false,''],['🐇','تنجب الأرانب صغارًا كثيرة في كل مرة.',true,''],['🍭','الإكثار من السكريات صحي.',false,'']]},
+ {type:'mystery',ph:'murajaa',title:'السؤال الذهبي: مَن أنا؟',clues:['أنا كائن حيّ.','أعيش في الصحراء.','أستطيع العيش أيامًا دون ماء.','صغيري يُسمّى «الحُوار».'],ans:'🐫|الجمل',opts:['🐫|الجمل','🐋|الحوت','🐔|الدجاجة'],note:'سؤال إثرائي بنقطتين لمن يجيب من الدليل الأول.'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🐟🪑','أيُّهما حيّ: السمكة أم الكرسي؟','السمكة.'],['متوقع','🦀','أين يعيش السرطان؟ ماذا توفّر له بيئته؟','على شاطئ البحر؛ توفّر له المسكن والطعام والماء.'],['متقدم','🍽️','صمّم وجبة صحية لطفل صغير، وفسّر اختيارك.','خضار وفاكهة وماء… لأنها مليئة بالمواد المفيدة وليس فيها دهون وسكريات وملح كثير.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['ورقة عمل','ورقة العمل 1-5','الحفاظ على صحة الطفل: اختر الكلمة الصحيحة لملء الفراغات (طعام، ماء، النوم، ينمو…).'],['كتاب التلميذ','راجع ص 16–25','اقرأ مع أسرتك فقرات «ماذا تعلمت؟» في الوحدة الأولى.']]}
+ ]});
+
+/* ================= 2-1 ================= */
+LESSONS.push({id:'2-1',unit:2,icon:'🍅',pages:'26–27',title:'أجزاءُ النّباتِ',
+ goals:['أُسمّي الأجزاء الرئيسية للنبات: الجذور والساق والأوراق.','أذكر أن بعض النباتات تحتوي على أزهار أو ثمار.','أُطبّق ما تعلمته بالبحث عن النباتات وتسمية أجزائها.'],
+ vocab:['ثَمَرةٌ','زَهْرةٌ','ساقٌ','وَرَقةٌ','جُذورٌ','تَسْمِيةٌ'],
+ slides:[
+ {type:'mystery',ph:'tahia',title:'لُغز: ما الذي في الصندوق؟',box:'🎁',clues:['أنا كائن حيّ.','لا أمشي ولا أتكلم.','أحتاج إلى الماء والضوء.','لي جذور تحت التربة… وثماري حمراء نأكلها في السلطة!'],ans:'🍅|نبتة الطماطم',opts:['🍅|نبتة الطماطم','🐞|دعسوقة','🧱|طوبة'],
+  note:'بعد الكشف أحضر نبتة حقيقية (أو صورتها) واسأل: <b>هل للنبتة أجزاء؟ ماذا ترون؟</b> اقبل كل الإجابات واكتبها على السبورة لتعود إليها بعد الشرح.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🍅|ثَمَرةٌ','🌼|زَهْرةٌ','🎋|ساقٌ','🍃|وَرَقةٌ','🫚|جُذورٌ','🏷️|تَسْمِيةٌ']},
+ {type:'reveal',ph:'ard',title:'تتألّفُ النباتاتُ من العديدِ من الأجزاءِ',svg:'plant',
+  pts:['🫚|<b>الجذور</b>: تحت التربة، لا نراها عادةً.','🎋|<b>الساق</b>: تحمل الأوراق والأزهار.','🍃|<b>الأوراق</b>: خضراء اللون غالبًا.','🌼|<b>الزهرة</b>: لها ألوان جميلة.','🍅|<b>الثمرة</b>: تنمو من الزهرة، وفيها البذور.','!🌱|للنباتاتِ جذورٌ وساقٌ وأوراقٌ، وتحتوي <b>أحيانًا</b> على الأزهارِ أو الثمارِ.'],
+  note:'أشِر إلى كل جزء في رسم كتاب التلميذ ص26 (نبتة الطماطم). اطلب من التلاميذ أن يقفوا كالنبتة: القدمان جذور، الجسم ساق، الذراعان أوراق، الرأس زهرة! (إثراء بسيط: الجذور تثبّت النبات وتمتص الماء).'},
+ {type:'mcq',ph:'ard',title:'انظُرْ إلى هذه الحديقة',qs:[{q:'هل يمكنك رؤية <b>ورقة</b>؟',e:'🌳🌷🌿',o:['|نعم','|لا'],a:0,x:'الأوراق خضراء على الأشجار والشجيرات.'},{q:'هل يمكنك رؤية <b>زهرة</b>؟',e:'🌳🌷🌿',o:['|نعم','|لا'],a:0,x:'الأزهار الملوّنة في أحواض الحديقة.'},{q:'هل يمكنك رؤية <b>ساق</b>؟',e:'🌳🌷🌿',o:['|نعم','|لا'],a:0,x:'جذع الشجرة هو ساقها.'},{q:'هل يمكنك رؤية <b>الجذور</b>؟',e:'🌳🌷🌿',o:['|نعم، دائمًا','|لا، فهي تحت التربة'],a:1,x:'الجذور تنمو تحت التربة، لذلك لا نراها عادةً.'}],
+  note:'اعرض صورة الحديقة في كتاب التلميذ ص27 أثناء هذا السؤال. السؤال الأخير مهم: الجذور مخفية تحت التربة.'},
+ {type:'activity',ph:'nashat',title:'البحثُ عن النباتات',code:'نشاط 2-1',sub:'نستكشف بالعدسة المكبّرة',min:7,mats:['🔍|عدسة مكبّرة','📒|دفتر','✏️|قلم'],
+  steps:['اذهبْ إلى الخارج وابحثْ عن النباتات.','انظُرْ إلى النبتة بالعدسة المكبّرة.','هل يمكنك <b>تسمية</b> أجزائها؟','ارسمْ النبتة في دفترك وضعْ أسماء أجزائها.'],ask:['هل لكل النباتات أزهار؟','هل رأيت ثمرة؟','لماذا لم ترَ الجذور؟'],
+  note:'نبّه التلاميذ إلى عدم اقتلاع النباتات. يمكن إحضار نبتة صغيرة من المشتل وإخراجها من الأصيص لرؤية الجذور الحقيقية.'},
+ {type:'label',ph:'taqweem',title:'سمِّ أجزاءَ النباتِ',diagram:'plant',prompt:'اسحبْ اسمَ الجزءِ إلى مكانِه',tags:[[0,'زَهْرة',300,96,450,60],[1,'ثَمَرة',378,272,500,330],[2,'وَرَقة',178,262,80,215],[3,'ساق',300,400,110,385],[4,'جُذور',300,500,480,500]],
+  note:'سؤال 1 من «تحقق من تقدمك» ص32. ادعُ تلميذًا لكل جزء. بعد التسمية اسأل: أي جزء تحت التربة؟ أي جزء نأكله من الطماطم؟'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['النباتاتُ لها <b>جذورٌ وساقٌ وأوراقٌ</b>.','تحتوي النباتاتُ أحيانًا على <b>الأزهارِ أو الثمارِ</b>.']},
+ {type:'order',ph:'ghalq',title:'لعبة: ابنِ النبتةَ من الأسفل إلى الأعلى',prompt:'اضغطْ على أجزاءِ النبتة بالترتيب من <b>الأسفل</b> إلى <b>الأعلى</b>',items:['🫚|الجذور','🎋|الساق','🍃|الأوراق','🌼|الزهرة','🍅|الثمرة'],build:['roots','stem','leaves','flower','fruit'],
+  note:'كل جزء صحيح يظهر في رسم النبتة. اجعلها مسابقة بين الفرق: أي فريق يبني النبتة دون خطأ؟'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🍃','ما لون أوراق النبات غالبًا؟','أخضر.'],['متوقع','🌱','سمِّ ثلاثة أجزاء لكل نبتة.','الجذور، الساق، الأوراق.'],['متقدم','🌵','هل لكل النباتات أزهار وثمار؟ وضّح.','لا؛ النباتات تحتوي أحيانًا على أزهار أو ثمار، لكن لكلها جذور وساق وأوراق.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 2-1 (ص 19)','انظر لنبتة في البيت أو المدرسة، ارسمها، وضع تسميات أجزائها الرئيسية.'],['ورقة عمل','ورقة العمل 2-1 أ','تشكيل نبتة: قص أجزاء النبتة وألصقها لتكوين نبتة كاملة ثم سمِّ أجزاءها.'],['ورقة عمل','ورقة العمل 2-1 ب','أجزاء النبات: ضع التسميات على النبتة، وصِل كل جزء باسمه.']]}
+ ]});
+
+/* ================= 2-2 ================= */
+LESSONS.push({id:'2-2',unit:2,icon:'🌱',pages:'28–29',title:'زراعةُ البُذورِ',
+ goals:['أذكر أن البذور تنمو لتصبح نباتات.','أذكر أن البذور تحتاج إلى الماء لتنمو.','أُرتّب مراحل نمو البذرة: الجذر أولًا ثم الساق والأوراق.'],
+ vocab:['بِذْرةٌ','تَنْمو','الماءُ'],
+ slides:[
+ {type:'match',ph:'tahia',title:'لُغز البذور: من أيِّ نباتٍ جاءت؟',pairs:[['🟤|نواة التمر','🌴|النخلة'],['🌻|بذور دوّار الشمس','🌻|نبات دوّار الشمس'],['🍎|بذور التفاح','🌳|شجرة التفاح'],['🥥|جوز الهند','🌴|شجرة جوز الهند']],
+  note:'أحضر بذورًا حقيقية (نواة تمر، فول، بذور دوّار الشمس) ودعهم يلمسونها. اسأل: <b>ماذا يوجد داخل البذرة؟ ماذا يحدث لو زرعناها؟</b> (ورقة العمل 2-2 ب: مطابقة البذور).'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🫘|بِذْرةٌ','📈|تَنْمو','💧|الماءُ']},
+ {type:'growth',ph:'ard',title:'هكذا تنمو البِذْرةُ لتُصبحَ نبتةً',svg:'seed',w:180,stages:['|بذرة في التربة','|ينمو الجذر','|تنمو الساق','|تظهر الأوراق','|نبتة صغيرة'],
+  caps:['نضع <b>البذرة</b> في التربة ونرويها بالماء','ينمو <b>الجذرُ أولًا</b> إلى الأسفل','ثمّ تنمو <b>الساقُ</b> إلى الأعلى','ثمّ تظهر <b>الأوراقُ</b>','تصبح البذرة <b>نبتة</b>!'],done:'ينمو الجذرُ أوّلًا، ثمّ تنمو الساقُ والأوراقُ 🌱',
+  note:'صورة كتاب التلميذ ص28 (بذور الذرة). أكّد على الترتيب: <b>الجذر أولًا</b>. اطلب من التلاميذ تمثيل نمو البذرة: يجلسون القرفصاء ثم يرتفعون ببطء ويفتحون أذرعهم كالأوراق.'},
+ {type:'reveal',ph:'ard',title:'البذورُ الصغيرةُ تصبحُ نباتاتٍ كبيرةً',big:'🌴',pts:['🟤|نواةُ التمرِ بذرةٌ صغيرةٌ.','🌴|يمكنُ للبذورِ الصغيرةِ أن تنموَ لتصبحَ <b>نباتاتٍ كبيرةً</b> مثلَ النخلة.','❓|ماذا تحتاجُ البذرةُ لتنمو؟|تحتاج إلى الماء.'],
+  note:'اربط بالبيئة العُمانية: النخلة التي تراها في مزرعة جدك بدأت من نواة صغيرة! (ص29).'},
+ {type:'experiment',ph:'nashat',kind:'water',title:'نورٌ ومريمُ تقومانِ بزراعةِ البذور',labels:['بذور نور 💧','بذور مريم 🚫'],
+  pred:{q:'مريم نسيت أن تروي بذورها. ما الذي سيحدث؟',o:['ستنمو بذور مريم مثل بذور نور.','لن تنمو بذور مريم.','ستنمو بذور مريم أسرع.']},
+  concl:'✅ نمت بذور نور لأنها رُويت بالماء، ولم تنمُ بذور مريم. <b>تحتاج البذور إلى الماء لتنمو.</b>',
+  note:'نشاط 2-2 (ص29): اقرأ القصة: «نور ومريم تقومان بزراعة البذور. تقوم نور بري البذور بالقليل من الماء، لكن مريم نسيت أن تروي البذور الخاصة بها». سجّل توقعات التلاميذ قبل التشغيل. حرّك الشريط يومًا بيوم وناقش التغيّر.'},
+ {type:'activity',ph:'nashat',title:'قُمْ بزراعةِ بعضِ البذور لتكتشفَ ماذا سيحدث',code:'نشاط 2-2',sub:'تجربة حقيقية في الصف',min:10,mats:['🥛|وعاءان شفّافان','🧻|لفافة من المناديل الورقية أو القطن','🫘|بذور (فول أو عدس)','🚿|مِرَشّة (إناء لِرَيّ النبات)'],
+  steps:['ضعْ المناديل الورقية أو القطن في الوعاءين.','ضعْ البذور بين المناديل وجدار الوعاء لنراها.','اكتبْ على الوعاء الأول: <b>يُروى بالماء</b>.','اكتبْ على الوعاء الثاني: <b>لا يُروى</b>.','رُشَّ القليلَ من الماء على الوعاء الأول كلَّ يوم.','راقبْ البذور كلَّ يوم وارسمْ ما تراه.'],ask:['ماذا تتوقع أن يحدث؟','ماذا خرج من البذرة أولًا؟'],
+  note:'هذه تجربة تمتد عدة أيام؛ ضعوا الوعاءين قرب النافذة وراقبوا يوميًا. يسجّل التلاميذ النتائج في ورقة العمل 2-2 أ «هل تنمو البذور بدون ماء؟».'},
+ {type:'order',ph:'taqweem',title:'رتِّبْ مراحلَ نموِّ البذرة',items:['🫘|بذرة','💧|نرويها بالماء','〰️|ينمو الجذر','🌱|تنمو الساق والأوراق','🪴|نبتة'],
+  note:'مثل ورقة العمل 2-2 ج (زراعة البذور: قص الصور ورتّبها).'},
+ {type:'tf',ph:'taqweem',title:'صح أم خطأ؟',qs:[['🫘','تنمو البذور لتصبح نباتات.',true,''],['🌵','تنمو البذور بدون ماء.',false,'تحتاج البذور إلى الماء لتنمو.'],['🌱','ينمو الجذر أولًا، ثم الساق والأوراق.',true,''],['🌴','البذور الصغيرة لا تصبح نباتات كبيرة أبدًا.',false,'النخلة الكبيرة تنمو من نواة صغيرة.']]},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['تنمو البذورُ لتُصبحَ <b>نباتاتٍ</b>.','تحتاجُ البذورُ إلى <b>الماءِ</b> لتنمو.']},
+ {type:'memory',ph:'ghalq',title:'لعبة الذاكرة: البذرةُ والنبات',pairs:[['🟤|نواة تمر','🌴|نخلة'],['🌻|بذور دوار الشمس','🌻|دوار الشمس'],['🍉|بذور البطيخ','🍉|بطيخ'],['🌽|حبة ذرة','🌽|نبات الذرة'],['🎃|بذور اليقطين','🎃|يقطين'],['🍎|بذور التفاح','🍎|شجرة التفاح']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','💧','ماذا تحتاج البذرة لتنمو؟','الماء.'],['متوقع','🌱','ماذا ينمو أولًا من البذرة؟','الجذر، ثم الساق والأوراق.'],['متقدم','🥛','بذرتان، رويتَ واحدة فقط. ماذا تتوقع بعد أسبوع؟ ولماذا؟','تنمو البذرة المروية فقط؛ لأن البذور تحتاج إلى الماء لتنمو.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 2-2 (ص 20)','ماذا تتوقع أن يحصل لكل بذرة؟ لوّن سهمين لتُظهر كيفية نمو البذرة، ثم اكتب الكلمات: تربة، بذرة، نبتة، ماء.'],['ورقة عمل','ورقة العمل 2-2 أ','هل تنمو البذور بدون ماء؟ ارسم الوعاءين في بداية التجربة ونهايتها.'],['ورقة عمل','ورقة العمل 2-2 ب','مطابقة البذور: صِل كل بذرة بالنبات الذي تنمو منه.'],['ورقة عمل','ورقة العمل 2-2 ج','زراعة البذور: قص الصور ورتّبها بحسب مراحل النمو.']]}
+ ]});
+
+/* ================= 2-3 ================= */
+LESSONS.push({id:'2-3',unit:2,icon:'☀️',pages:'30–31',title:'النّباتُ والضّوءُ',
+ goals:['أذكر أن النباتات تحتاج إلى الضوء لتنمو.','ألاحظ أن النباتات تنمو باتجاه الضوء.','أطرح سؤالًا علميًا وأجرّب لأجيب عنه.'],
+ vocab:['ضَوءٌ','سُؤالٌ','يَسْأَلُ'],
+ slides:[
+ {type:'reveal',ph:'tahia',title:'لماذا تنحني النبتةُ؟',html:'<svg viewBox="0 0 420 380" style="width:100%;max-height:520px"><rect x="230" y="20" width="180" height="300" fill="#cfeaff" stroke="#8a5a2b" stroke-width="10"/><circle cx="350" cy="90" r="40" fill="#ffd43b"/><g stroke="#ffd43b" stroke-width="6">'+[0,45,90,135,180,225,270,315].map(a=>`<line x1="350" y1="90" x2="${350+62*Math.cos(a*Math.PI/180)}" y2="${90+62*Math.sin(a*Math.PI/180)}"/>`).join('')+'</g><rect x="0" y="320" width="420" height="16" fill="#8a5a2b"/><path d="M110 300 Q110 230 170 170 Q200 140 215 120" stroke="#3bb273" stroke-width="9" fill="none"/><g transform="translate(215 118)"><circle r="20" fill="#b9a4f0"/><circle r="8" fill="#2e7d32"/></g><path d="M70 300 L150 300 L140 350 L80 350Z" fill="#e0a43c"/></svg>',
+  pts:['❓|انظر إلى النبتة قرب النافذة. لماذا تنحني؟|إنها تنمو باتجاه الضوء.','🤔|ماذا تتوقّع أن يحدث لو أدرنا الأصيص؟'],
+  note:'صورة كتاب التلميذ ص30: علي يتأمل نبتة تميل نحو النافذة. اترك التلاميذ يقترحون أفكارًا قبل كشف الإجابة. (إن أمكن، أحضر نبتة كانت قرب نافذة لعدة أيام).'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['💡|ضَوءٌ','❓|سُؤالٌ','🙋|يَسْأَلُ']},
+ {type:'reveal',ph:'ard',title:'النباتاتُ تنمو باتّجاهِ الضوء',big:'🌻',pts:['☀️|تنمو النباتات <b>باتّجاه الضوء</b>.','🌻|لماذا تميلُ نباتاتُ دوّارِ الشمسِ <b>جميعُها إلى الجهةِ نفسِها</b>؟|لأنها تتجه نحو ضوء الشمس.','!🌿|تحتاجُ النباتاتُ إلى <b>الضوءِ</b> لتنمو.'],
+  note:'صورة حقل دوّار الشمس ص31. اسأل: أين الشمس في الصورة؟ كيف عرفت؟'},
+ {type:'reveal',ph:'ard',title:'عليٌّ يودُّ أن يسألَ سؤالًا',big:'🧒',pts:['🙋|العالِم الصغير <b>يسألُ سؤالًا</b> ثم يجرّب ليعرف الجواب.','❓|سؤال علي: <b>هل تحتاج النباتات إلى الضوء لتنمو؟</b>','📦|يقوم علي بتغطية إحدى النبتتين <b>بصندوق</b>.','☀️|ويترك النبتة الأخرى <b>في الضوء</b>.','🤔|ما الذي سيحدث برأيك؟'],
+  note:'وضّح معنى «سؤال علمي»: سؤال نستطيع أن نجرّب لنعرف إجابته. اطلب من التلاميذ اقتراح أسئلة أخرى عن النباتات (هل تحتاج إلى الماء؟ هل تنمو في الثلاجة؟).'},
+ {type:'experiment',ph:'nashat',kind:'light',title:'جرِّبْ بنفسِك: النبتةُ في الضوءِ والنبتةُ في الصندوق',labels:['نبتة في الضوء ☀️','نبتة تحت الصندوق 📦'],
+  pred:{q:'ماذا سيحدث للنبتة التي تحت الصندوق؟',o:['ستبقى خضراء وقوية.','ستصبح صفراء وضعيفة.','ستنمو أسرع من الأخرى.']},
+  concl:'✅ النبتة في الضوء بقيت <b>خضراء وقوية</b>، والنبتة تحت الصندوق أصبحت <b>صفراء وضعيفة</b>. <b>تحتاج النباتات إلى الضوء لتنمو.</b>',
+  note:'نشاط 2-3 (ص31). التجربة الحقيقية تحتاج إلى نبتتين صغيرتين وصندوق، وتستمر أسبوعًا. ارسموا النتائج في ورقة العمل 2-3 أ.'},
+ {type:'activity',ph:'nashat',title:'هل تحتاجُ النباتاتُ إلى الضوءِ لتنمو؟',code:'نشاط 2-3',sub:'نجرّب مثل علي',min:5,mats:['🪴|نبتتان صغيرتان','📦|صندوق لتغطية إحدى النبتتين','🏷️|بطاقتان: «في الضوء» و«بدون ضوء»'],
+  steps:['ضعْ النبتتين في مكان واحد.','غطِّ إحدى النبتتين بالصندوق.','اتركْ النبتة الأخرى في الضوء.','اسقِ النبتتين بكمية الماء نفسها.','بعد أسبوع: ارفع الصندوق وقارن بين النبتتين.'],ask:['لماذا نسقي النبتتين بالكمية نفسها؟','ما الذي اختلف بين النبتتين؟'],
+  note:'الهدف تطبيق مهارة «الاختبار العادل» ببساطة: نغيّر شيئًا واحدًا فقط (الضوء).'},
+ {type:'maze',ph:'nashat',title:'متاهةُ النبات',q:'وضعنا نبتة في صندوق فيه رفوف، وفي أعلاه فتحة يدخل منها الضوء. ماذا ستفعل النبتة؟',a:'تنمو النبتة حول الرفوف <b>باتّجاه الضوء</b> حتى تصل إليه!',
+  note:'هذه ورقة العمل 2-3 ب «متاهة النبات». يمكن تنفيذها حقيقيًا بعلبة أحذية وحبة فول، وتحتاج إلى أسبوعين تقريبًا.'},
+ {type:'sort',ph:'taqweem',title:'ماذا يحتاجُ النباتُ لكي ينمو؟ (تمرين 2-3)',bins:[['a','✔️','يحتاجه النبات'],['b','✘','لا يحتاجه النبات']],items:['☀️|الضوء|a','💧|الماء|a','🎵|الموسيقى|b','👕|الملابس|b','🥪|الشطيرة|b','🧸|الألعاب|b'],
+  note:'تمرين 2-3 في كتاب النشاط (ص21). إن سأل التلاميذ عن الطعام: النبات لا يأكل الطعام مثلنا، بل يصنع غذاءه بنفسه (معلومة إثرائية).'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['تنمو النباتاتُ <b>باتّجاهِ الضوءِ</b>.','تحتاجُ النباتاتُ إلى <b>الضوءِ</b> لتنمو.']},
+ {type:'tf',ph:'ghalq',title:'تحدّي الفرق: صح أم خطأ؟',qs:[['🌻','تنمو النباتات باتجاه الضوء.',true,''],['📦','تنمو النبتة في الصندوق المظلم خضراء قوية.',false,'تصبح صفراء ضعيفة.'],['🙋','العالِم يسأل سؤالًا ثم يجرّب ليعرف الإجابة.',true,''],['🌿','تحتاج النباتات إلى الضوء والماء لتنمو.',true,'']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','☀️','ماذا تحتاج النبتة غير الماء؟','الضوء.'],['متوقع','🪟','لماذا تميل النبتة نحو النافذة؟','لأنها تنمو باتجاه الضوء.'],['متقدم','📦','صمّم تجربة لتعرف هل تحتاج النبتة إلى الضوء.','نضع نبتتين متشابهتين، نغطي إحداهما بصندوق، ونسقيهما بالماء نفسه، ثم نقارن بعد أسبوع.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 2-3 (ص 21)','ماذا يحتاج النبات لكي ينمو؟ ضع دائرة حول ✔ أو ✘ لكل صورة، وارسم ما تحتاجه النباتات في المربعات.'],['ورقة عمل','ورقة العمل 2-3 أ','هل تحتاج النباتات إلى الضوء لتنمو؟ ارسم ما حدث للنبتتين.'],['ورقة عمل','ورقة العمل 2-3 ب','متاهة النبات: ارسم كيف تنمو النبتة داخل الصندوق.']]}
+ ]});
+
+/* ================= 2-4 ================= */
+LESSONS.push({id:'2-4',unit:2,kind:'review',icon:'🏆',pages:'32–33',title:'تحقّقْ من تقدّمِكَ: النّباتاتُ',
+ goals:['أُسمّي أجزاء النبات.','أذكر ما تحتاج إليه النباتات لتنمو.','أشرح كيف أزرع بذرة وأعتني بها.'],
+ slides:[
+ {type:'reveal',ph:'tahia',title:'مسابقة الوحدة الثانية!',big:'🌻',all:1,pts:['🏷️|المحطة 1: سمِّ أجزاء النبات','🥀|المحطة 2: ماذا تحتاج هذه النباتات؟','🌻|المحطة 3: ساعد فاطمة في زراعة دوّار الشمس','⚡|جولة السرعة']},
+ {type:'label',ph:'murajaa',title:'المحطة 1: هل يمكنك تسمية أجزاء النبات؟',diagram:'plant',tags:[[0,'زَهْرة',300,96,450,60],[1,'ثَمَرة',378,272,500,330],[2,'وَرَقة',178,262,80,215],[3,'ساق',300,400,110,385],[4,'جُذور',300,500,480,500]],note:'سؤال 1 (ص32): استخدم الكلمات: جذور، ورقة، زهرة، ساق، ثمرة.'},
+ {type:'mcq',ph:'murajaa',title:'المحطة 2: ما الذي تحتاجُ إليه هذه النباتات؟',qs:[{q:'هذه البراعم صفراء طويلة؛ نمت في مكان مظلم. ماذا تحتاج؟',e:'🌾',o:['☀️|الضوء','🎵|الموسيقى','🧊|الثلج'],a:0,x:'نمت في الظلام فأصبحت صفراء؛ تحتاج إلى الضوء.'},{q:'هذا حقل ذرة جافّ وأوراقه ذابلة. ماذا يحتاج؟',e:'🥀',o:['💧|الماء','👕|الملابس','📦|صندوق'],a:0,x:'التربة جافة؛ يحتاج النبات إلى الماء.'}],note:'سؤال 2 (ص33): صورتا البراعم الصفراء وحقل الذرة الجاف.'},
+ {type:'order',ph:'murajaa',title:'المحطة 3: كيف يمكنُ لفاطمةَ أن تزرعَ نباتَ دوّارِ الشمس؟',items:['🕳️|تضع التربة في أصيص','🌻|تضع البذور في التربة','💧|تروي البذور بالماء','☀️|تضع الأصيص في الضوء','🌱|تراقب النبتة وهي تنمو'],
+  note:'سؤال 3 (ص33): (أ) كيف يمكنها أن تزرع نبات تباع الشمس؟ (ب) ما الذي تحتاج إليه النبتة؟ (الماء والضوء). اقبل ترتيبات منطقية أخرى شفهيًا.'},
+ {type:'tf',ph:'murajaa',title:'جولة السرعة',qs:[['🫚','الجذور تنمو فوق التربة.',false,'تنمو تحت التربة.'],['🍅','الطماطم ثمرة.',true,''],['🌱','تنمو البذور لتصبح نباتات.',true,''],['💧','لا تحتاج البذور إلى الماء.',false,''],['☀️','تنمو النباتات باتجاه الضوء.',true,''],['🌵','كل النباتات لها أزهار دائمًا.',false,'أحيانًا فقط.']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','🌿','سمِّ جزءًا من أجزاء النبات.','الجذور / الساق / الأوراق / الزهرة / الثمرة.'],['متوقع','🌱','اذكر شيئين تحتاجهما النبتة لتنمو.','الماء والضوء.'],['متقدم','🥀','وجدت نبتة صفراء ذابلة في غرفة مظلمة. ماذا تفعل لإنقاذها؟','أضعها في الضوء وأرويها بالماء.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['في البيت','ازرع بذرة','ازرع حبة فول في كوب مع قطن مبلل، وارسمها كل يومين.'],['كتاب التلميذ','راجع ص 26–33','اقرأ مع أسرتك فقرات «ماذا تعلمت؟» في وحدة النباتات.']]}
+ ]});
+
+/* ================= 3-1 ================= */
+LESSONS.push({id:'3-1',unit:3,icon:'🤝',pages:'34–35',title:'نحنُ مُتشابِهون',
+ goals:['ألاحظ أوجه التشابه بيني وبين زملائي.','أذكر أننا متشابهون في الكثير من الأشياء.','أتحدث مع زملائي عن الأشياء المشتركة التي نحبها.'],
+ vocab:['المُتشابِهةُ','التَّشابُهُ'],
+ slides:[
+ {type:'simon',ph:'tahia',plain:1,title:'لعبة: قِفْ إذا…',cmds:['👀|قِفْ إذا كانَ لديكَ عينانِ','⚽|قِفْ إذا كنتَ تحبُّ اللعبَ','🍽️|قِفْ إذا كنتَ تحتاجُ إلى الطعامِ','💧|قِفْ إذا كنتَ تشربُ الماءَ','✋|قِفْ إذا كانَ لديكَ يدانِ','😴|قِفْ إذا كنتَ تنامُ في الليلِ','🏫|قِفْ إذا كنتَ في الصفِّ الأوّلِ'],
+  note:'اضغط «أمر جديد» واطلب من كل من تنطبق عليه العبارة أن يقف. لاحظوا معًا: <b>وقفنا جميعًا!</b> ثم اسأل: لماذا وقفنا كلنا؟ (لأننا متشابهون). هذا مدخل الدرس.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['👯|المُتشابِهةُ','🤝|التَّشابُهُ']},
+ {type:'scene',ph:'ard',title:'انظُرْ إلى الأطفالِ',bg:'picnic',tip:'اضغط على الأطفال والأشياء لتكتشف أوجه التشابه',qs:['يتحدث الأطفال عن الأشياء <b>المتشابهة</b> فيما بينهم.','ما الأمور الأخرى المتشابهة بين الأطفال؟'],
+  items:[['👧🏻','ريم',20,40,80,'«جميعنا نحبّ اللعب!»'],['👧🏽','هند',42,30,80,'تقفز بالحبل مع صديقاتها.'],['👧🏾','مريم',70,40,80,'«جميعنا نحتاج أن نأكل.»'],['🧒🏼','سلمى',30,66,74,'تأكل شطيرة مع صديقاتها.'],['👧','ليلى',55,64,74,'تحب الكرة مثل صديقاتها.'],['🥪','طعام',45,86,52,'كلنا نحتاج إلى الطعام.'],['💧','ماء',62,86,46,'كلنا نحتاج إلى الماء.'],['⚽','كرة',84,70,50,'كلنا نحب اللعب.'],['🎾','مضرب',88,84,44,'']],
+  note:'من صورة كتاب التلميذ ص34. اسأل: ما الذي يفعله الأطفال؟ ما الأشياء المشتركة بينهم؟ (يحبون اللعب، يأكلون، لديهم شعر وعيون…). وضّح أن هذا يعني الأمور المشتركة بينهم.'},
+ {type:'reveal',ph:'ard',title:'نحنُ متشابهونَ في الكثيرِ من الأشياء',big:'👨‍👩‍👧‍👦',pts:['👀|لكلٍّ منّا <b>عينانِ وأذنانِ وأنفٌ وفمٌ</b>.','✋|لكلٍّ منّا <b>يدانِ وقدمانِ</b>.','🍽️|كلُّنا نحتاجُ إلى <b>الطعامِ والماءِ</b>.','⚽|كلُّنا نحبُّ <b>اللعبَ</b>.','📏|كلُّنا <b>ننمو</b> ونكبر.','!🤝|نحنُ <b>متشابهونَ</b> في الكثيرِ من الأشياءِ.']},
+ {type:'activity',ph:'nashat',title:'ما أوجهُ التشابهِ بيننا؟',code:'نشاط 3-1 أ',sub:'أمام المرآة',min:6,mats:['🪞|مرآة','🖍️|ألوان','📄|ورقة رسم'],
+  steps:['انظُرْ إلى نفسك في المرآة.','اعملْ مع أصدقائك.','انظروا إلى ملابسكم، وانظروا إلى وجوهكم، وانظروا إلى أجسامكم.','تحدّثوا عن أوجه التشابه بينكم وبين أصدقائكم.','ارسمْ رسمة توضّح أوجه التشابه بينكم.'],ask:['ماذا ترى في وجهك ووجه صديقك؟','هل ترتديان الزيّ المدرسي نفسه؟']},
+ {type:'poll',ph:'nashat',title:'الأشياءُ التي نُحبُّها (نشاط 3-1 ب)',q:'أيُّ الألعابِ تحبُّ؟ لنعُدَّ معًا!',opts:['⚽|كرة القدم','🪢|نطّ الحبل','🚲|الدراجة','🎨|الرسم','🧩|الألغاز'],
+  note:'اطلب من التلاميذ رفع أيديهم لكل لعبة واضغط (+) بعدد الأيدي. ثم اسأل: <b>هل هناك أشياء مشتركة نحبها؟</b> أي لعبة يحبها أكبر عدد منا؟ (يمكن تغيير الأسئلة: الطعام المفضل، اللون المفضل).'},
+ {type:'tf',ph:'taqweem',title:'صح أم خطأ؟',qs:[['👀','لكل الأطفال عينان.',true,''],['🍽️','بعض الأطفال لا يحتاجون إلى الطعام.',false,'كلنا نحتاج إلى الطعام.'],['⚽','كثير من الأطفال يحبون اللعب.',true,''],['🤝','نحن متشابهون في الكثير من الأشياء.',true,'']]},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['نحنُ <b>متشابهونَ</b> في الكثيرِ من الأشياءِ.']},
+ {type:'pick',ph:'ghalq',title:'لعبة: ما الذي نتشابهُ فيه جميعًا؟',prompt:'اضغطْ على الأشياءِ التي <b>يشتركُ فيها كلُّ الأطفال</b>',cols:4,items:['👀|لنا عينان|1','🍽️|نحتاج الطعام|1','💧|نحتاج الماء|1','😴|ننام|1','🎨|نحب اللون الأحمر فقط|0','👓|نرتدي نظارة|0','🧑‍🦰|شعرنا أحمر|0','📏|طولنا متساوٍ|0'],
+  note:'ناقش الإجابات الخاطئة: ليس كلنا نرتدي نظارة، وليس طولنا واحدًا… هذا تمهيد لدرس «نحن مختلفون».'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','👀','اذكر شيئًا لديك ولدى صديقك.','عينان، يدان، شعر…'],['متوقع','🤝','اذكر شيئين نتشابه فيهما جميعًا.','نحتاج الطعام والماء، نحب اللعب، لنا عينان…'],['متقدم','🧒👧','كيف تتشابه أنت وأخوك أو أختك؟','إجابات متنوعة: الشكل، الطعام المفضل، العائلة…']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 3-1 (ص 22)','ارسم اثنين من أصدقائك، وضع دائرة حول أوجه التشابه فيما بينهما.'],['ورقة عمل','ورقة العمل 3-1 أ','لعبة الوجه: لوّن الصورة وأكمل الوجه ليشبه صديقك.'],['ورقة عمل','ورقة العمل 3-1 ب','جواز السفر: ارسم نفسك واكتب: الاسم، تاريخ الميلاد، الطول، لون العينين، لون الشعر.']]}
+ ]});
+
+/* ================= 3-2 ================= */
+LESSONS.push({id:'3-2',unit:3,icon:'🌈',pages:'36–37',title:'نحنُ مختلِفون',
+ goals:['ألاحظ أوجه الاختلاف بيني وبين زملائي.','أُصنّف نفسي وزملائي في مجموعات.','أحترم الاختلافات بيننا.'],
+ vocab:['مُختلِفون','الاختِلافُ'],
+ slides:[
+ {type:'diff',ph:'tahia',title:'عيونٌ حادّة: ابحثْ عن الاختلافات',prompt:'الصورتان متشابهتان… لكن فيهما <b>4 اختلافات</b>!',a:['🌳','☀️','🐦','🌷','🐈','🏠','⚽','🍎','🚲','🌈','🐟','🎈','🍌','🚗','🐞','⭐'],b:['🌳','☀️','🦋','🌷','🐈','🏠','🏀','🍎','🚲','🌈','🐟','🪁','🍌','🚗','🐝','⭐'],
+  note:'اطلب من التلاميذ أن يرفعوا أيديهم عند رؤية اختلاف، ثم يأتي أحدهم للضغط عليه. بعد اللعبة اسأل: <b>هل نحن متشابهون في كل شيء؟</b>'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🎨|مُختلِفون','↔️|الاختِلافُ']},
+ {type:'reveal',ph:'ard',title:'تُظهرُ الصورةُ تلاميذَ في المدرسةِ',html:'<div class="card" style="padding:16px;text-align:center;line-height:1.1"><span class="emo" style="font-size:74px">👩🏽‍🏫</span><div><span class="emo" style="font-size:62px">👧🏻👦🏽🧑🏾‍🦱👧🏼</span></div><div><span class="emo" style="font-size:62px">🤓👧🏾👦🏻🧑🏽‍🦽</span></div></div>',
+  pts:['🤝|جميعُهم <b>متشابهونَ</b>. لماذا هم متشابهون؟|كلهم أطفال، يدرسون في صف واحد، لهم عيون وأيدٍ…','🌈|التلاميذُ ليسوا متشابهينَ في كلِّ شيءٍ، فهم <b>مختلفونَ</b> قليلًا عن بعضِهم.','💬|تحدّثْ: لماذا هم مختلفون؟|لون الشعر والعينين والبشرة، الطول، النظارة، الملابس…','!💛|كلُّنا مختلفون، وكلُّنا نتعلّم ونلعب معًا.'],
+  note:'صورة كتاب التلميذ ص36: التلاميذ مع معلمتهم، بينهم تلميذة على كرسي متحرك وتلميذ يرتدي نظارة. ركّز على قيمة الاحترام وقبول الآخر.'},
+ {type:'mcq',ph:'ard',title:'انظُرْ إلى صورِ الأطفال: جميعُهم مختلفون',qs:[{q:'أيُّ الأطفالِ يمتلكُ <b>شعرًا أحمرَ</b>؟',o:['👧🏻|ريم','👩🏻‍🦰|هند','👦🏾|يوسف'],a:1,x:'هند شعرها أحمر.'},{q:'أيُّ الأطفالِ <b>يرتدي نظّارة</b>؟',o:['🤓|أحمد','👦🏽|سالم','👧🏾|مريم'],a:0,x:''},{q:'أيُّ الأطفالِ <b>فتاة</b>؟',o:['👦🏻|خالد','👧🏽|نور','👦🏾|يوسف'],a:1,x:''},{q:'أيُّ الأطفالِ بشرتُه <b>داكنة</b>؟',o:['👦🏿|بدر','👦🏻|خالد','👧🏼|سلمى'],a:0,x:''}],
+  note:'يحاكي أسئلة ص37: أي الأطفال يمتلك شعرًا داكن اللون؟ أي الأطفال يمتلك عينين بنيتين؟ أي من الأطفال فتيات؟ بعد ذلك طبّق الأسئلة نفسها على تلاميذ الصف.'},
+ {type:'activity',ph:'nashat',title:'اختلافاتُنا',code:'نشاط 3-2',sub:'نتحدث ونصنّف أنفسنا',min:7,mats:['📏|شريط قياس','📄|ورق','🖍️|ألوان'],
+  steps:['تحدّثْ إلى أصدقائك عن الاختلافات بينكم.','تحدّثوا عن: شعركم، وبشرتكم، وطولكم، وملابسكم، ونظّاراتكم.','تحدّثوا عن الألعاب التي تحبّونها، والأشياء التي لا تحبّونها.','هل يمكنك تصنيف نفسك وزملائك في مجموعات؟ وأنت منهم؟'],ask:['من الأطول في مجموعتك؟','كم شخصًا يرتدي نظارة؟'],
+  note:'اطلب من التلاميذ الوقوف في مجموعات حسب صفة (لون الشعر، من يرتدي نظارة، من يحب كرة القدم). لاحظ أن الشخص يمكن أن يكون في مجموعات مختلفة.'},
+ {type:'poll',ph:'nashat',title:'نصنّف أنفسنا: ما لونُ شعرِك؟',q:'لنعُدَّ تلاميذَ الصفّ حسبَ لونِ الشعر',opts:['👧🏿|أسود','👧🏽|بُني','👱‍♀️|فاتح','👩‍🦰|أحمر'],
+  note:'عُدّوا التلاميذ بالأيدي المرفوعة. اسأل: أي لون أكثر شيوعًا في صفنا؟ (تمهيد لجدول الإشارات في ص42).'},
+ {type:'tf',ph:'taqweem',title:'صح أم خطأ؟',qs:[['📏','كل الأطفال لهم الطول نفسه.',false,'نحن مختلفون في الطول.'],['👓','بعض الأطفال يرتدون نظارات وبعضهم لا.',true,''],['🌈','يمكننا ملاحظة أوجه التشابه والاختلاف فيما بيننا.',true,''],['🎮','كلنا نحب اللعبة نفسها دائمًا.',false,'نحن مختلفون فيما نحب.']]},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['يمكنُنا ملاحظةُ <b>أوجهِ التشابهِ</b> فيما بيننا.','يمكنُنا ملاحظةُ <b>الاختلافاتِ</b> فيما بيننا.']},
+ {type:'guess',ph:'ghalq',title:'لعبة: مَن أنا؟',chars:['👧🏻|ريم','👦🏽|سالم','👧🏾|مريم','🤓|أحمد','👩🏽‍🦱|نور','👦🏻|خالد','👧🏽|هند','🧒🏾|يوسف'],
+  rounds:[{clues:['أنا ولد.','أرتدي نظّارة.'],ans:3},{clues:['أنا بنت.','شعري مُجعّد.'],ans:4},{clues:['أنا ولد.','لا أرتدي نظّارة.','بشرتي فاتحة.'],ans:5},{clues:['أنا بنت.','بشرتي داكنة.'],ans:2}],
+  note:'اكشف دليلًا ثم اطلب من التلاميذ تحديد من يجب استبعادهم (اضغط على الصورة لشطبها). يمكن بعد ذلك أن يصف تلميذ زميلًا في الصف ليخمّنه الآخرون.'},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','📏','هل أنت وصديقك بالطول نفسه؟','إجابات متنوعة: أنا أطول/أقصر.'],['متوقع','🌈','اذكر شيئين نختلف فيهما.','لون الشعر، لون العينين، الطول، الألعاب المفضلة…'],['متقدم','🤝','اذكر شيئًا تتشابه فيه مع صديقك وشيئًا تختلف فيه.','نتشابه: نحب اللعب. نختلف: لون الشعر.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 3-2 (ص 23)','ابحث عن زميل مناسب لكل مربع: أطول مني، أقصر مني، لون شعره يختلف عن لون شعري، لون عينيه يختلف عن لون عينيّ.'],['ورقة عمل','ورقة العمل 3-2','التشابه والاختلاف: انظر إلى الصورة، ما أوجه التشابه؟ ما أوجه الاختلاف؟']]}
+ ]});
+
+/* ================= 3-3 ================= */
+LESSONS.push({id:'3-3',unit:3,icon:'🧍',pages:'38–39',title:'أجسامُنا',
+ goals:['أُسمّي الأجزاء الرئيسية في الجسم.','أُحدّد أجزاء الجسم على صورة.','أعُدّ بعض أجزاء جسمي.'],
+ vocab:['جِسمٌ','رأسٌ','شَعرٌ','عَينٌ','أُذُنٌ','أنفٌ','فَمٌ','كَتِفٌ','ذِراعٌ','يَدٌ','أصابعُ اليدِ','رُكبةٌ','ساقٌ','قَدَمٌ','أصابعُ القدمِ'],
+ slides:[
+ {type:'simon',ph:'tahia',title:'لعبة: قالَ المعلّمُ…',cmds:['🙆|المِسْ رأسَك','👃|المِسْ أنفَك','👂|المِسْ أُذُنَيك','👀|أشِرْ إلى عينيك','🙌|ارفعْ ذراعيك','🦵|المِسْ ركبتَيك','🦶|المِسْ قدمَيك','🤷|المِسْ كتفَيك','👄|أشِرْ إلى فمِك','✋|حرّكْ أصابعَ يدِك'],
+  note:'القاعدة: نفّذ الأمر فقط إذا بدأ بعبارة <b>«قال المعلّم»</b>. من ينفّذ أمرًا دونها يجلس. اللعبة تراجع أسماء أجزاء الجسم قبل الدرس.'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم (1)',words:['🧍|جِسمٌ','🙆|رأسٌ','💇|شَعرٌ','👁️|عَينٌ','👂|أُذُنٌ','👃|أنفٌ','👄|فَمٌ','🤷|كَتِفٌ']},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم (2)',words:['💪|ذِراعٌ','✋|يَدٌ','🖐️|أصابعُ اليدِ','🦵|رُكبةٌ','🦿|ساقٌ','🦶|قَدَمٌ','👣|أصابعُ القدمِ']},
+ {type:'reveal',ph:'ard',title:'انظُرْ إلى الأجزاءِ الرئيسيّةِ في الجسمِ',svg:'body',pts:['🙆|<b>الرأس</b>: فيه الشعر والعينان والأذنان والأنف والفم.','🤷|<b>الكتفان</b> و<b>الذراعان</b> و<b>اليدان</b> وأصابع اليد.','🦵|<b>الساقان</b> و<b>الركبتان</b>.','🦶|<b>القدمان</b> وأصابع القدم.','❓|ما أجزاءُ الجسمِ الأخرى التي يمكنُك أن تذكرَها؟|البطن، الظهر، الرقبة، المرفق، الأظافر…'],
+  note:'رسم كتاب التلميذ ص38. أشِر إلى كل جزء على جسمك أولًا ثم على الرسم، ليقلّدك التلاميذ.'},
+ {type:'mcq',ph:'ard',title:'هل يمكنُك عدُّ أجزاءِ جسمك؟',qs:[{q:'كم <b>ساقًا</b> لديك؟',e:'🦵',o:['|1','|2','|4'],a:1,x:'لدينا ساقان اثنتان.'},{q:'كم <b>إصبعًا</b> في يديك معًا؟',e:'🙌',o:['|5','|8','|10'],a:2,x:'في كل يد خمسة أصابع: 5 + 5 = 10.'},{q:'كم <b>فمًا</b> لديك؟',e:'👄',o:['|1','|2','|3'],a:0,x:'لدينا فم واحد.'},{q:'كم <b>أذنًا</b> لديك؟',e:'👂',o:['|1','|2','|3'],a:1,x:''}],
+  note:'اطلب من التلاميذ العدّ على أجسامهم فعلًا قبل الإجابة (ص39).'},
+ {type:'activity',ph:'nashat',title:'أجزاءُ الجسم',code:'نشاط 3-3',sub:'نقص ونسمّي',min:8,mats:['🖼️|صورة لشخص (من مجلة)','✂️|مقص','🏷️|بطاقات الكلمات'],
+  steps:['قُمْ بقصّ صورة لشخص ما.','ضعْ تسميات أجزاء الجسم التالية عليها: رأس، شعر، أذن، فم، كتف، ذراع، ساق، ركبة، قدم، يد.','ما الأجزاء الرئيسية في الجسم؟','ما أهم الأجزاء في الجسم؟ لماذا؟'],ask:['أي جزء نستخدمه للمشي؟','أي جزء نستخدمه للكتابة؟'],
+  note:'استخدم بطاقات ورقة المصادر 3-3 (الجسم، الرأس، الأذن…). السؤال «ما أهم الأجزاء؟» مفتوح: كل الأجزاء مهمة، واستمع لتبريرات التلاميذ.'},
+ {type:'label',ph:'taqweem',title:'سمِّ أجزاءَ الجسم',diagram:'body',prompt:'اسحبْ الكلمةَ إلى الجزءِ الصحيح',tags:[[0,'رأس',205,80,70,40],[1,'شعر',250,58,430,40],[2,'عين',276,118,440,110],[3,'أذن',176,128,70,120],[4,'أنف',250,140,70,195],[5,'فم',250,176,440,180],[6,'كتف',318,224,440,250],[7,'ذراع',150,300,70,290],[8,'يد',115,402,70,400],[9,'ركبة',282,508,440,505],[10,'ساق',218,550,70,540],[11,'قدم',206,600,90,610]],
+  note:'يشبه تمرين 3-3 في كتاب النشاط (العملاق وسعيد). امنح كل فريق دورًا في سحب كلمة.'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['يمكنُنا رؤيةُ <b>الأجزاءِ الرئيسيّةِ</b> في الجسمِ وتسميتُها.']},
+ {type:'memory',ph:'ghalq',title:'لعبة الذاكرة: الصورة والكلمة',pairs:[['👁️|','👁️|عين'],['👂|','👂|أذن'],['👃|','👃|أنف'],['👄|','👄|فم'],['✋|','✋|يد'],['🦶|','🦶|قدم']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','👃','أشِر إلى أنفك وقل اسمه.','أنف.'],['متوقع','🧍','سمِّ أربعة أجزاء من جسمك.','رأس، يد، ساق، قدم…'],['متقدم','🦵','ما الجزء الذي يساعدك على ثني ساقك؟ وأين يقع؟','الركبة، في منتصف الساق.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 3-3 (ص 24)','سمِّ أجزاء جسمَي سعيد والعملاق مستخدمًا الكلمات: ذراع، ساق، قدم، رأس، فم، ركبة.'],['ورقة عمل','ورقة العمل 3-3 أ','لعبة الجسم: ارمِ حجر النرد وارسم الجزء المطابق للرقم.'],['ورقة عمل','ورقة العمل 3-3 ب','تسمية أجزاء الجسم: صِل كل تسمية بالجزء المناسب.']]}
+ ]});
+
+/* ================= 3-4 ================= */
+LESSONS.push({id:'3-4',unit:3,icon:'👀',pages:'40–41',title:'حواسُّنا الرّائعةُ',
+ goals:['أُسمّي الحواس الخمس.','أربط كل حاسة بالجزء الذي نستخدمه لها.','أذكر أن الحيوانات تمتلك الحواس أيضًا.'],
+ vocab:['الحواسُّ','اللَّمسُ','التَّذوّقُ','السَّمعُ','البَصَرُ','الشَّمُّ','اللِّسانُ','يَلْمِسُ'],
+ slides:[
+ {type:'mystery',ph:'tahia',box:'👜',title:'الكيسُ العجيب: ماذا يوجدُ في الكيس؟',clues:['ألمسه بيدي: ملمسه <b>ناعم</b>.','شكله <b>طويل ومنحنٍ</b>.','رائحته حلوة.','نقشّره ثم نأكله!'],ans:'🍌|موزة',opts:['🍌|موزة','🔑|مفتاح','🥄|ملعقة','🕶️|نظّارة'],
+  note:'أحضر كيسًا حقيقيًا فيه أشياء (مفتاح، ملعقة، موزة، نظارة، ممحاة). يدخل تلميذ يده ويصف ما يلمسه دون أن ينظر. اسأل: <b>كيف عرفت الشيء دون أن تراه؟</b> (باللمس). يمكنك أيضًا لعب «ضع الذيل على الحصان» معصوب العينين (ص40).'},
+ {type:'vocab',ph:'ard',title:'مفردات للتعلّم',words:['🖐️|الحواسُّ','✋|اللَّمسُ','👅|التَّذوّقُ','👂|السَّمعُ','👁️|البَصَرُ','👃|الشَّمُّ','👅|اللِّسانُ','🤚|يَلْمِسُ']},
+ {type:'reveal',ph:'ard',title:'تُساعدُنا الحواسُّ على معرفةِ الأشياءِ من حولِنا',html:'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;text-align:center">'+[['👁️','البصر','العين'],['👂','السمع','الأذن'],['👃','الشم','الأنف'],['👅','التذوق','اللسان'],['✋','اللمس','الجلد']].map(x=>`<div class="card" style="padding:10px 4px"><span class="emo" style="font-size:58px">${x[0]}</span><div style="font-size:22px;font-weight:800">${x[1]}</div><div style="font-size:17px;color:var(--ink-2)">${x[2]}</div></div>`).join('')+'</div>',
+  pts:['👂|نستخدمُ <b>الأذنَ للسمعِ</b>.','👁️|ونستخدمُ <b>العينَ للرؤيةِ</b> (البصر).','👃|ونستخدمُ <b>الأنفَ للشمِّ</b>.','✋|ونستخدمُ <b>الجلدَ للّمسِ</b>.','👅|ونستخدمُ <b>اللسانَ للتذوّقِ</b>.','❓|الفتاة معصوبة العينين لا يمكنها أن تُبصر. ما الحواس التي تستطيع استخدامها؟|اللمس والشم والتذوق والسمع.'],
+  note:'ص40: الفتاة تلعب «وضع الذيل على الحصان» معصوبة العينين. اطلب من التلاميذ إغلاق أعينهم والاستماع لأصوات الصف: ماذا تسمعون؟'},
+ {type:'label',ph:'ard',title:'أينَ نجدُ كلَّ حاسّة؟',diagram:'body',prompt:'اسحبْ اسمَ الحاسّةِ إلى الجزءِ الذي نستخدمه لها',tags:[[0,'البصر',276,118,440,100],[1,'السمع',176,128,70,120],[2,'الشم',250,140,70,210],[3,'التذوق',250,176,440,190],[4,'اللمس',385,402,440,410]],
+  note:'يشبه تمرين 3-4 في كتاب النشاط (ص25). بعد كل إجابة اطلب من التلاميذ الإشارة إلى الجزء على أجسامهم.'},
+ {type:'activity',ph:'nashat',title:'لعبةُ اللمسِ والشعور',code:'نشاط 3-4',sub:'نعرف الأشياء باللمس',min:7,mats:['🧺|مجموعة من الأشياء (مفتاح، ملعقة، موزة، نظارة، ممحاة، عملة)','👜|كيس ورقي'],
+  steps:['ضعْ الأشياء في الكيس.','اطلبْ من صديقك أن <b>يلمس</b> الأشياء دون أن ينظر.','هل يمكنه أن يُخبر عن ملمس الأشياء؟ (ناعم، خشن، بارد…)','هل يمكنه أن يُخبر الآخرين عن هذه الأشياء؟'],ask:['ما الحاسة التي استخدمتها؟','هل كان سهلًا أن تعرف الشيء؟']},
+ {type:'mcq',ph:'taqweem',title:'بأيِّ حاسّةٍ أعرفُ ذلك؟',qs:[{q:'رائحة الوردة الجميلة',e:'🌹',o:['👃|الشم','👂|السمع','✋|اللمس'],a:0,x:'نستخدم الأنف للشم.'},{q:'صوت جرس المدرسة',e:'🔔',o:['👅|التذوق','👂|السمع','👁️|البصر'],a:1,x:'نستخدم الأذن للسمع.'},{q:'طعم الليمون الحامض',e:'🍋',o:['👅|التذوق','👃|الشم','✋|اللمس'],a:0,x:'نستخدم اللسان للتذوق.'},{q:'برودة قطعة الثلج',e:'🧊',o:['👁️|البصر','✋|اللمس','👂|السمع'],a:1,x:'نستخدم الجلد للمس.'},{q:'ألوان قوس قزح',e:'🌈',o:['👁️|البصر','👃|الشم','👅|التذوق'],a:0,x:'نستخدم العين للرؤية.'}]},
+ {type:'reveal',ph:'ard',title:'تمتلكُ الحيواناتُ الحواسَّ أيضًا',html:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:center"><div class="card" style="padding:10px"><span class="emo" style="font-size:80px">🐺</span><div style="font-size:22px;font-weight:800">الذئب</div></div><div class="card" style="padding:10px"><span class="emo" style="font-size:80px">🐘</span><div style="font-size:22px;font-weight:800">الفيل</div></div><div class="card" style="padding:10px"><span class="emo" style="font-size:80px">🦉</span><div style="font-size:22px;font-weight:800">البومة</div></div><div class="card" style="padding:10px"><span class="emo" style="font-size:80px">🐝</span><div style="font-size:22px;font-weight:800">النحلة</div></div></div>',
+  pts:['🐺|الذئب يشمّ الأرض. ما الحاسة التي يستخدمها؟|الشم؛ ليجد طعامه.','🐘|الفيل يمدّ خرطومه إلى الماء. ماذا يفعل؟|يشم ويلمس ويشرب بخرطومه.','🦉|البومة لها عينان كبيرتان. بماذا تساعدها؟|على الرؤية والصيد.','🐝|النحلة تقف على الزهرة. كيف تجدها؟|بالبصر والشم.','!❓|لماذا تحتاج الحيوانات إلى الحواس؟ لتجد طعامها، وتعرف الخطر، وتجد صغارها.'],
+  note:'صور كتاب التلميذ ص41: الذئب، الفيل، البومة، النحلة. اطلب من التلاميذ استنتاج كيف يقوم كل حيوان بهذه الأشياء.'},
+ {type:'learned',ph:'ghalq',title:'ماذا تعلّمتَ؟',pts:['نستخدمُ <b>حواسَّنا</b> لنتعرّفَ على العالمِ من حولِنا.','نستخدمُ الأذنَ للسمعِ، والعينَ للرؤيةِ، والأنفَ للشمِّ، والجلدَ للمسِ، واللسانَ للتذوّقِ.']},
+ {type:'match',ph:'ghalq',title:'تحدّي التوصيل: الحاسّة والعضو',pairs:[['👁️|البصر','👁️|العين'],['👂|السمع','👂|الأذن'],['👃|الشم','👃|الأنف'],['👅|التذوق','👅|اللسان'],['✋|اللمس','🖐️|الجلد']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','👂','ماذا نستخدم للسمع؟','الأذن.'],['متوقع','🍦','ما الحواس التي تستخدمها وأنت تأكل الآيسكريم؟','التذوق، اللمس (البرودة)، البصر، الشم.'],['متقدم','🦉','لماذا تحتاج البومة إلى عينين قويتين وأذنين جيدتين؟','لتجد طعامها في الليل وتعرف الخطر.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب النشاط','تمرين 3-4 (ص 25)','اكتب الحواس الصحيحة في الفراغات المناسبة: اللمس، البصر، الشم، التذوق، السمع.'],['ورقة عمل','ورقة العمل 3-4','الحواس لدى الحيوانات: ارسم حيوانًا يستخدم حاسة ما، وأكمل الجدول.'],['ورقة عمل','ورقة العمل 3-5','هل هي حاسة؟ ضع الكلمات في عربات القطار الصحيحة: حواس أو أجزاء جسم.']]}
+ ]});
+
+/* ================= 3-5 ================= */
+LESSONS.push({id:'3-5',unit:3,kind:'review',icon:'🏆',pages:'42–43',title:'تحقّقْ من تقدّمِكَ: نحنُ',
+ goals:['أُقارن بين أوجه التشابه والاختلاف.','أقرأ جدول إشارات بسيطًا.','أُسمّي أجزاء الجسم والحواس.'],
+ slides:[
+ {type:'reveal',ph:'tahia',title:'مسابقة الوحدة الثالثة!',big:'🏆',all:1,pts:['✋|المحطة 1: الأيدي','📊|المحطة 2: جدول ألوان الشعر','🧍|المحطة 3: أجزاء الجسم','🙈|المحطة 4: سارة أغلقت عينيها','🐈|المحطة 5: القطة والعصفور']},
+ {type:'reveal',ph:'murajaa',title:'المحطة 1: انظُرْ إلى الأيدي',big:'🤚🏻✋🏽🖐🏿',pts:['🤝|كيف تتشابه الأيدي؟|لكل يد خمسة أصابع، وأظافر، وتستطيع الإمساك بالأشياء.','🌈|كيف تختلف الأيدي؟|في اللون والحجم والطول.'],note:'سؤال 1 (ص42). اطلب من التلاميذ وضع أيديهم متجاورة ومقارنتها.'},
+ {type:'tally',ph:'murajaa',title:'المحطة 2: عشرة أطفال وألوان شعرهم',h:['لون الشعر','عدد الأطفال'],rows:[['👧🏾|بُنّي',5],['👩‍🦰|أحمر',1],['👱‍♀️|فاتح',4]],
+  qs:[{q:'ما عددُ الأطفالِ الذين يمتلكونَ شعرًا <b>بُنّيًّا</b>؟',o:['|4','|5','|1'],a:1,x:'نعدّ الإشارات: 5 أطفال.'},{q:'ما اللونُ <b>الأكثرُ شيوعًا</b>؟',o:['|البني','|الأحمر','|الفاتح'],a:0,x:'البني (5) أكثر من الفاتح (4) والأحمر (1).'}],
+  note:'سؤال 2 (ص42). علّم التلاميذ عدّ الإشارات ✓ بالإصبع. سؤال إثرائي: كم طفلًا شعرهم ليس بنيًا؟ (5).'},
+ {type:'label',ph:'murajaa',title:'المحطة 3: أشِرْ إلى هذه الأجزاء',diagram:'body',tags:[[0,'الرأس',205,80,70,40],[1,'العينان',276,118,440,110],[2,'الشعر',250,58,440,40],[3,'الأكتاف',318,224,440,250],[4,'الأنف',250,140,70,195],[5,'أصابع القدم',300,600,440,605],[6,'الذراعان',150,300,70,290],[7,'اليدان',115,402,70,410]],note:'سؤال 3 (ص43).'},
+ {type:'mcq',ph:'murajaa',title:'المحطة 4: قامتْ سارةُ بإغلاقِ عينيها. لا يمكنُها الرؤية',qs:[{q:'هل يمكنُ سارةَ أن <b>تسمعَ</b>؟',e:'🙈',o:['|نعم','|لا'],a:0,x:'تستخدم أذنيها.'},{q:'هل يمكنُها أن <b>تتذوّقَ</b>؟',e:'🙈',o:['|نعم','|لا'],a:0,x:'تستخدم لسانها.'},{q:'هل يمكنُها أن <b>تشمَّ</b>؟',e:'🙈',o:['|نعم','|لا'],a:0,x:'تستخدم أنفها.'},{q:'هل يمكنُها أن <b>تلمسَ</b>؟',e:'🙈',o:['|نعم','|لا'],a:0,x:'تستخدم جلدها.'}],note:'سؤال 4 (ص43).'},
+ {type:'reveal',ph:'murajaa',title:'المحطة 5: القطّةُ والعُصفور',big:'🐈 🐦',pts:['👁️|هل تستطيعُ القطّةُ أن ترى؟|نعم، ترى العصفور.','👂|هل يستطيعُ العصفورُ أن يسمعَ؟|نعم.','🐈|كيف تُساعدُ الحواسُّ القطّة؟|ترى العصفور وتسمعه لتصطاده.','🐦|كيف تُساعدُ الحواسُّ العصفور؟|يسمع القطة ويراها فيطير بعيدًا ويحمي نفسه.'],note:'سؤال 5 (ص43).'},
+ {type:'tf',ph:'murajaa',title:'جولة السرعة',qs:[['🤝','نحن متشابهون في أشياء ومختلفون في أشياء.',true,''],['👂','نستخدم الأنف للسمع.',false,'نستخدم الأذن للسمع.'],['🦵','الركبة جزء من الساق.',true,''],['🐝','الحيوانات لا تمتلك حواس.',false,'الحيوانات تمتلك الحواس أيضًا.'],['👅','نستخدم اللسان للتذوق.',true,'']]},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','👁️','سمِّ حاسة واحدة.','البصر / السمع / الشم / التذوق / اللمس.'],['متوقع','🧍','سمِّ جزأين من الرأس.','العين، الأذن، الأنف، الفم، الشعر.'],['متقدم','🤝','اذكر شيئًا تتشابه فيه مع صديقك وشيئًا تختلف فيه، وحاسة تستخدمها للتعرف عليه.','مثال: نتشابه في حب اللعب، نختلف في الطول، أراه بعيني.']]},
+ {type:'hw',ph:'wajib',title:'الواجب والمتابعة',items:[['كتاب التلميذ','راجع ص 34–43','اقرأ مع أسرتك فقرات «ماذا تعلمت؟» في وحدة «نحن».'],['في البيت','جدول عائلتي','اسأل أفراد أسرتك عن لون شعرهم، وارسم جدول إشارات ✓ مثل جدول الصف.']]}
+ ]});
+
+/* ================= مهارات الاستقصاء ================= */
+LESSONS.push({id:'S',code:'مهارات الاستقصاء',unit:4,icon:'🔬',pages:'44–45',title:'كيفَ تستكشفُ الأشياءَ في العلوم؟',
+ goals:['أُفكّر بسؤال علمي.','أتوقع ما سيحدث.','أقيس وأسجّل وأعرض ما استكشفته.','أتحدث عما استكشفته.'],
+ slides:[
+ {type:'reveal',ph:'tahia',title:'أنا عالِمٌ صغير! 🔬',big:'🧑‍🔬',pts:['❓|العالِم يحبّ أن <b>يسأل</b>.','👀|العالِم <b>يلاحظ</b> بحواسه.','📏|العالِم <b>يقيس</b> ويسجّل.','💬|العالِم <b>يخبر</b> الآخرين بما اكتشفه.'],
+  note:'هذه الصفحة مرجع لمهارات الاستقصاء العلمي؛ يمكن الرجوع إليها مع دروس النباتات (2-2 و2-3).'},
+ {type:'growth',ph:'ard',title:'خطواتُ الاستكشافِ مع أملَ وسناء',stages:['❓|فكّر بسؤال','🤔|فكّر بما سيحصل','🗣️|تحدّث عما يجب فعله','🧱|استكشف','📊|اعرض ما استكشفته','💬|تحدّث عما استكشفته'],sizes:[70,70,70,70,70,70],
+  caps:['زرعت أمل وسناء بذورًا مختلفة: <b>أيّ نبتة ستنمو أسرع؟</b>','تقول سناء: «أظنّ أن جميعها ستنمو بالسرعة نفسها».','قرّرت أمل وسناء <b>مراقبة طول النباتات كلّ يوم</b>.','إنهما تستخدمان <b>قوالب الطوب</b> لتقصّي طول النباتات.','في اليوم الأخير قارنتا أبراج الطوب الثلاثة وأخبرتا تلاميذ الصف.','اكتشفتا أن النبتة (أ) نمت أسرع، وأن بعض النباتات تنمو أسرع من غيرها.'],done:'هذه خطوات العالِم الصغير! 🔬',
+  note:'ص44–45: اضغط «التالي» لكل خطوة واطلب من التلاميذ ترديد اسم الخطوة مع حركة يد.'},
+ {type:'blocks',ph:'nashat',title:'لنقِسْ مثلَ أملَ وسناء',names:['أ','ب','ج'],fin:[7,5,3],qs:[{q:'أيُّ نبتةٍ نمتْ <b>أسرع</b>؟',o:['|النبتة (أ)','|النبتة (ب)','|النبتة (ج)'],a:0,x:'برج الطوب للنبتة (أ) هو الأطول.'},{q:'هل كان توقّعُ سناء صحيحًا؟',o:['|نعم','|لا، بعض النباتات تنمو أسرع'],a:1,x:'«لم أكن محقة. بعض النباتات تنمو أسرع من غيرها.»'}],
+  note:'اضغط «يوم جديد» ستّ مرات. اسأل بعد كل يوم: أي برج أطول الآن؟ وضّح أن التوقع الخاطئ ليس عيبًا؛ العالِم يتعلّم من النتائج.'},
+ {type:'order',ph:'taqweem',title:'رتِّبْ خطواتِ الاستكشاف',items:['❓|فكّر بسؤال','🤔|توقّع ما سيحصل','🧱|استكشف وقِس','📊|اعرض ما استكشفته','💬|تحدّث عما استكشفته']},
+ {type:'exit',ph:'ghalq',title:'بطاقة الخروج',qs:[['داعم','📏','ماذا استخدمت أمل وسناء لقياس طول النباتات؟','قوالب الطوب.'],['متوقع','🤔','ماذا نعني بـ«فكّر بما سيحصل»؟','أن نتوقع النتيجة قبل التجربة.'],['متقدم','❓','اقترح سؤالًا علميًا عن النباتات يمكنك أن تجرّبه.','مثل: هل تنمو النبتة أسرع قرب النافذة؟']]}
+ ]});
+</script>
+<script>/* ====== محرك العرض التفاعلي ====== */
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const LESSONS=window.LESSONS, UNITS=window.UNITS;
+const PH={ahdaf:'الأهداف',tahia:'تهيئة',ard:'عرض وشرح',nashat:'نشاط',taqweem:'تقويم تكويني',ghalq:'غلق ختامي',wajib:'واجب',murajaa:'مراجعة'};
+const store={get(k,d){try{const v=localStorage.getItem('sci1-'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('sci1-'+k,JSON.stringify(v))}catch(e){}}};
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const P=s=>{const p=String(s).split('|');return {e:p[0]||'',l:p[1]||'',x:p[2]}};
+const E=(e,c='')=>e?`<span class="emo ${c}">${e}</span>`:'';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- state ---------- */
+let teams=store.get('teams',[{n:'الشمس',c:'#e09a00',s:0},{n:'الأوراق',c:'#23864f',s:0},{n:'السماء',c:'#2463a8',s:0}]);
+let settings=store.get('settings',{students:25,sound:true});
+let curL=null, curI=0, api=null, notesOn=false, seen=new Set();
+
+/* ---------- sound ---------- */
+let AC=null;
+function tone(seq){ if(!settings.sound) return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); let t=AC.currentTime;
+  seq.forEach(([f,d,type='sine',v=.18])=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);t+=d*.8;}); }catch(e){} }
+const sfx={ok:()=>tone([[660,.12],[880,.12],[1175,.22]]),bad:()=>tone([[220,.25,'square',.08],[180,.3,'square',.08]]),tap:()=>tone([[520,.06,'triangle',.12]]),
+  win:()=>tone([[523,.12],[659,.12],[784,.12],[1046,.35],[784,.12],[1046,.5]]),flip:()=>tone([[400,.07,'triangle',.1],[600,.07,'triangle',.1]]),tick:()=>tone([[900,.04,'square',.05]]),end:()=>tone([[880,.3],[660,.3],[880,.3],[660,.5]])};
+
+/* ---------- speech ---------- */
+function speak(t){ t=String(t||'').replace(/<[^>]+>/g,' ');
+  if(!('speechSynthesis' in window)){toast('القراءة الصوتية غير متاحة في هذا المتصفح');return}
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';u.rate=.82;
+   const v=speechSynthesis.getVoices().find(v=>/^ar/i.test(v.lang)); if(v)u.voice=v; else if(!speak.warned){speak.warned=1;toast('لا يوجد صوت عربي مثبت في هذا الجهاز؛ قد تكون القراءة غير واضحة')}
+   speechSynthesis.speak(u);}catch(e){}
+}
+
+/* ---------- fx ---------- */
+const fx=$('#fx'), fctx=fx.getContext('2d'); let parts=[], fxOn=false;
+function confetti(n=140){ fx.width=innerWidth; fx.height=innerHeight; const cols=['#ffc533','#3bb273','#3d8fe0','#ff6b5b','#8a5cd6','#ff9433'];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2+(Math.random()-.5)*300,y:innerHeight*.45,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,r:Math.random()*8+4,c:cols[i%6],a:Math.random()*6,life:90+Math.random()*50});
+  if(!fxOn){fxOn=true;requestAnimationFrame(fxLoop)} }
+function fxLoop(){ fctx.clearRect(0,0,fx.width,fx.height); parts=parts.filter(p=>p.life-->0);
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.45;p.vx*=.99;p.a+=.2;fctx.save();fctx.translate(p.x,p.y);fctx.rotate(p.a);fctx.fillStyle=p.c;fctx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);fctx.restore()});
+  if(parts.length)requestAnimationFrame(fxLoop); else {fxOn=false;fctx.clearRect(0,0,fx.width,fx.height)} }
+let toastT;
+function toast(msg){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='award';document.body.appendChild(t)}t.innerHTML=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2600)}
+function win(msg='أحسنتم! 🌟'){ sfx.win(); confetti(); award(msg); }
+function award(msg){ let a=$('#award'); if(!a){a=document.createElement('div');a.id='award';a.className='award';document.body.appendChild(a)}
+  a.innerHTML=`<span>${msg}</span><span style="color:var(--ink-2)">امنح نقطة لـ:</span>`+teams.map((t,i)=>`<button data-t="${i}" style="background:${t.c}">${esc(t.n)} +1</button>`).join('')+`<button data-x style="background:#888">✕</button>`;
+  a.hidden=false; a.onclick=e=>{const b=e.target.closest('button');if(!b)return; if(b.dataset.t!=null){teams[+b.dataset.t].s++;saveTeams();sfx.tap()} a.hidden=true};
+  clearTimeout(a._t); a._t=setTimeout(()=>a.hidden=true,9000); }
+function good(el){sfx.ok();if(el){el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}}
+function bad(el){sfx.bad();if(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}}
+
+/* ---------- drag & tap ---------- */
+let scale=1;
+function dnd(root,onPlace){ let sel=null, drag=null;
+  const clear=()=>{if(sel)sel.classList.remove('sel');sel=null};
+  root.addEventListener('pointerdown',e=>{const c=e.target.closest('.chip[data-drag]');if(!c||c.dataset.done)return;
+    e.preventDefault(); drag={c,x:e.clientX,y:e.clientY,g:null};
+    const mv=ev=>{ if(!drag)return; const dx=ev.clientX-drag.x,dy=ev.clientY-drag.y;
+      if(!drag.g&&Math.hypot(dx,dy)>8){const g=c.cloneNode(true);g.classList.add('ghost');const r=c.getBoundingClientRect();g.style.width=r.width/scale+'px';g.style.transform=`translate(-50%,-50%) scale(${scale*1.05})`;g.style.transformOrigin='center';document.body.appendChild(g);drag.g=g;c.style.opacity=.35}
+      if(drag.g){drag.g.style.left=ev.clientX+'px';drag.g.style.top=ev.clientY+'px';$$('[data-drop]',root).forEach(z=>z.classList.remove('hot'));const z=document.elementFromPoint(ev.clientX,ev.clientY);const zz=z&&z.closest('[data-drop]');if(zz&&root.contains(zz))zz.classList.add('hot')}};
+    const up=ev=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);if(!drag)return;
+      $$('[data-drop]',root).forEach(z=>z.classList.remove('hot'));
+      if(drag.g){drag.g.remove();c.style.opacity='';const z=document.elementFromPoint(ev.clientX,ev.clientY);const zz=z&&z.closest('[data-drop]');if(zz&&root.contains(zz)){clear();onPlace(c,zz)}}
+      else{ if(sel===c)clear(); else {clear();sel=c;c.classList.add('sel');sfx.tap()} }
+      drag=null};
+    addEventListener('pointermove',mv);addEventListener('pointerup',up);
+  });
+  root.addEventListener('click',e=>{const z=e.target.closest('[data-drop]');if(z&&sel&&root.contains(z)){const c=sel;clear();onPlace(c,z)}});
+}
+
+/* ---------- SVG library ---------- */
+const leafP=(x,y,r,s=1,f='#4cbb4c')=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${s})"><path d="M0 0 C18 -26 58 -26 80 0 C58 26 18 26 0 0Z" fill="${f}" stroke="#2f7d32" stroke-width="2.5"/><path d="M4 0 L74 0" stroke="#2f7d32" stroke-width="2"/></g>`;
+const SVG={
+ plant(show=['roots','stem','leaves','flower','fruit']){const has=k=>show.includes(k);
+  return `<svg viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="420" width="600" height="140" fill="#9a6a3c"/><rect x="0" y="420" width="600" height="14" fill="#7b5130"/>
+  ${has('roots')?`<g stroke="#f6ead2" stroke-width="5" fill="none" stroke-linecap="round"><path d="M300 425 C300 465 262 485 228 525"/><path d="M300 425 C310 470 352 492 384 532"/><path d="M300 430 C292 480 302 512 298 548"/><path d="M262 482 C244 486 230 480 214 488"/><path d="M340 488 C356 482 370 486 388 478"/><path d="M299 500 C320 510 330 520 336 540"/><path d="M299 505 C280 515 270 525 262 542"/></g>`:''}
+  ${has('stem')?`<g stroke="#3a9a3a" stroke-width="13" fill="none" stroke-linecap="round"><path d="M300 425 C294 330 306 230 300 118"/><path d="M300 300 C330 282 352 270 372 248" stroke-width="8"/><path d="M300 345 C270 335 250 322 228 300" stroke-width="8"/><path d="M301 215 C322 205 340 196 352 182" stroke-width="7"/></g>`:''}
+  ${has('leaves')?leafP(305,380,-20,1)+leafP(295,370,200,1)+leafP(372,250,-35,.9)+leafP(228,300,215,.9)+leafP(352,184,-40,.75)+leafP(300,260,190,.85)+leafP(302,160,-25,.7):''}
+  ${has('flower')?`<g transform="translate(300 108)">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-18" rx="11" ry="18" fill="#ffd43b" stroke="#c99a00" stroke-width="2" transform="rotate(${a})"/>`).join('')}<circle r="10" fill="#ff9433"/></g>`:''}
+  ${has('fruit')?[[376,272],[226,320],[354,206]].map(([x,y])=>`<g transform="translate(${x} ${y})"><circle r="32" fill="#e8402f" stroke="#a52617" stroke-width="3"/><circle cx="-10" cy="-10" r="8" fill="#fff" opacity=".45"/><path d="M-12 -28 L0 -20 L12 -28 L6 -18 L-6 -18Z" fill="#2f7d32"/></g>`).join(''):''}
+  </svg>`},
+ body(){const sk='#f2c29b',sd='#c98a5a';return `<svg viewBox="0 0 500 640" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="${sd}" stroke-width="3">
+  <line x1="190" y1="232" x2="122" y2="380" stroke="${sk}" stroke-width="34" stroke-linecap="round"/><line x1="310" y1="232" x2="378" y2="380" stroke="${sk}" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="115" cy="402" r="24" fill="${sk}"/><circle cx="385" cy="402" r="24" fill="${sk}"/>
+  ${[[-22,18],[-12,26],[0,30],[12,26]].map(([dx,dy])=>`<line x1="${115+dx*.6}" y1="${408}" x2="${115+dx}" y2="${402+dy+6}" stroke="${sk}" stroke-width="9" stroke-linecap="round"/><line x1="${385-dx*.6}" y1="${408}" x2="${385-dx}" y2="${402+dy+6}" stroke="${sk}" stroke-width="9" stroke-linecap="round"/>`).join('')}
+  <line x1="218" y1="440" x2="218" y2="586" stroke="${sk}" stroke-width="38" stroke-linecap="round"/><line x1="282" y1="440" x2="282" y2="586" stroke="${sk}" stroke-width="38" stroke-linecap="round"/>
+  <path d="M206 505 q12 8 24 0" fill="none"/><path d="M270 505 q12 8 24 0" fill="none"/>
+  <ellipse cx="206" cy="600" rx="38" ry="16" fill="${sk}"/><ellipse cx="294" cy="600" rx="38" ry="16" fill="${sk}"/>
+  ${[176,186,196].map(x=>`<circle cx="${x}" cy="598" r="5" fill="${sk}"/><circle cx="${500-x}" cy="598" r="5" fill="${sk}"/>`).join('')}
+  </g>
+  <path d="M182 218 Q250 200 318 218 L336 260 L312 268 L314 400 L186 400 L188 268 L164 260Z" fill="#ff9433" stroke="#c3600b" stroke-width="3"/>
+  <path d="M220 300 l15 -15 l15 15 l15 -15 l15 15" fill="none" stroke="#ffd43b" stroke-width="6"/>
+  <path d="M186 396 L314 396 L318 470 L256 470 L250 440 L244 470 L182 470Z" fill="#3d8fe0" stroke="#2463a8" stroke-width="3"/>
+  <rect x="236" y="186" width="28" height="30" fill="${sk}"/>
+  <ellipse cx="176" cy="128" rx="14" ry="20" fill="${sk}" stroke="${sd}" stroke-width="3"/><ellipse cx="324" cy="128" rx="14" ry="20" fill="${sk}" stroke="${sd}" stroke-width="3"/>
+  <circle cx="250" cy="122" r="74" fill="${sk}" stroke="${sd}" stroke-width="3"/>
+  <path d="M176 112 C170 40 330 40 324 112 C300 80 270 70 250 74 C220 70 196 84 176 112Z" fill="#2b2b3a"/>
+  <circle cx="224" cy="118" r="10" fill="#2b2b3a"/><circle cx="276" cy="118" r="10" fill="#2b2b3a"/><circle cx="227" cy="115" r="3" fill="#fff"/><circle cx="279" cy="115" r="3" fill="#fff"/>
+  <path d="M250 126 L242 150 L258 150" fill="none" stroke="${sd}" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M226 168 Q250 190 274 168" fill="#c0392b" stroke="#8e2a1f" stroke-width="3"/>
+  </svg>`},
+ pot(day,mode){ /* mode: light | dark */
+  const g=Math.min(day,7), h=50+g*24, dark=mode==='dark';
+  const col=dark?(g>3?'#e6d36a':'#9ccc65'):'#3bb273', st=dark?(g>3?'#cdb94f':'#7cb342'):'#23864f';
+  const lean=dark?0:Math.min(g*3,18), n=Math.max(1,Math.floor(g/1.5)+1), top=300-h;
+  let lv='';for(let i=0;i<n;i++){const y=300-(i+1)*h/(n+1);const s=dark?.45+i*.03:.55+i*.04;const dr=dark&&g>4?25:0;lv+=leafP(150+lean*(1-y/300),y,(i%2?200-dr:-20+dr),s,col)}
+  return `<svg viewBox="0 0 300 380"><g>${dark?'':`<circle cx="260" cy="40" r="26" fill="#ffd43b"/><g stroke="#ffd43b" stroke-width="5">${[0,45,90,135,180,225,270,315].map(a=>`<line x1="260" y1="40" x2="${260+44*Math.cos(a*Math.PI/180)}" y2="${40+44*Math.sin(a*Math.PI/180)}"/>`).join('')}</g>`}
+  <path d="M150 300 Q${150+lean} ${top+h/2} ${150+lean*1.2} ${top}" stroke="${st}" stroke-width="${dark&&g>3?6:9}" fill="none" stroke-linecap="round"/>${lv}
+  <path d="M90 296 L210 296 L196 372 L104 372Z" fill="#d9773b" stroke="#9e4f20" stroke-width="3"/><rect x="84" y="286" width="132" height="18" rx="5" fill="#e88a4b" stroke="#9e4f20" stroke-width="3"/>
+  ${dark?`<rect x="56" y="${Math.min(top-30,160)}" width="188" height="${300-Math.min(top-30,160)+76}" fill="#a4774a" opacity=".22" stroke="#7a5230" stroke-width="4" stroke-dasharray="10 8"/><text x="150" y="${Math.min(top-30,160)-8}" text-anchor="middle" font-size="22" fill="#7a5230" font-family="Baloo Bhaijaan 2">صندوق</text>`:''}</g></svg>`},
+ cup(day,wet){ const d=wet?day:0;
+  const root=d>=2, shoot=d>=4, lv=d>=6;
+  return `<svg viewBox="0 0 300 380"><path d="M70 70 L230 70 L214 360 L86 360Z" fill="#e8f6ff" stroke="#6aa9d8" stroke-width="5"/>
+  <path d="M84 250 L216 250 L212 356 L88 356Z" fill="${wet?'#f4f7fb':'#fbf8ef'}" stroke="#c9d3df" stroke-width="2"/>${wet?'<path d="M90 330 L210 330 L210 354 L90 354Z" fill="#9fd3ff" opacity=".7"/>':''}
+  ${[0,1,2,3,4,5].map(i=>`<circle cx="${100+i*20}" cy="${262+(i%2)*14}" r="9" fill="#fff" stroke="#e1e6ee"/>`).join('')}
+  <ellipse cx="150" cy="240" rx="20" ry="13" fill="${wet&&d>0?'#c8a165':'#b48a50'}" stroke="#7a5a2c" stroke-width="3"/>
+  ${root?`<path d="M150 252 C148 280 156 300 150 ${290+d*6}" stroke="#f3e3c3" stroke-width="5" fill="none"/><path d="M150 270 C140 285 132 290 128 300" stroke="#f3e3c3" stroke-width="3" fill="none"/>`:''}
+  ${shoot?`<path d="M150 228 C150 200 152 170 150 ${d>=6?110:150}" stroke="#3bb273" stroke-width="7" fill="none"/>`:''}
+  ${lv?leafP(150,118,-30,.6)+leafP(150,118,210,.6):''}
+  ${!wet&&day>=3?`<text x="150" y="40" text-anchor="middle" font-size="26" fill="#d4402f" font-family="Baloo Bhaijaan 2">لا ماء 🚫💧</text>`:''}
+  ${wet?`<text x="150" y="40" text-anchor="middle" font-size="26" fill="#2463a8" font-family="Baloo Bhaijaan 2">تُروى بالماء 💧</text>`:''}</svg>`},
+ seed(n){ return `<svg viewBox="0 0 220 300"><rect x="0" y="150" width="220" height="150" fill="#7a5130"/><rect x="0" y="0" width="220" height="150" fill="#cfeaff"/>
+  <ellipse cx="110" cy="170" rx="18" ry="12" fill="#e8c35a" stroke="#a7802a" stroke-width="3"/>
+  ${n>=1?`<path d="M110 180 C108 210 114 230 110 ${210+n*14}" stroke="#f6ead2" stroke-width="5" fill="none"/>`:''}
+  ${n>=2?`<path d="M110 160 C110 140 112 120 110 ${n>=3?70:115}" stroke="#3bb273" stroke-width="7" fill="none"/>`:''}
+  ${n>=2?`<path d="M110 205 C98 220 92 228 86 240" stroke="#f6ead2" stroke-width="3" fill="none"/><path d="M110 215 C122 228 128 236 134 250" stroke="#f6ead2" stroke-width="3" fill="none"/>`:''}
+  ${n>=3?leafP(110,78,-30,.55)+leafP(110,78,210,.55):''}
+  ${n>=4?leafP(110,40,-60,.5)+leafP(110,40,240,.5)+leafP(110,110,-10,.5)+leafP(110,110,190,.5)+`<path d="M110 70 L110 30" stroke="#3bb273" stroke-width="6"/>`:''}</svg>`},
+ maze(p){ return `<svg viewBox="0 0 300 420"><rect x="40" y="20" width="220" height="380" fill="#f2e2c4" stroke="#8a5a2b" stroke-width="8"/>
+  <rect x="40" y="140" width="150" height="14" fill="#8a5a2b"/><rect x="110" y="260" width="150" height="14" fill="#8a5a2b"/>
+  <rect x="190" y="12" width="60" height="18" fill="#ffd43b"/><text x="220" y="8" text-anchor="middle" font-size="20" font-family="Baloo Bhaijaan 2" fill="#c99a00">ضوء ☀️</text>
+  <path d="M120 380 L120 360 Q118 320 80 300 Q60 290 70 270 Q80 230 210 220 Q240 210 230 180 Q222 130 220 110 Q218 60 220 26" pathLength="100" fill="none" stroke="#3bb273" stroke-width="8" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="${100-p}"/>
+  ${p>=30?leafP(70,280,200,.4):''}${p>=55?leafP(200,222,-20,.4):''}${p>=80?leafP(226,140,-30,.4):''}${p>=98?leafP(220,40,-40,.45)+leafP(220,40,220,.45):''}
+  <path d="M95 386 L145 386 L140 400 L100 400Z" fill="#d9773b"/></svg>`},
+ bg(kind){ const sky=`<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd6ff"/><stop offset="1" stop-color="#e3f4ff"/></linearGradient></defs><rect width="900" height="560" fill="url(#sk)"/>`;
+  const B={
+   garden:`${sky}<rect y="300" width="900" height="80" fill="#7fcf6a"/><rect y="372" width="900" height="188" fill="#9a6a3c"/><ellipse cx="300" cy="455" rx="120" ry="55" fill="#6d4524"/><path d="M180 410 Q200 390 240 405" stroke="#6d4524" stroke-width="18" fill="none"/>`,
+   habitat:`${sky}<path d="M0 260 L120 120 L230 250 L360 90 L500 260 L640 140 L780 250 L900 150 L900 300 L0 300Z" fill="#c9a77c"/><path d="M330 120 L360 90 L390 125Z" fill="#fff"/><rect y="280" width="900" height="280" fill="#9ed36a"/><path d="M0 420 C200 360 330 470 520 400 C680 340 760 430 900 380 L900 470 C760 520 650 430 520 490 C330 560 200 450 0 520Z" fill="#5bb4f0"/><ellipse cx="150" cy="280" rx="80" ry="55" fill="#7a6a5a"/><ellipse cx="150" cy="292" rx="44" ry="34" fill="#3e352c"/>`,
+   zoo:`${sky}<rect y="280" width="900" height="280" fill="#f3e3a6"/><ellipse cx="250" cy="440" rx="190" ry="80" fill="#5bb4f0" stroke="#fff" stroke-width="10"/><g stroke="#3bb273" stroke-width="8">${[560,600,640,680,720,760,800,840].map(x=>`<line x1="${x}" y1="220" x2="${x}" y2="330"/>`).join('')}<line x1="540" y1="240" x2="870" y2="240"/></g><rect x="40" y="170" width="180" height="40" rx="10" fill="#3bb273"/><text x="130" y="198" text-anchor="middle" font-size="24" fill="#fff" font-family="Baloo Bhaijaan 2">حديقة الحيوانات</text>`,
+   farm:`${sky}<rect y="300" width="900" height="260" fill="#9ed36a"/><path d="M620 300 L620 170 L700 110 L780 170 L780 300Z" fill="#d94a3a" stroke="#8e2a1f" stroke-width="5"/><rect x="680" y="220" width="40" height="80" fill="#fff"/><g stroke="#fff" stroke-width="7">${[40,110,180,250,320,390].map(x=>`<line x1="${x}" y1="300" x2="${x}" y2="370"/>`).join('')}<line x1="20" y1="320" x2="420" y2="320"/><line x1="20" y1="350" x2="420" y2="350"/></g>`,
+   picnic:`${sky}<rect y="260" width="900" height="300" fill="#8fd16a"/><circle cx="800" cy="80" r="44" fill="#ffd43b"/><path d="M200 420 L700 420 L760 540 L140 540Z" fill="#ff6b5b"/>`,
+   class:`<rect width="900" height="560" fill="#f8efe0"/><rect y="400" width="900" height="160" fill="#d8b98e"/><rect x="250" y="60" width="400" height="220" rx="10" fill="#2f5d50" stroke="#8a5a2b" stroke-width="12"/>`,
+   sea:`${sky}<rect y="200" width="900" height="360" fill="#3d8fe0"/><path d="M0 220 Q60 200 120 220 T240 220 T360 220 T480 220 T600 220 T720 220 T840 220 T960 220" stroke="#fff" stroke-width="6" fill="none"/>`,
+   desert:`${sky}<circle cx="780" cy="90" r="50" fill="#ffd43b"/><path d="M0 330 Q200 250 420 320 Q640 390 900 300 L900 560 L0 560Z" fill="#f1cf7a"/><path d="M0 420 Q260 360 520 430 Q720 480 900 420 L900 560 L0 560Z" fill="#e4b95c"/>`
+  };
+  return `<svg class="bg" viewBox="0 0 900 560" preserveAspectRatio="none">${B[kind]||B.garden}</svg>`}
+};
+window.SVG=SVG;
+
+/* ---------- slide renderers ---------- */
+const R={};
+function vis(s){ if(s.svg) return SVG[s.svg](...(s.svgArgs||[])); if(s.html) return s.html; if(s.big) return `<span class="emo big bob">${s.big}</span>`; return '' }
+
+R.cover=(b,s,L)=>{ const flow=[];L.slides.forEach(x=>{if(x.ph&&x.ph!=='ahdaf'&&flow[flow.length-1]!==x.ph)flow.push(x.ph)});
+  b.innerHTML=`<div class="cover"><div class="cv-l"><div class="cv-code">${L.code||((L.kind==='review'?'مراجعة':'الدرس')+' '+L.id)} · كتاب التلميذ ص ${L.pages}</div><h1 class="cv-title">${L.title}</h1><div class="cv-unit">${UNITS[L.unit].name}</div><span class="emo cv-ic bob">${L.icon}</span></div>
+  <div class="cv-r"><div class="card cv-box"><h3>🎯 أستطيع أن…</h3><ul>${L.goals.map(g=>`<li>${g}</li>`).join('')}</ul></div>
+  ${L.vocab?`<div class="card cv-box"><h3>📖 مفردات للتعلّم</h3><div class="read" style="font-size:24px;font-weight:700">${L.vocab.join(' · ')}</div></div>`:''}
+  <div class="card cv-box"><h3>🧭 مسار الحصة</h3><div class="flow">${flow.map((p,i)=>`${i?'<i>←</i>':''}<span class="ph ph-${p}">${PH[p]}</span>`).join('')}</div></div></div></div>`; };
+
+R.vocab=(b,s)=>{ const n=s.words.length, cols=n<=3?n:n===4?4:n<=6?3:4;
+  b.innerHTML=`<div class="vgrid" style="grid-template-columns:repeat(${cols},1fr)">${s.words.map((w,i)=>{const p=P(w);return `<button class="vcard" data-i="${i}" aria-label="بطاقة ${i+1}"><div class="vin"><div class="vf">${E(p.e)}<small>اضغط لتقلب البطاقة</small></div><div class="vb"><div>${E(p.e)}</div><div class="w">${p.l}</div></div></div></button>`}).join('')}</div>`;
+  const cards=$$('.vcard',b); cards.forEach(c=>c.onclick=()=>{c.classList.toggle('flip');sfx.flip();if(c.classList.contains('flip'))speak(P(s.words[+c.dataset.i]).l)});
+  return {step(){const c=cards.find(c=>!c.classList.contains('flip'));if(!c)return false;c.click();return true}} };
+
+R.reveal=(b,s)=>{ const pts=(s.pts||[]).map(x=>{if(typeof x!=='string')return x;let key=false;if(x[0]==='!'){key=true;x=x.slice(1)}const p=x.split('|');return {e:p[0],t:p[1],a:p[2],key}});
+  const v=vis(s);
+  b.innerHTML=`<div class="rv ${v?'':'wide'}">${v?`<div class="rv-vis">${v}</div>`:''}<div class="rv-pts">${pts.map((p,i)=>`<div class="pt ${p.a?'q':''} ${p.key?'key':''}" data-i="${i}">${E(p.e)}<div>${p.t}${p.a?` <button class="abtn">الإجابة</button><span class="ans" hidden>${p.a}</span>`:''}</div></div>`).join('')}</div></div>`;
+  $$('.abtn',b).forEach(x=>x.onclick=()=>{x.nextElementSibling.hidden=false;x.remove();sfx.ok()});
+  const els=$$('.pt',b); let k=0; if(s.all){els.forEach(e=>e.classList.add('show'));k=els.length}
+  const showNext=()=>{if(k>=els.length)return false;els[k++].classList.add('show');sfx.tap();return true};
+  if(!s.all)showNext();
+  return {step:showNext} };
+
+R.scene=(b,s)=>{ const items=s.items; let found=new Set();
+  b.innerHTML=`<div class="scene"><div class="sc-box">${SVG.bg(s.bg)}${items.map((it,i)=>`<button class="si" data-i="${i}" style="right:${100-it[2]}%;top:${it[3]}%;font-size:${it[4]||56}px" aria-label="${it[1]}">${E(it[0])}</button>`).join('')}<div class="bubble" hidden></div></div>
+  <div class="sc-side"><div class="card"><div class="meter">🔎 <span class="cnt">0</span> / ${items.length}</div><div class="hint" style="text-align:center">${s.tip||'اضغط على الأشياء في الصورة لتكتشفها'}</div></div>
+  ${s.qs?`<div class="card"><b style="font-size:22px">نتحاور:</b><ol class="qlist">${s.qs.map(q=>`<li>${q}</li>`).join('')}</ol></div>`:''}</div></div>`;
+  const bub=$('.bubble',b);
+  $$('.si',b).forEach(el=>el.onclick=()=>{const it=items[+el.dataset.i];found.add(el.dataset.i);el.classList.add('found');
+    let tag='';if(s.mode==='living'){tag=it[6]?'<span style="color:var(--leaf-d)">كائن حيّ ✅</span>':'<span style="color:var(--coral-d)">شيء غير حيّ ❌</span>';if(!it[6])el.classList.add('no')}
+    bub.innerHTML=`<b>${it[1]}</b>${tag}${it[5]?`<div>${it[5]}</div>`:''}`;bub.hidden=false;bub.style.right=Math.min(Math.max(100-it[2],18),82)+'%';bub.style.top=Math.max(it[3],28)+'%';
+    if(it[3]<28)bub.style.transform='translate(50%,40px)';else bub.style.transform='';
+    $('.cnt',b).textContent=found.size;sfx.tap();speak(it[1]);if(found.size===items.length)setTimeout(()=>win('اكتشفتم كل شيء! 🔎'),500)});
+  b.querySelector('.sc-box').addEventListener('click',e=>{if(!e.target.closest('.si'))bub.hidden=true});
+};
+
+R.sort=(b,s)=>{ const items=shuffle(s.items.map((x,i)=>({...P(x),bin:String(x).split('|')[2],i}))); let left=items.length;
+  b.innerHTML=`<div class="sort"><div class="pool">${items.map(it=>`<div class="chip ${s.small?'sm':''}" data-drag data-i="${it.i}">${E(it.e)}<span>${it.l}</span></div>`).join('')}</div>
+  <div class="bins" style="grid-template-columns:repeat(${s.bins.length},1fr)">${s.bins.map(([id,e,l])=>`<div class="bin" data-drop data-id="${id}"><div class="bin-h">${E(e)}<span>${l}</span></div><div class="bin-in"></div></div>`).join('')}</div></div>`;
+  dnd(b,(c,z)=>{const it=items.find(x=>x.i==c.dataset.i);if(it.bin===z.dataset.id){c.dataset.done=1;c.classList.remove('sel');$('.bin-in',z).appendChild(c);good(c);left--;if(left===0)setTimeout(()=>win(s.win||'صنّفتم كل البطاقات! 🎉'),300)}else{bad(c);bad(z)}});
+};
+
+R.pick=(b,s)=>{ const items=shuffle(s.items.map(x=>{const p=x.split('|');return {e:p[0],l:p[1],ok:p[2]==='1'}})); const need=items.filter(x=>x.ok).length; let got=0, t=s.time||0, iv=null, started=!s.time;
+  const cols=s.cols||Math.min(6,Math.ceil(items.length/2));
+  b.innerHTML=`<div class="pick"><div class="bar-top"><div class="prompt">${s.prompt}</div><div class="row"><span class="meter">✅ <span class="g">0</span>/${need}</span>${s.time?`<span class="timerbox">${t}</span><button class="btn g go">ابدأ ⏱</button>`:''}</div></div>
+  <div class="pgrid" style="grid-template-columns:repeat(${cols},1fr)">${items.map((it,i)=>`<button class="pcell" data-i="${i}">${E(it.e)}<span>${it.l}</span></button>`).join('')}</div></div>`;
+  const stop=()=>{clearInterval(iv);iv=null};
+  if(s.time)$('.go',b).onclick=e=>{if(iv)return;started=true;e.target.textContent='انطلق!';iv=setInterval(()=>{t--;$('.timerbox',b).textContent=t;if(t<=5&&t>0)sfx.tick();if(t<=0){stop();sfx.end();toast('⏰ انتهى الوقت! وجدتم '+got+' من '+need)}},1000)};
+  $$('.pcell',b).forEach(el=>el.onclick=()=>{if(!started){toast('اضغط «ابدأ» أولًا');return}if(el.dataset.d)return;const it=items[+el.dataset.i];
+    if(it.ok){el.dataset.d=1;el.classList.add('ok');good(el);got++;$('.g',b).textContent=got;if(got===need){stop();setTimeout(()=>win(s.win||'وجدتموها كلها! ⭐'),300)}}else{el.classList.add('bad');bad(el);setTimeout(()=>el.classList.remove('bad'),700)}});
+  return {destroy:stop} };
+
+R.mcq=(b,s)=>{ const qs=s.qs; let k=0;
+  const draw=()=>{const q=qs[k];const opts=q.o.map((x,i)=>({...P(x),i}));const hasE=opts.some(o=>o.e);
+    b.innerHTML=`<div class="mcq"><div class="qnav">${qs.length>1?`السؤال ${k+1} من ${qs.length}`:''}</div><div class="mq">${q.e?E(q.e):''}${q.q} <button class="speak" style="width:40px;height:40px;font-size:18px;vertical-align:middle" data-say>🔊</button></div>
+    <div class="mopts" style="grid-template-columns:repeat(${Math.min(opts.length,hasE?4:2)},1fr)">${opts.map(o=>`<button class="mopt ${hasE?'':'txt'}" data-i="${o.i}">${E(o.e)}<span>${o.l}</span></button>`).join('')}</div>
+    <div class="explain"></div>${qs.length>1?`<div class="qnav"><button class="btn w prev" ${k?'':'disabled'}>→ السابق</button><button class="btn b next">${k<qs.length-1?'التالي ←':'من البداية ↺'}</button></div>`:'<div></div>'}</div>`;
+    $('[data-say]',b).onclick=()=>speak(q.q+'. '+opts.map(o=>o.l).join('، '));
+    $$('.mopt',b).forEach(el=>el.onclick=()=>{if(b.querySelector('.mopt.ok'))return;if(+el.dataset.i===q.a){el.classList.add('ok');$('.explain',b).textContent=q.x?'✔ '+q.x:'✔ إجابة صحيحة';win()}else{el.classList.add('bad');bad(el)}});
+    if(qs.length>1){$('.next',b).onclick=()=>{k=(k+1)%qs.length;draw()};$('.prev',b).onclick=()=>{if(k){k--;draw()}}}};
+  draw(); };
+
+R.tf=(b,s)=>{ let k=0; const qs=s.qs;
+  const draw=()=>{const [e,t,v,x]=qs[k];
+    b.innerHTML=`<div class="tf"><div class="card tf-card">${E(e)}<p>${t}</p></div><div class="tf-btns"><button class="tfb y" data-v="1" aria-label="صح">✔</button><button class="tfb n" data-v="0" aria-label="خطأ">✘</button></div>
+    <div class="qnav"><span class="explain" style="min-width:600px"></span><span>${k+1} / ${qs.length}</span><button class="btn b nx">التالي ←</button></div></div>`;
+    $$('.tfb',b).forEach(el=>el.onclick=()=>{const ok=(el.dataset.v==='1')===v;const ex=$('.explain',b);if(ok){ex.style.color='var(--leaf-d)';ex.textContent='✔ أحسنت! '+(x||'');good($('.tf-card',b));sfx.ok();confetti(50)}else{ex.style.color='var(--coral-d)';ex.textContent='✘ فكّر مرة أخرى';bad($('.tf-card',b))}});
+    $('.nx',b).onclick=()=>{k=(k+1)%qs.length;if(k===0)win('أنهيتم كل العبارات! 🏁');draw()}};
+  draw(); };
+
+R.match=(b,s)=>{ const A=s.pairs.map((p,i)=>({...P(p[0]),i})), Bc=shuffle(s.pairs.map((p,i)=>({...P(p[1]),i}))); let selA=null, done=0;
+  const cols=['#3bb273','#3d8fe0','#ff6b5b','#8a5cd6','#e09a00','#ff9433','#2aa6a1','#c2185b'];
+  b.innerHTML=`<div class="match"><div class="mcol">${A.map(a=>`<button class="mi" data-a="${a.i}">${E(a.e)}<span>${a.l}</span><span class="tag" hidden></span></button>`).join('')}</div><div class="mcol">${Bc.map(x=>`<button class="mi" data-b="${x.i}">${E(x.e)}<span>${x.l}</span><span class="tag" hidden></span></button>`).join('')}</div><svg class="lines"></svg></div>`;
+  const svg=$('.lines',b), wrap=$('.match',b);
+  const line=(a,c,col)=>{const r=wrap.getBoundingClientRect(),ra=a.getBoundingClientRect(),rb=c.getBoundingClientRect();const x1=(ra.right-r.left)/scale,y1=(ra.top+ra.height/2-r.top)/scale,x2=(rb.left-r.left)/scale,y2=(rb.top+rb.height/2-r.top)/scale;svg.insertAdjacentHTML('beforeend',`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="6" stroke-linecap="round"/>`)};
+  $$('[data-a]',b).forEach(el=>el.onclick=()=>{if(el.dataset.done)return;$$('[data-a]',b).forEach(x=>x.classList.remove('sel'));selA=el;el.classList.add('sel');sfx.tap()});
+  $$('[data-b]',b).forEach(el=>el.onclick=()=>{if(el.dataset.done)return;if(!selA){toast('اختر من العمود الأيمن أولًا');return}
+    if(selA.dataset.a===el.dataset.b){const col=cols[done%cols.length];[selA,el].forEach(x=>{x.dataset.done=1;x.classList.remove('sel');x.classList.add('done');x.style.borderColor=col;const t=$('.tag',x);t.hidden=false;t.style.background=col;t.textContent=done+1});line(el,selA,col);good(el);done++;selA=null;if(done===A.length)setTimeout(()=>win(s.win||'وصّلتم كل الأزواج! 🔗'),300)}
+    else{bad(el);bad(selA)}});
+};
+
+R.order=(b,s)=>{ const items=s.items.map((x,i)=>({...P(x),i})); const pool=shuffle(items); let k=0;
+  b.innerHTML=`<div class="order"><div class="prompt" style="text-align:center">${s.prompt||'رتّب البطاقات بالترتيب الصحيح'}</div><div class="slots">${items.map((_,i)=>`<div class="slot ${i<items.length-1?'arrow':''}"><span class="n">${i+1}</span></div>`).join('')}</div>
+  <div style="display:grid;grid-template-columns:${s.build?'1fr 1fr':'1fr'};gap:16px;min-height:0"><div class="opool">${pool.map(it=>`<button class="chip" data-i="${it.i}">${E(it.e)}<span>${it.l}</span></button>`).join('')}</div>${s.build?`<div class="center build" style="min-height:0;height:100%"></div>`:''}</div></div>`;
+  const slots=$$('.slot',b); const bd=$('.build',b); const draw=()=>{if(bd)bd.innerHTML=SVG.plant(s.build.slice(0,k)).replace('<svg','<svg style="height:100%;max-height:330px"')}; draw();
+  $$('.opool .chip',b).forEach(el=>el.onclick=()=>{if(el.dataset.d)return;if(+el.dataset.i===k){el.dataset.d=1;slots[k].appendChild(el);good(el);k++;draw();if(k===items.length)setTimeout(()=>win(s.win||'ترتيب صحيح! 👏'),300)}else bad(el)});
+};
+
+R.mystery=(b,s)=>{ let k=0; const ans=P(s.ans);
+  b.innerHTML=`<div class="rv"><div class="rv-vis"><div class="center" style="gap:12px"><div class="mbox" style="font-size:190px;line-height:1">${E(s.box||'🎁','bob')}</div><div class="row"><button class="btn b more">دليل جديد 🔍</button><button class="btn g show">اكشف الإجابة</button></div></div></div>
+  <div class="rv-pts" style="gap:10px">${s.clues.map((c,i)=>`<div class="pt q" data-i="${i}"><span class="emo">${['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'][i]}</span><div>${c}</div></div>`).join('')}
+  ${s.opts?`<div class="row" style="justify-content:center;flex-wrap:wrap">${s.opts.map(o=>{const p=P(o);return `<button class="pcell gs" style="padding:6px 14px" data-l="${esc(p.l)}">${E(p.e)}<span>${p.l}</span></button>`}).join('')}</div>`:''}</div></div>`;
+  const els=$$('.pt',b); let quiet=true; const next=()=>{if(k<els.length){els[k].classList.add('show');if(!quiet)speak(s.clues[k]);k++;sfx.tap();return true}if(!b.dataset.shown){reveal();return true}return false};
+  const reveal=()=>{b.dataset.shown=1;els.forEach(e=>e.classList.add('show'));$('.mbox',b).innerHTML=`<div class="pop" style="text-align:center">${E(ans.e)}<div style="font-size:44px;font-weight:800">${ans.l}</div></div>`;win(s.win||'هذه هي الإجابة! 🎉')};
+  $('.more',b).onclick=()=>{if(k<els.length)next();else toast('انتهت الأدلة — اكشف الإجابة!')}; $('.show',b).onclick=reveal;
+  $$('.gs',b).forEach(el=>el.onclick=()=>{if(el.dataset.l===ans.l){el.classList.add('ok');reveal()}else{el.classList.add('bad');bad(el)}});
+  next(); quiet=false; return {step:next} };
+
+let actT=null;
+R.activity=(b,s)=>{ let sec=(s.min||5)*60, iv=null;
+  b.innerHTML=`<div class="act"><div class="act-side"><div class="card mat"><h3>🧰 سنحتاج إلى</h3><ul>${(s.mats||[]).map(m=>{const p=P(m);return `<li>${E(p.e)}<span>${p.l}</span></li>`}).join('')}</ul></div>
+  <div class="card tbig"><b>⏱ وقت النشاط</b><div class="tm">${fmt(sec)}</div><div class="row"><button class="btn g st" style="font-size:18px">ابدأ</button><button class="btn w rs" style="font-size:18px">↺</button></div><div class="row">${[2,3,5,8].map(m=>`<button class="btn w mm" data-m="${m}">${m} د</button>`).join('')}</div></div></div>
+  <div class="card steps"><h3><span class="code-b">${s.code||'نشاط'}</span> ${s.sub||''}</h3><ol>${s.steps.map(x=>`<li>${x}</li>`).join('')}</ol>${s.ask?`<div class="ask"><b>❓ أسئلة أثناء النشاط:</b> ${s.ask.join(' · ')}</div>`:''}</div></div>`;
+  const tm=$('.tm',b), upd=()=>tm.textContent=fmt(sec), stop=()=>{clearInterval(iv);iv=null;$('.st',b).textContent='ابدأ'};
+  $('.st',b).onclick=()=>{if(iv){stop();return}$('.st',b).textContent='إيقاف';iv=setInterval(()=>{sec--;upd();if(sec<=0){stop();sfx.end();toast('⏰ انتهى وقت النشاط');sec=0}},1000)};
+  $('.rs',b).onclick=()=>{stop();sec=(s.min||5)*60;upd()}; $$('.mm',b).forEach(x=>x.onclick=()=>{stop();sec=+x.dataset.m*60;upd()});
+  return {destroy:stop} };
+const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+R.experiment=(b,s)=>{ let day=0, iv=null, predicted=!s.pred; const K=s.kind;
+  const draw=()=>{     $('.xa',b).lastElementChild.innerHTML=K==='water'?SVG.cup(day,true):SVG.pot(day,'light'); $('.xb',b).lastElementChild.innerHTML=K==='water'?SVG.cup(day,false):SVG.pot(day,'dark');
+    $('.day',b).textContent=day===0?'اليوم الأول':`بعد ${day} ${day<=2?(day===1?'يوم':'يومين'):(day<=10?'أيام':'يومًا')}`; $('input',b).value=day; $('.concl',b).hidden=day<7; if(day>=7&&!b.dataset.w){b.dataset.w=1;win('هذه نتيجة التجربة! 🔬')} };
+  b.innerHTML=`<div class="exp"><div class="card pot xa"><h3>${s.labels[0]}</h3><div></div></div><div class="card pot xb"><h3>${s.labels[1]}</h3><div></div></div>
+  <div class="exp-side">${s.pred?`<div class="card"><b style="font-size:20px">🤔 توقّع أولًا: ${s.pred.q}</b><div class="popts">${s.pred.o.map((o,i)=>`<button data-i="${i}">${o}</button>`).join('')}</div></div>`:''}
+  <div class="card"><div class="day"></div><input type="range" min="0" max="7" step="1" value="0" aria-label="الأيام"><div class="row" style="justify-content:center"><button class="btn g play" style="font-size:18px">▶ شاهد الأيام</button></div></div>
+  <div class="concl" hidden>${s.concl}</div></div></div>`;
+  $$('.popts button',b).forEach(el=>el.onclick=()=>{predicted=true;$$('.popts button',b).forEach(x=>x.style.background='');el.style.background='#fff4cc';sfx.tap();toast('سجّلنا توقعكم ✍️ — لنجرّب ونرى!')});
+  $('input',b).oninput=e=>{day=+e.target.value;draw()};
+  $('.play',b).onclick=()=>{if(!predicted){toast('توقّعوا أولًا ماذا سيحدث 🤔');return}clearInterval(iv);day=0;draw();iv=setInterval(()=>{day++;draw();sfx.tick();if(day>=7)clearInterval(iv)},900)};
+  draw(); return {destroy:()=>clearInterval(iv)} };
+
+R.maze=(b,s)=>{ let p=0, iv=null;
+  b.innerHTML=`<div class="rv"><div class="rv-vis"><div class="mz" style="height:100%;max-height:600px;aspect-ratio:300/420"></div></div><div class="rv-pts"><div class="pt q show"><span class="emo">🤔</span><div>${s.q}</div></div><div class="row" style="justify-content:center"><button class="btn g go">▶ ازرع وشاهد</button></div><div class="pt key ans2"><span class="emo">💡</span><div>${s.a}</div></div></div></div>`;
+  const mz=$('.mz',b), draw=()=>{mz.innerHTML=SVG.maze(p).replace('<svg','<svg style="width:100%;height:100%"')}; draw();
+  $('.go',b).onclick=()=>{clearInterval(iv);p=0;iv=setInterval(()=>{p+=2;draw();if(p>=100){clearInterval(iv);$('.ans2',b).classList.add('show');win('النبتة وصلت إلى الضوء! ☀️')}},70)};
+  return {destroy:()=>clearInterval(iv)} };
+
+R.growth=(b,s)=>{ let k=0; const st=s.stages.map(P);
+  b.innerHTML=`<div class="growth"><div class="gstrip">${st.map((x,i)=>`${i?'<div class="gst arrow">⬅</div>':''}<div class="gst" data-i="${i}">${s.svg?`<div style="width:${s.w||190}px">${SVG[s.svg](i)}</div>`:`<span class="emo" style="font-size:${(s.sizes&&s.sizes[i])||110}px">${x.e}</span>`}<span class="lbl">${x.l}</span></div>`).join('')}</div>
+  <div class="gcap"></div><div class="qnav"><button class="btn b nx">التالي ←</button><button class="btn w all">اعرض الكل</button></div></div>`;
+  const els=$$('.gst[data-i]',b); const next=()=>{if(k>=els.length)return false;els[k].classList.add('on');$('.gcap',b).innerHTML=(s.caps&&s.caps[k])||'';sfx.tap();k++;if(k===els.length&&s.done)setTimeout(()=>toast(s.done),400);return true};
+  $('.nx',b).onclick=next; $('.all',b).onclick=()=>{while(next());}; next(); return {step:next} };
+
+R.label=(b,s)=>{ const D={plant:[600,560],body:[500,640]}[s.diagram]; const tags=s.tags; let left=tags.length;
+  const words=shuffle(tags.map((t,i)=>({w:t[1],i})));
+  b.innerHTML=`<div class="label"><div class="lbox"><div class="lw" style="position:relative;height:100%;aspect-ratio:${D[0]}/${D[1]};margin:0 auto;max-width:100%">${SVG[s.diagram]()}<svg viewBox="0 0 ${D[0]} ${D[1]}" style="position:absolute;inset:0">${tags.map(t=>`<line x1="${t[2]}" y1="${t[3]}" x2="${t[4]}" y2="${t[5]}" stroke="#1d2b4a" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${t[2]}" cy="${t[3]}" r="7" fill="#ff6b5b" stroke="#fff" stroke-width="2"/>`).join('')}</svg>
+  ${tags.map((t,i)=>`<div class="ltag" data-drop data-i="${i}" style="right:${100-t[4]/D[0]*100}%;top:${t[5]/D[1]*100}%">؟</div>`).join('')}</div></div>
+  <div class="card" style="padding:14px;display:grid;grid-template-rows:auto 1fr;gap:10px"><b style="font-size:22px;text-align:center">${s.prompt||'اسحب الكلمة إلى مكانها'}</b><div class="lwords">${words.map(w=>`<div class="chip word" data-drag data-i="${w.i}">${w.w}</div>`).join('')}</div></div></div>`;
+  dnd(b,(c,z)=>{if(z.classList.contains('filled'))return; if(tags[+c.dataset.i][1]===tags[+z.dataset.i][1]){z.textContent=tags[+z.dataset.i][1];z.classList.add('filled');c.remove();good(z);speak(tags[+z.dataset.i][1]);left--;if(left===0)setTimeout(()=>win('أحسنتم التسمية! 🏷️'),300)}else{bad(c);bad(z)}});
+};
+
+R.poll=(b,s)=>{ const o=s.opts.map(P), cnt=o.map(()=>0), cols=['#3bb273','#3d8fe0','#ff6b5b','#8a5cd6','#e09a00','#ff9433'];
+  b.innerHTML=`<div class="poll"><div class="prompt" style="text-align:center">${s.q}</div><div class="pbars">${o.map((x,i)=>`<div class="pb"><div class="num">0</div><div class="bar" style="height:6px;background:${cols[i%6]}"></div>${E(x.e)}<div class="nm">${x.l}</div><div class="ctl"><button data-i="${i}" data-d="1">+</button><button data-i="${i}" data-d="-1">−</button></div></div>`).join('')}</div></div>`;
+  b.onclick=e=>{const x=e.target.closest('[data-d]');if(!x)return;const i=+x.dataset.i;cnt[i]=Math.max(0,cnt[i]+ +x.dataset.d);const mx=Math.max(...cnt,1);$$('.pb',b).forEach((p,j)=>{$('.num',p).textContent=cnt[j];$('.bar',p).style.height=(6+cnt[j]/mx*300)+'px'});sfx.tap()};
+};
+
+R.tally=(b,s)=>{ b.innerHTML=`<div class="tally"><div class="card" style="padding:14px"><table class="ttable"><thead><tr><th>${s.h[0]}</th><th>${s.h[1]}</th></tr></thead><tbody>${s.rows.map(r=>{const p=P(r[0]);return `<tr><td>${E(p.e)}<div style="font-size:20px">${p.l}</div></td><td class="ticks">${'✓'.repeat(r[1])}</td></tr>`}).join('')}</tbody></table></div><div class="tq"></div></div>`;
+  R.mcq($('.tq',b),{qs:s.qs}); $('.tq .mcq',b).style.gridTemplateRows='auto auto 1fr auto'; $$('.tq .mopts',b).forEach(m=>m.style.gridTemplateColumns='1fr 1fr'); };
+
+R.memory=(b,s)=>{ const cards=shuffle(s.pairs.flatMap((p,i)=>[{...P(p[0]),k:i},{...P(p[1]),k:i}])); let open=[], won=0, moves=0, lock=false; const cols=Math.min(6,Math.ceil(cards.length/ (cards.length>12?3:2)));
+  b.innerHTML=`<div class="mem" style="grid-template-columns:repeat(${cols},1fr)">${cards.map((c,i)=>`<button class="mc" data-i="${i}"><div class="vin"><div class="vf"><span class="emo">❓</span></div><div class="vb">${E(c.e)}<span>${c.l}</span></div></div></button>`).join('')}</div><div class="qnav" style="position:absolute;bottom:-8px;left:0">محاولات: <span class="mv">0</span></div>`;
+  $$('.mc',b).forEach(el=>el.onclick=()=>{if(lock||el.classList.contains('open')||el.classList.contains('won'))return;el.classList.add('open');sfx.flip();open.push(el);
+    if(open.length===2){moves++;$('.mv',b).textContent=moves;const [x,y]=open;if(cards[+x.dataset.i].k===cards[+y.dataset.i].k){x.classList.add('won');y.classList.add('won');open=[];won++;sfx.ok();if(won===s.pairs.length)setTimeout(()=>win('ذاكرة قوية! 🧠'),300)}else{lock=true;setTimeout(()=>{x.classList.remove('open');y.classList.remove('open');open=[];lock=false},1000)}}});
+};
+
+R.simon=(b,s)=>{ b.innerHTML=`<div class="simon"><div class="card cmd"><small></small>${E('🙋','bob')}<p>اضغط «أمر جديد» لنبدأ اللعب</p></div><div class="row"><button class="btn g nw">أمر جديد 🎲</button></div></div>`;
+  let last=-1; const nw=()=>{let i;do{i=Math.random()*s.cmds.length|0}while(i===last&&s.cmds.length>1);last=i;const c=P(s.cmds[i]);const said=s.plain?false:Math.random()<.7;
+    const cmd=$('.cmd',b);cmd.innerHTML=`<small>${said?'قال المعلّم:':'&nbsp;'}</small>${E(c.e)}<p>${c.l}</p>`;good(cmd);speak((said?'قال المعلم: ':'')+c.l);return true};
+  $('.nw',b).onclick=nw; return {step:nw} };
+
+R.guess=(b,s)=>{ let r=0;
+  const draw=()=>{const rd=s.rounds[r];let k=0;
+    b.innerHTML=`<div class="guess"><div class="gchars">${s.chars.map((c,i)=>{const p=P(c);return `<button class="gch" data-i="${i}">${E(p.e)}<span>${p.l}</span></button>`}).join('')}</div>
+    <div class="card" style="padding:14px;display:grid;grid-template-rows:auto 1fr auto;gap:10px"><b style="font-size:24px">🕵️ من أنا؟ (الجولة ${r+1} من ${s.rounds.length})</b><div class="clues"></div><div class="row" style="flex-wrap:wrap;justify-content:center"><button class="btn b cl" style="font-size:18px">دليل 🔍</button><button class="btn g an" style="font-size:18px">الإجابة</button><button class="btn w nr" style="font-size:18px">جولة ←</button></div></div></div>`;
+    const add=(q)=>{if(k>=rd.clues.length)return false;$('.clues',b).insertAdjacentHTML('beforeend',`<div class="clue pop">${rd.clues[k]}</div>`);if(q!==1)speak(rd.clues[k]);k++;sfx.tap();return true};
+    $('.cl',b).onclick=()=>{if(!add())toast('انتهت الأدلة!')};
+    $('.an',b).onclick=()=>{$$('.gch',b).forEach((x,i)=>{x.classList.toggle('out',i!==rd.ans);x.classList.toggle('win',i===rd.ans)});win('عرفتموه! 🎯')};
+    $('.nr',b).onclick=()=>{r=(r+1)%s.rounds.length;draw()};
+    $$('.gch',b).forEach(x=>x.onclick=()=>{x.classList.toggle('out');sfx.tap()});
+    add(1); stepper=add };
+  let stepper=()=>false; draw(); return {step:()=>stepper()} };
+
+R.diff=(b,s)=>{ const n=s.a.length, cols=Math.sqrt(n)|0; const diffs=s.a.map((x,i)=>x!==s.b[i]?i:-1).filter(i=>i>=0); let got=0;
+  b.innerHTML=`<div style="display:grid;grid-template-rows:auto 1fr;height:100%;gap:8px"><div class="prompt" style="text-align:center">${s.prompt} <span class="meter">🔎 <span class="g">0</span>/${diffs.length}</span></div><div class="diff"><div class="dgrid" style="grid-template-columns:repeat(${cols},1fr)">${s.a.map(x=>`<div>${x}</div>`).join('')}</div><div class="dgrid gb" style="grid-template-columns:repeat(${cols},1fr)">${s.b.map((x,i)=>`<button data-i="${i}">${x}</button>`).join('')}</div></div></div>`;
+  $$('.gb button',b).forEach(el=>el.onclick=()=>{const i=+el.dataset.i;if(el.classList.contains('hit'))return;if(diffs.includes(i)){el.classList.add('hit');good(el);got++;$('.g',b).textContent=got;if(got===diffs.length)setTimeout(()=>win(s.win||'وجدتم كل الاختلافات! 👀'),300)}else bad(el)}); };
+
+R.plate=(b,s)=>{ const foods=s.foods.map(f=>{const p=f.split('|');return {e:p[0],l:p[1],h:+p[2]}}); let on=[];
+  b.innerHTML=`<div class="plate"><div style="display:grid;grid-template-rows:auto 1fr;gap:10px"><div class="prompt">${s.prompt}</div><div class="pgrid" style="grid-template-columns:repeat(4,1fr)">${foods.map((f,i)=>`<button class="pcell" data-i="${i}" style="padding:6px">${E(f.e)}<span style="font-size:17px">${f.l}</span></button>`).join('')}</div></div>
+  <div class="plate-dish" style="grid-template-rows:1fr auto auto;gap:10px"><div class="dish"></div><div class="hmeter"><i style="width:0"></i></div><div class="explain msg">اختر أطعمة لطبقك</div></div></div>`;
+  const dish=$('.dish',b);
+  const upd=()=>{dish.innerHTML=on.map((i,k)=>`<span class="emo pop" data-k="${k}" title="إزالة">${foods[i].e}</span>`).join('');const hs=on.filter(i=>foods[i].h).length,us=on.length-hs;const sc=on.length?Math.round(hs/on.length*100):0;const bar=$('.hmeter i',b);bar.style.width=sc+'%';bar.style.background=sc>=75?'var(--leaf)':sc>=45?'var(--sun)':'var(--coral)';
+    $('.msg',b).style.color=sc>=75?'var(--leaf-d)':'var(--coral-d)';$('.msg',b).textContent=!on.length?'اختر أطعمة لطبقك':sc>=75&&on.length>=4?'طبق صحي رائع! 🥗':us>hs?'أطعمة كثيرة فيها دهون أو سكريات أو ملح ⚠️':'أضف المزيد من الفواكه والخضراوات 🥕';
+    if(sc>=75&&on.length>=5&&!b.dataset.w){b.dataset.w=1;win('طبق صحي متوازن! 🥗')}};
+  $$('.pcell',b).forEach(el=>el.onclick=()=>{if(on.length>=10){toast('الطبق ممتلئ! اضغط على طعام في الطبق لإزالته');return}on.push(+el.dataset.i);sfx.tap();upd()});
+  dish.onclick=e=>{const x=e.target.closest('[data-k]');if(!x)return;on.splice(+x.dataset.k,1);upd()};
+};
+
+R.blocks=(b,s)=>{ let d=0; const fin=s.fin, cols=['#ff6b5b','#ffc533','#3d8fe0','#3bb273'];
+  b.innerHTML=`<div style="display:grid;grid-template-columns:1fr 360px;gap:18px;height:100%"><div class="card blocks" style="padding:20px">${s.names.map((n,i)=>`<div class="bcol"><div class="tower" data-i="${i}"></div><span class="emo pl">🪴</span><b>النبتة (${n})</b></div>`).join('')}</div>
+  <div style="display:grid;gap:12px;align-content:start"><div class="card" style="padding:12px;text-align:center"><div class="day">اليوم 0</div><button class="btn g dd" style="font-size:20px">يوم جديد ☀️</button></div><div class="tq"></div></div></div>`;
+  const draw=()=>{$$('.tower',b).forEach((t,i)=>{const h=Math.round(fin[i]*d/6);t.innerHTML=Array.from({length:h},(_,j)=>`<i style="background:${cols[j%4]}"></i>`).join('')});$('.day',b).textContent='اليوم '+d};
+  $('.dd',b).onclick=()=>{if(d<6){d++;draw();sfx.tap();if(d===6)toast('اليوم السادس: قارنوا الأبراج! 📊')}};
+  R.mcq($('.tq',b),{qs:s.qs}); $$('.tq .mopts',b).forEach(m=>m.style.gridTemplateColumns='1fr'); draw();
+  return {step:()=>{if(d<6){$('.dd',b).click();return true}return false}} };
+
+R.learned=(b,s)=>{ b.innerHTML=`<div class="learn"><div class="star"><span class="emo bob">🌟</span></div><div class="rv-pts">${s.pts.map(p=>`<div class="pt key"><span class="emo">✅</span><div>${p}</div></div>`).join('')}</div></div>`;
+  const els=$$('.pt',b);let k=0;const next=()=>{if(k>=els.length)return false;els[k++].classList.add('show');sfx.tap();if(k===els.length)confetti(60);return true};next();return {step:next} };
+
+R.exit=(b,s)=>{ const lv={'داعم':'var(--sky)','متوقع':'var(--leaf)','متقدم':'var(--plum)'};
+  b.innerHTML=`<div class="exit">${s.qs.map(q=>`<div class="card ex"><span class="lv" style="background:${lv[q[0]]}">${q[0]==='داعم'?'⭐':q[0]==='متوقع'?'⭐⭐':'⭐⭐⭐'} ${q[0]}</span>${E(q[1])}<p>${q[2]}</p><button class="btn w sh" style="font-size:18px">الإجابة النموذجية</button><div class="a" hidden>${q[3]}</div></div>`).join('')}</div>`;
+  $$('.sh',b).forEach(x=>x.onclick=()=>{x.nextElementSibling.hidden=false;x.remove();sfx.ok()}); };
+
+R.hw=(b,s)=>{ const c={'كتاب النشاط':'var(--leaf)','ورقة عمل':'var(--sky)','في البيت':'var(--orange)','كتاب التلميذ':'var(--plum)'};
+  b.innerHTML=`<div class="hw">${s.items.map(i=>`<div class="card hwi"><span class="src" style="background:${c[i[0]]||'var(--ink)'}">${i[0]}</span><b>${i[1]}</b><p>${i[2]}</p></div>`).join('')}</div>`; };
+
+/* ---------- player ---------- */
+const stage=$('#stage'), vp=$('.viewport');
+function fit(){ if(!curL)return; const r=vp.getBoundingClientRect(); const pad=12; scale=Math.min((r.width-pad*2)/1280,(r.height-pad*2)/720); const x=(r.width-1280*scale)/2, y=(r.height-720*scale)/2; stage.style.transform=`translate(${x}px,${y}px) scale(${scale})`; }
+addEventListener('resize',fit);
+
+function openLesson(id,i=0){ curL=LESSONS.find(l=>l.id===id); if(!curL)return; if(curL.slides[0].type!=='cover')curL.slides.unshift({type:'cover',ph:'ahdaf',noHead:1,title:'الأهداف'});
+  $('#home').hidden=true; $('#player').hidden=false; $('.t-title').textContent=`${curL.code||curL.id} · ${curL.title}`; seen=new Set(); go(i); requestAnimationFrame(fit); store.set('last',{id,i}); }
+function go(i){ if(api&&api.destroy)api.destroy(); api=null; const aw=$('#award'); if(aw)aw.hidden=true; try{speechSynthesis.cancel()}catch(e){}
+  const n=curL.slides.length; curI=Math.max(0,Math.min(n-1,i)); seen.add(curI); const s=curL.slides[curI];
+  stage.innerHTML=''; const el=document.createElement('section'); el.className='slide';
+  el.innerHTML=s.noHead?`<div></div><div class="s-body"></div>`:`<header class="s-head"><span class="phase ph-${s.ph}">${PH[s.ph]}</span><h2>${s.title||''}</h2><button class="speak" title="اقرأ بصوت مسموع" aria-label="اقرأ العنوان">🔊</button></header><div class="s-body"></div>`;
+  stage.appendChild(el); const body=$('.s-body',el);
+  if(!s.noHead)$('.speak',el).onclick=()=>speak(s.say||s.title);
+  try{ api=(R[s.type]||(()=>{body.textContent='نوع غير معروف: '+s.type}))(body,s,curL)||null }catch(err){ body.innerHTML=`<p style="color:red">خطأ في عرض الشريحة: ${esc(err.message)}</p>`; console.error(err) }
+  const note=document.createElement('div'); note.className='note-panel'; note.hidden=!notesOn; note.innerHTML=`<b>📝 إرشاد المعلّم:</b> ${s.note||autoNote(s)}`; el.appendChild(note);
+  $('.counter').textContent=`${curI+1} / ${n}`;
+  $('.dots').innerHTML=curL.slides.map((x,j)=>`<button class="dot ph-${x.ph} ${j===curI?'cur':''} ${seen.has(j)?'seen':''}" data-j="${j}" title="${PH[x.ph]}: ${esc(x.title||'')}"></button>`).join('');
+  const cd=$('.dot.cur'); if(cd)cd.scrollIntoView({block:'nearest',inline:'center'});
+  store.set('last',{id:curL.id,i:curI}); }
+function autoNote(s){ return {cover:'اعرض الأهداف بلغة بسيطة واقرأها مع التلاميذ، ثم وضّح مسار الحصة.',vocab:'اقلب البطاقات واحدة تلو الأخرى، ردّد الكلمة مع التلاميذ جماعيًا ثم فرديًا.',learned:'اطلب من التلاميذ قراءة كل عبارة جماعيًا، ثم اسأل: ماذا تعلّمنا اليوم؟',exit:'وزّع الأسئلة الثلاثة حسب مستويات التلاميذ واستمع للإجابات شفهيًا أو كتابيًا.',hw:'وضّح الواجب وصفحاته، واطلب من التلاميذ كتابته في دفتر المتابعة.'}[s.type]||'—'; }
+function next(){ if(api&&api.step&&api.step())return; if(curI<curL.slides.length-1)go(curI+1); else toast('نهاية الدرس 🎉 — ارجع للرئيسية لاختيار درس آخر'); }
+function prev(){ if(curI>0)go(curI-1); }
+
+/* ---------- toolbar ---------- */
+function saveTeams(){ store.set('teams',teams); drawTeams(); }
+function drawTeams(){ $('.teams').innerHTML=teams.map((t,i)=>`<div class="team" style="background:${t.c}"><span>${esc(t.n)}</span><span class="sc">${t.s}</span><button data-t="${i}" data-d="1" aria-label="زد">+</button><button data-t="${i}" data-d="-1" aria-label="أنقص">−</button></div>`).join(''); }
+$('.teams').onclick=e=>{const b=e.target.closest('[data-d]');if(!b)return;const t=teams[+b.dataset.t];t.s=Math.max(0,t.s+ +b.dataset.d);sfx.tap();saveTeams()};
+
+function modal(html,onMount){ const o=document.createElement('div');o.className='overlay';o.innerHTML=`<div class="modal">${html}</div>`;document.body.appendChild(o);o.onclick=e=>{if(e.target===o||e.target.closest('[data-close]')){o._d&&o._d();o.remove()}};onMount&&onMount(o);return o }
+let gT={sec:180,left:180,iv:null};
+function timerModal(){ modal(`<h3>⏱ المؤقت</h3><div class="big tmv">${fmt(gT.left)}</div><div class="row" style="justify-content:center;flex-wrap:wrap;margin:10px 0">${[1,2,3,5,10].map(m=>`<button class="btn w" data-m="${m}" style="font-size:18px">${m} د</button>`).join('')}</div><div class="row" style="justify-content:center"><button class="btn g ss">${gT.iv?'إيقاف':'ابدأ'}</button><button class="btn w rr">إعادة</button><button class="btn w" data-close>إغلاق</button></div>`,o=>{
+  const v=$('.tmv',o), up=()=>{v.textContent=fmt(gT.left)}; o._u=up; gT.view=up;
+  $$('[data-m]',o).forEach(b=>b.onclick=()=>{stopT();gT.sec=gT.left=+b.dataset.m*60;up();$('.ss',o).textContent='ابدأ'});
+  $('.ss',o).onclick=e=>{if(gT.iv){stopT();e.target.textContent='ابدأ'}else{startT();e.target.textContent='إيقاف'}};
+  $('.rr',o).onclick=()=>{stopT();gT.left=gT.sec;up();$('.ss',o).textContent='ابدأ'}; o._d=()=>{gT.view=null}}); }
+function startT(){ gT.iv=setInterval(()=>{gT.left--;gT.view&&gT.view();$('#tTimer').textContent=gT.left>0?'⏱ '+fmt(gT.left):'⏱';$('#tTimer').classList.add('on');if(gT.left<=5&&gT.left>0)sfx.tick();if(gT.left<=0){stopT();sfx.end();toast('⏰ انتهى الوقت!');gT.left=gT.sec}},1000) }
+function stopT(){ clearInterval(gT.iv);gT.iv=null;$('#tTimer').textContent='⏱';$('#tTimer').classList.remove('on') }
+let picked=[];
+function pickModal(){ modal(`<h3>🎲 اختيار تلميذ عشوائي</h3><div class="big pv">؟</div><p class="hint">رقم التلميذ من 1 إلى ${settings.students} · اختير سابقًا: <span class="pl">${picked.join('، ')||'—'}</span></p><div class="row" style="justify-content:center"><button class="btn g pk">اختر 🎲</button><button class="btn w cl">مسح القائمة</button><button class="btn w" data-close>إغلاق</button></div>`,o=>{
+  $('.pk',o).onclick=()=>{let pool=[];for(let i=1;i<=settings.students;i++)if(!picked.includes(i))pool.push(i);if(!pool.length){picked=[];pool=Array.from({length:settings.students},(_,i)=>i+1)}let n=0;const iv=setInterval(()=>{$('.pv',o).textContent=pool[Math.random()*pool.length|0];sfx.tick();if(++n>14){clearInterval(iv);const v=pool[Math.random()*pool.length|0];picked.push(v);$('.pv',o).textContent=v;$('.pl',o).textContent=picked.join('، ');sfx.ok();confetti(40)}},80)};
+  $('.cl',o).onclick=()=>{picked=[];$('.pl',o).textContent='—'}}); }
+function settingsModal(){ modal(`<h3>⚙️ الإعدادات</h3>${teams.map((t,i)=>`<label>اسم الفريق ${i+1}<input id="tn${i}" value="${esc(t.n)}"></label>`).join('')}
+  <label>عدد الفرق<span><button class="btn w tc" data-v="-1" style="font-size:16px">−</button> <b class="tcv">${teams.length}</b> <button class="btn w tc" data-v="1" style="font-size:16px">+</button></span></label>
+  <label>عدد التلاميذ في الصف<input id="stn" type="number" min="2" max="45" value="${settings.students}"></label>
+  <label>المؤثرات الصوتية<input id="snd" type="checkbox" ${settings.sound?'checked':''} style="width:auto"></label>
+  <div class="row" style="justify-content:center;margin-top:12px;flex-wrap:wrap"><button class="btn g sv">حفظ</button><button class="btn w zr">تصفير النقاط</button><button class="btn w" data-close>إغلاق</button></div>`,o=>{
+  const C=['#e09a00','#23864f','#2463a8','#c2185b'],N=['الشمس','الأوراق','السماء','الزهور'];
+  $$('.tc',o).forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(v>0&&teams.length<4)teams.push({n:N[teams.length],c:C[teams.length],s:0});if(v<0&&teams.length>2)teams.pop();o.remove();saveTeams();settingsModal()});
+  $('.sv',o).onclick=()=>{teams.forEach((t,i)=>{const v=$('#tn'+i,o).value.trim();if(v)t.n=v});settings.students=Math.max(2,Math.min(45,+$('#stn',o).value||25));settings.sound=$('#snd',o).checked;store.set('settings',settings);saveTeams();o.remove();toast('تم الحفظ ✔')};
+  $('.zr',o).onclick=()=>{teams.forEach(t=>t.s=0);saveTeams();toast('تم تصفير النقاط')}}); }
+function helpModal(){ modal(`<h3>⌨️ طريقة الاستخدام</h3><div class="read" style="text-align:right;font-size:18px">
+  <p><span class="kbd">←</span> أو <span class="kbd">مسافة</span>: الخطوة التالية (تكشف العناصر واحدًا تلو الآخر ثم تنتقل للشريحة التالية)</p><p><span class="kbd">→</span>: الشريحة السابقة</p>
+  <p><span class="kbd">N</span>: إظهار/إخفاء إرشاد المعلّم · <span class="kbd">T</span>: المؤقت · <span class="kbd">R</span>: اختيار تلميذ · <span class="kbd">F</span>: ملء الشاشة · <span class="kbd">H</span>: الرئيسية</p>
+  <p>في ألعاب السحب: اسحب البطاقة إلى مكانها، أو اضغط عليها ثم اضغط على المكان (مناسب للسبورة التفاعلية).</p><p>بعد كل إجابة صحيحة تظهر لوحة لمنح نقطة للفريق.</p></div><button class="btn w" data-close>فهمت</button>`); }
+function fs(){ try{ if(document.fullscreenElement)document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(()=>toast('ملء الشاشة غير متاح هنا')) }catch(e){toast('ملء الشاشة غير متاح هنا')} }
+function toggleNotes(){ notesOn=!notesOn; $$('.note-panel').forEach(n=>n.hidden=!notesOn); $('#tNotes').classList.toggle('on',notesOn); }
+
+$('#tHome').onclick=goHome; $('#tTimer').onclick=timerModal; $('#tPick').onclick=pickModal; $('#tNotes').onclick=toggleNotes; $('#tFs').onclick=fs; $('#tSet').onclick=settingsModal;
+$('#nNext').onclick=next; $('#nPrev').onclick=prev; $('.dots').onclick=e=>{const d=e.target.closest('[data-j]');if(d)go(+d.dataset.j)};
+addEventListener('keydown',e=>{ if($('#player').hidden||e.target.closest('input')||$('.overlay'))return; const k=e.key;
+  if(k==='ArrowLeft'||k===' '||k==='PageDown'){e.preventDefault();next()} else if(k==='ArrowRight'||k==='PageUp'){e.preventDefault();prev()}
+  else if(k==='n'||k==='N'||k==='ى')toggleNotes(); else if(k==='t'||k==='T'||k==='ف')timerModal(); else if(k==='r'||k==='R'||k==='ق')pickModal(); else if(k==='f'||k==='F'||k==='ب')fs(); else if(k==='h'||k==='H'||k==='ا')goHome(); });
+
+/* ---------- home ---------- */
+function goHome(){ if(api&&api.destroy)api.destroy(); api=null; curL=null; $('#player').hidden=true; $('#home').hidden=false; drawHome(); }
+function drawHome(){ const last=store.get('last',null); const ll=last&&LESSONS.find(l=>l.id===last.id);
+  $('#home').innerHTML=`<div class="h-top"><div class="brand"><div class="badge"><span class="emo">🔬</span></div><div><h1>العلوم · الصف الأول</h1><p>الفصل الدراسي الأول · عروض تفاعلية لكل دروس كتاب التلميذ وكتاب النشاط</p></div></div>
+  <div class="h-tools">${ll?`<button class="pill" id="hRes">▶ متابعة: ${ll.id} ${ll.title}</button>`:''}<button class="pill" id="hSet">⚙️ الفرق والإعدادات</button><button class="pill" id="hHelp">⌨️ طريقة الاستخدام</button></div></div>
+  <div class="units">${Object.entries(UNITS).map(([u,U])=>`<section class="unit"><div class="unit-h"><div class="unit-n" style="background:${U.c}">${U.n}</div><div><h2>${U.name.replace(/^الوحدة \S+: /,'')}</h2><span>${U.sub}</span></div></div>
+  <div class="lessons">${LESSONS.filter(l=>String(l.unit)===u).map(l=>`<button class="ls ${l.kind==='review'?'review':''}" data-id="${l.id}"><span class="emo ic">${l.icon}</span><span class="code">${l.code||((l.kind==='review'?'مراجعة الوحدة':'الدرس')+' '+l.id)} · ص ${l.pages}</span><b>${l.title}</b><small>${l.slides.length+(l.slides[0].type==='cover'?0:1)} شريحة · ${[...new Set(l.slides.map(s=>s.ph).filter(p=>p&&p!=='ahdaf'))].map(p=>PH[p]).slice(0,5).join(' · ')}</small></button>`).join('')}</div></section>`).join('')}</div>
+  <p class="h-foot">💡 استخدم الأسهم <span class="kbd">←</span> <span class="kbd">→</span> للتنقل، و<span class="kbd">N</span> لإظهار إرشاد المعلّم في كل شريحة. لوحة نقاط الفرق والمؤقت واختيار التلميذ العشوائي في الشريط العلوي أثناء العرض.</p>`;
+  $$('.ls').forEach(b=>b.onclick=()=>openLesson(b.dataset.id)); const r=$('#hRes'); if(r)r.onclick=()=>openLesson(last.id,last.i); $('#hSet').onclick=settingsModal; $('#hHelp').onclick=helpModal; }
+
+drawTeams(); drawHome();
+if(location.hash){ const id=location.hash.slice(1).replace('L','').replace('_','-'); if(LESSONS.find(l=>l.id===id))openLesson(id); }
+window.__deck={openLesson,go,next,R};
+})();
+</script>
+
+</html>
