@@ -1,0 +1,16 @@
+{
+  "base": "https://pub-2b0368b437794ea3afc09933367a29bd.r2.dev",
+  "items": [
+    {
+      "grade": 4, "subject": "math", "type": "board",
+      "files": [
+        {"key": "4/math/lesson-boards.pdf", "title": "سبورات الحصص", "desc": "سبورة جاهزة لكل حصة.", "size": "نحو 10 ميغابايت"},
+        {"key": "4/math/classroom-board-questions.pdf", "title": "أسئلة المعلم", "desc": "أسئلة السبورة الصفية.", "size": "نحو 3 ميغابايت"}
+      ]
+    },
+    {
+      "grade": 4, "subject": "math", "type": "recap",
+      "files": [{"key": "4/math/lesson-summaries.pdf", "title": "ملخصات الدروس بالصور", "desc": "ملخص إنفوجرافيك لكل درس."}]
+    }
+  ]
+}
