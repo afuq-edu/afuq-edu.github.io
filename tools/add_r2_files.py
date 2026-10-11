@@ -41,9 +41,9 @@ def page(grade,subject,typ,files,base,prefix):
         cards += '''  <div class="card" style="margin-top:14px">
     <h2>%s (PDF)</h2>
     <p>%s</p>
-    <a class="dl" href="%s" target="_blank" rel="noopener" aria-disabled="true">⬇ تحميل %s%s</a>
+    <a class="dl" href="%s" data-name="%s" target="_blank" rel="noopener" aria-disabled="true">⬇ تحميل %s%s</a>
   </div>
-'''%(f['title'],f.get('desc',''),url,f['title'],(' (%s)'%f['size']) if f.get('size') else '')
+'''%(f['title'],f.get('desc',''),url,f.get('filename') or '%s-g%d-%s'%(subject,grade,os.path.basename(f['key'])),f['title'],(' (%s)'%f['size']) if f.get('size') else '')
     pledge = 'أتعهد بعدم نشر %s أو مشاركت%s مع أي شخص خارج الباقة الذهبية.'%(('هذه الملفات','ها') if plural else ('هذا الملف','ه'))
     return '''<!doctype html>
 <html lang="ar" dir="rtl">
@@ -65,7 +65,18 @@ def page(grade,subject,typ,files,base,prefix):
 <script>
 (function(){var cb=document.getElementById('cb'),ds=document.querySelectorAll('.dl');
 cb.onchange=function(){Array.prototype.forEach.call(ds,function(d){d.setAttribute('aria-disabled',cb.checked?'false':'true')})};
-Array.prototype.forEach.call(ds,function(d){d.addEventListener('click',function(e){if(d.getAttribute('aria-disabled')==='true')e.preventDefault()})});})();
+/* Direct download: cross-origin files ignore the "download" attribute, so fetch the file and save it as a blob
+   (needs a CORS rule on the R2 bucket allowing GET from this site); if that fails fall back to opening the file. */
+Array.prototype.forEach.call(ds,function(d){d.addEventListener('click',function(e){
+  if(d.getAttribute('aria-disabled')==='true'){e.preventDefault();return}
+  if(!window.fetch||!window.URL||!window.Blob) return;
+  e.preventDefault(); if(d.getAttribute('data-busy')) return;
+  var label=d.textContent; d.setAttribute('data-busy','1'); d.textContent='⏳ جارٍ التحميل… قد يستغرق دقيقة';
+  fetch(d.href).then(function(r){ if(!r.ok) throw new Error(r.status); return r.blob(); }).then(function(b){
+    var u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download=d.getAttribute('data-name')||'file.pdf';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u)},60000);
+  }).catch(function(){ window.open(d.href,'_blank'); }).then(function(){ d.removeAttribute('data-busy'); d.textContent=label; });
+})});})();
 </script>
 </body>
 </html>
