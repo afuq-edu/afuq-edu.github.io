@@ -715,7 +715,7 @@ V.balance=sp=>{
   const lv=evalX(sp.l),rv=evalX(sp.r); const t=sp.hideTilt?0:Math.max(-14,Math.min(14,(lv-rv)*2.5));
   const W=sp.w||560;
   const box=h('div',{style:{position:'relative',width:W+'px',height:'260px'}});
-  const beam=h('div',{style:{position:'absolute',left:'40px',right:'40px',top:'70px',height:'14px',background:'#3B4A6B',borderRadius:'8px',transformOrigin:'center',transform:`rotate(${-t}deg)`,transition:'transform 1s cubic-bezier(.3,1.5,.5,1)'}});
+  const beam=h('div',{style:{position:'absolute',left:'40px',right:'40px',top:'70px',height:'14px',background:'#3B4A6B',borderRadius:'8px',transformOrigin:'center',transform:`rotate(${t}deg)`,transition:'transform 1s cubic-bezier(.3,1.5,.5,1)'}});
   const pan=(txt,side)=>h('div',{style:{position:'absolute',[side]:'-30px',top:'14px',width:'170px',display:'flex',flexDirection:'column',alignItems:'center'}},
     h('div',{class:'big',style:{background:'#fff',border:'3px solid var(--u)',borderRadius:'14px',padding:'2px 14px',fontSize:'34px',direction:'rtl',whiteSpace:'nowrap'}},txt),
     h('div',{style:{width:'2px',height:'26px',background:'#3B4A6B'}}),h('div',{style:{width:'150px',height:'16px',borderRadius:'0 0 80px 80px',background:'#9AA7BC'}}));
