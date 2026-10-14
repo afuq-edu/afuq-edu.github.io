@@ -134,6 +134,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
     <p class="hint">تطبيقات هدية لمشتركي الباقة الذهبية.</p>
     <button type="button" class="xgift" data-g="منصة المعلم"><span class="gi">🎁</span><span><b>منصة المعلم</b><small>🔒 للباقة الذهبية فقط</small></span></button>
     <button type="button" class="xgift" data-g="الجرس"><span class="gi">🎁</span><span><b>الجرس</b><small>🔒 للباقة الذهبية فقط</small></span></button>
+    <a class="xgift gdl" id="gJaras" href="gifts/jaras-teacher-1.1.apk" download="jaras-teacher-1.1.apk" style="display:none;text-decoration:none"><span class="gi">🎁</span><span><b>الجرس – تطبيق أندرويد</b><small>الإصدار ١٫١ · ملف APK (٥٤٧ ك.ب) · اضغط للتنزيل</small></span></a>
+    <p class="hint gdl" id="gJarasHelp" style="display:none;margin:0 0 10px">بعد التنزيل افتح الملف على جهاز أندرويد، وإن طلب الجهاز فاسمح بالتثبيت من هذا المصدر. ولا تشارك الملف مع غير المشتركين.</p>
     <dialog id="xgdlg"><div class="dlg"><h3 id="xgname"></h3><p>هذه الهدية مخصصة لمشتركي الباقة الذهبية. للترقية تواصل معنا على الرقم <a href="tel:76506037" style="color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate">76506037</a>.</p><button type="button" id="xgclose" style="width:100%;padding:11px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;cursor:pointer">إغلاق</button></div></dialog>
   </section>
 
@@ -207,7 +209,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 <script>
 (function(){
   function gold(){ try{ return localStorage.getItem('afuq-all')==='1'||sessionStorage.getItem('afuq-all')==='1'; }catch(e){ return false; } }
-  var box=document.getElementById('gifts'); if(!box) return; if(gold()){ box.hidden=true; return; }
+  var box=document.getElementById('gifts'); if(!box) return; if(gold()){ Array.prototype.forEach.call(box.querySelectorAll('button.xgift'),function(x){x.style.display='none'}); document.getElementById('gJaras').style.display='flex'; document.getElementById('gJarasHelp').style.display='block'; var gp=box.querySelector('.hint'); if(gp) gp.textContent='تطبيقات هدية لمشتركي الباقة الذهبية.'; return; }
   document.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('.xgift'), d=document.getElementById('xgdlg'), n=document.getElementById('xgname');
     if(b&&d){ n.textContent='🎁 '+b.getAttribute('data-g'); if(!d.open) d.showModal(); return; }
