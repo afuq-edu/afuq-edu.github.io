@@ -50,7 +50,11 @@ main{padding:14px 16px 40px}
     <button id="mSep" aria-pressed="true">تحضير منفصل</button>
     <button id="mComb" aria-pressed="false">تحضير مدمج</button>
   </div>
-  <div class="help">المنفصل: نموذج نور مستقل لكل حصة (احفظ كل حصة على حدة).<br>المدمج: نموذج واحد للدرس كله، وكل حقل يضم حصص الدرس تحت عناوين «الحصة ١، الحصة ٢…».</div>
+  <div class="mode" id="durbox" role="group" aria-label="زمن الحصة" style="margin-top:8px">
+    <button id="d40" aria-pressed="true">حصة ٤٠ دقيقة</button>
+    <button id="d35" aria-pressed="false">حصة ٣٥ دقيقة</button>
+  </div>
+  <div class="help">المنفصل: نموذج نور مستقل لكل حصة (احفظ كل حصة على حدة).<br>زمن الحصة: اختر ٤٠ أو ٣٥ دقيقة بحسب جدول مدرستك، وتُعاد توزيع أزمنة خطوات الحصة تلقائيًا.<br>المدمج: نموذج واحد للدرس كله، وكل حقل يضم حصص الدرس تحت عناوين «الحصة ١، الحصة ٢…».</div>
   <div class="now" id="now"></div>
   <div class="ctrl">
     <select id="lsel" aria-label="اختيار الدرس"></select>
@@ -69,8 +73,38 @@ D.forEach((L,i)=>{ if(cur!==L.unit){cur=L.unit; var g=document.createElement('op
 lsel.onchange=()=>{li=+lsel.value;pi=0;render()};
 document.getElementById('mSep').onclick=()=>{mode='sep';render()};
 document.getElementById('mComb').onclick=()=>{mode='comb';render()};
+let dur=40; try{ if(localStorage.getItem('afuq-sci7-dur')==='35') dur=35; }catch(e){}
+function fit(t){
+  if(dur==40||t.indexOf('من الدقيقة')<0) return t;
+  const R=/^\(من الدقيقة ([٠-٩]+) إلى ([٠-٩]+)\) (.*) \[([٠-٩]+) (?:دقيقة|دقائق|دقيقتان)\]$/;
+  const num=s=>+String(s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  const lab=n=>n==2?'دقيقتان':(n>=3&&n<=10?toAr(n)+' دقائق':toAr(n)+' دقيقة');
+  const L=t.split('\n'); let grp=[];
+  const flush=()=>{
+    if(!grp.length) return;
+    const d=grp.map(g=>g.m[4]).map(num), tot=d.reduce((a,b)=>a+b,0);
+    const raw=d.map(x=>x*dur/tot), nd=raw.map(x=>Math.max(2,Math.floor(x)));
+    let diff=dur-nd.reduce((a,b)=>a+b,0);
+    const ord=raw.map((x,i)=>i).sort((a,b)=>(raw[b]-Math.floor(raw[b]))-(raw[a]-Math.floor(raw[a])));
+    for(let k=0;diff>0&&k<1000;k++){nd[ord[k%ord.length]]++;diff--;}
+    for(let k=0;diff<0&&k<1000;k++){let mi=0;nd.forEach((v,i)=>{if(v>nd[mi])mi=i});if(nd[mi]<=2)break;nd[mi]--;diff++;}
+    let c=0; grp.forEach((g,i)=>{L[g.i]='(من الدقيقة '+toAr(c)+' إلى '+toAr(c+nd[i])+') '+g.m[3]+' ['+lab(nd[i])+']'; c+=nd[i];});
+    grp=[];
+  };
+  for(let i=0;i<L.length;i++){
+    const m=R.exec(L[i]);
+    if(m){ if(num(m[1])==0) flush(); grp.push({i,m}); }
+    else if(L[i].indexOf('الزمن الكلي')==0){ flush(); L[i]='الزمن الكلي: '+toAr(dur)+' دقيقة'; }
+  }
+  flush(); return L.join('\n');
+}
+function setDur(v){ dur=v; try{localStorage.setItem('afuq-sci7-dur',String(v))}catch(e){} render(); }
+document.getElementById('d40').onclick=()=>setDur(40);
+document.getElementById('d35').onclick=()=>setDur(35);
 function render(){
   const L=D[li];
+  document.getElementById('d40').setAttribute('aria-pressed',dur==40);
+  document.getElementById('d35').setAttribute('aria-pressed',dur==35);
   document.getElementById('mSep').setAttribute('aria-pressed',mode=='sep');
   document.getElementById('mComb').setAttribute('aria-pressed',mode=='comb');
   document.getElementById('now').textContent = mode=='sep' ? 'أنت الآن في الوضع المنفصل: نموذج لكل حصة' : 'أنت الآن في الوضع المدمج: نموذج واحد للدرس يضم '+toAr(L.np)+(L.np==1?' حصة':' حصص');
@@ -81,7 +115,7 @@ function render(){
     `<div><b>الدرس</b>${L.t}</div><div><b>الوحدة</b>${L.u}</div><div><b>الأسبوع والتاريخ</b>${L.w}</div>`+
     `<div><b>كتاب الطالب</b>${L.sp}</div><div><b>دليل المعلم</b>${L.tp}</div><div><b>كتاب النشاط</b>${L.ap}</div>`+
     `<div class="axis"><b>${mode=='sep'?'محور الحصة':'محاور حصص الدرس'}</b><span>${axis}</span></div>`;
-  const texts = mode=='sep' ? L.sep[pi].f : L.comb;
+  const texts = (mode=='sep' ? L.sep[pi].f : L.comb).map(fit);
   const box=document.getElementById('cards'); box.innerHTML='';
   F.forEach((name,k)=>{
     const c=document.createElement('section'); c.className='card';
