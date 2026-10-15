@@ -22,6 +22,7 @@ def main():
     prefix = cat['lock']
     tb, tr, ts = read('3/social/board/index.html'), read('3/social/recap/index.html'), read('3/social/index.html')
     def sub(x):
+        if s != 'social': x = x.replace('<p>الدراسات الاجتماعية · ', '<p>')  # subtitle prefix belongs to the social template only
         return x.replace('/afuq/3/social/', '/afuq/' + d).replace('ofuq-g3o-unlock-', prefix).replace('الهوية والمواطنة', lab).replace('الصف الثالث', 'الصف ' + grd).replace('social-g3', '%s-g%d' % (s, g))
     ids = []
     if slides:
@@ -32,7 +33,7 @@ def main():
         os.makedirs(R+d+'board', exist_ok=True); os.makedirs(F+d+'board', exist_ok=True)
         compress(boards, F+d+'board/lesson-boards.pdf'); bpath = F+d+'board/lesson-boards.pdf'
         b = sub(tb)
-        b = re.sub(r'<p>سبورة لكل حصة.*?</p>', '<p>سبورة جاهزة لكل حصة لدروس %s للصف %s، الفصل الدراسي الأول (%d صفحة).</p>' % (lab, grd, pages(bpath)), b)
+        b = re.sub(r'<p>سبورة (?:جاهزة )?لكل حصة.*?</p>', '<p>سبورة جاهزة لكل حصة لدروس %s للصف %s، الفصل الدراسي الأول (%d صفحة).</p>' % (lab, grd, pages(bpath)), b)
         b = re.sub(r'\(نحو [\d.]+ ميغابايت\)(?=\s*</a>)', '(نحو %s ميغابايت)' % mb(bpath), b, count=1)
         if questions:
             compress(questions, F+d+'board/classroom-board-questions.pdf'); qpath = F+d+'board/classroom-board-questions.pdf'
