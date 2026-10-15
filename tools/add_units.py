@@ -42,7 +42,10 @@ def main():
     v = read('p/index.html')
     prefix = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', v).group(1))[d]['lock']
     title, emo, intro, line = INFO[sec]
-    labels = [f.split('::', 1)[0] if '::' in f else 'الوحدة ' + (UNITS[i] if i < len(UNITS) else str(i+1)) for i, f in enumerate(files)]
+    labels, n = [], 0
+    for f in files:  # unnamed files are numbered among themselves, so a labelled intro does not shift the unit numbers
+        if '::' in f: labels.append(f.split('::', 1)[0])
+        else: labels.append('الوحدة ' + (UNITS[n] if n < len(UNITS) else str(n+1))); n += 1
     files = [f.split('::', 1)[1] if '::' in f else f for f in files]
     os.makedirs(R+d+sec, exist_ok=True)
     for i, f in enumerate(files, 1):
