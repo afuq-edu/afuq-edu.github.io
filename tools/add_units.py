@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Add a per-unit section: one self-contained HTML per unit plus a unit-chooser page.
 Usage: python3 tools/add_units.py GRADE SUBJECT SECTION MODE UNIT1.html [UNIT2.html ...]   (files in unit order)
+  A file may be given as 'LABEL::path' to show LABEL instead of 'الوحدة الأولى…' (e.g. 'Welcome::a.html').
   SECTION  e.g. harvest | prep | kahoot | homework
   MODE     gold     – locked to the gold package (guard on every page, like slides/board)
            free     – open to everyone (prep)
@@ -40,6 +41,8 @@ def main():
     v = read('p/index.html')
     prefix = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', v).group(1))[d]['lock']
     title, emo, intro, line = INFO[sec]
+    labels = [f.split('::', 1)[0] if '::' in f else 'الوحدة ' + (UNITS[i] if i < len(UNITS) else str(i+1)) for i, f in enumerate(files)]
+    files = [f.split('::', 1)[1] if '::' in f else f for f in files]
     os.makedirs(R+d+sec, exist_ok=True)
     for i, f in enumerate(files, 1):
         h = open(f, encoding='utf8').read(); assert h.count('<head>') >= 1, f
@@ -47,12 +50,12 @@ def main():
         open(R+d+sec+'/u%d/index.html' % i, 'w', encoding='utf8').write(h.replace('<head>', '<head>' + head_for(mode, prefix, sec, '../../', False), 1))
     share = mode in ('homework', 'open')
     if share:
-        cards = ''.join('<div class="u row" data-u="u%d" data-name="%s – الوحدة %s"><a class="t" href="u%d/"><b>الوحدة %s</b><span>%s</span></a>'
+        cards = ''.join('<div class="u row" data-u="u%d" data-name="%s – %s"><a class="t" href="u%d/"><b>%s</b><span>%s</span></a>'
                         '<div class="acts"><a class="btn go" href="u%d/">▶ تشغيل في الصف</a><button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button>'
                         '<button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></div></div>'
-                        % (i, title, UNITS[i-1], i, UNITS[i-1], line, i) for i in range(1, len(files)+1))
+                        % (i, title, labels[i-1], i, labels[i-1], line, i) for i in range(1, len(files)+1))
     else:
-        cards = ''.join('<a class="u" href="u%d/"><b>الوحدة %s</b><span>%s</span></a>' % (i, UNITS[i-1], line) for i in range(1, len(files)+1))
+        cards = ''.join('<a class="u" href="u%d/"><b>%s</b><span>%s</span></a>' % (i, labels[i-1], line) for i in range(1, len(files)+1))
     note = ('<div class="note"><b>للمعلم:</b> لكل وحدة <b>رابط دائم</b> يفتحه الطلاب مباشرة بلا اشتراك ولا رمز. '
             'اضغط «نسخ رسالة نور» وألصقها في منصة نور (الواجبات أو المحتوى) فتصل للطلاب مع الرابط، أو «نسخ الرابط» وحده. '
             'وللعرض داخل الحصة اضغط «تشغيل في الصف».</div>') if share else ''
