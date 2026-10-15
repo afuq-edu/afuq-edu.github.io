@@ -38,6 +38,7 @@ def main():
     g = int(sys.argv[1]); s = sys.argv[2]; sec = sys.argv[3]; mode = sys.argv[4]; files = sys.argv[5:]
     assert mode in ('gold', 'free', 'homework', 'open') and files
     lab, grd, d = SUBJ[s], GRADE[g], '%d/%s/' % (g, s)
+    if s == 'social' and g >= 5: lab = 'الدراسات الاجتماعية'
     v = read('p/index.html')
     prefix = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', v).group(1))[d]['lock']
     title, emo, intro, line = INFO[sec]
