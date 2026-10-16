@@ -5,13 +5,14 @@ Usage: python3 tools/mark_new.py 5/math/harvest [4/english/slides ...]   (the ad
 import os, re, sys, json, datetime
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 F = R + 'assets/newbadge.js'
-def mark(*keys, date=None):
+def mark(*keys, date=None, force=False):
     date = date or datetime.date.today().isoformat()
     s = open(F, encoding='utf8').read()
     m = re.search(r'var NEW=(\{.*?\});', s, re.S); new = json.loads(m.group(1))
-    for k in keys: new[k.strip('/')] = date
+    for k in keys:
+        if force or k.strip('/') not in new: new[k.strip('/')] = date  # keep the original date on reruns
     new = dict(sorted(new.items(), key=lambda kv: (int(kv[0].split('/')[0]), kv[0])))
     s = s[:m.start(1)] + json.dumps(new, ensure_ascii=False, indent=0).replace('\n', '') + s[m.end(1):]
     open(F, 'w', encoding='utf8').write(s)
 if __name__ == '__main__':
-    mark(*sys.argv[1:]); print('marked', *sys.argv[1:])
+    mark(*sys.argv[1:], force=True); print('marked', *sys.argv[1:])
