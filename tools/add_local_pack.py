@@ -28,7 +28,7 @@ def main():
     if slides:
         h = open(slides, encoding='utf8').read(); assert h.count('<head>') >= 1
         guard = "<script>(function(){var k='%sslides';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;document.documentElement.style.display='none';location.replace('../?lock=slides')})()</script><script src=\"/assets/pkgmode.js\" data-role=\"page\"></script>" % prefix
-        os.makedirs(R+d+'slides', exist_ok=True); open(R+d+'slides/index.html', 'w', encoding='utf8').write(h.replace('<head>', '<head>' + guard, 1)); ids.append('slides')
+        os.makedirs(R+d+'slides', exist_ok=True); open(R+d+'slides/index.html', 'w', encoding='utf8').write(h.replace('<head>', '<head>' + guard, 1)); sys.path.insert(0, R+'tools'); __import__('fit_slides').fix(R+d+'slides/index.html'); ids.append('slides')
     if boards:
         os.makedirs(R+d+'board', exist_ok=True); os.makedirs(F+d+'board', exist_ok=True)
         compress(boards, F+d+'board/lesson-boards.pdf'); bpath = F+d+'board/lesson-boards.pdf'

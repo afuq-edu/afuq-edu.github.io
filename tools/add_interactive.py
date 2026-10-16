@@ -20,6 +20,7 @@ def main():
     h = open(f, encoding='utf8').read(); assert '<head>' in h, f
     os.makedirs(R+d+'interactive', exist_ok=True)
     open(R+d+'interactive/index.html', 'w', encoding='utf8').write(h.replace('<head>', '<head>' + guard, 1))
+    sys.path.insert(0, R+'tools'); __import__('fit_slides').fix(R+d+'interactive/index.html')  # fit the deck to any screen
     p = R+d+'index.html'; u = open(p, encoding='utf8').read()
     if 'data-id="interactive"' not in u:
         ref = re.search(r'    <button class="card" style="--c:var\(--c\d\)" data-id="board">.*?</button>\n', u, re.S).group(0)
