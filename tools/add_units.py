@@ -91,6 +91,7 @@ def main():
             '<div class="grid">%s</div></main>%s</body></html>') % (title, lab, grd, lab, grd, emo, title, intro, note, cards, js)
     open(R+d+sec+'/index.html', 'w', encoding='utf8').write(page)
     if sec == 'harvest': add_harvest_card(d, lab, grd, prefix, v)
+    if sec == 'harvest': sys.path.insert(0, R+'tools'); __import__('mark_new').mark(d + sec)  # «جديد» badge
     print('done', d+sec, mode, len(files), 'units')
 def add_harvest_card(d, lab, grd, prefix, v):
     T = 'حصاد الوحدات'

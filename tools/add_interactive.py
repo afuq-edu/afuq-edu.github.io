@@ -36,5 +36,6 @@ def main():
         seg = v[i:j].replace('["board", "السبورات", true]', '["interactive", "%s", true], ["board", "السبورات", true]' % T, 1)
         assert '"interactive"' in seg; v = v[:i] + seg + v[j:]
         open(R+'p/index.html', 'w', encoding='utf8').write(v)
+    __import__('mark_new').mark(d + 'interactive')  # «جديد» badge
     print('done', d + 'interactive')
 main()

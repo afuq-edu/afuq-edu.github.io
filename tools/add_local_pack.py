@@ -65,5 +65,6 @@ def main():
         q = R+'p/index.html'; v = open(q, encoding='utf8').read()
         o = '"lock": "%s", "parts": [["prep", "ملف التحضير", false], ' % prefix; assert v.count(o) == 1, prefix
         v = v.replace(o, o + ''.join('["%s", "%s", true], ' % (x, NAMES[x]) for x in ids_new)); open(q, 'w', encoding='utf8').write(v)
+    sys.path.insert(0, R+'tools'); __import__('mark_new').mark(*[d + x for x in ids])  # «جديد» badge
     print('done', g, s, ids, 'new cards:', ids_new)
 main()
