@@ -17,11 +17,14 @@ import re, os, sys, json, glob, html
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 F = os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'
 sys.path.insert(0, R + 'tools')
-import fit_slides, mark_new
+import fit_slides, mark_new, shutil
 SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الدراسات الاجتماعية','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات'}
 GRADE = {1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر',11:'الحادي عشر',12:'الثاني عشر'}
 TITLE = 'ألعاب وأنشطة منصة نور'
 COLL = ('explorer', 'explorer2', 'numbers')   # ready-made game collections
+# The ready-made collections block is switched off (owner's decision 2026-10-16: deep links into them felt disjointed).
+# GAMES_COLL=1 python3 tools/add_games.py brings it back; the maps in tools/games_nav*.json are kept for that.
+WITH_COLL = os.environ.get('GAMES_COLL') == '1'
 NAV_FILE = R + 'tools/games_nav.json'
 COLL_GUARD_RE = re.compile(r'<script>\(function\(\)\{var k=[^<]*?</script>\s*|<script src="/assets/pkgmode.js" data-role="page"></script>', re.S)
 # slide types a student can solve on their own (teaching / discussion / teacher-led slides are left out)
@@ -230,11 +233,33 @@ def patch_home(done):
         L[i] = s
     open(p, 'w', encoding='utf8').write('\n'.join(L))
 
+def remove_games(g, s):
+    """Take a games section out of a subject that no longer has anything for it (portal card, catalogue part, hub line, badge, pages)."""
+    d = '%d/%s/' % (g, s); hit = False
+    p = R + d + 'index.html'; u = open(p, encoding='utf8').read()
+    m = re.search(r'    <button class="card" style="--c:var\(--c\d\)" data-id="games">.*?</button>\n', u, re.S)
+    if m: u = u.replace(m.group(0), '', 1); hit = True
+    u = re.sub(r"    games:\{title:'[^']*',hash:null\},\n", '', u, count=1); open(p, 'w', encoding='utf8').write(u)
+    q = R + 'p/index.html'; v = open(q, encoding='utf8').read()
+    cat = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', v).group(1)); o = '"lock": "%s", "parts": [' % cat[d]['lock']
+    i = v.index(o); j = v.index(']]', i); seg = v[i:j]; seg2 = seg.replace('["games", "%s", true], ' % TITLE, '')
+    if seg2 != seg: v = v[:i] + seg2 + v[j:]; open(q, 'w', encoding='utf8').write(v); hit = True
+    h = R + 'index.html'; L = open(h, encoding='utf8').read().split('\n')
+    for k, x in enumerate(L):
+        if x.startswith('    %d:[' % g) and "['%s/'" % s in x:
+            a = x.index("['%s/'" % s); b = x.index("']", a); L[k] = x[:a] + x[a:b].replace(' · ألعاب وأنشطة نور', '') + x[b:]
+    open(h, 'w', encoding='utf8').write('\n'.join(L))
+    b = R + 'assets/newbadge.js'; t = open(b, encoding='utf8').read(); t2 = re.sub(r'"%sgames": "[^"]*",?\s*' % re.escape(d), '', t)
+    if t2 != t: open(b, 'w', encoding='utf8').write(t2.replace(', }', '}').replace(',}', '}'))
+    for base in (R, F):
+        if os.path.isdir(base + d + 'games'): shutil.rmtree(base + d + 'games'); hit = True
+    return hit
+
 def main():
     only = set(a.strip('/') for a in sys.argv[1:])
     cat = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', read('p/index.html')).group(1))
     NAV = load_nav()
-    done, prefixes, skipped, total = {}, {}, [], 0
+    done, prefixes, skipped, total, removed = {}, {}, [], 0, []
     for d in sorted(cat, key=lambda x: (int(x.split('/')[0]), x)):
         g, s = int(d.split('/')[0]), d.split('/')[1]
         if only and d.strip('/') not in only: continue
@@ -250,11 +275,14 @@ def main():
                 info.append('deck %d lessons/%d games %.1fMB' % (len(lessons), sum(1 for L in lessons for sl in L['slides'] if sl['type'] in GAMES), os.path.getsize(F + d + 'games/index.html') / 1e6))
         colls = []
         for k, name, _ in cat[d]['parts']:
-            if k in COLL and os.path.exists(R + d + k + '/index.html'):
+            if k in COLL and not WITH_COLL and os.path.isdir(F + d + 'games/' + k): shutil.rmtree(F + d + 'games/' + k)
+            if k in COLL and WITH_COLL and os.path.exists(R + d + k + '/index.html'):
                 nav = NAV.get('%d_%s_%s' % (g, s, k)); size = build_collection(g, s, k, nav); colls.append((k, name, nav))
                 n = (lambda t: sum(1 + (len(x.get('k', [])) and 0) for x in t))(nav['tree']) if nav and nav.get('tree') else 0
                 info.append('%s %.1fMB%s' % (k, size / 1e6, ' +map' if nav else ''))
-        if not lessons and not colls: skipped.append(d); continue
+        if not lessons and not colls:
+            if remove_games(g, s): removed.append(d)
+            skipped.append(d); continue
         prefix = cat[d]['lock']
         os.makedirs(R + d + 'games', exist_ok=True)
         open(R + d + 'games/index.html', 'w', encoding='utf8').write(list_page(g, s, prefix, lessons, units, colls))
@@ -262,5 +290,5 @@ def main():
         mark_new.mark(d + 'games'); total += 1
         print('%-14s %s' % (d, ' | '.join(info)))
     patch_catalogue(prefixes); patch_home(done)
-    print('done', total, 'subjects; skipped:', skipped)
+    print('done', total, 'subjects; skipped:', skipped, '; games section removed:', removed)
 main()
