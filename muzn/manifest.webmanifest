@@ -1,0 +1,37 @@
+{
+ "name": "منصة المجال الأول — مدرسة مزن المعرفة",
+ "short_name": "المجال الأول",
+ "lang": "ar",
+ "dir": "rtl",
+ "description": "منصة المعلم الأول للمجال الأول: بيانات المعلمات، الخطط، المتابعة، التحصيل والمبادرات.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#F3F7FB",
+ "theme_color": "#1B2E4F",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icons/maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
