@@ -7,7 +7,7 @@ Templates are copied from the finished grade 3 social pages, so those must exist
 import re, os, sys, shutil, subprocess
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 F = os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'   # PDFs live in the afuq-edu/afuq repo (served at /afuq/)
-SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'أحب لغتي – اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الهوية والمواطنة','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات'}
+SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'أحب لغتي – اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الهوية والمواطنة','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات','advmath':'الرياضيات المتقدمة','basicmath':'الرياضيات الأساسية'}
 GRADE = {1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر',11:'الحادي عشر',12:'الثاني عشر'}
 NAMES = {'slides':'عروض باور بوينت','board':'السبورات','recap':'ملخصات الدروس بالصور'}
 def read(p): return open(R+p,encoding='utf8').read()
@@ -18,6 +18,8 @@ def compress(src, dst):
 def main():
     g = int(sys.argv[1]); s = sys.argv[2]; slides, boards, questions, recap = [None if a == '-' else a for a in sys.argv[3:7]]
     lab = SUBJ[s]; grd = GRADE[g]; d = '%d/%s/' % (g, s)
+    if s == 'arabic' and g >= 5: lab = 'اللغة العربية'   # 'أحب لغتي' is the grades 1-4 book
+    if s == 'social' and g >= 5: lab = 'الدراسات الاجتماعية'
     cat = __import__('json').loads(re.search(r'var CAT=(\{.*\});\s*\n', read('p/index.html')).group(1))[d]
     prefix = cat['lock']
     tb, tr, ts = read('3/social/board/index.html'), read('3/social/recap/index.html'), read('3/social/index.html')
