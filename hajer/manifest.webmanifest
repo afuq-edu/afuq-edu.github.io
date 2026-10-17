@@ -1,0 +1,20 @@
+{
+ "name": "منصتي — أ. هاجر ربيع الشيدي",
+ "short_name": "منصتي",
+ "id": "./",
+ "lang": "ar",
+ "dir": "rtl",
+ "description": "منصة المعلمة: بيانات المعلمات، الخطط، المتابعة، الإنماء المهني، التحضير، التحصيل والمبادرات.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#F3F7FB",
+ "theme_color": "#2D6A8C",
+ "icons": [
+  {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+  {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+  {"src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+  {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}
