@@ -18,7 +18,7 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 F = os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'
 sys.path.insert(0, R + 'tools')
 import fit_slides, mark_new, shutil
-SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الدراسات الاجتماعية','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات','advmath':'الرياضيات المتقدمة','basicmath':'الرياضيات الأساسية'}
+SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الدراسات الاجتماعية','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات','advmath':'الرياضيات المتقدمة','basicmath':'الرياضيات الأساسية','homeland':'هذا وطني'}
 GRADE = {1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر',11:'الحادي عشر',12:'الثاني عشر'}
 TITLE = 'ألعاب وأنشطة منصة نور'
 COLL = ('explorer', 'explorer2', 'numbers')   # ready-made game collections
@@ -292,3 +292,6 @@ def main():
     patch_catalogue(prefixes); patch_home(done)
     print('done', total, 'subjects; skipped:', skipped, '; games section removed:', removed)
 main()
+sys.path.insert(0, R + 'tools'); _d = __import__('dedupe_fonts')  # fonts once in /assets/f (1 GB Pages limit)
+for _r in (R, os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'):
+    if os.path.isdir(_r): sys.argv = ['', _r]; _d.main()

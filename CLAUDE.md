@@ -46,3 +46,7 @@
 ## الروابط المخصصة (p/packages.json)
 قيمة كل رمز = items (+ `!` للرابط العادي). لتغيير الاسم الظاهر دون رابط جديد: حقل `nameOverride` في وثيقة الباقة،
 وتُكتب القيمة `<items>@@<الاسم>` (عند المزامنة: `items + ("!" if plain) + ("@@"+nameOverride if nameOverride)`).
+
+## المساحة (حد GitHub Pages ‏1 GB لكل مستودع)
+الخطوط المضمّنة تُخزَّن مرة واحدة في `/assets/f/` عبر `tools/dedupe_fonts.py` (أدوات الإضافة تشغّله تلقائيًا على المستودعين).
+عند إضافة صفحة يدويًا شغّل: `python3 tools/dedupe_fonts.py . /home/user/afuq`. راقب الحجم بـ `du -sh --exclude=.git .`
