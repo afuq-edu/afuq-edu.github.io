@@ -274,6 +274,8 @@ button.row .sic,button.row b{opacity:.6}
   if(kcode){
     var tries=0;
     var apply=function(e){
+      // "<items>@@<name>": a name kept with the package replaces the one in the link (renaming without a new link)
+      if(typeof e==='string'){ var at=e.indexOf('@@'); if(at>=0){ var nm=e.slice(at+2).trim().slice(0,60); e=e.slice(0,at); if(nm) to='\u2068'+nm+'\u2069'; } }
       if(e==='*'){ all=true; want=[]; }
       else if(typeof e==='string' && e){ if(/!$/.test(e)){ plain=true; e=e.slice(0,-1); } all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
     };
