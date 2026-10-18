@@ -41,8 +41,22 @@
     try{ for(var i=sessionStorage.length-1;i>=0;i--){ var k=sessionStorage.key(i); if(/^(ofuq-|afuq-all|afuq-pkg-paths|afuq-pkg-all)/.test(k)) sessionStorage.removeItem(k); } }catch(e){}
     out(home); return true;
   }
+  // Plain links (/p/#…!) open the subjects' other sections for a few hours (see p/index.html): when that ends, those
+  // sections are taken out of this tab's package, so the normal check below sends the visitor back to the link page.
+  function previewEnd(){ var t=+rd('sessionStorage','afuq-prev-exp'); return t>0?t:0; }
+  function previewOver(){
+    var t=previewEnd(); if(!t||Date.now()<=t) return false;
+    try{
+      JSON.parse(rd('sessionStorage','afuq-prev-keys')||'[]').forEach(function(k){ sessionStorage.removeItem(k); });
+      sessionStorage.setItem(P,rd('sessionStorage','afuq-prev-base')||'[]');
+      ['afuq-prev-exp','afuq-prev-keys','afuq-prev-base'].forEach(function(k){ sessionStorage.removeItem(k); });
+    }catch(e){}
+    return true;
+  }
   function check(){
     if(trialOver()) return;
+    previewOver();
+    var pe=previewEnd(); if(pe&&!check.ptimer) check.ptimer=setTimeout(function(){ check.ptimer=0; check(); }, pe-Date.now()+500);
     var t=trialEnd(); if(t&&!check.timer) check.timer=setTimeout(function(){ check.timer=0; check(); }, t-Date.now()+500);
     var st=state(); if(!st) return;
     if(role==='open' && !allowed(st)) return; /* standalone page: never redirect, only add the back button when it belongs to the visitor's package */
@@ -51,5 +65,5 @@
   }
   check();
   window.addEventListener('pageshow',function(e){ if(e.persisted) check(); });
-  document.addEventListener('visibilitychange',function(){ if(!document.hidden) trialOver(); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden && !trialOver() && previewOver()) check(); });
 })();
