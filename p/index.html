@@ -150,6 +150,8 @@ button.row .sic,button.row b{opacity:.6}
   /* plain link (#…!): the subjects' other sections open for a 5-hour look (from the first visit on this device), in this tab only;
      then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
   var PREVIEW=5*3600e3, pv=0;
+  /* sections whose files are PDFs (boards, picture recaps) never open on trial or plain links: a PDF opened once stays in the browser history */
+  var PDFP=/^(board|recap)/;
   function el(t,c,txt){ var n=document.createElement(t); if(c) n.className=c; if(txt!=null) n.textContent=txt; return n; }
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
   // e.g. #4mn7m11e.2KPYrdmF2K8 ; the name is base64url UTF-8. The long form (#to=..&i=..) is still accepted.
@@ -205,6 +207,7 @@ button.row .sic,button.row b{opacity:.6}
     pv=first+PREVIEW;
   }
   var preview=pv>Date.now();
+  if(trial) items.forEach(function(it){ it.parts=it.parts.filter(function(p){ return !PDFP.test(p[0]); }); });
   if(trial){
     if(Date.now()>trial){ /* expired: forget everything this trial opened in this tab */
       try{ for(var i=sessionStorage.length-1;i>=0;i--){ var sk=sessionStorage.key(i); if(/^(ofuq-|afuq-pkg|afuq-all|afuq-trial)/.test(sk)) sessionStorage.removeItem(sk); } }catch(e){}
@@ -229,7 +232,7 @@ button.row .sic,button.row b{opacity:.6}
     var ok=[]; items.forEach(function(it){ it.parts.forEach(function(p){ ok.push(it.path+(p[0]==='page'?'':p[0]+'/')); }); });
     var oj=JSON.stringify(ok), more=[], mkeys=[];
     if(plain && preview) items.forEach(function(it){ it.c.parts.forEach(function(p){
-      if(it.parts.some(function(q){return q[0]===p[0]})) return;
+      if(it.parts.some(function(q){return q[0]===p[0]}) || PDFP.test(p[0])) return;
       more.push(it.path+(p[0]==='page'?'':p[0]+'/')); if(p[2]) mkeys.push(it.c.lock+p[0]); }); });
     put('sessionStorage','afuq-pkg-home',location.href); put('sessionStorage','afuq-pkg-paths',more.length?JSON.stringify(ok.concat(more)):oj); put('sessionStorage','afuq-pkg-all',null);
     if(more.length){ put('sessionStorage','afuq-prev-exp',String(pv)); put('sessionStorage','afuq-prev-keys',JSON.stringify(mkeys)); put('sessionStorage','afuq-prev-base',oj);
@@ -299,9 +302,10 @@ button.row .sic,button.row b{opacity:.6}
       var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; a.append(s, el('b',null,p[1]), el('span','arr','افتح ←'));
       box.append(a);
     });
-    if(plain) it.c.parts.forEach(function(p){
+    if(plain||trial) it.c.parts.forEach(function(p){
       if(it.parts.some(function(q){return q[0]===p[0]})) return;
-      if(preview){
+      if(trial && !PDFP.test(p[0])) return;   /* a trial shows only what it carries, plus its locked PDF sections */
+      if(plain && preview && !PDFP.test(p[0])){
         var o=el('a','row'); o.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
         var so=el('span','sic'); so.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; o.append(so, el('b',null,p[1]), el('span','arr','⏳ افتح ←'));
         box.append(o); return;
