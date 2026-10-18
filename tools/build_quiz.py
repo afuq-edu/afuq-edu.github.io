@@ -203,6 +203,7 @@ def field_names(lits, which):
                 labels = [str(x) if not isinstance(x, (list, dict)) else x for x in v]
                 labels = [x if isinstance(x, str) else (x[1] if isinstance(x, list) and len(x) == 2 and isinstance(x[1], str) else (x.get('label') or x.get('name') or x.get('t') or '' if isinstance(x, dict) else '')) for x in labels]
                 labels = [l if isinstance(l, str) else '' for l in labels]
+                if max(len(l) for l in labels) > 70: continue   # field names are short; a period's field values are not
                 if any(re.search(pat, l) for l in labels) and any(re.search(r'الختامي|Summative', l) for l in labels):
                     i = next(i for i, l in enumerate(labels) if re.search(pat, l))
                     idx = i; nlen = len(v); x = v[i]
@@ -210,7 +211,7 @@ def field_names(lits, which):
                     if isinstance(x, dict):
                         for kk in ('key', 'k', 'id'):
                             if isinstance(x.get(kk), str): keys.add(x[kk])
-            if isinstance(v, dict) and len(v) >= 8 and all(isinstance(x, str) for x in v.values()):
+            if isinstance(v, dict) and len(v) >= 8 and all(isinstance(x, str) and len(x) <= 70 for x in v.values()):
                 if any(re.search(r'الختامي|Summative', x) for x in v.values()):
                     for k2, l in v.items():
                         if re.search(pat, l): keys.add(k2)
@@ -226,10 +227,17 @@ def with_link(text, url):
     return (t + '\n' if t else '') + LINE + url
 def link_value(v, url):
     """Add the link inside one notes value: a string, an {h,t}-style dict, a [html, text] pair or a [n, label, text] triple."""
-    if isinstance(v, str): return with_link(v, url) if len(v) > 20 and not LABEL.match(v) else v
+    if isinstance(v, str): return with_link(v, url) if not LABEL.match(v) else v
     if isinstance(v, list): return [link_value(x, url) for x in v]
     if isinstance(v, dict): return {k: (link_value(x, url) if isinstance(x, (str, list)) else x) for k, x in v.items()}
     return v
+
+def fieldish(x):
+    """One field value: text, an {h,t}-style dict of texts, or a short list of texts/numbers (not a period or a lesson)."""
+    if isinstance(x, str): return True
+    if isinstance(x, dict): return len(x) <= 4 and all(isinstance(y, str) for y in x.values())
+    if isinstance(x, list): return len(x) <= 4 and all(isinstance(y, (str, int)) for y in x)
+    return False
 
 def field_targets(lits, kmap, which):
     """Every value of one field (per period and merged): yields (lesson index or None, container, key)."""
@@ -244,7 +252,8 @@ def field_targets(lits, kmap, which):
         targets = []
         for p, v, anc in nodes(o, (n,)):
             if not isinstance(v, (list, dict)): continue
-            if isinstance(v, list) and idx is not None and len(v) == nlen and not any(isinstance(x, str) and (x == NOTE_AR or x == 'المخرجات التعليمية') for x in v):
+            if isinstance(v, list) and idx is not None and len(v) == nlen and all(fieldish(x) for x in v) \
+               and not any(isinstance(x, str) and (x == NOTE_AR or x == 'المخرجات التعليمية') for x in v):
                 x = v[idx]
                 if isinstance(x, (str, list, dict)) and not (isinstance(x, str) and LABEL.match(x)): targets.append((p, v, idx, anc))
             elif isinstance(v, list) and ten and len(v) == 10 and all(isinstance(x, str) for x in v) and len(v[std]) > 20:
@@ -262,8 +271,21 @@ def field_targets(lits, kmap, which):
             key = (n,) + (key if isinstance(key, tuple) else (key,))
             yield kmap.get(key), cont, k
 
+def unlink(v):
+    """v without any lesson-link line (anywhere in the data)."""
+    if isinstance(v, str):
+        if '/afuq/q/' not in v: return v
+        v = re.sub(r'<p>[^<]*/afuq/q/[^<]*</p>|(?:<br\s*/?>\s*)+[^<>]*/afuq/q/[^<\n]*', '', v)
+        return '\n'.join(l for l in v.split('\n') if '/afuq/q/' not in l).rstrip()
+    if isinstance(v, list):
+        for i in range(len(v)): v[i] = unlink(v[i])
+    elif isinstance(v, dict):
+        for k in v: v[k] = unlink(v[k])
+    return v
+
 def add_links(lits, kmap, urls):
     """Append the lesson link to every notes value (per period and merged). Returns (changed count, unmatched count)."""
+    for lit in lits: lit[3] = unlink(lit[3])
     done = miss = 0
     for li, cont, k in list(field_targets(lits, kmap, 'notes')):
         if li is None or urls[li] is None: miss += 1; continue
