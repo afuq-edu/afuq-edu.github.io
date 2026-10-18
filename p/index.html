@@ -190,7 +190,23 @@ button.row .sic,button.row b{opacity:.6}
     if(!d){ d=document.createElement('dialog'); d.id='goldDlg'; d.innerHTML='<div class="dlg"><h3 id="goldT"></h3><p>هذا القسم مخصص للباقة الذهبية. للترقية تواصل معنا على الرقم <a href="tel:'+PHONE+'" style="color:var(--brand);font-weight:700;direction:ltr;unicode-bidi:isolate">'+PHONE+'</a>.</p><button type="button" id="goldX" style="width:100%;padding:11px;border:0;border-radius:12px;background:var(--brand);color:var(--brand-ink);font:inherit;font-weight:700;cursor:pointer">إغلاق</button></div>'; document.body.appendChild(d); d.querySelector('#goldX').onclick=function(){ d.close(); }; }
     d.querySelector('#goldT').textContent='🔒 '+title; d.showModal();
   }
+  var revoked=false;
+  /* a cancelled stable link ("-" in packages.json): take back on this device what it opened, then say so */
+  function cancelLink(){
+    var prev=''; try{ prev=localStorage.getItem('afuq-pkg-k:'+kcode)||''; }catch(e){}
+    prev=prev.split('@@')[0].replace(/^!|!$/g,'');
+    var keys=[], paths=prev&&prev!=='*'?prev.split(';').filter(Boolean).map(function(x){ return x.split(':')[0]; }):want.map(function(w){ return w[0]; });
+    if(prev==='*'||(!prev&&all)){ keys.push('afuq-all'); paths=Object.keys(CAT); }
+    paths.forEach(function(p){ var c=CAT[p.replace(/^\/+/,'').replace(/\/?$/,'/')]; if(c) c.parts.forEach(function(x){ keys.push(c.lock+x[0]); }); });
+    ['localStorage','sessionStorage'].forEach(function(S){ try{ var st=window[S];
+      keys.forEach(function(k){ st.removeItem(k); });
+      if((st.getItem('afuq-pkg-home')||'').indexOf('#'+kcode)>=0){ st.removeItem('afuq-pkg-home'); st.removeItem('afuq-pkg-paths'); }
+      st.removeItem('afuq-pkg-k:'+kcode); }catch(e){} });
+    var b=el('div','bad'); b.append(el('b',null,'تم إيقاف هذا الرابط')); b.append(document.createElement('br'));
+    b.append(document.createTextNode('انتهى الاشتراك المرتبط بهذا الرابط. للتجديد أو الاشتراك تواصل مع منصة أفق على '+PHONE+'.')); root.replaceChildren(b);
+  }
   function render(){
+  if(revoked) return cancelLink();
   var items=want.map(function(w){
     var path=w[0].replace(/^\/+/,''); if(path && !/\/$/.test(path)) path+='/';
     var c=CAT[path]; if(!c) return null;
@@ -325,13 +341,14 @@ button.row .sic,button.row b{opacity:.6}
     var apply=function(e){
       // "<items>@@<name>": a name kept with the package replaces the one in the link (renaming without a new link)
       if(typeof e==='string'){ var at=e.indexOf('@@'); if(at>=0){ var nm=e.slice(at+2).trim().slice(0,60); e=e.slice(0,at); if(nm) to='\u2068'+nm+'\u2069'; } }
+      if(e==='-'){ revoked=true; return; }
       if(e==='*'){ all=true; want=[]; }
       else if(typeof e==='string' && e){ if(/!$/.test(e)){ plain=true; e=e.slice(0,-1); } all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
     };
     var load=function(){
       fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
         var e=j&&j[kcode];
-        if(typeof e==='string' && e){ try{ localStorage.setItem('afuq-pkg-k:'+kcode,e); }catch(x){} }
+        if(typeof e==='string' && e && e!=='-'){ try{ localStorage.setItem('afuq-pkg-k:'+kcode,e); }catch(x){} }
         apply(e); render();
       }).catch(function(){
         if(tries++<1){ setTimeout(load,1500); return; }

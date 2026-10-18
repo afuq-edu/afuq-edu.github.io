@@ -63,7 +63,16 @@
     if(role==='gate' || !allowed(st)) return out(st.home);
     if(document.body) ui(st); else document.addEventListener('DOMContentLoaded',function(){ ui(st); });
   }
-  check();
+  // A stable link this device has used may have been cancelled ("-" in /p/packages.json): its page takes back what it opened.
+  function cancelled(){
+    if(role==='open'||!window.fetch) return;
+    var codes=[]; try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k&&k.indexOf('afuq-pkg-k:')===0) codes.push(k.slice(11)); } }catch(e){ return; }
+    if(!codes.length) return;
+    fetch('/p/packages.json').then(function(r){ return r.ok?r.json():null; }).then(function(j){
+      if(j) for(var i=0;i<codes.length;i++) if(j[codes[i]]==='-') return out('/p/#'+codes[i]);
+    }).catch(function(){});
+  }
+  check(); cancelled();
   window.addEventListener('pageshow',function(e){ if(e.persisted) check(); });
   document.addEventListener('visibilitychange',function(){ if(!document.hidden && !trialOver() && previewOver()) check(); });
 })();
