@@ -290,7 +290,7 @@ button.row .sic,button.row b{opacity:.6}
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
-  if(!plain) root.append(gifts(!(kcode||to)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links */
+  root.append(gifts(plain||!(kcode||to)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links, never on plain ones */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
