@@ -177,7 +177,7 @@ button.row .sic,button.row b{opacity:.6}
     if(tm){ trial=parseInt(tm[1],36)*1000; code=tm[2]; }
     var km=tm?null:/^(k[0-9a-z]{3,10})(?:-(.*))?$/.exec(code);
     if(km){ kcode=km[1]; code=km[2]||''; }
-    if(/!$/.test(code)){ plain=true; code=code.slice(0,-1); } /* trailing ! = plain link: no gold-package label, gift or notices */
+    if(/^!|!$/.test(code)){ plain=true; code=code.replace(/^!|!$/g,''); } /* ! before (new links) or after (older ones) the items = plain link: no gold-package label or notices; chat apps drop a trailing ! from links */
     if(code==='*') all=true;
     else { var re=/(\d+)([a-z])([a-z]*)/g, m; while((m=re.exec(code))){ if(!SUBJ[m[2]]) continue;
       want.push([m[1]+'/'+SUBJ[m[2]], m[3]?m[3].split('').join('.'):'all']); } }
