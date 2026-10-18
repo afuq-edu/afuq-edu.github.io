@@ -32,7 +32,18 @@
     a.setAttribute('style','position:fixed;top:10px;left:10px;z-index:2147483647;background:#2F6FB3;color:#fff;font:700 14px/1 system-ui,Tahoma,sans-serif;padding:9px 14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px #0004;direction:rtl');
     document.body.appendChild(a);
   }
+  // Trial links (/p/#t…) unlock this tab for one hour only: when it ends, forget them and go back to the link page,
+  // which explains that the trial is over.
+  function trialEnd(){ var t=+rd('sessionStorage','afuq-trial-exp'); return t>0?t:0; }
+  function trialOver(){
+    var t=trialEnd(); if(!t||Date.now()<=t) return false;
+    var home=rd('sessionStorage',K)||'/p/';
+    try{ for(var i=sessionStorage.length-1;i>=0;i--){ var k=sessionStorage.key(i); if(/^(ofuq-|afuq-all|afuq-pkg-paths|afuq-pkg-all)/.test(k)) sessionStorage.removeItem(k); } }catch(e){}
+    out(home); return true;
+  }
   function check(){
+    if(trialOver()) return;
+    var t=trialEnd(); if(t&&!check.timer) check.timer=setTimeout(function(){ check.timer=0; check(); }, t-Date.now()+500);
     var st=state(); if(!st) return;
     if(role==='open' && !allowed(st)) return; /* standalone page: never redirect, only add the back button when it belongs to the visitor's package */
     if(role==='gate' || !allowed(st)) return out(st.home);
@@ -40,4 +51,5 @@
   }
   check();
   window.addEventListener('pageshow',function(e){ if(e.persisted) check(); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) trialOver(); });
 })();
