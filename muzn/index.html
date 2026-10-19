@@ -236,10 +236,13 @@ tr:last-child td{border-bottom:0}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:5px;vertical-align:middle}
 .poster{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;max-width:100%;background:var(--sky-2)}
-.igal{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
-.igal figure{margin:0;cursor:pointer;min-width:0}
-.igal img,.ph-prev img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--sky-2);display:block}
-.igal figcaption{font-size:12px;line-height:1.5;margin-top:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.igal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;padding-bottom:4px;overscroll-behavior-x:contain}
+.igal figure{margin:0;cursor:pointer;min-width:0;flex:0 0 100%;scroll-snap-align:center}
+.igal.many figure{flex-basis:88%}
+.igal img,.cover-img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;background:var(--sky-2);display:block;box-shadow:0 10px 26px -14px rgba(10,20,35,.45)}
+.cover-img{aspect-ratio:4/5;cursor:pointer}
+.igal figcaption,.cover-cap{font-size:14px;line-height:1.6;margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--sky-2);overflow-wrap:anywhere}
+.ph-prev img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--sky-2);display:block}
 .ph-prev{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:8px}
 .ph-big{width:100%;max-height:62vh;object-fit:contain;border-radius:12px;background:var(--sky-2)}
 .poster-ph{width:100%;aspect-ratio:4/5;border-radius:12px;display:grid;place-items:center;text-align:center;padding:20px;font-family:var(--f-display);font-size:26px;color:var(--ink);
@@ -1002,12 +1005,12 @@ ACT.editVisit=d=>{ const a=S.visits.find(x=>x.id===d.id); formRecord('تعديل
 const IN_FIELDS=[{k:'name',label:'اسم المبادرة'},{k:'target',label:'الفئة المستهدفة'},{k:'time',label:'الخطة الزمنية'},{k:'by',label:'جهة التنفيذ'},{k:'idea',label:'فكرة المبادرة',type:'textarea'},{k:'goals',label:'أهداف المبادرة',type:'textarea'},{k:'opinion',label:'الرأي الفني',type:'textarea'},{k:'notes',label:'الملحوظات',type:'textarea'}];
 V.inits=()=>pageHead('القسم التاسع','مبادرات المجال الأول','مبادرات تحصيلية تعمل عليها معلمات المجال طوال العام. سجّلي ما يُنفّذ من كل مبادرة ليبقى أثرها واضحًا.',`<button class="btn gold" data-act="addInit">${ic('plus')} مبادرة جديدة</button>`)+
  `<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">${S.inits.map(n=>`<div class="card stack" style="gap:10px">
-   ${n.img&&IMG[n.img]?`<img class="poster" src="${IMG[n.img]}" alt="ملصق مبادرة ${esc(n.name)}" loading="lazy">`:`<div class="poster-ph">${esc(n.name)}</div>`}
+   ${(()=>{ const cv=initCover(n); return cv? `<figure style="margin:0" data-act="viewPhoto" data-id="${n.id}" data-ph="${cv.id}">${phImg(cv,'cover-img')}${cv.cap?`<figcaption class="cover-cap">${esc(cv.cap)}</figcaption>`:''}</figure>` : n.img&&IMG[n.img]?`<img class="poster" src="${IMG[n.img]}" alt="ملصق مبادرة ${esc(n.name)}" loading="lazy">`:`<div class="poster-ph">${esc(n.name)}</div>`; })()}
    <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">${esc(n.name)}</h3><button class="btn sm ghost" data-act="editInit" data-id="${n.id}" aria-label="تعديل">${ic('edit')}</button></div>
    <div class="row"><span class="chip sea">${esc(n.target||'')}</span><span class="chip">${esc(n.by||'')}</span></div>
    <p class="small"><b>الفكرة:</b> ${esc(n.idea)}</p><p class="small muted"><b>الأهداف:</b> ${esc(n.goals)}</p>
    <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between;margin-bottom:6px"><b class="small">صور المبادرة${(n.photos||[]).length?` (${AR(n.photos.length)})`:''}</b><button class="btn sm" data-act="addPhotos" data-id="${n.id}">${ic('plus')} إضافة صور</button></div>
-   ${(n.photos||[]).length?`<div class="igal">${n.photos.map(ph=>`<figure data-act="viewPhoto" data-id="${n.id}" data-ph="${ph.id}">${phImg(ph,'')}${ph.cap?`<figcaption>${esc(ph.cap)}</figcaption>`:''}</figure>`).join('')}</div>`:'<p class="small faint">لا صور بعد. أضيفي صور التنفيذ مع وصف لكل صورة.</p>'}</div>
+   ${(()=>{ const cv=initCover(n); const rest=(n.photos||[]).filter(ph=>ph!==cv); return rest.length?`<div class="igal${rest.length>1?' many':''}">${rest.map(ph=>`<figure data-act="viewPhoto" data-id="${n.id}" data-ph="${ph.id}">${phImg(ph,'')}${ph.cap?`<figcaption>${esc(ph.cap)}</figcaption>`:''}</figure>`).join('')}</div>${rest.length>1?'<p class="small faint" style="margin-top:4px">اسحبي الصور جانبيًا لرؤية المزيد.</p>':''}`:(n.photos||[]).length?'':`<p class="small faint">${n.img&&IMG[n.img]?'لا صور بعد. أضيفي صور التنفيذ مع وصف لكل صورة، وتظهر كبيرة هنا.':'لا صور بعد. أول صورة تضيفينها تصبح واجهة المبادرة.'}</p>`; })()}</div>
    <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between"><b class="small">سجل التنفيذ (${AR((n.log||[]).length)})</b><button class="btn sm" data-act="addLog" data-id="${n.id}">${ic('plus')} تنفيذ</button></div>
    ${(n.log||[]).slice(-3).reverse().map((l,i)=>`<p class="small" style="margin-top:6px"><span class="chip">${fmtDate(l.date,{day:'numeric',month:'short'})}</span> ${esc(l.text)}${l.url?` <a class="doclink" href="${esc(l.url)}" target="_blank" rel="noopener">${ic('link','style="width:14px;height:14px"')} التوثيق</a>`:''}</p>`).join('')}</div></div>`).join('')}</div>`;
 ACT.addInit=()=>formRecord('مبادرة جديدة',IN_FIELDS,{time:'طوال الفصل الدراسي الأول والثاني',by:'معلمات المجال الأول'},o=>{ o.id=uid(); o.log=[]; S.inits.push(o); save('أُضيفت المبادرة'); render(); });
@@ -1016,6 +1019,7 @@ ACT.addLog=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تنفيذ: '+
 
 /* initiative photos: compressed, stored on this device (IndexedDB) or in the artifact's assets */
 const phURL={};
+function initCover(n){ const ps=n.photos||[]; if(!ps.length) return null; return ps.find(p=>p.id===n.cover) || (n.cover==='poster'||(n.img&&IMG[n.img])? null : ps[0]); }
 function phSrc(ph){ return ph.asset? '/_blob/'+ph.asset : ph.local? (phURL[ph.local]||'') : ''; }
 function phImg(ph,cls){ return `<img${cls?` class="${cls}"`:''} src="${esc(phSrc(ph))}"${ph.local?` data-lph="${esc(ph.local)}"`:''} alt="${esc(ph.cap||'صورة من المبادرة')}" loading="lazy">`; }
 async function fillLocalImgs(root){
@@ -1070,9 +1074,11 @@ ACT.viewPhoto=d=>{
   const a=S.inits.find(x=>x.id===d.id); const ph=a&&(a.photos||[]).find(x=>x.id===d.ph); if(!ph) return;
   const f=modal({title:a.name, saveText:'حفظ الوصف', wide:true, body:`${phImg(ph,'ph-big')}
     <div class="field"><label for="phCap">وصف الصورة</label><textarea class="input" id="phCap" name="phCap" rows="2">${esc(ph.cap||'')}</textarea></div>
-    ${ph.date?`<p class="small faint">أُضيفت ${fmtDate(ph.date)}</p>`:''}`,
+    <div class="row" style="justify-content:space-between">${ph.date?`<span class="small faint">أُضيفت ${fmtDate(ph.date)}</span>`:'<span></span>'}${initCover(a)===ph?`<span class="chip gold">واجهة المبادرة</span>${a.img&&IMG[a.img]?`<button type="button" class="btn sm ghost" id="phPoster">إرجاع الملصق الأصلي</button>`:''}`:`<button type="button" class="btn sm" id="phCover">اجعليها واجهة المبادرة</button>`}</div>`,
     onSave:f=>{ ph.cap=f.elements.phCap.value.trim(); save('حُفظ الوصف'); render(); },
-    onDelete:()=>{ a.photos=a.photos.filter(x=>x!==ph); if(ph.local){ MEDIA.del(ph.local).catch(()=>{}); if(phURL[ph.local]){ URL.revokeObjectURL(phURL[ph.local]); delete phURL[ph.local]; } } save('حُذفت الصورة'); render(); }});
+    onDelete:()=>{ a.photos=a.photos.filter(x=>x!==ph); if(a.cover===ph.id) delete a.cover; if(ph.local){ MEDIA.del(ph.local).catch(()=>{}); if(phURL[ph.local]){ URL.revokeObjectURL(phURL[ph.local]); delete phURL[ph.local]; } } save('حُذفت الصورة'); render(); }});
+  const cb=$('#phCover',f); if(cb) cb.onclick=()=>{ a.cover=ph.id; save('أصبحت الصورة واجهة المبادرة'); dlg.close(); render(); };
+  const pb=$('#phPoster',f); if(pb) pb.onclick=()=>{ a.cover='poster'; save('أُعيد الملصق الأصلي'); dlg.close(); render(); };
   fillLocalImgs(f);
 };
 
