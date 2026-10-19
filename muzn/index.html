@@ -1006,15 +1006,36 @@ const IN_FIELDS=[{k:'name',label:'اسم المبادرة'},{k:'target',label:'�
 V.inits=()=>pageHead('القسم التاسع','مبادرات المجال الأول','مبادرات تحصيلية تعمل عليها معلمات المجال طوال العام. سجّلي ما يُنفّذ من كل مبادرة ليبقى أثرها واضحًا.',`<button class="btn gold" data-act="addInit">${ic('plus')} مبادرة جديدة</button>`)+
  `<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">${S.inits.map(n=>`<div class="card stack" style="gap:10px">
    ${(()=>{ const cv=initCover(n); return cv? `<figure style="margin:0" data-act="viewPhoto" data-id="${n.id}" data-ph="${cv.id}">${phImg(cv,'cover-img')}${cv.cap?`<figcaption class="cover-cap">${esc(cv.cap)}</figcaption>`:''}</figure>` : n.img&&IMG[n.img]?`<img class="poster" src="${IMG[n.img]}" alt="ملصق مبادرة ${esc(n.name)}" loading="lazy">`:`<div class="poster-ph">${esc(n.name)}</div>`; })()}
-   <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">${esc(n.name)}</h3><button class="btn sm ghost" data-act="editInit" data-id="${n.id}" aria-label="تعديل">${ic('edit')}</button></div>
+   <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">${esc(n.name)}</h3><div class="row" style="gap:4px"><button class="btn sm ghost" data-act="editInit" data-id="${n.id}" aria-label="تعديل">${ic('edit')}</button><button class="btn sm ghost" data-act="delInit" data-id="${n.id}" aria-label="حذف المبادرة" title="حذف المبادرة">${ic('x')}</button></div></div>
    <div class="row"><span class="chip sea">${esc(n.target||'')}</span><span class="chip">${esc(n.by||'')}</span></div>
    <p class="small"><b>الفكرة:</b> ${esc(n.idea)}</p><p class="small muted"><b>الأهداف:</b> ${esc(n.goals)}</p>
    <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between;margin-bottom:6px"><b class="small">صور المبادرة${(n.photos||[]).length?` (${AR(n.photos.length)})`:''}</b><button class="btn sm" data-act="addPhotos" data-id="${n.id}">${ic('plus')} إضافة صور</button></div>
    ${(()=>{ const cv=initCover(n); const rest=(n.photos||[]).filter(ph=>ph!==cv); return rest.length?`<div class="igal${rest.length>1?' many':''}">${rest.map(ph=>`<figure data-act="viewPhoto" data-id="${n.id}" data-ph="${ph.id}">${phImg(ph,'')}${ph.cap?`<figcaption>${esc(ph.cap)}</figcaption>`:''}</figure>`).join('')}</div>${rest.length>1?'<p class="small faint" style="margin-top:4px">اسحبي الصور جانبيًا لرؤية المزيد.</p>':''}`:(n.photos||[]).length?'':`<p class="small faint">${n.img&&IMG[n.img]?'لا صور بعد. أضيفي صور التنفيذ مع وصف لكل صورة، وتظهر كبيرة هنا.':'لا صور بعد. أول صورة تضيفينها تصبح واجهة المبادرة.'}</p>`; })()}</div>
    <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between"><b class="small">سجل التنفيذ (${AR((n.log||[]).length)})</b><button class="btn sm" data-act="addLog" data-id="${n.id}">${ic('plus')} تنفيذ</button></div>
    ${(n.log||[]).slice(-3).reverse().map((l,i)=>`<p class="small" style="margin-top:6px"><span class="chip">${fmtDate(l.date,{day:'numeric',month:'short'})}</span> ${esc(l.text)}${l.url?` <a class="doclink" href="${esc(l.url)}" target="_blank" rel="noopener">${ic('link','style="width:14px;height:14px"')} التوثيق</a>`:''}</p>`).join('')}</div></div>`).join('')}</div>`;
-ACT.addInit=()=>formRecord('مبادرة جديدة',IN_FIELDS,{time:'طوال الفصل الدراسي الأول والثاني',by:'معلمات المجال الأول'},o=>{ o.id=uid(); o.log=[]; S.inits.push(o); save('أُضيفت المبادرة'); render(); });
-ACT.editInit=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تعديل المبادرة',IN_FIELDS,a,o=>{Object.assign(a,o); save('تم الحفظ'); render();},()=>{ (a.photos||[]).forEach(ph=>{ if(ph.local) MEDIA.del(ph.local).catch(()=>{}); }); S.inits=S.inits.filter(x=>x!==a); save('حُذفت المبادرة'); render(); }); };
+ACT.addInit=async()=>{
+  const A=await getAssets(); const canImg=!!A||!!window.indexedDB;
+  const rec={time:'طوال الفصل الدراسي الأول والثاني',by:'معلمات المجال الأول'};
+  const f=modal({title:'مبادرة جديدة', saveText:'إضافة المبادرة', body:`
+    ${canImg?`<div class="field"><label for="cvF">صورة واجهة المبادرة (تظهر كبيرة في أعلى البطاقة)</label><input class="input" id="cvF" name="cvF" type="file" accept="image/*"></div>
+    <div id="cvPrev" hidden><img class="cover-img" alt="" style="cursor:default;max-height:340px"><div class="field" style="margin-top:8px"><label for="cvC">وصف الصورة (اختياري)</label><textarea class="input" id="cvC" name="cvC" rows="2"></textarea></div></div>`:''}
+    <div class="grid s" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))">${IN_FIELDS.filter(x=>x.type!=='textarea').map(x=>fieldHTML(x,rec[x.k])).join('')}</div>${IN_FIELDS.filter(x=>x.type==='textarea').map(x=>fieldHTML(x,rec[x.k])).join('')}`,
+    onSave:f=>{
+      const o={...rec}; IN_FIELDS.forEach(fd=>{ o[fd.k]=f.elements[fd.k].value.trim(); });
+      if(!o.name){ toast('اكتبي اسم المبادرة أولًا'); return false; }
+      o.id=uid(); o.log=[]; o.photos=[]; S.inits.push(o);
+      const file=canImg&&f.elements.cvF.files[0];
+      const show=()=>setTimeout(()=>{ const el=document.querySelector('[data-act="delInit"][data-id="'+o.id+'"]'); if(el) el.closest('.card').scrollIntoView({behavior:'smooth',block:'start'}); },60);
+      if(!file){ save('أُضيفت المبادرة'); render(); show(); return; }
+      storePhotos(o,[file],[f.elements.cvC.value.trim()],A).then(([ok,,added])=>{ if(ok) o.cover=added[0].id; save(ok?'أُضيفت المبادرة مع صورتها':'أُضيفت المبادرة، وتعذّر حفظ الصورة'); render(); show(); });
+    }});
+  const inp=$('#cvF',f); if(inp) inp.onchange=e=>{ const x=e.target.files[0]; const P=$('#cvPrev',f); const im=P.querySelector('img'); if(im._u) URL.revokeObjectURL(im._u); if(!x){ P.hidden=true; return; } im._u=URL.createObjectURL(x); im.src=im._u; P.hidden=false; };
+};
+function dropInit(a){ (a.photos||[]).forEach(ph=>{ if(ph.local) MEDIA.del(ph.local).catch(()=>{}); }); S.inits=S.inits.filter(x=>x!==a); }
+ACT.delInit=(d,el)=>{ const a=S.inits.find(x=>x.id===d.id); if(!a) return;
+  if(!el.dataset.armed){ el.dataset.armed=1; el.classList.add('danger'); el.textContent='اضغطي مرة أخرى للحذف'; clearTimeout(el._t); el._t=setTimeout(()=>{ if(el.isConnected) render(); },4000); return; }
+  dropInit(a); save('حُذفت المبادرة «'+a.name+'»'); render(); };
+ACT.editInit=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تعديل المبادرة',IN_FIELDS,a,o=>{Object.assign(a,o); save('تم الحفظ'); render();},()=>{ dropInit(a); save('حُذفت المبادرة'); render(); }); };
 ACT.addLog=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تنفيذ: '+a.name,[{k:'text',label:'ماذا نُفّذ؟ (الصف، عدد الطلبة، التكريم…)'},{k:'date',label:'التاريخ',type:'date'},{k:'url',label:'رابط صور أو فيديو (اختياري)',type:'url'}],{date:todayISO()},o=>{ (a.log=a.log||[]).push(o); save('سُجّل التنفيذ'); render(); }); };
 
 /* initiative photos: compressed, stored on this device (IndexedDB) or in the artifact's assets */
@@ -1038,6 +1059,19 @@ async function shrinkImage(file){
     return b && b.size<file.size? b : file;
   }catch(e){ return file; }
 }
+async function storePhotos(a, picked, caps, A){
+  a.photos=a.photos||[]; let ok=0; const added=[];
+  toast(picked.length>1?'جارٍ حفظ الصور…':'جارٍ حفظ الصورة…');
+  for(let i=0;i<picked.length;i++){
+    try{
+      const blob=await shrinkImage(picked[i]); const ph={id:'p'+uid(),cap:caps[i]||'',date:todayISO()};
+      if(A){ const r=await A.upload(new File([blob],(picked[i].name||'photo').replace(/\.[^.]+$/,'')+'.jpg',{type:blob.type||'image/jpeg'})); ph.asset=r.id; }
+      else { ph.local='m'+uid(); await MEDIA.put(ph.local,blob); }
+      a.photos.push(ph); added.push(ph); ok++;
+    }catch(e){}
+  }
+  return [ok,picked.length,added];
+}
 ACT.addPhotos=async d=>{
   const a=S.inits.find(x=>x.id===d.id); if(!a) return;
   const A=await getAssets();
@@ -1049,20 +1083,7 @@ ACT.addPhotos=async d=>{
     onSave:()=>{
       if(!files.length){ toast('اختاري صورة واحدة على الأقل'); return false; }
       const caps=[...f.querySelectorAll('[data-cap]')].map(t=>t.value.trim());
-      const picked=files.slice(); a.photos=a.photos||[];
-      toast('جارٍ حفظ الصور…');
-      (async()=>{ let ok=0;
-        for(let i=0;i<picked.length;i++){
-          try{
-            const blob=await shrinkImage(picked[i]); const ph={id:'p'+uid(),cap:caps[i]||'',date:todayISO()};
-            if(A){ const r=await A.upload(new File([blob],(picked[i].name||'photo').replace(/\.[^.]+$/,'')+'.jpg',{type:blob.type||'image/jpeg'})); ph.asset=r.id; }
-            else { ph.local='m'+uid(); await MEDIA.put(ph.local,blob); }
-            a.photos.push(ph); ok++;
-          }catch(e){}
-        }
-        save(ok===picked.length? (ok===1?'حُفظت الصورة':'حُفظت '+AR(ok)+' صور') : ok? 'حُفظت '+AR(ok)+' من '+AR(picked.length)+' صور، وتعذّر حفظ الباقي' : 'تعذّر حفظ الصور، قد تكون مساحة الجهاز غير كافية');
-        render();
-      })();
+      storePhotos(a, files.slice(), caps, A).then(([ok,n])=>{ save(ok===n? (ok===1?'حُفظت الصورة':'حُفظت '+AR(ok)+' صور') : ok? 'حُفظت '+AR(ok)+' من '+AR(n)+' صور، وتعذّر حفظ الباقي' : 'تعذّر حفظ الصور، قد تكون مساحة الجهاز غير كافية'); render(); });
     }});
   $('#phF',f).onchange=e=>{
     files=[...e.target.files].filter(x=>/^image\//.test(x.type));
@@ -1158,7 +1179,11 @@ setTimeout(initRemote,0);
 </script>
 
 <script>
-if('serviceWorker' in navigator && location.protocol.startsWith('http')){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  const hadSW=!!navigator.serviceWorker.controller; let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(hadSW && !reloaded){ reloaded=true; location.reload(); } });
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{ r.update().catch(()=>{}); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') r.update().catch(()=>{}); }); }).catch(()=>{}));
+}
 </script>
 </body>
 </html>
