@@ -236,6 +236,12 @@ tr:last-child td{border-bottom:0}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:5px;vertical-align:middle}
 .poster{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;max-width:100%;background:var(--sky-2)}
+.igal{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.igal figure{margin:0;cursor:pointer;min-width:0}
+.igal img,.ph-prev img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--sky-2);display:block}
+.igal figcaption{font-size:12px;line-height:1.5;margin-top:4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.ph-prev{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:start;border:1px solid var(--line);border-radius:12px;padding:8px}
+.ph-big{width:100%;max-height:62vh;object-fit:contain;border-radius:12px;background:var(--sky-2)}
 .poster-ph{width:100%;aspect-ratio:4/5;border-radius:12px;display:grid;place-items:center;text-align:center;padding:20px;font-family:var(--f-display);font-size:26px;color:var(--ink);
   background:radial-gradient(90% 70% at 70% 20%,var(--gold-soft),transparent 60%),linear-gradient(160deg,var(--sea-soft),var(--sky-2))}
 
@@ -1000,11 +1006,75 @@ V.inits=()=>pageHead('القسم التاسع','مبادرات المجال ال
    <div class="row" style="justify-content:space-between"><h3 style="font-size:20px">${esc(n.name)}</h3><button class="btn sm ghost" data-act="editInit" data-id="${n.id}" aria-label="تعديل">${ic('edit')}</button></div>
    <div class="row"><span class="chip sea">${esc(n.target||'')}</span><span class="chip">${esc(n.by||'')}</span></div>
    <p class="small"><b>الفكرة:</b> ${esc(n.idea)}</p><p class="small muted"><b>الأهداف:</b> ${esc(n.goals)}</p>
+   <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between;margin-bottom:6px"><b class="small">صور المبادرة${(n.photos||[]).length?` (${AR(n.photos.length)})`:''}</b><button class="btn sm" data-act="addPhotos" data-id="${n.id}">${ic('plus')} إضافة صور</button></div>
+   ${(n.photos||[]).length?`<div class="igal">${n.photos.map(ph=>`<figure data-act="viewPhoto" data-id="${n.id}" data-ph="${ph.id}">${phImg(ph,'')}${ph.cap?`<figcaption>${esc(ph.cap)}</figcaption>`:''}</figure>`).join('')}</div>`:'<p class="small faint">لا صور بعد. أضيفي صور التنفيذ مع وصف لكل صورة.</p>'}</div>
    <div style="border-top:1px solid var(--line);padding-top:8px"><div class="row" style="justify-content:space-between"><b class="small">سجل التنفيذ (${AR((n.log||[]).length)})</b><button class="btn sm" data-act="addLog" data-id="${n.id}">${ic('plus')} تنفيذ</button></div>
    ${(n.log||[]).slice(-3).reverse().map((l,i)=>`<p class="small" style="margin-top:6px"><span class="chip">${fmtDate(l.date,{day:'numeric',month:'short'})}</span> ${esc(l.text)}${l.url?` <a class="doclink" href="${esc(l.url)}" target="_blank" rel="noopener">${ic('link','style="width:14px;height:14px"')} التوثيق</a>`:''}</p>`).join('')}</div></div>`).join('')}</div>`;
 ACT.addInit=()=>formRecord('مبادرة جديدة',IN_FIELDS,{time:'طوال الفصل الدراسي الأول والثاني',by:'معلمات المجال الأول'},o=>{ o.id=uid(); o.log=[]; S.inits.push(o); save('أُضيفت المبادرة'); render(); });
-ACT.editInit=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تعديل المبادرة',IN_FIELDS,a,o=>{Object.assign(a,o); save('تم الحفظ'); render();},()=>{ S.inits=S.inits.filter(x=>x!==a); save('حُذفت المبادرة'); render(); }); };
+ACT.editInit=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تعديل المبادرة',IN_FIELDS,a,o=>{Object.assign(a,o); save('تم الحفظ'); render();},()=>{ (a.photos||[]).forEach(ph=>{ if(ph.local) MEDIA.del(ph.local).catch(()=>{}); }); S.inits=S.inits.filter(x=>x!==a); save('حُذفت المبادرة'); render(); }); };
 ACT.addLog=d=>{ const a=S.inits.find(x=>x.id===d.id); formRecord('تنفيذ: '+a.name,[{k:'text',label:'ماذا نُفّذ؟ (الصف، عدد الطلبة، التكريم…)'},{k:'date',label:'التاريخ',type:'date'},{k:'url',label:'رابط صور أو فيديو (اختياري)',type:'url'}],{date:todayISO()},o=>{ (a.log=a.log||[]).push(o); save('سُجّل التنفيذ'); render(); }); };
+
+/* initiative photos: compressed, stored on this device (IndexedDB) or in the artifact's assets */
+const phURL={};
+function phSrc(ph){ return ph.asset? '/_blob/'+ph.asset : ph.local? (phURL[ph.local]||'') : ''; }
+function phImg(ph,cls){ return `<img${cls?` class="${cls}"`:''} src="${esc(phSrc(ph))}"${ph.local?` data-lph="${esc(ph.local)}"`:''} alt="${esc(ph.cap||'صورة من المبادرة')}" loading="lazy">`; }
+async function fillLocalImgs(root){
+  for(const im of root.querySelectorAll('img[data-lph]')){ const id=im.dataset.lph;
+    if(!phURL[id]){ try{ const b=await MEDIA.get(id); if(!b) continue; phURL[id]=URL.createObjectURL(b); }catch(e){ continue; } }
+    im.src=phURL[id]; }
+}
+V.inits_after=v=>fillLocalImgs(v);
+async function shrinkImage(file){
+  try{
+    const bmp=await new Promise((ok,no)=>{ const im=new Image(); const u=URL.createObjectURL(file); im.onload=()=>{ URL.revokeObjectURL(u); ok(im); }; im.onerror=()=>{ URL.revokeObjectURL(u); no(); }; im.src=u; });
+    const M=1600, k=Math.min(1, M/Math.max(bmp.naturalWidth,bmp.naturalHeight));
+    const c=document.createElement('canvas'); c.width=Math.round(bmp.naturalWidth*k); c.height=Math.round(bmp.naturalHeight*k);
+    const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(bmp,0,0,c.width,c.height);
+    const b=await new Promise(ok=>c.toBlob(ok,'image/jpeg',0.82));
+    return b && b.size<file.size? b : file;
+  }catch(e){ return file; }
+}
+ACT.addPhotos=async d=>{
+  const a=S.inits.find(x=>x.id===d.id); if(!a) return;
+  const A=await getAssets();
+  if(!A && !window.indexedDB){ toast('هذا المتصفح لا يدعم حفظ الصور'); return; }
+  let files=[];
+  const f=modal({title:'صور: '+a.name, saveText:'حفظ الصور', body:`
+    <div class="field"><label for="phF">اختاري صورة أو أكثر</label><input class="input" id="phF" type="file" accept="image/*" multiple></div>
+    <div id="phList" class="stack" style="gap:8px"><p class="small faint">بعد اختيار الصور اكتبي وصفًا تحت كل صورة.</p></div>`,
+    onSave:()=>{
+      if(!files.length){ toast('اختاري صورة واحدة على الأقل'); return false; }
+      const caps=[...f.querySelectorAll('[data-cap]')].map(t=>t.value.trim());
+      const picked=files.slice(); a.photos=a.photos||[];
+      toast('جارٍ حفظ الصور…');
+      (async()=>{ let ok=0;
+        for(let i=0;i<picked.length;i++){
+          try{
+            const blob=await shrinkImage(picked[i]); const ph={id:'p'+uid(),cap:caps[i]||'',date:todayISO()};
+            if(A){ const r=await A.upload(new File([blob],(picked[i].name||'photo').replace(/\.[^.]+$/,'')+'.jpg',{type:blob.type||'image/jpeg'})); ph.asset=r.id; }
+            else { ph.local='m'+uid(); await MEDIA.put(ph.local,blob); }
+            a.photos.push(ph); ok++;
+          }catch(e){}
+        }
+        save(ok===picked.length? (ok===1?'حُفظت الصورة':'حُفظت '+AR(ok)+' صور') : ok? 'حُفظت '+AR(ok)+' من '+AR(picked.length)+' صور، وتعذّر حفظ الباقي' : 'تعذّر حفظ الصور، قد تكون مساحة الجهاز غير كافية');
+        render();
+      })();
+    }});
+  $('#phF',f).onchange=e=>{
+    files=[...e.target.files].filter(x=>/^image\//.test(x.type));
+    const L=$('#phList',f); Object.values(L._u||{}).forEach(u=>URL.revokeObjectURL(u)); L._u={};
+    L.innerHTML=files.length? files.map((x,i)=>{ const u=URL.createObjectURL(x); L._u[i]=u; return `<div class="ph-prev"><img src="${u}" alt=""><div class="field" style="margin:0"><label for="cap${i}">وصف الصورة ${files.length>1?AR(i+1):''}</label><textarea class="input" id="cap${i}" data-cap rows="2" placeholder="مثال: تكريم المتفوقات في الصف الثالث"></textarea></div></div>`; }).join('') : '<p class="small faint">لم تُختر صور.</p>';
+  };
+};
+ACT.viewPhoto=d=>{
+  const a=S.inits.find(x=>x.id===d.id); const ph=a&&(a.photos||[]).find(x=>x.id===d.ph); if(!ph) return;
+  const f=modal({title:a.name, saveText:'حفظ الوصف', wide:true, body:`${phImg(ph,'ph-big')}
+    <div class="field"><label for="phCap">وصف الصورة</label><textarea class="input" id="phCap" name="phCap" rows="2">${esc(ph.cap||'')}</textarea></div>
+    ${ph.date?`<p class="small faint">أُضيفت ${fmtDate(ph.date)}</p>`:''}`,
+    onSave:f=>{ ph.cap=f.elements.phCap.value.trim(); save('حُفظ الوصف'); render(); },
+    onDelete:()=>{ a.photos=a.photos.filter(x=>x!==ph); if(ph.local){ MEDIA.del(ph.local).catch(()=>{}); if(phURL[ph.local]){ URL.revokeObjectURL(phURL[ph.local]); delete phURL[ph.local]; } } save('حُذفت الصورة'); render(); }});
+  fillLocalImgs(f);
+};
 
 /* ---------- LINKS ---------- */
 const L_FIELDS=()=>[{k:'title',label:'اسم الرابط'},{k:'url',label:'الرابط',type:'url'},{k:'cat',label:'التصنيف',list:[...new Set(['نماذج إشرافية','منصات تعليمية','ملفات ومجلدات',...S.links.map(l=>l.cat).filter(Boolean)])]},{k:'desc',label:'وصف قصير (اختياري)',type:'textarea'}];
@@ -1064,12 +1134,15 @@ V.backup=()=>pageHead('إضافاتي','الحفظ والتثبيت','كل ما 
    <div><button class="btn danger" data-act="resetAll">إعادة الضبط</button></div></div>
  </div>`;
 ACT.exportJson=async()=>{
-  const name='نسخة-منصة-المجال-الأول-'+todayISO()+'.json'; const data=JSON.stringify({app:'muzn-field1',v:1,state:S},null,1);
+  const name='نسخة-منصة-المجال-الأول-'+todayISO()+'.json';
+  const media={};
+  for(const n of S.inits||[]) for(const ph of n.photos||[]) if(ph.local){ try{ const b=await MEDIA.get(ph.local); if(b) media[ph.local]=await new Promise((ok,no)=>{ const r=new FileReader(); r.onload=()=>ok(r.result); r.onerror=no; r.readAsDataURL(b); }); }catch(e){} }
+  const data=JSON.stringify({app:'muzn-field1',v:1,state:S,media},null,1);
   try{ if(window.claude&&window.claude.use){ const dl=await window.claude.use('downloads'); if(dl){ await dl.save({filename:name,data}); toast('تم حفظ النسخة'); return; } } }catch(e){ if(e&&e.code==='declined') return; }
   try{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:'application/json'})); a.download=name; document.body.appendChild(a); a.click(); a.remove(); toast('تم حفظ النسخة'); }catch(e){ toast('تعذّر الحفظ في هذا العرض'); }
 };
 ACT.importJson=()=>$('#fileJson').click();
-$('#fileJson').onchange=async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return; try{ const o=JSON.parse(await f.text()); if(!o||o.app!=='muzn-field1'||!o.state) throw 0; S=migrate(Object.assign(fresh(),o.state)); save('تم استرجاع النسخة'); render(); }catch(err){ toast('هذا الملف ليس نسخة احتياطية من المنصة'); } };
+$('#fileJson').onchange=async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return; try{ const o=JSON.parse(await f.text()); if(!o||o.app!=='muzn-field1'||!o.state) throw 0; if(o.media&&typeof o.media==='object'){ for(const [id,du] of Object.entries(o.media)){ try{ if(/^data:image\//.test(du)) await MEDIA.put(id, await (await fetch(du)).blob()); }catch(err){} } } S=migrate(Object.assign(fresh(),o.state)); save('تم استرجاع النسخة'); render(); }catch(err){ toast('هذا الملف ليس نسخة احتياطية من المنصة'); } };
 ACT.resetAll=(d,el)=>{ if(el.dataset.armed){ S=fresh(); save('أُعيدت البيانات الأصلية'); render(); } else { el.dataset.armed=1; el.textContent='اضغطي مرة أخرى للتأكيد'; } };
 
 /* ============ boot ============ */
