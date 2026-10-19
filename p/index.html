@@ -147,8 +147,10 @@ button.row .sic,button.row b{opacity:.6}
   var PHONE='76506037', root=document.getElementById('pk');
   var trial=0; /* trial link: #t<expiry, base-36 seconds>-<items>[.name] — works for the time it carries (the links program gives two hours), in this tab only */
   function unlock(k){ if(!trial){ try{localStorage.setItem(k,'1')}catch(e){} } try{sessionStorage.setItem(k,'1')}catch(e){} }
-  /* sections whose files are PDFs (boards, picture recaps) never open on trial links: a PDF opened once stays in the browser history.
-     A plain link (#…!) shows only what it carries (the prep files), nothing else. */
+  /* plain link (#…!): the subjects' other sections open for a 5-hour look (from the first visit on this device), in this tab only;
+     then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
+  var PREVIEW=5*3600e3, pv=0;
+  /* sections whose files are PDFs (boards, picture recaps) never open on trial or plain links: a PDF opened once stays in the browser history */
   var PDFP=/^(board|recap)/;
   function el(t,c,txt){ var n=document.createElement(t); if(c) n.className=c; if(txt!=null) n.textContent=txt; return n; }
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
@@ -215,6 +217,12 @@ button.row .sic,button.row b{opacity:.6}
   root.replaceChildren();
   if(plain){ document.getElementById('sub').textContent='المواد التعليمية'; var ct=document.querySelector('.contact'); if(ct) ct.style.display='none'; }
   else if(to) document.getElementById('sub').textContent='الباقة الذهبية · '+to;
+  if(plain && !trial){
+    var pvk='afuq-plain-t:'+(kcode||raw.split('.')[0]), first=0;
+    try{ first=+localStorage.getItem(pvk)||0; if(!first){ first=Date.now(); localStorage.setItem(pvk,String(first)); } }catch(e){ first=Date.now(); }
+    pv=first+PREVIEW;
+  }
+  var preview=pv>Date.now();
   if(trial) items.forEach(function(it){ it.parts=it.parts.filter(function(p){ return !PDFP.test(p[0]); }); });
   if(trial){
     if(Date.now()>trial){ /* expired: forget everything this trial opened in this tab */
@@ -238,11 +246,15 @@ button.row .sic,button.row b{opacity:.6}
     if(fresh){ put('localStorage','afuq-pkg-home',null); put('localStorage','afuq-pkg-paths',null); }
   } else if(items.length){
     var ok=[]; items.forEach(function(it){ it.parts.forEach(function(p){ ok.push(it.path+(p[0]==='page'?'':p[0]+'/')); }); });
-    var oj=JSON.stringify(ok);
-    put('sessionStorage','afuq-pkg-home',location.href); put('sessionStorage','afuq-pkg-paths',oj); put('sessionStorage','afuq-pkg-all',null);
-    /* forget a plain link's former 5-hour look at the other sections, if this tab still holds one */
-    try{ JSON.parse(sessionStorage.getItem('afuq-prev-keys')||'[]').forEach(function(k){ put('sessionStorage',k,null); }); }catch(e){}
-    ['afuq-prev-exp','afuq-prev-keys','afuq-prev-base'].forEach(function(k){ put('sessionStorage',k,null); });
+    var oj=JSON.stringify(ok), more=[], mkeys=[];
+    if(plain && preview) items.forEach(function(it){ it.c.parts.forEach(function(p){
+      if(it.parts.some(function(q){return q[0]===p[0]}) || PDFP.test(p[0])) return;
+      more.push(it.path+(p[0]==='page'?'':p[0]+'/')); if(p[2]) mkeys.push(it.c.lock+p[0]); }); });
+    put('sessionStorage','afuq-pkg-home',location.href); put('sessionStorage','afuq-pkg-paths',more.length?JSON.stringify(ok.concat(more)):oj); put('sessionStorage','afuq-pkg-all',null);
+    if(more.length){ put('sessionStorage','afuq-prev-exp',String(pv)); put('sessionStorage','afuq-prev-keys',JSON.stringify(mkeys)); put('sessionStorage','afuq-prev-base',oj);
+      mkeys.forEach(function(k){ put('sessionStorage',k,'1'); }); }
+    else { try{ JSON.parse(sessionStorage.getItem('afuq-prev-keys')||'[]').forEach(function(k){ put('sessionStorage',k,null); }); }catch(e){}
+      ['afuq-prev-exp','afuq-prev-keys','afuq-prev-base'].forEach(function(k){ put('sessionStorage',k,null); }); }
     if(fresh && !(put('localStorage','afuq-pkg-home',location.href) && put('localStorage','afuq-pkg-paths',oj))){ put('localStorage','afuq-pkg-home',null); put('localStorage','afuq-pkg-paths',null); }
     var lg=document.querySelector('.logo'); if(lg){ lg.removeAttribute('href'); lg.style.cursor='default'; }
   }
@@ -281,6 +293,16 @@ button.row .sic,button.row b{opacity:.6}
     b.append(document.createTextNode('تواصل معنا على '+PHONE+' للحصول على رابط صحيح.')); root.append(b); return;
   }
   if(!plain) root.append(el('p','hello',to?'أهلًا '+to:'أهلًا بك'));
+  if(plain && pv && items.some(function(it){ return it.c.parts.length>it.parts.length; })){
+    if(preview){
+      var lf=Math.max(1,Math.round((pv-Date.now())/60000));
+      var left=function(m){ var h=Math.floor(m/60), n=m%60, hs=h===1?'ساعة':h===2?'ساعتان':h?h.toLocaleString('ar')+' ساعات':'', ns=n?n.toLocaleString('ar')+' دقيقة':'';
+        return hs&&ns?hs+' و'+ns:hs||ns; };
+      root.append(el('p','ann','⏳ يمكنك الاطلاع على بقية أقسام المادة حتى الساعة '+new Date(pv).toLocaleTimeString('ar',{hour:'numeric',minute:'2-digit'})+
+        ' (باقي '+left(lf)+')، ثم تُقفل. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
+      setTimeout(function(){ location.reload(); }, pv-Date.now()+500);
+    } else root.append(el('p','ann','🔒 انتهت مدة الاطلاع على بقية أقسام المادة. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
+  }
   var ann=el('div'); root.append(ann);
   if(!plain) fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
     if(!j) return;
@@ -296,9 +318,14 @@ button.row .sic,button.row b{opacity:.6}
       var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; a.append(s, el('b',null,p[1]), el('span','arr','افتح ←'));
       box.append(a);
     });
-    if(trial) it.c.parts.forEach(function(p){
+    if(plain||trial) it.c.parts.forEach(function(p){
       if(it.parts.some(function(q){return q[0]===p[0]})) return;
-      if(!PDFP.test(p[0])) return;   /* a trial shows only what it carries, plus its locked PDF sections */
+      if(trial && !PDFP.test(p[0])) return;   /* a trial shows only what it carries, plus its locked PDF sections */
+      if(plain && preview && !PDFP.test(p[0])){
+        var o=el('a','row'); o.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
+        var so=el('span','sic'); so.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; o.append(so, el('b',null,p[1]), el('span','arr','⏳ افتح ←'));
+        box.append(o); return;
+      }
       var r=el('button','row'); r.type='button';
       var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; r.append(s, el('b',null,p[1]), el('span','arr','🔒 للباقة الذهبية'));
       r.onclick=function(){ goldDlg(it.c.title+' – '+p[1]); };
