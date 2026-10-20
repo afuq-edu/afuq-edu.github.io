@@ -44,6 +44,9 @@ select{font-family:Naskh,serif;font-size:16px;padding:7px 10px;border-radius:10p
 .hint{display:none;margin:0 14px 10px;font-family:Plex,sans-serif;font-size:13px;color:#8A5A1F}
 .card.manual .hint{display:block}
 footer{margin-top:20px;text-align:center;font-family:Plex,sans-serif;font-size:13px;color:var(--muted)}
+.shift{float:left;display:inline-flex;gap:2px;background:#fff;border:1px solid #D9E2DC;border-radius:999px;padding:2px;margin:0 0 6px 0;font-family:Plex,sans-serif;font-size:12px}
+.shift button{font:inherit;border:0;background:transparent;color:var(--muted);padding:3px 10px;border-radius:999px;cursor:pointer}
+.shift button[aria-pressed="true"]{background:var(--sage);color:#fff;font-weight:700}
 @media (max-width:560px){body{font-size:16px}h1{font-size:19px}.card h2{flex-wrap:wrap}.txt{font-size:15.5px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -51,6 +54,7 @@ footer{margin-top:20px;text-align:center;font-family:Plex,sans-serif;font-size:1
 <body>
 <div class="wrap">
   <header class="top">
+    <div class="shift" role="group" aria-label="مدة الحصة"><button type="button" id="sh1">فترة · ٤٠ د</button><button type="button" id="sh2">فترتان · ٣٥ د</button></div>
     <div class="subj" id="subj"></div>
     <h1>نسخ حقول التحضير إلى منصة نور</h1>
     <div class="mode" role="group" aria-label="نوع التحضير">
@@ -83,12 +87,30 @@ D.lessons.forEach((L, i) => {
   o.textContent = 'الأسبوع ' + L.weeks.join('، ') + ' – ' + L.title + ' (' + L.n + (L.n > 2 ? ' حصص' : (L.n === 2 ? ' حصتان' : ' حصة')) + ')';
   $('#lesson').appendChild(o);
 });
+/* فترة واحدة: حصة 40 دقيقة كما في التحضير؛ فترتان: الحصة 35 دقيقة، فتُوزَّع أزمنة الخطوات بالنسبة نفسها (أقل خطوة دقيقة واحدة). */
+let shift = '1'; try { shift = localStorage.getItem('afuq-prep-shift') === '2' ? '2' : '1'; } catch (e) {}
+function to35(s) {
+  const re = /\((\d+) د: من الدقيقة (\d+) إلى (\d+)\)/g, ms = [...s.matchAll(re)];
+  if (!ms.length) return s;
+  const tot = ms.reduce((a, m) => a + (+m[1]), 0), T = 35;
+  if (tot <= T) return s;
+  const raw = ms.map(m => +m[1] * T / tot), r = raw.map(x => Math.max(1, Math.floor(x)));
+  let left = T - r.reduce((a, b) => a + b, 0);
+  const order = raw.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]);
+  for (let k = 0; left > 0; k++) { r[order[k % order.length][1]]++; left--; }
+  while (left < 0) { const i = r.indexOf(Math.max(...r)); r[i]--; left++; }
+  let t = 0, i = 0;
+  return s.replace(re, () => { const a = t, d = r[i++]; t += d; return '(' + d + ' د: من الدقيقة ' + a + ' إلى ' + t + ')'; })
+          .replace(/المجموع: \d+ دقيقة/, 'المجموع: ' + T + ' دقيقة');
+}
+function fv(P, fi) { return shift === '2' ? to35(P.f[fi]) : P.f[fi]; }
 function fieldText(L, fi) {
-  if (mode === 'sep') return L.periods[pi].f[fi];
-  return L.periods.map(P => 'الحصة ' + P.k + ' (' + P.axis + '):\n' + P.f[fi]).join('\n\n');
+  if (mode === 'sep') return fv(L.periods[pi], fi);
+  return L.periods.map(P => 'الحصة ' + P.k + ' (' + P.axis + '):\n' + fv(P, fi)).join('\n\n');
 }
 function render() {
   const L = D.lessons[li];
+  $('#sh1').setAttribute('aria-pressed', shift === '1'); $('#sh2').setAttribute('aria-pressed', shift === '2');
   $('#mSep').setAttribute('aria-pressed', mode === 'sep');
   $('#mCom').setAttribute('aria-pressed', mode === 'com');
   $('#status').textContent = mode === 'sep'
@@ -146,6 +168,7 @@ async function copyText(t, btn, card) {
 }
 $('#lesson').onchange = e => { li = +e.target.value; pi = 0; render(); };
 $('#mSep').onclick = () => { mode = 'sep'; render(); };
+['1', '2'].forEach(v => { $('#sh' + v).onclick = () => { shift = v; try { localStorage.setItem('afuq-prep-shift', v); } catch (e) {} render(); }; });
 $('#mCom').onclick = () => { mode = 'com'; pi = 0; render(); };
 render();
 </script>
