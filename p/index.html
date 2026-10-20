@@ -263,7 +263,8 @@ button.row .sic,button.row b{opacity:.6}
     {name:'منصة المعلم', desc:'تطبيق مساعد للمعلم، هدية خاصة لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://22-tan-gamma.vercel.app/', note:'يمكن استخدامه على الهاتف، لكن للحصول على واجهة أفضل يوصى باستخدامه على جهاز تابلت أو كمبيوتر.'},
     {name:'الجرس', desc:'تطبيق الجرس، الهدية الثانية لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://afuq-edu.github.io/111/jaras/', note:'يعمل على الهاتف والتابلت والكمبيوتر.'}
   ];
-  function gifts(locked){ var f=document.createDocumentFragment(); GIFTS.forEach(function(g){ f.append(gift(g,locked)); }); f.append(hader()); return f; }
+  function gifts(locked){ var f=document.createDocumentFragment(); GIFTS.forEach(function(g){ f.append(gift(g,locked)); }); if(SHOW_HADER) f.append(hader()); return f; }
+  var SHOW_HADER=false; /* «حاضر» card hidden for now (owner, 2026-10-20); true brings it back */
   /* «حاضر» (afaq-subscribe): an add-on (3 free periods, then 1 rial for gold subscribers), offered on every link page next to the gifts */
   function hader(){
     var b=el('button','gift'); b.type='button';
