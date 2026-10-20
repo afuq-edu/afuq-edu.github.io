@@ -1173,6 +1173,8 @@ $('#fileJson').onchange=async e=>{ const f=e.target.files[0]; e.target.value='';
 ACT.resetAll=(d,el)=>{ if(el.dataset.armed){ S=fresh(); save('أُعيدت البيانات الأصلية'); render(); } else { el.dataset.armed=1; el.textContent='اضغطي مرة أخرى للتأكيد'; } };
 
 /* ============ boot ============ */
+// always open on the home page, even from a saved link or home-screen icon that ends in #section
+if(location.hash && location.hash!=='#home'){ try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
 onHash();
 setTimeout(initRemote,0);
 })();
