@@ -27,7 +27,7 @@ def literals(s):
         while s[i].isspace(): i += 1
         try: o, e = DEC.raw_decode(s, i); out.append(['#json', i, e, o])
         except Exception: pass
-    for m in re.finditer(r'(?:(?:const|var|let)\s+|,\s*)([A-Za-z_$][\w$]*)\s*=\s*(?=[\[{"])', s):
+    for m in re.finditer(r'(?:(?:const|var|let)\s+|,\s*)([A-Za-z_$][\w$]*)\s*=\s*(?:\(window\.AFUQ35\|\|function\(x\)\{return x\}\)\()?(?=[\[{"])', s):
         i = m.end()
         try: o, e = DEC.raw_decode(s, i)
         except Exception: continue
@@ -415,5 +415,6 @@ def main():
     open(FILES + 'q/engine.js', 'w', encoding='utf8').write(open(R + 'tools/quiz/engine.js', encoding='utf8').read())
     open(FILES + 'q/engine.css', 'w', encoding='utf8').write(open(R + 'tools/quiz/engine.css', encoding='utf8').read())
     print('\n'.join(report))
+    import add_shift; add_shift.main()   # the 40/35-minute switch on every prep page
 
 if __name__ == '__main__': main()
