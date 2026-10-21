@@ -19,6 +19,14 @@
     '#afuqIdx .all{display:inline-block;margin-top:18px;color:#5B6B7B;font-size:14px}#afuqLs{position:fixed;right:12px;bottom:12px;z-index:2147483600;background:#2F6FB3;color:#fff;'+
     'font:700 14px/1 system-ui,Tahoma,sans-serif;padding:10px 14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px #0004;direction:rtl}';
   function addCss(){ var s=document.createElement('style'); s.textContent=css; document.head.appendChild(s); }
+  /* the Noor message: one wording for boys and girls (الطلبة / plural address), the lesson title, the link on its own line */
+  function nmsg(L){
+    return '📘 شرح درس: «'+String(L.title).replace(/[\u064B-\u0652]/g,'')+'»\n\n'+
+      'أعزائي الطلبة 🌟\n'+
+      'هذا شرح الدرس بالشرائح، لمراجعته في البيت بهدوء وعلى راحتكم؛ فكل شريحة تقرّبكم خطوة من الفهم والتميّز.\n\n'+
+      '🔗 رابط الدرس:\n'+studentUrl(L.id)+'\n\n'+
+      'بالتوفيق للجميع ✨';
+  }
   function studentUrl(id){ return location.origin+stu+'?l='+encodeURIComponent(id); }
   function copy(t,btn){
     var done=function(){ var o=btn.textContent; btn.textContent='تم النسخ ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent=o; btn.classList.remove('ok'); },1800); };
@@ -43,7 +51,7 @@
       {
         var go=el('a','b p','دخول'); go.href=here+'?l='+encodeURIComponent(L.id);
         var cp=el('button','b n','📤 نشر لنور'); cp.type='button'; cp.title='ينسخ رابط هذا الدرس للطالب';
-        cp.onclick=function(){ copy('اقرأ شرح درس «'+L.title+'» بالشرائح في البيت: افتح الرابط وتنقّل بين الشرائح.\n'+studentUrl(L.id),cp); };
+        cp.onclick=function(){ copy(nmsg(L),cp); };
         a.appendChild(go); a.appendChild(cp);
       }
       r.appendChild(t); r.appendChild(a); w.appendChild(r);

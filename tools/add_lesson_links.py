@@ -32,6 +32,9 @@ def js(o): return json.dumps(o, ensure_ascii=False).replace('</', '<\\/')
 def teacher(h, student_url):
     d, i, e = deck_of(h)
     if not d: return None
+    # fmt() output in one inline box: inside the decks' flex boxes (goal tickets…) bare text + <mark>/<bdi> became separate
+    # flex items and the words of one sentence showed up in scrambled columns
+    h = h.replace("return t.replace(/\\u0001/g,'<br>')}", "return '<span class=\"fx\">'+t.replace(/\\u0001/g,'<br>')+'</span>'}", 1)
     if MARK not in h[e:e + 400]: h = h[:e] + FILTER + h[e:]
     h = TAG.sub('', h)
     return h.replace('</body>', '<script src="/assets/lessonidx.js" data-mode="teacher" data-student="%s"></script>\n</body>' % student_url, 1)
