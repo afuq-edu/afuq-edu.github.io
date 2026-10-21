@@ -1,6 +1,6 @@
 /* Interactive decks (window.DECK): open on a list of the lessons instead of one long run of hundreds of slides.
-   Teacher deck (data-mode="teacher"): each lesson has «دخول» (that lesson with the teacher notes, ?l=<id>), «تشغيل» (the
-   student page) and «نسخ لمنصة نور» (the student link of that lesson only + a short message); ?all=1 shows every slide.
+   Teacher deck (data-mode="teacher"): each lesson has «تشغيل» (that lesson with the teacher notes, ?l=<id>) and «نشر لنور»
+   (copies the student link of that lesson only + a short message); ?all=1 shows every slide.
    Student page (data-mode="student", files repo /afuq/<g>/<s>/view/<sec>/): ?l=<id> shows that lesson only, nothing else.
    The lesson filter itself sits right after the DECK data (tools/add_lesson_links.py). */
 (function(){
@@ -31,7 +31,7 @@
     var o=el('div'); o.id='afuqIdx'; var w=el('div','w'); o.appendChild(w);
     w.appendChild(el('h1',null,(D.title||'').replace(/^العرض التفاعلي\s*[–-]\s*/,'')||'الدروس'));
     var n=0; D.lessons.forEach(function(L){ n+=(L.slides||[]).length; });
-    w.appendChild(el('p','s','اختر الدرس: «دخول» يفتحه لك بملاحظاتك، و«نسخ لمنصة نور» ينسخ رابط هذا الدرس وحده ليقرأه الطالب في البيت.'));
+    w.appendChild(el('p','s','اختر الدرس: «تشغيل» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده لتضعه في منصة نور فيقرأه الطالب في البيت.'));
     var unit=null, units={}; (D.units||[]).forEach(function(u){ units[u.id]=u.name; });
     D.lessons.forEach(function(L){
       var un=L.unitName||units[L.unit]||'';
@@ -41,11 +41,10 @@
       t.appendChild(document.createTextNode((L.emo?L.emo+' ':'')+L.title)); t.appendChild(el('i',null,(L.slides||[]).length+' شريحة'));
       var a=el('div','a');
       {
-        var go=el('a','b p','دخول'); go.href=here+'?l='+encodeURIComponent(L.id);
-        var run=el('a','b','تشغيل'); run.href=studentUrl(L.id); run.target='_blank'; run.rel='noopener'; run.title='كما يراه الطالب';
-        var cp=el('button','b n','نسخ لمنصة نور'); cp.type='button';
+        var go=el('a','b p','▶ تشغيل'); go.href=here+'?l='+encodeURIComponent(L.id);
+        var cp=el('button','b n','📤 نشر لنور'); cp.type='button'; cp.title='ينسخ رابط هذا الدرس للطالب';
         cp.onclick=function(){ copy('اقرأ شرح درس «'+L.title+'» بالشرائح في البيت: افتح الرابط وتنقّل بين الشرائح.\n'+studentUrl(L.id),cp); };
-        a.appendChild(go); a.appendChild(run); a.appendChild(cp);
+        a.appendChild(go); a.appendChild(cp);
       }
       r.appendChild(t); r.appendChild(a); w.appendChild(r);
     });
