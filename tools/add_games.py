@@ -70,6 +70,7 @@ def build_student(h, d):
         txt = js(lessons)
         out = out[:j] + js({k: v for k, v in imgs.items() if k in txt}) + out[j + e2:]
     out = GUARD_RE.sub('', out, count=1)                      # the student copy is open (no gold guard)
+    out = re.sub(r'<script src="/assets/lessonidx\.js"[^>]*></script>\n?', '', out)   # the teacher deck's lesson list stays in the teacher deck
     out = re.sub(r'<title>[^<]*</title>', '<title>%s</title>' % nd['title'], out, count=1)
     return out, lessons
 
@@ -295,3 +296,4 @@ main()
 sys.path.insert(0, R + 'tools'); _d = __import__('dedupe_fonts')  # fonts once in /assets/f (1 GB Pages limit)
 for _r in (R, os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'):
     if os.path.isdir(_r): sys.argv = ['', _r]; _d.main()
+sys.argv = ['']; __import__('extract_imgs').main()  # deck images once in /assets/img (both repos)

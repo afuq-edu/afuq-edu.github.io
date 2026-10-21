@@ -73,3 +73,5 @@ main()
 sys.path.insert(0, R + 'tools'); _d = __import__('dedupe_fonts')  # fonts once in /assets/f (1 GB Pages limit)
 for _r in (R, os.environ.get('AFUQ_FILES', '/home/user/afuq').rstrip('/') + '/'):
     if os.path.isdir(_r): sys.argv = ['', _r]; _d.main()
+sys.argv = ['']; __import__('add_lesson_links').main()  # lesson list in the teacher deck + one student link per lesson
+sys.argv = ['']; __import__('extract_imgs').main()  # deck images once in /assets/img (both repos)
