@@ -35,8 +35,9 @@
   // Trial links (/p/#t…) unlock this tab for one hour only: when it ends, forget them and go back to the link page,
   // which explains that the trial is over.
   function trialEnd(){ var t=+rd('sessionStorage','afuq-trial-exp'); return t>0?t:0; }
+  var TRIAL_GEN='u';   /* same letter as in p/index.html: a tab opened from an older (stopped) trial link ends now */
   function trialOver(){
-    var t=trialEnd(); if(!t||Date.now()<=t) return false;
+    var t=trialEnd(); if(!t||(Date.now()<=t&&rd('sessionStorage','afuq-trial-g')===TRIAL_GEN)) return false;
     var home=rd('sessionStorage',K)||'/p/';
     try{ for(var i=sessionStorage.length-1;i>=0;i--){ var k=sessionStorage.key(i); if(/^(ofuq-|afuq-all|afuq-pkg-paths|afuq-pkg-all)/.test(k)) sessionStorage.removeItem(k); } }catch(e){}
     out(home); return true;
