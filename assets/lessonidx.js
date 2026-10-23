@@ -2,6 +2,8 @@
    Teacher deck (data-mode="teacher"): each lesson has «دخول» (that lesson with the teacher notes, ?l=<id>) and «نشر لنور»
    (copies the student link of that lesson only + a short message); ?all=1 shows every slide.
    Student page (data-mode="student", files repo /afuq/<g>/<s>/view/<sec>/): ?l=<id> shows that lesson only, nothing else.
+   A lesson's parts that are lessons of their own (L.parts: النحو، الإملاء، التعبير… or one per period in grades 1–4) are listed
+   under it with their own «دخول» / «نشر لنور»: ?l=<id>&p=<part> shows the cover and that part's slides only.
    The lesson filter itself sits right after the DECK data (tools/add_lesson_links.py). */
 (function(){
   var me=document.currentScript, mode=(me&&me.getAttribute('data-mode'))||'teacher', stu=(me&&me.getAttribute('data-student'))||'';
@@ -16,18 +18,35 @@
     '#afuqIdx .c{display:inline-block;min-width:34px;text-align:center;background:#EAF1FA;color:#2F6FB3;border-radius:8px;padding:1px 6px;margin-inline-end:6px;font-size:13px}'+
     '#afuqIdx .a{display:flex;gap:6px;flex-wrap:wrap}#afuqIdx .b{font:inherit;font-size:14px;font-weight:700;border-radius:999px;padding:6px 14px;cursor:pointer;text-decoration:none;border:1.5px solid #2F6FB3;color:#2F6FB3;background:#fff;white-space:nowrap}'+
     '#afuqIdx .b.p{background:#2F6FB3;color:#fff}#afuqIdx .b.n{border-color:#1E9E5A;color:#1E9E5A}#afuqIdx .b.ok{background:#1E9E5A;color:#fff;border-color:#1E9E5A}'+
+    '#afuqIdx .r.sub{margin:-2px 0 8px;margin-inline-start:26px;padding:7px 10px;background:#FAFCFF;border-style:dashed;box-shadow:none}'+
+    '#afuqIdx .r.sub .t{font-size:15px;flex-basis:200px}#afuqIdx .r.sub .b{font-size:13px;padding:5px 12px}'+
+    '#afuqIdx .k{display:inline-block;margin-inline-end:6px}'+
     '#afuqIdx .all{display:inline-block;margin-top:18px;color:#5B6B7B;font-size:14px}#afuqLs{position:fixed;right:12px;bottom:12px;z-index:2147483600;background:#2F6FB3;color:#fff;'+
     'font:700 14px/1 system-ui,Tahoma,sans-serif;padding:10px 14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px #0004;direction:rtl}';
   function addCss(){ var s=document.createElement('style'); s.textContent=css; document.head.appendChild(s); }
   /* the Noor message: one wording for boys and girls (الطلبة / plural address), the lesson title, the link on its own line */
-  function nmsg(L){
-    return '📘 شرح درس: «'+String(L.title).replace(/[\u064B-\u0652]/g,'')+'»\n\n'+
+  function nmsg(L,P){
+    return '📘 شرح درس: «'+String(P?P.t:L.title).replace(/[\u064B-\u0652]/g,'')+'»\n\n'+
       'أعزائي الطلبة 🌟\n'+
       'هذا شرح الدرس بالشرائح، لمراجعته في البيت بهدوء وعلى راحتكم؛ فكل شريحة تقرّبكم خطوة من الفهم والتميّز.\n\n'+
-      '🔗 رابط الدرس:\n'+studentUrl(L.id)+'\n\n'+
+      '🔗 رابط الدرس:\n'+studentUrl(L.id,P)+'\n\n'+
       'بالتوفيق للجميع ✨';
   }
-  function studentUrl(id){ return location.origin+stu+'?l='+encodeURIComponent(id); }
+  function studentUrl(id,P){ return location.origin+stu+'?l='+encodeURIComponent(id)+(P?'&p='+encodeURIComponent(P.id):''); }
+  function icon(t){ t=String(t).replace(/[\u064B-\u0652]/g,'');
+    return /^(النحو|الصرف)/.test(t)?'📗':/^الإملاء/.test(t)?'✏️':/^خط/.test(t)?'✍️':/^التعبير/.test(t)?'📝':/^(القراءة الحرة|قراءة حرة)/.test(t)?'📚':/^(الحصة|Period)/.test(t)?'🕘':'▫️'; }
+  function cnt(n){ return n===1?'شريحة واحدة':n===2?'شريحتان':n+(n>=3&&n<=10?' شرائح':' شريحة'); }
+  function row(L,P){
+    var r=el('div',P?'r sub':'r'), t=el('div','t');
+    if(P){ t.appendChild(el('span','k',icon(P.t))); t.appendChild(document.createTextNode(P.t)); t.appendChild(el('i',null,cnt(P.b-P.a+1))); }
+    else{ if(L.code) t.appendChild(el('span','c',L.code));
+      t.appendChild(document.createTextNode((L.emo?L.emo+' ':'')+L.title)); t.appendChild(el('i',null,cnt((L.slides||[]).length))); }
+    var a=el('div','a');
+    var go=el('a','b p','دخول'); go.href=here+'?l='+encodeURIComponent(L.id)+(P?'&p='+encodeURIComponent(P.id):'');
+    var cp=el('button','b n','📤 نشر لنور'); cp.type='button'; cp.title=P?'ينسخ رابط هذا الجزء للطالب':'ينسخ رابط هذا الدرس للطالب';
+    cp.onclick=function(){ copy(nmsg(L,P),cp); };
+    a.appendChild(go); a.appendChild(cp); r.appendChild(t); r.appendChild(a); return r;
+  }
   function copy(t,btn){
     var done=function(){ var o=btn.textContent; btn.textContent='تم النسخ ✓'; btn.classList.add('ok'); setTimeout(function(){ btn.textContent=o; btn.classList.remove('ok'); },1800); };
     var fb=function(){ var a=document.createElement('textarea'); a.value=t; a.setAttribute('readonly',''); a.style.cssText='position:fixed;top:-1000px;opacity:0'; document.body.appendChild(a); a.select();
@@ -39,22 +58,14 @@
     var o=el('div'); o.id='afuqIdx'; var w=el('div','w'); o.appendChild(w);
     w.appendChild(el('h1',null,(D.title||'').replace(/^العرض التفاعلي\s*[–-]\s*/,'')||'الدروس'));
     var n=0; D.lessons.forEach(function(L){ n+=(L.slides||[]).length; });
-    w.appendChild(el('p','s','اختر الدرس: «دخول» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده لتضعه في منصة نور فيقرأه الطالب في البيت.'));
+    w.appendChild(el('p','s','اختر الدرس: «دخول» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده لتضعه في منصة نور فيقرأه الطالب في البيت.'+
+      (D.lessons.some(function(L){ return L.parts&&L.parts.length; })?' دروس النحو والإملاء والتعبير وغيرها التي داخل الدرس تظهر تحته بعنوانها وشرائحها.':'')));
     var unit=null, units={}; (D.units||[]).forEach(function(u){ units[u.id]=u.name; });
     D.lessons.forEach(function(L){
       var un=L.unitName||units[L.unit]||'';
       if(un&&un!==unit){ unit=un; w.appendChild(el('h2',null,un)); }
-      var r=el('div','r'), t=el('div','t');
-      if(L.code) t.appendChild(el('span','c',L.code));
-      t.appendChild(document.createTextNode((L.emo?L.emo+' ':'')+L.title)); t.appendChild(el('i',null,(L.slides||[]).length+' شريحة'));
-      var a=el('div','a');
-      {
-        var go=el('a','b p','دخول'); go.href=here+'?l='+encodeURIComponent(L.id);
-        var cp=el('button','b n','📤 نشر لنور'); cp.type='button'; cp.title='ينسخ رابط هذا الدرس للطالب';
-        cp.onclick=function(){ copy(nmsg(L),cp); };
-        a.appendChild(go); a.appendChild(cp);
-      }
-      r.appendChild(t); r.appendChild(a); w.appendChild(r);
+      w.appendChild(row(L));
+      (L.parts||[]).forEach(function(P){ w.appendChild(row(L,P)); });
     });
     { var all=el('a','all','عرض كل الشرائح متتابعة ('+n+' شريحة)'); all.href=here+'?all=1'; w.appendChild(all); }
     ['pointerdown','touchstart','mousedown','click','keydown'].forEach(function(ev){ o.addEventListener(ev,function(e){ e.stopPropagation(); }); });
@@ -72,7 +83,7 @@
     document.body.appendChild(a);
   }
   function start(){
-    var id=q.get('l'), ok=id&&D.lessons.some(function(L){ return L.id===id; });
+    var id=q.get('l'), ok=id&&D.lessons.some(function(L){ return L.id===id; });   /* a wrong &p= falls back to the whole lesson (the filter ignores it) */
     if(ok){ if(mode==='teacher') back(); }
     else if(mode==='student') closed();
     else if(!q.get('all')) list();
