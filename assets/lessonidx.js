@@ -40,7 +40,7 @@
     var r=el('div',P?'r sub':'r'), t=el('div','t');
     if(P){ t.appendChild(el('span','k',icon(P.t))); t.appendChild(document.createTextNode(P.t)); t.appendChild(el('i',null,cnt(P.b-P.a+1))); }
     else{ if(L.code) t.appendChild(el('span','c',L.code));
-      t.appendChild(document.createTextNode((L.emo?L.emo+' ':'')+L.title)); t.appendChild(el('i',null,cnt((L.slides||[]).length))); }
+      t.appendChild(document.createTextNode((L.emo?L.emo+' ':'')+L.title)); var own=(L.slides||[]).length; (L.parts||[]).forEach(function(x){ if(x.x) own-=x.b-x.a+1; }); t.appendChild(el('i',null,cnt(own))); }
     var a=el('div','a');
     var go=el('a','b p','دخول'); go.href=here+'?l='+encodeURIComponent(L.id)+(P?'&p='+encodeURIComponent(P.id):'');
     var cp=el('button','b n','📤 نشر لنور'); cp.type='button'; cp.title=P?'ينسخ رابط هذا الجزء للطالب':'ينسخ رابط هذا الدرس للطالب';
@@ -59,7 +59,7 @@
     w.appendChild(el('h1',null,(D.title||'').replace(/^العرض التفاعلي\s*[–-]\s*/,'')||'الدروس'));
     var n=0; D.lessons.forEach(function(L){ n+=(L.slides||[]).length; });
     w.appendChild(el('p','s','اختر الدرس: «دخول» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده لتضعه في منصة نور فيقرأه الطالب في البيت.'+
-      (D.lessons.some(function(L){ return L.parts&&L.parts.length; })?' دروس النحو والإملاء والتعبير وغيرها التي داخل الدرس تظهر تحته بعنوانها وشرائحها.':'')));
+      (D.lessons.some(function(L){ return L.parts&&L.parts.length; })?' دروس النحو والإملاء والتعبير وغيرها تظهر تحت درسها بعنوانها وشرائحها، ولا تتكرر في الدرس نفسه.':'')));
     var unit=null, units={}; (D.units||[]).forEach(function(u){ units[u.id]=u.name; });
     D.lessons.forEach(function(L){
       var un=L.unitName||units[L.unit]||'';

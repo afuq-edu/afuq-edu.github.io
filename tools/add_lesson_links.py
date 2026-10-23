@@ -16,12 +16,14 @@ sys.path.insert(0, R + 'tools')
 DEC = json.JSONDecoder()
 MARK = '/*afuq-lesson-filter*/'
 FILTER_END = '/*afuq-lesson-filter-end*/'
-# ?l=<lessonId> keeps only that lesson (own saved position); with &p=<partId> only that part's slides (behind the lesson's
-# cover, which then shows the part's title). Runs right after the DECK data, before the deck engine reads it.
+# ?l=<lessonId> keeps only that lesson (own saved position), without the slides of its own-lesson parts (x: grammar,
+# spelling… — those open with &p=<partId>: the lesson's cover, then showing the part's title, and that part's slides only).
+# Period parts (grades 1–4) stay in the whole lesson too. Runs right after the DECK data, before the deck engine reads it.
 FILTER = (MARK + ';(function(){var s=new URLSearchParams(location.search),q=s.get("l"),p=s.get("p");if(!q)return;var D=window.DECK,'
           'L=D.lessons.filter(function(x){return x.id===q});if(!L.length)return;var P=p&&(L[0].parts||[]).filter(function(x){return x.id===p})[0];'
           'if(P){var o=L[0],sl=o.slides;L=[Object.assign({},o,{title:P.t,unitName:(o.unitName?o.unitName+" – ":"")+o.title,'
-          'slides:[sl[0]].concat(sl.slice(P.a,P.b+1))})]}D.lessons=L;D.units=(D.units||[]).filter(function(u){return u.id===L[0].unit});'
+          'slides:[sl[0]].concat(sl.slice(P.a,P.b+1))})]}else if((L[0].parts||[]).some(function(x){return x.x})){var o=L[0];'
+          'L=[Object.assign({},o,{slides:o.slides.filter(function(z,i){return !o.parts.some(function(x){return x.x&&i>=x.a&&i<=x.b})})})]}D.lessons=L;D.units=(D.units||[]).filter(function(u){return u.id===L[0].unit});'
           'D.store+="-"+q+(P?"-"+p:"")})();' + FILTER_END)
 OLD_FILTER = re.compile(re.escape(MARK) + r';\(function\(\)\{.*?(?:\}\)\(\);' + re.escape(FILTER_END) + r'|\}\)\(\);)', re.S)
 PARTS = json.load(open(R + 'tools/lesson_parts.json', encoding='utf8'))
@@ -46,7 +48,8 @@ def parts_of(deck, L):
     """[{id, t, a, b}]: the lesson's parts that are lessons of their own (tools/lesson_parts.json), or one per «period» slide."""
     sl = L.get('slides') or []
     if deck in PARTS:
-        return [{'id': 'p%d' % (k + 1), 't': t, 'a': a, 'b': b} for k, (a, b, t) in enumerate(PARTS[deck].get(L.get('id'), [])) if 0 < a <= b < len(sl)]
+        # x: these slides belong to the part only — the lesson itself (?l=<id>) leaves them out
+        return [{'id': 'p%d' % (k + 1), 't': t, 'a': a, 'b': b, 'x': 1} for k, (a, b, t) in enumerate(PARTS[deck].get(L.get('id'), [])) if 0 < a <= b < len(sl)]
     per = [i for i, x in enumerate(sl) if x.get('type') == 'period']
     if len(per) < 2: return []
     end = next((i for i, x in enumerate(sl) if x.get('type') in ('summary', 'exit', 'homework') or plain(x.get('title')).startswith('خلاصة')), len(sl))
