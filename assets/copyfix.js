@@ -2,7 +2,8 @@
    Every copy on a prep page goes through clean(): HTML and tables become ordered lines,
    tabs and stray spaces are removed, and blank lines are limited to one between blocks.
    It wraps navigator.clipboard.writeText, the textarea + execCommand('copy') fallback,
-   the prompt() fallback, and manual selection copies (Ctrl+C / long-press). */
+   the prompt() fallback, and manual selection copies (Ctrl+C / long-press). Besides the plain text it puts an HTML copy
+   on the clipboard (toHtml: one paragraph per line, bold step headings, bullet points), which Noor's editor keeps as is. */
 (function () {
   'use strict';
   if (window.__afuqCopyFix) return;
@@ -254,12 +255,52 @@
   }
   window.afuqCleanCopy = clean;
 
+  /* ---------- the same text as HTML for Noor's rich-text fields ----------
+     Pasted as plain text, Noor's editor can run the lines of a step together. With an HTML copy every line stays a
+     line: a step's heading in bold, its strategy / teacher / student lines as bullet points under it. */
+  var reBullet = /^[•\-–*]\s*/;
+  var reTotal = /^(?:مجموع الزمن|المجموع|الزمن الكلي|زمن الحصة|Total)(?=\s|[:：]|$)/;
+  function esc(x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function point(l) { return reBullet.test(l) || reRoleLine.test(l) || /^الاستراتيجي(?:ة|ات)\s*[:：]/.test(l); }
+  function toHtml(text) {
+    var lines = String(text).split('\n'), out = [], list = false;
+    function close() { if (list) { out.push('</ul>'); list = false; } }
+    lines.forEach(function (raw, i) {
+      var l = raw.trim();
+      if (!l) { close(); return; }
+      if (point(l)) {
+        if (!list) { out.push('<ul>'); list = true; }
+        var b = l.replace(reBullet, ''), m = b.match(/^([^:：]{2,24}[:：])\s*(.*)$/);
+        out.push('<li>' + (m ? '<b>' + esc(m[1]) + '</b> ' + esc(m[2]) : esc(b)) + '</li>');
+        return;
+      }
+      close();
+      var next = ''; for (var k = i + 1; k < lines.length; k++) { if (lines[k].trim()) { next = lines[k].trim(); break; } }
+      var head = (next && point(next)) || reTotal.test(l);
+      out.push('<p>' + (head ? '<b>' + esc(l) + '</b>' : esc(l)) + '</p>');
+    });
+    close();
+    return '<div dir="rtl">' + out.join('') + '</div>';
+  }
+  window.afuqCopyHtml = toHtml;
+
   // 1) Async clipboard API
   var cb = navigator.clipboard;
   if (cb && cb.writeText) {
     var orig = cb.writeText.bind(cb);
     try {
-      cb.writeText = function (t) { return orig(clean(t)); };
+      cb.writeText = function (t) {
+        var plain = clean(t);
+        if (window.ClipboardItem && cb.write) {
+          try {
+            return cb.write([new ClipboardItem({
+              'text/plain': new Blob([plain], { type: 'text/plain' }),
+              'text/html': new Blob([toHtml(plain)], { type: 'text/html' })
+            })]).catch(function () { return orig(plain); });
+          } catch (e) {}
+        }
+        return orig(plain);
+      };
     } catch (e) {}
   }
 
@@ -275,6 +316,13 @@
             el.value = c;
             try { el.select(); el.setSelectionRange(0, c.length); } catch (e) {}
           }
+          var once = function (ev) {
+            document.removeEventListener('copy', once, true);
+            if (!ev.clipboardData) return;
+            ev.clipboardData.setData('text/plain', c); ev.clipboardData.setData('text/html', toHtml(c)); ev.preventDefault();
+          };
+          document.addEventListener('copy', once, true);
+          setTimeout(function () { document.removeEventListener('copy', once, true); }, 0);
         }
       }
       return origExec.apply(document, arguments);
@@ -309,6 +357,7 @@
     var text = clean(squash(walk(box)));
     if (!text) return;
     ev.clipboardData.setData('text/plain', text);
+    ev.clipboardData.setData('text/html', toHtml(text));
     ev.preventDefault();
   }, true);
 })();
