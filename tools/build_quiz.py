@@ -416,5 +416,6 @@ def main():
     open(FILES + 'q/engine.css', 'w', encoding='utf8').write(open(R + 'tools/quiz/engine.css', encoding='utf8').read())
     print('\n'.join(report))
     import add_shift; add_shift.main()   # the 40/35-minute switch on every prep page
+    import add_twoshift; add_twoshift.main()   # two-shift preps (fewer periods, per the 2026/27 bulletins)
 
 if __name__ == '__main__': main()

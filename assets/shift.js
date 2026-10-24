@@ -2,10 +2,12 @@
    times add up to exactly 40 minutes is rescaled to 35 (same proportions, at least one minute a step, ranges such as
    «(10–20 د)» / «من الدقيقة 5 إلى 14» renumbered, totals «المجموع: 40 دقيقة» → 35). Anything that does not add up to 40
    is left as it is, except a single plan in one text whose steps add up to 36–45 minutes (an author's slip), scaled to 35 too. The data is changed before the page draws it, so the copy buttons copy the 35-minute version too.
-   Loaded first in <head>; tools/add_shift.py wraps each page's data in AFUQ35(...). The choice is kept per device. */
+   Loaded first in <head>; tools/add_shift.py wraps each page's data in AFUQ35(...). The choice is kept per device.
+   Subjects with fewer weekly periods in two-shift schools carry a second copy of the data, AFUQ35(<one shift>, <two shifts>),
+   with each lesson's periods merged to the bulletin's term total (tools/add_twoshift.py); «فترتان» shows that one. */
 (function(G){
   'use strict';
-  var KEY='afuq-prep-shift', on=false;
+  var KEY='afuq-prep-shift', on=false, two=false;
   try{ on=localStorage.getItem(KEY)==='2'; }catch(e){}
   var T=35, FROM=40;
   var AR='٠١٢٣٤٥٦٧٨٩';
@@ -146,10 +148,11 @@
     if(o&&typeof o==='object'){ var n={}; for(var k in o) n[k]=walk(o[k]); return n; }
     return o;
   }
-  function AFUQ35(o){ return on?walk(o):o; }
+  /* o2: the page's two-shift data (fewer periods per lesson, from the bulletin — tools/add_twoshift.py), when it has one */
+  function AFUQ35(o,o2){ if(o2!==undefined) two=true; return on?walk(o2!==undefined?o2:o):o; }
   AFUQ35.text=fixText; AFUQ35.walk=walk; AFUQ35.tokens=tokens;
   /* a <script type="application/json"> block: rewrite its text before the page reads it */
-  AFUQ35.el=function(el){ if(!on||!el) return; try{ el.textContent=JSON.stringify(walk(JSON.parse(el.textContent))).replace(/<\//g,'<\\/'); }catch(e){} };
+  AFUQ35.el=function(el,o2){ if(o2!==undefined) two=true; if(!on||!el) return; try{ el.textContent=JSON.stringify(walk(o2!==undefined?o2:JSON.parse(el.textContent))).replace(/<\//g,'<\\/'); }catch(e){} };
   G.AFUQ35=AFUQ35;
   if(typeof document==='undefined') return;
   function ui(){
@@ -159,10 +162,12 @@
     var b=document.createElement('div'); b.id='afuqShift'; b.setAttribute('role','group'); b.setAttribute('aria-label','مدة الحصة'); w.appendChild(b);
     b.innerHTML='<button type="button" data-v="1">فترة (٤٠ د)</button><button type="button" data-v="2">فترتان (٣٥ د)</button>';
     var st=document.createElement('style');
-    st.textContent='#afuqShiftBar{display:flex;justify-content:flex-start;direction:rtl;padding:6px 8px 0;max-width:100%;box-sizing:border-box}'+
+    st.textContent='#afuqShiftBar{display:flex;flex-wrap:wrap;justify-content:flex-start;direction:rtl;padding:6px 8px 0;max-width:100%;box-sizing:border-box}'+
       '#afuqShift{display:inline-flex;gap:2px;background:#fff;border:1px solid #CFD9E2;border-radius:999px;padding:2px;box-shadow:0 1px 4px #0001;font:12px/1.3 system-ui,Tahoma,sans-serif}'+
       '#afuqShift button{font:inherit;border:0;background:transparent;color:#5B6B7B;padding:4px 10px;border-radius:999px;cursor:pointer}'+
       '#afuqShift button.on{background:#2E6F73;color:#fff;font-weight:700}@media print{#afuqShiftBar{display:none}}';
+    if(two){ var n=document.createElement('span'); n.id='afuqShiftNote'; n.textContent=on?'عدد الحصص حسب نشرة الفترتين 2026/2027':'عدد الحصص يقل في «فترتان» حسب النشرة'; w.appendChild(n); }
+    st.textContent+='#afuqShiftNote{align-self:center;margin-inline-start:8px;font:11px/1.3 system-ui,Tahoma,sans-serif;color:#5B6B7B}';
     document.head.appendChild(st);
     Array.prototype.forEach.call(b.querySelectorAll('button'),function(x){
       if((x.getAttribute('data-v')==='2')===on) x.className='on';
