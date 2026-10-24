@@ -136,7 +136,7 @@ def coll_block(g, s, sec, name, nav):
 def list_page(g, s, prefix, lessons, units, colls):
     lab, grd = subj_label(g, s), GRADE[g]
     base = '/afuq/%d/%s/games/' % (g, s)
-    guard = ("<script>(function(){var k='%sgames';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}"
+    guard = ("<script>(function(){var k='%sgames';function g(n,x){try{if(window[n].getItem(x)==='1')return true}catch(e){}try{return new RegExp('(^|; )'+x+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+x+' ')>=0}catch(e){return false}}"
              "if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;"
              "document.documentElement.style.display='none';location.replace('../?lock=games')})()</script>"
              '<script src="/assets/pkgmode.js" data-role="page"></script>') % prefix

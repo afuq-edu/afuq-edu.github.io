@@ -140,6 +140,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
   function on(k){
     try{if(localStorage.getItem(k)==='1')return true}catch(e){}
     try{if(sessionStorage.getItem(k)==='1')return true}catch(e){}
+    try{if(new RegExp('(^|; )'+k+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+k+' ')>=0)return true}catch(e){}
     return false;
   }
   function isUnlocked(id){ return on(key(id))||on('afuq-all'); }

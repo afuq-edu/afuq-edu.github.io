@@ -6,6 +6,7 @@
   var path=m[1]+'/'+m[2]+'/', p=L[path]; if(!p) return;
   var k=p+'homework';
   try{ if(localStorage.getItem(k)==='1'||sessionStorage.getItem(k)==='1') return; }catch(e){}
+  try{ if(new RegExp('(^|; )'+k+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+k+' ')>=0) return; }catch(e){}
   document.documentElement.style.display='none';
   location.replace('/'+path+'?lock=homework');
 })();

@@ -12,7 +12,7 @@ UNITS = ['الأولى','الثانية','الثالثة','الرابعة','ال
 TITLE = 'حصاد الوحدات'
 def read(p): return open(R+p, encoding='utf8').read()
 def guard(prefix, back):
-    return ("<script>(function(){var k='%sharvest';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}"
+    return ("<script>(function(){var k='%sharvest';function g(n,x){try{if(window[n].getItem(x)==='1')return true}catch(e){}try{return new RegExp('(^|; )'+x+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+x+' ')>=0}catch(e){return false}}"
             "if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;"
             "document.documentElement.style.display='none';location.replace('%s?lock=harvest')})()</script>"
             "<script src=\"/assets/pkgmode.js\" data-role=\"page\"></script>") % (prefix, back)

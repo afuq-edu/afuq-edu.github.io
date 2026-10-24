@@ -13,7 +13,7 @@ def main():
     v = open(R+'p/index.html', encoding='utf8').read()
     c = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', v).group(1))[d]; pre = c['lock']
     lab = re.sub(r'\s*–?\s*الصف.*$', '', c['title']).strip() or s
-    guard = ("<script>(function(){var k='%sinteractive';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}"
+    guard = ("<script>(function(){var k='%sinteractive';function g(n,x){try{if(window[n].getItem(x)==='1')return true}catch(e){}try{return new RegExp('(^|; )'+x+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+x+' ')>=0}catch(e){return false}}"
              "if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;"
              "document.documentElement.style.display='none';location.replace('../?lock=interactive')})()</script>"
              "<script src=\"/assets/pkgmode.js\" data-role=\"page\"></script>") % pre

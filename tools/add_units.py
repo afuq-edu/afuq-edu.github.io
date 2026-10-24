@@ -25,7 +25,7 @@ MSG = {'harvest': 'مسابقة مراجعة للوحدة ضد الوقت، مع
        'homework': 'واجب الوحدة: حلّ الأسئلة ثم صوّر شهادة الإنجاز وارفعها في نور. افتح الرابط:'}
 def read(p): return open(R+p, encoding='utf8').read()
 def guard(prefix, sec, back):
-    return ("<script>(function(){var k='%s%s';function g(n,x){try{return window[n].getItem(x)==='1'}catch(e){return false}}"
+    return ("<script>(function(){var k='%s%s';function g(n,x){try{if(window[n].getItem(x)==='1')return true}catch(e){}try{return new RegExp('(^|; )'+x+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+x+' ')>=0}catch(e){return false}}"
             "if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;"
             "document.documentElement.style.display='none';location.replace('%s?lock=%s')})()</script>") % (prefix, sec, back, sec)
 PKG = '<script src="/assets/pkgmode.js" data-role="page"></script>'

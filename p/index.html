@@ -149,7 +149,13 @@ button.row .sic,button.row b{opacity:.6}
      in /assets/pkgmode.js and in the links program, and add it to the regex below: older letters then show «تم إيقاف». */
   var TRIAL_GEN='u', trialOld=false;
   var trial=0; /* trial link: #<TRIAL_GEN><expiry, base-36 seconds>-<items>[.name] — works for the time it carries (the links program gives five hours), in this tab only */
-  function unlock(k){ if(!trial){ try{localStorage.setItem(k,'1')}catch(e){} } try{sessionStorage.setItem(k,'1')}catch(e){} }
+  /* browsers that keep no web storage (some interactive-screen browsers, app web views): the key also goes into a cookie and
+     window.name, which every section check reads too (tools/add_unlock_fallback.py). Not for trial links (their time limit lives in storage). */
+  var LS=(function(){ try{ localStorage.setItem('afuq-t','1'); var ok=localStorage.getItem('afuq-t')==='1'; localStorage.removeItem('afuq-t'); return ok; }catch(e){ return false; } })();
+  function unlock(k){ if(!trial){ try{localStorage.setItem(k,'1')}catch(e){}
+      if(!LS){ try{ document.cookie=k+'=1; path=/; max-age=31536000; SameSite=Lax'; }catch(e){} try{ if((' '+window.name+' ').indexOf(' '+k+' ')<0) window.name=(window.name?window.name+' ':'')+k; }catch(e){} } }
+    try{sessionStorage.setItem(k,'1')}catch(e){} }
+  function relock(k){ try{ document.cookie=k+'=; path=/; max-age=0'; }catch(e){} try{ window.name=(' '+window.name+' ').replace(' '+k+' ',' ').trim(); }catch(e){} }
   /* plain link (#…!): the subjects' other sections open for a 5-hour look (from the first visit on this device), in this tab only;
      then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
   var PREVIEW=5*3600e3, pv=0;
@@ -201,6 +207,7 @@ button.row .sic,button.row b{opacity:.6}
     var keys=[], paths=prev&&prev!=='*'?prev.split(';').filter(Boolean).map(function(x){ return x.split(':')[0]; }):want.map(function(w){ return w[0]; });
     if(prev==='*'||(!prev&&all)){ keys.push('afuq-all'); paths=Object.keys(CAT); }
     paths.forEach(function(p){ var c=CAT[p.replace(/^\/+/,'').replace(/\/?$/,'/')]; if(c) c.parts.forEach(function(x){ keys.push(c.lock+x[0]); }); });
+    keys.forEach(relock);
     ['localStorage','sessionStorage'].forEach(function(S){ try{ var st=window[S];
       keys.forEach(function(k){ st.removeItem(k); });
       if((st.getItem('afuq-pkg-home')||'').indexOf('#'+kcode)>=0){ st.removeItem('afuq-pkg-home'); st.removeItem('afuq-pkg-paths'); }
