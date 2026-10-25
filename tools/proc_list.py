@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Lesson procedures as numbered steps instead of a table (owner, 2026-10-25): the «إجراءات سير الدرس» field of a prep page
+"""No tables in any prep (owner, 2026-10-25): procedures, questions (التقويم التكويني / الختامي) and outcome levels are numbered
+paragraphs. Procedures: the «إجراءات سير الدرس» field of a prep page
 shows each step as one numbered paragraph — «1. 5 دقائق — التهيئة: <the teacher's part>» with «• الطالب: …» under it —
 separated by light dashed lines, and its copy text is the same steps one per line with a blank line between them, so the
 paste into Noor (assets/copyfix.js) keeps them as separate, ordered points.
@@ -7,6 +8,8 @@ The tables (الزمن | الخطوة | دور المعلم | دور الطال�
 read row by row; both the html and its copy text are rewritten:
   {h, t} fields (grade 10 sciences; their lesson «comb» field is rebuilt), [html, text] pairs (grade 11 sciences),
   parallel html / plain (grade 8 math) and h / t (grade 12 sciences) lists.
+Questions (المستوى | السؤال | الإجابة النموذجية) → «1. مستوى المعرفة: <السؤال>» + «• الإجابة النموذجية: …»; outcome levels
+(المخرج | المستوى, المخرج | نصه | المستوى) → «1. فهم: <المخرج>»; any other table → «1. <cell> — <cell> …».
 tools/twoshift.js draws the two-shift copy the same way (renderSteps). Idempotent.
 Usage: python3 tools/proc_list.py [grade/subject ...]   (default: every prep page that still has such a table)"""
 import re, os, sys, json, glob, html as H
@@ -15,7 +18,7 @@ sys.path.insert(0, R + 'tools')
 import build_quiz as B
 
 TABLE = re.compile(r'<table\b[^>]*>.*?</table>', re.S)
-def is_proc(s): return isinstance(s, str) and '<table' in s and 'دور المعلم' in s and 'الزمن' in s
+def is_proc(s): return isinstance(s, str) and s.lstrip().startswith('<') and bool(TABLE.search(s)) and ('</td>' in s or '</th>' in s)   # html fields only (IT lessons quote «<table>» in text)
 def cells(tr): return re.findall(r'<t([hd])\b[^>]*>(.*?)</t[hd]>', tr, re.S)
 def plain(x):
     x = re.sub(r'<span class=["\']m["\']>(.*?)</span>', '⁦\\1⁩', x, flags=re.S)
@@ -58,12 +61,51 @@ def render_text(st):
         if s['student']: t += '\n• الطالب: ' + plain(s['student'])
         out.append(t)
     return '\n\n'.join(out)
+def rows_of(tbl):
+    rows = re.findall(r'<tr\b[^>]*>(.*?)</tr>', tbl, re.S)
+    head = [plain(c) for k, c in cells(rows[0])] if rows and all(k == 'h' for k, c in cells(rows[0])) else []
+    body = [[x.strip() for k, x in cells(r)] for r in (rows[1:] if head else rows)]
+    return head, [b for b in body if b]
+def items_of(tbl):
+    """[(label, main html, sub-line html or '')] for a non-procedure table"""
+    head, body = rows_of(tbl)
+    col = lambda *names: next((i for i, h in enumerate(head) if any(n == h or n in h for n in names)), None)
+    iq, ilv, ians, iout, itext = col('السؤال'), col('المستوى'), col('الإجابة'), col('المخرج'), col('نصه')
+    out = []
+    for b in body:
+        if len(b) != len(head) and head: continue
+        if iq is not None:
+            out.append((plain(b[ilv]) if ilv is not None else '', b[iq], 'الإجابة النموذجية: ' + b[ians] if ians is not None else ''))
+        elif ilv is not None and (iout is not None or itext is not None):
+            txt = b[itext] if itext is not None else b[iout]
+            lab = plain(b[ilv]) + (' (مخرج آخر)' if iout is not None and itext is not None and 'آخر' in plain(b[iout]) else '')
+            out.append((lab, txt, ''))
+        else:
+            out.append(('', ' — '.join(x for x in b if plain(x)), ''))
+    return out
+def items_html(it):
+    return '<div class="plist">' + ''.join('<p class="pstep" style="%s"><b>%d.%s</b> %s%s</p>' % (
+        ROW, k, (' ' + H.escape(lab) + ':') if lab else '', main, '<br><span style="opacity:.85">• %s</span>' % sub if sub else '')
+        for k, (lab, main, sub) in enumerate(it, 1)) + '</div>'
+def items_text(it, gap):
+    return ('\n\n' if gap else '\n').join('%d.%s %s%s' % (k, (' ' + lab + ':') if lab else '', plain(main), '\n• ' + plain(sub) if sub else '')
+                                     for k, (lab, main, sub) in enumerate(it, 1))
+def to_text(h):
+    h = re.sub(r'<br\s*/?>|</(?:p|div|li|h\d)>', '\n', h)
+    return '\n'.join(l for l in (plain(x) for x in h.split('\n')) if l)
 def convert(h):
-    """(new html, copy text) for an html string holding a procedures table; html outside the table is kept"""
-    m = next((m for m in TABLE.finditer(h) if is_proc(m.group(0))), None)
-    st = steps_of(m.group(0))
-    before = re.sub(r'<div class="tot">.*?</div>', '', h[:m.start()])
-    return before + render_html(st) + h[m.end():], render_text(st)
+    """(new html, copy text) for an html string holding tables; html around them is kept"""
+    out_h, out_t, pos = [], [], 0
+    for m in TABLE.finditer(h):
+        pre = h[pos:m.start()]; tbl = m.group(0); pos = m.end()
+        if 'دور المعلم' in tbl and 'الزمن' in tbl:
+            pre = re.sub(r'<div class="tot">.*?</div>', '', pre); st = steps_of(tbl); nh, nt = render_html(st), render_text(st)
+        else:
+            it = items_of(tbl); nh, nt = items_html(it), items_text(it, any(sub for _, _, sub in it))
+        out_h += [pre, nh]; t0 = to_text(pre); out_t += ([t0] if t0 else []) + [nt]
+    rest = h[pos:]; out_h.append(rest); t1 = to_text(rest)
+    if t1: out_t.append(t1)
+    return ''.join(out_h), '\n'.join(out_t)
 
 def fix(o):
     n = 0
@@ -88,7 +130,7 @@ def fix(o):
         cb = L.get('comb'); ps = L.get('periods') or []
         if not (cb and ps and all(isinstance(p.get('fields'), list) for p in ps)): continue
         for i, f in enumerate(cb.get('fields') or []):
-            if isinstance(f, dict) and is_proc(f.get('h')):
+            if isinstance(f, dict) and (is_proc(f.get('h')) or 'class="plist"' in f.get('h', '')) and all('class="plist"' in p['fields'][i].get('h', '') for p in ps):
                 f['h'] = ''.join('<div class="psub">الحصة %d: %s</div>%s' % (k + 1, H.escape(p.get('focus', '')), p['fields'][i]['h']) for k, p in enumerate(ps))
                 f['t'] = '\n\n'.join('الحصة %d: %s\n%s' % (k + 1, p.get('focus', ''), p['fields'][i]['t']) for k, p in enumerate(ps)); n += 1
     return n
@@ -106,7 +148,7 @@ def main():
         rel = p[len(R):]
         if only and '/'.join(rel.split('/')[:2]) not in only: continue
         h = open(p, encoding='utf8').read()
-        if 'دور المعلم<' not in h: continue
+        if '<table' not in h: continue
         lits = B.literals(h); t = h; k = 0
         for name, i, e, o in sorted(lits, key=lambda x: -x[1]):
             n = fix(o)
