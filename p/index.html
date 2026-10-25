@@ -362,18 +362,28 @@ button.row .sic,button.row b{opacity:.6}
   // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
   // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
   if(kcode){
-    var tries=0;
+    var tries=0, urlWant=want.slice();   /* the items carried in the link itself (#k…-<items>) */
     var apply=function(e){
       // "<items>@@<name>": a name kept with the package replaces the one in the link (renaming without a new link)
       if(typeof e==='string'){ var at=e.indexOf('@@'); if(at>=0){ var nm=e.slice(at+2).trim().slice(0,60); e=e.slice(0,at); if(nm) to='\u2068'+nm+'\u2069'; } }
       if(e==='-'){ revoked=true; return; }
       if(e==='*'){ all=true; want=[]; }
-      else if(typeof e==='string' && e){ if(/!$/.test(e)){ plain=true; e=e.slice(0,-1); } all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
+      else if(typeof e==='string' && e){ if(/^!|!$/.test(e)){ plain=true; e=e.replace(/^!|!$/g,''); } /* plain package: «!» before the items (as synced) or after them */ all=false; want=e.split(';').filter(Boolean).map(function(x){ var m=x.split(':'); return [m[0]||'', m[1]||'all']; }); }
     };
     var load=function(){
       fetch('packages.json',{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(j){
         var e=j&&j[kcode];
-        if(typeof e==='string' && e && e!=='-'){ try{ localStorage.setItem('afuq-pkg-k:'+kcode,e); }catch(x){} }
+        if(typeof e==='string' && e && e!=='-'){
+          /* the package may have changed since this device last opened the link (e.g. gold → prep only): lock again what the
+             earlier package (or the items carried in the link) opened; render() then opens only what the package holds now */
+          var old=''; try{ old=localStorage.getItem('afuq-pkg-k:'+kcode)||''; }catch(x){}
+          old=old.split('@@')[0].replace(/^!|!$/g,'');
+          var paths=old==='*'?Object.keys(CAT):old?old.split(';').filter(Boolean).map(function(x){ return x.split(':')[0]; }):urlWant.map(function(w){ return w[0]; });
+          var ks=old==='*'?['afuq-all']:[];
+          paths.forEach(function(p){ var c=CAT[p.replace(/^\/+/,'').replace(/\/?$/,'/')]; if(c) c.parts.forEach(function(x){ ks.push(c.lock+x[0]); }); });
+          ks.forEach(function(k){ relock(k); ['localStorage','sessionStorage'].forEach(function(S){ try{ window[S].removeItem(k); }catch(x){} }); });
+          try{ localStorage.setItem('afuq-pkg-k:'+kcode,e); }catch(x){}
+        }
         apply(e); render();
       }).catch(function(){
         if(tries++<1){ setTimeout(load,1500); return; }
