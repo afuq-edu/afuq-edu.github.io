@@ -49,7 +49,14 @@ def parts_of(deck, L):
     sl = L.get('slides') or []
     if deck in PARTS:
         # x: these slides belong to the part only — the lesson itself (?l=<id>) leaves them out
-        return [{'id': 'p%d' % (k + 1), 't': t, 'a': a, 'b': b, 'x': 1} for k, (a, b, t) in enumerate(PARTS[deck].get(L.get('id'), [])) if 0 < a <= b < len(sl)]
+        # indices are the uploaded deck's; slides added later (tools/add_grammar_slides.py, add=<part title>) join their part
+        own = [i for i, x in enumerate(sl) if 'add' not in x]
+        out = []
+        for k, (a, b, t) in enumerate(PARTS[deck].get(L.get('id'), [])):
+            if not 0 < a <= b < len(own): continue
+            idx = own[a:b + 1] + [i for i, x in enumerate(sl) if x.get('add') == t]
+            out.append({'id': 'p%d' % (k + 1), 't': t, 'a': min(idx), 'b': max(idx), 'x': 1})
+        return out
     per = [i for i, x in enumerate(sl) if x.get('type') == 'period']
     if len(per) < 2: return []
     end = next((i for i, x in enumerate(sl) if x.get('type') in ('summary', 'exit', 'homework') or plain(x.get('title')).startswith('خلاصة')), len(sl))
