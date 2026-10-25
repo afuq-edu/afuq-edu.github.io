@@ -156,9 +156,9 @@ button.row .sic,button.row b{opacity:.6}
       if(!LS){ try{ document.cookie=k+'=1; path=/; max-age=31536000; SameSite=Lax'; }catch(e){} try{ if((' '+window.name+' ').indexOf(' '+k+' ')<0) window.name=(window.name?window.name+' ':'')+k; }catch(e){} } }
     try{sessionStorage.setItem(k,'1')}catch(e){} }
   function relock(k){ try{ document.cookie=k+'=; path=/; max-age=0'; }catch(e){} try{ window.name=(' '+window.name+' ').replace(' '+k+' ',' ').trim(); }catch(e){} }
-  /* plain link (#…!): the subjects' other sections open for a 5-hour look (from the first visit on this device), in this tab only;
-     then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
-  var PREVIEW=5*3600e3, pv=0;
+  /* plain link (#…!): the subjects' other sections open as a 20-minute gold trial (from the first visit on this device; owner
+     2026-10-25, was 5 hours), in this tab only; then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
+  var PREVIEW=20*60e3, pv=0;
   /* sections whose files are PDFs (boards, picture recaps) never open on trial or plain links: a PDF opened once stays in the browser history */
   var PDFP=/^(board|recap)/;
   function el(t,c,txt){ var n=document.createElement(t); if(c) n.className=c; if(txt!=null) n.textContent=txt; return n; }
@@ -321,12 +321,12 @@ button.row .sic,button.row b{opacity:.6}
   if(plain && pv && items.some(function(it){ return it.c.parts.length>it.parts.length; })){
     if(preview){
       var lf=Math.max(1,Math.round((pv-Date.now())/60000));
-      var left=function(m){ var h=Math.floor(m/60), n=m%60, hs=h===1?'ساعة':h===2?'ساعتان':h?h.toLocaleString('ar')+' ساعات':'', ns=n?n.toLocaleString('ar')+' دقيقة':'';
+      var left=function(m){ var h=Math.floor(m/60), n=m%60, hs=h===1?'ساعة':h===2?'ساعتان':h?h.toLocaleString('ar')+' ساعات':'', ns=n===1?'دقيقة':n===2?'دقيقتان':n>=3&&n<=10?n.toLocaleString('ar')+' دقائق':n?n.toLocaleString('ar')+' دقيقة':'';
         return hs&&ns?hs+' و'+ns:hs||ns; };
-      root.append(el('p','ann','⏳ يمكنك الاطلاع على بقية أقسام المادة حتى الساعة '+new Date(pv).toLocaleTimeString('ar',{hour:'numeric',minute:'2-digit'})+
+      root.append(el('p','ann','⏳ تجربة الباقة الذهبية لمدة ٢٠ دقيقة: يمكنك الاطلاع على بقية أقسام المادة حتى الساعة '+new Date(pv).toLocaleTimeString('ar',{hour:'numeric',minute:'2-digit'})+
         ' (باقي '+left(lf)+')، ثم تُقفل. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
       setTimeout(function(){ location.reload(); }, pv-Date.now()+500);
-    } else root.append(el('p','ann','🔒 انتهت مدة الاطلاع على بقية أقسام المادة. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
+    } else root.append(el('p','ann','🔒 انتهت التجربة الذهبية (٢٠ دقيقة)، وأُقفلت بقية أقسام المادة. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
   }
   var ann=el('div'); root.append(ann);
   if(!plain) fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
