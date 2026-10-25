@@ -277,6 +277,9 @@
       close();
       var next = ''; for (var k = i + 1; k < lines.length; k++) { if (lines[k].trim()) { next = lines[k].trim(); break; } }
       var head = (next && point(next)) || reTotal.test(l);
+      /* a numbered step «1. 5 دقائق — التهيئة: …»: only its heading is bold */
+      var sm = l.match(/^([0-9\u0660-\u0669]+\.\s*[^:\uFF1A]{1,70}[:\uFF1A])\s*(.+)$/);
+      if (sm) { out.push('<p><b>' + esc(sm[1]) + '</b> ' + esc(sm[2]) + '</p>'); return; }
       out.push('<p>' + (head ? '<b>' + esc(l) + '</b>' : esc(l)) + '</p>');
     });
     close();

@@ -227,6 +227,24 @@ function mergeProc(ts, T = 40) {
   return out.trim();
 }
 
+/* procedures drawn as numbered steps (tools/proc_list.py, owner 2026-10-25: no tables): «1. 5 دقائق — التهيئة:» + teacher,
+   «• الطالب: …» under it — the same html proc_list.py writes for one shift */
+const STEP_ROW = 'margin:0;padding:10px 2px;border-bottom:1px dashed #d8d0bf;line-height:1.9';
+const escT = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+function renderSteps(t) {
+  const out = []; let cur = null;
+  lines(t).forEach((l) => {
+    const s = l.trim(); if (!s) return;
+    const m = s.match(/^([0-9٠-٩]+\.\s*[^:：]*?[:：])\s*(.*)$/);
+    if (m && /^[0-9٠-٩]+\./.test(s)) { cur = { lab: m[1], te: m[2], st: '' }; out.push(cur); return; }
+    const st = s.match(/^•\s*الطالب\s*[:：]\s*(.*)$/);
+    if (cur && st) cur.st = st[1]; else if (cur) cur.te += ' ' + s;
+  });
+  if (!out.length) return null;
+  return '<div class="plist">' + out.map((x) => '<p class="pstep" style="' + STEP_ROW + '"><b>' + escT(x.lab) + '</b> ' + escT(x.te) +
+    (x.st ? '<br><span style="opacity:.85">• الطالب: ' + escT(x.st) + '</span>' : '') + '</p>').join('') + '</div>';
+}
+
 /* ---------------- one period from a group */
 const HASNUM = (v, n) => (typeof v === 'number' && v === n) || (typeof v === 'string' && /^[0-9٠-٩]+$/.test(v.trim()) && toN(v) === n);
 /* how each of the 10 fields is merged, in the standard Noor order (a page with another order passes its own) */
@@ -273,6 +291,10 @@ function mergePeriods(ps, fk, gi, n2, n1) {
       if (TOPIC.test(k)) { const u = []; ps.forEach((p) => { const s = typeof p[k] === 'string' ? p[k].trim() : ''; if (s && !u.includes(s)) u.push(s); }); out[k] = u.join(' + '); continue; }
     }
     out[k] = v;
+  }
+  for (const [a, b] of [['html', 'plain'], ['h', 't']]) {
+    if (!Array.isArray(out[a]) || !Array.isArray(out[b])) continue;
+    out[a].forEach((v, i) => { if (typeof v === 'string' && v.includes('class="plist"') && typeof out[b][i] === 'string') { const r = renderSteps(out[b][i]); if (r) out[a][i] = r; } });
   }
   return out;
 }
@@ -382,6 +404,7 @@ function htmlOf(i, t, like0) {
   if (i === 1) return th + '<tbody>' + L.map((l) => { const m = l.replace(/^[•\-]\s*/, '').match(/^(.*)\s←\s(.*)$/) || [0, l, '']; return '<tr><td>' + escH(m[1]) + '</td><td class="lv">' + escH(m[2]) + '</td></tr>'; }).join('') + '</tbody></table>';
   if (i === 2 || i === 3) return pills(L.map((l) => l.replace(/^[•\-]\s*/, '')));
   if (i === 4) return pills(L.join('، ').split(/\s*،\s*/).filter(Boolean));
+  if (i === 6 && /^\s*[0-9٠-٩]+\./.test(String(t))) { const r = renderSteps(t); if (r) return r; }
   if (i === 6) {
     const rows = [], tot = (like0.match(/<div class="tot">.*?<\/div>/) || [''])[0];
     String(t).split(/\n\s*\n/).forEach((b) => {
