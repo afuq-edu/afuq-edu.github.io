@@ -65,5 +65,6 @@ def main():
         else:
             seg = seg.replace('["prep", "ملف التحضير", false]', '["prep", "ملف التحضير", false], ["harvest", "%s", true]' % TITLE, 1)
         v = v[:i] + seg + v[j:]; open(R+'p/index.html', 'w', encoding='utf8').write(v)
+    __import__('tune_harvest').main([d])   # 3-second ideal time; Arabic: the lessons' grammar questions
     print('done', d, len(files), 'units')
 main()

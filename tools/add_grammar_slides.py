@@ -32,5 +32,7 @@ def main():
         t = h[:i] + js(d) + h[e:]
         if t != h: open(p, 'w', encoding='utf8').write(t)
         print('%-24s %d grammar slides added' % (deck, n))
+        g = int(deck.split('/')[0])
+        if g <= 8 and os.path.isdir(R + '%d/arabic/harvest' % g): __import__('tune_harvest').main(['%d/arabic' % g])   # the harvest asks the same grammar
 
 if __name__ == '__main__': main()

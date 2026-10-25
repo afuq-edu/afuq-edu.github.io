@@ -92,6 +92,7 @@ def main():
     open(R+d+sec+'/index.html', 'w', encoding='utf8').write(page)
     if sec == 'harvest': add_harvest_card(d, lab, grd, prefix, v)
     if sec == 'harvest': sys.path.insert(0, R+'tools'); __import__('mark_new').mark(d + sec)  # «جديد» badge
+    if sec == 'harvest': __import__('tune_harvest').main([d])   # 3-second ideal time; Arabic: the lessons' grammar questions
     print('done', d+sec, mode, len(files), 'units')
 def add_harvest_card(d, lab, grd, prefix, v):
     T = 'حصاد الوحدات'
