@@ -95,6 +95,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
       <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><h3>ملف التحضير</h3></div>
       <p>نسخ حقول نور – العلوم البيئية – الصف الحادي عشر</p>
     </button>
+    <button class="card" style="--c:var(--c1)" data-id="scorm">
+      <div class="hd"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></span><h3>سكورم لمنصة نور</h3></div>
+      <p>العلوم البيئية – الصف الحادي عشر: ملف سكورم لكل درس (ألعاب + شهادة) لمرفقات نور</p>
+    </button>
   </div>
 
   <section class="gifts" id="gifts">
@@ -127,7 +131,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:0 16px 28px}
 <script>
 (function(){
   var SECTIONS={
-    prep:{title:'ملف التحضير',hash:null}
+    prep:{title:'ملف التحضير',hash:null},
+    scorm:{title:'سكورم لمنصة نور',hash:null}
   };
   var dlg=document.getElementById('dlg');
   function key(id){return 'ofuq-g11n-unlock-'+id}
