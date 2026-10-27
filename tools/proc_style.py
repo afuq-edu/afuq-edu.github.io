@@ -17,6 +17,8 @@ sys.path.insert(0, R + 'tools')
 import build_quiz as B
 B.FIELD.setdefault('proc', (r'إجراءات سير الدرس|الأنشطة التدريسية|إجراءات التنفيذ|Procedures|Lesson procedures|Teaching activities|Lesson steps',
                             {'إجراءات سير الدرس / الأنشطة التدريسية', 'procedures', 'proc', 'steps', 'pr'}, 6))
+B.FIELD.setdefault('warm', (r'التهيئة|التمهيد|التعلم القبلي|Warm[- ]?up|Lead[- ]?in|Starter|Prior learning',
+                            {'التهيئة / التمهيد / التعلم القبلي', 'warmup', 'warm', 'intro'}, 5))
 B.FIELD.setdefault('strat', (r'الاستراتيجيات|استراتيجيات التدريس|Strategies|Teaching strategies',
                              {'الاستراتيجيات', 'strategies', 'strat', 'st'}, 2))
 
@@ -60,6 +62,7 @@ def time_of(line):
             a, b = toN(m.group(1)), toN(m.group(2)); d = b - a; time_of.rng = (a, b)   # inclusive or not: decided per text in parse()
         else: d = toN(m.group(1))
         if not (0 < d <= 60): continue
+        if k == 'dur' and rx is TIMES[-1][0] and m.start() > 30 and not NUMPFX.match(line): continue   # «… وتجري 30 دقيقة» inside a sentence is not a step's time
         rest = (line[:m.start()] + ' ' + line[m.end():])
         rest = re.sub(r'\(\s*\)|\[\s*\]', ' ', rest)
         return d, rest
@@ -242,6 +245,79 @@ def strategies_of(cont, lits_strat):
             if re.search(r'استراتيج|strateg', str(k), re.I): return strat_items(v)
     return lits_strat.get(id(cont), [])
 
+# ---------------------------------------------------------------- a period is 40 minutes (owner, 2026-10-27)
+TEND = re.compile(r'\((' + D + r') (دقيقة|دقيقتان|دقائق|minutes?)\)\s*$')
+def scale_to(ds, T):
+    tot = sum(ds) or 1; raw = [x * T / tot for x in ds]; r = [max(1, int(x)) for x in raw]; left = T - sum(r)
+    order = sorted(range(len(ds)), key=lambda i: -(raw[i] - int(raw[i])))
+    k = 0
+    while left > 0: r[order[k % len(order)]] += 1; left -= 1; k += 1
+    while left < 0: j = r.index(max(r)); r[j] -= 1; left += 1
+    return r
+def fix_times(text, T):
+    """the steps of each period in a text of this style made to add up to T minutes (their proportions kept)"""
+    blocks = text.split('\n\n'); segs = [[]]
+    for i, b in enumerate(blocks):
+        if re.match(r'^(?:الحصة|Period)\s', b) and not re.match(r'^[0-9٠-٩]+\.\s', b): segs.append([i])
+        else: segs[-1].append(i)
+    changed = False
+    for sg in segs:
+        st = [(i, TEND.search(blocks[i].split('\n')[0])) for i in sg if re.match(r'^[0-9٠-٩]+\.\s', blocks[i])]
+        st = [(i, m) for i, m in st if m]
+        if len(st) < 2: continue
+        ds = [toN(m.group(1)) for i, m in st]; tot = sum(ds)
+        if tot == T or not (T * 0.7 <= tot <= T * 1.3): continue
+        new = scale_to(ds, T); en = bool(re.search(r'minute', st[0][1].group(2)))
+        for (i, m), d in zip(st, new):
+            ls = blocks[i].split('\n'); ls[0] = ls[0][:m.start()] + '(' + minutes(d, en) + ')'; blocks[i] = '\n'.join(ls)
+        if sg and re.match(r'^(?:الحصة|Period)\s', blocks[sg[0]]):
+            blocks[sg[0]] = re.sub(r'(زمن الحصة|lesson time) ' + D + r' (?:دقيقة|دقائق|minutes)', lambda mm: mm.group(1) + ' ' + (('%d minutes' % T) if mm.group(1) == 'lesson time' else minutes(T)), blocks[sg[0]])
+        changed = True
+    return '\n\n'.join(blocks) if changed else None
+
+# ---------------------------------------------------------------- the warm-up field in the same style
+WROLE = re.compile(r'^\s*(?:[-•–*]\s*)?(' + TEACH + r'|' + STUD + r'|' + STRAT + r')\s*[:：]\s*(.*)$', re.I)
+def warm_convert(text, en, fem, kid):
+    """«- المعلم: … / - الطالب: …» → one sentence «يعرض المعلم …، ويتأمل الطالب …» (other lines kept), per period"""
+    if not isinstance(text, str) or not re.search(r'^\s*[-•–*]?\s*(?:' + TEACH + r'|' + STUD + r')\s*[:：]', text, re.M | re.I): return None
+    out, cur, loose = [], None, []
+    def flush():
+        nonlocal cur, loose
+        if cur and (cur['t'] or cur['s']):
+            if not cur['t'] and loose: cur['t'] = clean(' '.join(loose)); loose = []
+            out.extend(loose); loose = []
+            tm = ''
+            if cur['hx']:
+                m = re.search(r'\((' + D + r')\s*' + UNIT + r'\)', cur['hx'])
+                if m: tm = ' (' + minutes(toN(m.group(1)), en) + ')'
+            line = sentence({'t': cur['t'], 's': cur['s'], 'name': ''}, en, fem, kid).rstrip('.؛، ') + tm + ('' if tm else '.')
+            out.append(line + ('\n' + ('Strategies: ' if en else 'الاستراتيجيات: ') + cur['st'].rstrip('.') + '.' if cur['st'] else ''))
+        else: out.extend(loose); loose = []
+        cur = None
+    for raw in text.replace('\r', '').split('\n'):
+        l = raw.strip()
+        if not l: continue
+        m = WROLE.match(l)
+        if m:
+            if cur is None: cur = {'t': '', 's': '', 'st': '', 'hx': ''}
+            lab, val = m.group(1), clean(m.group(2))
+            if re.match(STRAT, lab, re.I): cur['st'] = val
+            elif re.match(TEACH, lab, re.I):
+                if cur['t'] or cur['s']: flush(); cur = {'t': '', 's': '', 'st': '', 'hx': ''}
+                cur['t'] = val
+            else: cur['s'] = (cur['s'] + ' ' + val).strip()
+            continue
+        if cur is not None and (cur['t'] or cur['s']): flush()
+        if SEG.match(l):
+            if out or loose: out.extend(loose); loose = []; out.append('')
+            out.append(l); continue
+        if re.match(r'^(?:التهيئة|التمهيد|Warm[- ]?up|Lead[- ]?in)[^:：]{0,40}[:：]\s*$', l, re.I) or re.match(r'^(?:التهيئة|التمهيد)\s*\(' + D, l):
+            cur = {'t': '', 's': '', 'st': '', 'hx': l}; continue      # «التهيئة (5 دقائق):» heads the roles under it
+        loose.append(l)
+    flush(); out.extend(loose)
+    res = '\n'.join(out).strip()
+    return res if res and res != text.strip() else None
+
 def fix_page(p, gs):
     h = open(p, encoding='utf8').read(); lits = B.literals(h)
     try: les, kmap = B.page_lessons(lits)
@@ -272,6 +348,38 @@ def fix_page(p, gs):
             new = convert(v[1], en, fem, kid, strats)
             if new is None: skip += 1 if not is_new(v[1]) else 0; continue
             v[0], v[1] = render_html(new), new; done += 1
+    for li, cont, k in B.field_targets(lits, kmap, 'warm'):
+        v = cont[k]
+        if isinstance(v, str) and not v.lstrip().startswith('<'):
+            new = warm_convert(v, en, fem, kid)
+            if new: cont[k] = new; done += 1
+        elif isinstance(v, dict) and isinstance(v.get('t'), str) and isinstance(v.get('h'), str):
+            new = warm_convert(v['t'], en, fem, kid)
+            if new: v['t'], v['h'] = new, ''.join('<p>%s</p>' % H.escape(x) for x in new.split('\n') if x.strip()); done += 1
+        elif isinstance(v, list) and len(v) == 2 and all(isinstance(x, str) for x in v):
+            new = warm_convert(v[1], en, fem, kid)
+            if new: v[0], v[1] = ''.join('<p>%s</p>' % H.escape(x) for x in new.split('\n') if x.strip()), new; done += 1
+    T = 35 if '/prep35/' in p else 40
+    def fx(x):
+        nonlocal done
+        if isinstance(x, str) and is_new(x):
+            n = fix_times(x, T)
+            if n: done += 1; return n
+        return None
+    for name, i, e, o in lits:
+        for path, x, anc in list(B.nodes(o)):
+            if isinstance(x, dict):
+                for kk in list(x.keys()):
+                    n = fx(x[kk])
+                    if n:
+                        x[kk] = n
+                        if kk == 't' and isinstance(x.get('h'), str): x['h'] = render_html(n)
+            elif isinstance(x, list):
+                for j in range(len(x)):
+                    n = fx(x[j])
+                    if n:
+                        x[j] = n
+                        if len(x) == 2 and j == 1 and isinstance(x[0], str) and x[0].lstrip().startswith('<'): x[0] = render_html(n)
     # parallel html / plain (or h / t) lists of the procedures: redraw the html from the converted text
     for name, i, e, o in lits:
         for path, x, anc in B.nodes(o):
@@ -279,8 +387,8 @@ def fix_page(p, gs):
             for a, b in (('html', 'plain'), ('h', 't'), ('html', 'txt'), ('html', 'text')):
                 if isinstance(x.get(a), list) and isinstance(x.get(b), list) and len(x[a]) == len(x[b]):
                     for j, t in enumerate(x[b]):
-                        if isinstance(t, str) and is_new(t) and isinstance(x[a][j], str) and 'class="phead"' not in x[a][j] and \
-                           (B.strip_html(x[a][j]).count('(') < t.count('(') or 'pstep' in x[a][j] or '<table' in x[a][j]):
+                        if isinstance(t, str) and is_new(t) and isinstance(x[a][j], str) and x[a][j] != render_html(t) and \
+                           ('class="plist"' in x[a][j] or B.strip_html(x[a][j]).count('(') < t.count('(') or '<table' in x[a][j]):
                             x[a][j] = render_html(t)
     t = h
     for (name, i, e, o), b0 in sorted(zip(lits, before), key=lambda z: -z[0][1]):
