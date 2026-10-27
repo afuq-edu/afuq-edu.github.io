@@ -99,8 +99,8 @@
     var gs=groups(tk), rep=[];
     [function(t){ return t.k!=='dur'; },
      function(t){ return t.k!=='dur'||t.i-s.lastIndexOf('\n',t.i)<=45; },
-     /* the steps' times close their lines: «1. … (5 دقائق)» (tools/proc_style.py) */
-     function(t){ return t.k==='total'||/^\s*\)\s*(?:\n|$)/.test(s.slice(t.i+t.s.length)); }].forEach(function(f,fi){
+     /* the steps' times close their lines: «1. … (5 دقائق)» (tools/proc_style.py), the outcomes' too (tools/outcome_times.py) */
+     function(t){ return t.k==='total'||/^\s*\)\s*(?:\n|$|<)/.test(s.slice(t.i+t.s.length)); }].forEach(function(f,fi){
       var sub=tk.filter(f); if(sub.length===tk.length) return;
       var g2=groups(sub);
       if(g2.length>gs.length||(fi===2&&g2.length&&g2.length>=gs.length)) gs=g2;   /* a step's own time closes its line: trust those first */

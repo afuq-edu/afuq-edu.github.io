@@ -417,6 +417,8 @@ def main():
     print('\n'.join(report))
     import proc_list; proc_list.main()   # lesson procedures as numbered steps, never a table (owner 2026-10-25)
     import proc_style; proc_style.main([])   # one procedures style (owner, 2026-10-27)
+    import add_identity; add_identity.main([])   # «ختام الدرس»: identity and citizenship, 5 minutes of the last period (owner, 2026-10-27)
+    import outcome_times; outcome_times.main([])   # every outcome with its share of the period (owner, 2026-10-27)
     import add_shift; add_shift.main()   # the 40/35-minute switch on every prep page
     import add_twoshift; add_twoshift.main()   # two-shift preps (fewer periods, per the 2026/27 bulletins)
 

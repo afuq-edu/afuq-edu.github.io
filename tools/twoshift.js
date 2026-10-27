@@ -270,8 +270,22 @@ function renderSteps(t) {   /* numbered items «1. label: text» with «• …�
 const HASNUM = (v, n) => (typeof v === 'number' && v === n) || (typeof v === 'string' && /^[0-9٠-٩]+$/.test(v.trim()) && toN(v) === n);
 /* how each of the 10 fields is merged, in the standard Noor order (a page with another order passes its own) */
 const KINDS = ['out', 'lvl', 'union', 'union', 'union', 'first', 'proc', 'q', 'q', 'notes'];
+/* outcome times «… (10 دقائق)» (tools/outcome_times.py): a merged period's outcomes share its 40 minutes again, part by part */
+const OTIME = /\(([0-9٠-٩]+) (دقيقة|دقيقتان|دقائق|minutes?)\)(?=[ \t]*(?:\n|$|<))/g;
+const OSEG = /^\s*(?:<div class="psub">)?(?:Period|Lesson|الحصة|حصة)\s*[0-9٠-٩]+\b(?![.)])/i;
+function retime(t, T = 40) {
+  if (typeof t !== 'string' || !/\((?:[0-9٠-٩]+) (?:دقيقة|دقيقتان|دقائق|minutes?)\)/.test(t)) return t;
+  const parts = t.split(/(?=^\s*(?:Period|Lesson|الحصة|حصة)\s*[0-9٠-٩]+\b(?![.)]))|(?=<div class="psub">)/im);
+  return parts.map((p) => {
+    const ms = []; p.replace(OTIME, (m, n) => { ms.push(toN(n)); return m; });
+    if (ms.length < 1 || ms.reduce((a, b) => a + b, 0) === T) return p;
+    const nd = ms.length * 5 <= T && ms.length > 1 ? (() => { const r = scaleTo(ms, T / 5 | 0).map((x) => x * 5); r[r.length - 1] += T - r.reduce((a, b) => a + b, 0); return r; })() : scaleTo(ms, T);
+    let k = 0;
+    return p.replace(OTIME, (m, n, u) => { const d = nd[k++]; return '(' + d + ' ' + (/minute/.test(u) ? (d === 1 ? 'minute' : 'minutes') : (d === 1 || d > 10 ? 'دقيقة' : d === 2 ? 'دقيقتان' : 'دقائق')) + ')'; });
+  }).join('');
+}
 function mergeText(kind, ts) {
-  if (kind === 'out') return mergeOutcomes(ts);
+  if (kind === 'out') return retime(mergeOutcomes(ts));
   if (kind === 'lvl') return mergeLevels(ts);
   if (kind === 'union') return mergeUnion(ts);
   if (kind === 'first') return ts.find((x) => x.trim()) || ts[0];
@@ -290,7 +304,7 @@ function mergeFields(list, kinds = KINDS) {   /* list: field arrays (or objects)
     const ts = list.map((f) => get(f, i)).filter((x) => typeof x === 'string');
     let v;
     if (ts.length !== list.length) v = get(list[0], i);
-    else if (/<(?:div|p|br|span|ul|li|b)\b/i.test(ts.join(''))) v = ts.join('');
+    else if (/<(?:div|p|br|span|ul|li|b)\b/i.test(ts.join(''))) v = kinds[i] === 'out' ? retime(ts.join('')) : ts.join('');
     else v = mergeText(kinds[i] || 'notes', ts);
     if (arr) out.push(v); else out[keys[i]] = v;
   }
@@ -370,6 +384,13 @@ function mergeSessions(ss, gi) {
   const seen = new Set(); out.outcomes = [];
   ss.forEach((s, i) => [...s.outcomes, ...(i && s.extra_outcome ? [s.extra_outcome] : [])].forEach((x) => { if (x && !seen.has(x.text)) { seen.add(x.text); out.outcomes.push(x); } }));
   for (const k of ['strategies', 'resources', 'concepts']) if (Array.isArray(ss[0][k])) out[k] = uni(k);
+  if (ss.some((s) => Array.isArray(s.omins))) {   /* outcome times (tools/outcome_times.py): the merged outcomes share 40 minutes */
+    const tm = new Map();
+    ss.forEach((s) => [...s.outcomes, s.extra_outcome].forEach((x, i) => { if (x && s.omins && s.omins[i] && !tm.has(x.text)) tm.set(x.text, s.omins[i].min); }));
+    const ms = [...out.outcomes, out.extra_outcome].map((x) => (x && tm.get(x.text)) || 5);
+    const r = ms.length * 5 <= 40 ? scaleTo(ms, 8).map((x) => x * 5) : scaleTo(ms, 40);
+    out.omins = r.map((m) => ({ min: m }));
+  }
   out.procedures = procSteps(ss.map((s) => s.procedures), 40);
   for (const k of ['formative', 'summative']) if (Array.isArray(ss[0][k])) out[k] = [].concat(...ss.map((s) => s[k] || []));
   if (typeof ss[0].notes === 'string') out.notes = mergeNotes(ss.map((s) => s.notes || ''));
@@ -529,4 +550,4 @@ if (require.main === module) {
   }) };
   fs.writeFileSync(process.argv[3], JSON.stringify(out));
 }
-module.exports = { twoShift, mergeProc, mergeOutcomes, mergeLevels, mergeUnion, mergeQuestions, mergeNotes, allocate, groupsOf };
+module.exports = { twoShift, retime, mergeProc, mergeOutcomes, mergeLevels, mergeUnion, mergeQuestions, mergeNotes, allocate, groupsOf };

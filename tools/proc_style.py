@@ -337,7 +337,7 @@ def drop_contest(text, qs=None, topic='', seed=0, en=False, kid=False):
     blocks = text.split('\n\n'); out = []; changed = False
     for b in blocks:
         ls = b.split('\n'); m = re.match(r'^([0-9٠-٩]+\.)\s*(.*?)\s*(\([^()]*\))\s*$', ls[0])
-        if not m or not CONTEST.search(ls[0]) or OWN_ACT.match(m.group(2)): out.append(b); continue
+        if not m or not CONTEST.search(ls[0]) or OWN_ACT.match(m.group(2)) or re.match(r'(?:ختام الدرس|Lesson closing) – ', m.group(2)): out.append(b); continue   # tools/add_identity.py
         changed = True
         body = _strip_contest(m.group(2))
         if body is None:                                            # the step was only the contest: a closing activity instead
@@ -474,7 +474,7 @@ def fix_page(p, gs):
             if isinstance(x, dict) and isinstance(x.get('procedures'), list) and x['procedures'] and all(isinstance(y, dict) and isinstance(y.get('min'), int) and isinstance(y.get('text'), str) for y in x['procedures']):
                 pr = x['procedures']; new = []
                 for y in pr:
-                    if CONTEST.search(y['text']):
+                    if CONTEST.search(y['text']) and not y.get('id'):
                         t2 = _strip_contest(y['text'])
                         if t2 is None:
                             qs = [z['q'] for z in (x.get('formative') or []) if isinstance(z, dict) and isinstance(z.get('q'), str)]
