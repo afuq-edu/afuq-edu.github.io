@@ -266,7 +266,7 @@ def fix_times(text, T):
         st = [(i, m) for i, m in st if m]
         if len(st) < 2: continue
         ds = [toN(m.group(1)) for i, m in st]; tot = sum(ds)
-        if tot == T or not (T * 0.7 <= tot <= T * 1.3): continue
+        if tot == T or not (T * 0.55 <= tot <= T * 1.3): continue   # 22–52: an author's slip or a dropped step; 20 is a part of a period (grade 6)
         new = scale_to(ds, T); en = bool(re.search(r'minute', st[0][1].group(2)))
         for (i, m), d in zip(st, new):
             ls = blocks[i].split('\n'); ls[0] = ls[0][:m.start()] + '(' + minutes(d, en) + ')'; blocks[i] = '\n'.join(ls)
@@ -274,6 +274,48 @@ def fix_times(text, T):
             blocks[sg[0]] = re.sub(r'(زمن الحصة|lesson time) ' + D + r' (?:دقيقة|دقائق|minutes)', lambda mm: mm.group(1) + ' ' + (('%d minutes' % T) if mm.group(1) == 'lesson time' else minutes(T)), blocks[sg[0]])
         changed = True
     return '\n\n'.join(blocks) if changed else None
+
+# ---------------------------------------------------------------- no group contest in the preps (owner, 2026-10-27)
+# «مسابقة المجموعات» needs a file not every teacher has, and the same closing step in every period is a pattern to avoid:
+# a step that is only the contest goes (its minutes go to the other steps); a closing step that also does the final
+# assessment keeps that part.
+CONTEST = re.compile(r'مسابقة|المسابقة|سباق المجموعات|كاهوت|Kahoot|group quiz|group contest', re.I)
+COMPETE = re.compile(r'تتنافس|يتنافس|متنافس|التنافس|الفائز|الفائزة|مخطط النقاط|صاحبة الدور|جولة|نقاط المجموعات|للنقاط|compete|winning team', re.I)
+def _strip_contest(body):
+    names, rest = [], body
+    while True:
+        m = re.match(r'^([^:،؟?]{2,45}?)\s*[:：]\s+(.*)$', rest)
+        if not m or is_verb(m.group(1).split(' ')[0]): break
+        names.append(m.group(1)); rest = m.group(2)
+    names = [re.sub(r'\s+', ' ', re.sub(r'\(?ختام الحصة\)?|و?(?:ال)?مسابقة(?: المجموعات)?(?: التفاعلية)?(?: الختامية)?', '', n)).strip(' و،-–') for n in names]
+    names = [n for n in names if n]
+    parts = [x.strip() for x in re.split(r'،\s*|؛\s*|\s+ثم\s+', rest) if x.strip()]
+    keep = [x for x in parts if not CONTEST.search(x) and not COMPETE.search(x)]
+    if not keep: return None
+    first = re.sub(r'^(?:ثم|و)\s*', '', keep[0])
+    if first.startswith('و') and is_verb(first[1:].split(' ')[0]): first = first[1:]
+    first = teacher_ar(first, False) if is_verb(first.split(' ')[0]) and first.split(' ')[0].startswith('ي') else first
+    text = '، '.join([first] + keep[1:])
+    if len(re.sub(r'^\S+\s+\S+\s*', '', text)) < 12: return None      # nothing left but a verb and its subject
+    return (names[0] + ': ' if names else '') + text
+def drop_contest(text):
+    if not CONTEST.search(text): return None
+    blocks = text.split('\n\n'); out = []; changed = False
+    for b in blocks:
+        ls = b.split('\n'); m = re.match(r'^([0-9٠-٩]+\.)\s*(.*?)\s*(\([^()]*\))\s*$', ls[0])
+        if not m or not CONTEST.search(ls[0]): out.append(b); continue
+        changed = True
+        body = _strip_contest(m.group(2))
+        if body is None: continue                                   # the step was only the contest
+        out.append('\n'.join([m.group(1) + ' ' + body + ' ' + m.group(3)] + [x for x in ls[1:] if not CONTEST.search(x)]))
+    if not changed: return None
+    k = 0; res = []                                                  # renumber within each period
+    for b in out:
+        if re.match(r'^(?:الحصة|Period)\s', b) and not re.match(r'^[0-9٠-٩]+\.\s', b): k = 0; res.append(b); continue
+        mm = re.match(r'^[0-9٠-٩]+\.', b)
+        if mm: k += 1; b = '%d.' % k + b[mm.end():]
+        res.append(b)
+    return '\n\n'.join(res)
 
 # ---------------------------------------------------------------- the warm-up field in the same style
 WROLE = re.compile(r'^\s*(?:[-•–*]\s*)?(' + TEACH + r'|' + STUD + r'|' + STRAT + r')\s*[:：]\s*(.*)$', re.I)
@@ -363,11 +405,23 @@ def fix_page(p, gs):
     def fx(x):
         nonlocal done
         if isinstance(x, str) and is_new(x):
-            n = fix_times(x, T)
+            n0 = drop_contest(x); y = n0 or x
+            n = fix_times(y, T) or n0
             if n: done += 1; return n
         return None
     for name, i, e, o in lits:
         for path, x, anc in list(B.nodes(o)):
+            if isinstance(x, dict) and isinstance(x.get('procedures'), list) and x['procedures'] and all(isinstance(y, dict) and isinstance(y.get('min'), int) and isinstance(y.get('text'), str) for y in x['procedures']):
+                pr = x['procedures']; new = []
+                for y in pr:
+                    if CONTEST.search(y['text']):
+                        t2 = _strip_contest(y['text'])
+                        if t2 is None: continue
+                        y = dict(y, text=t2)
+                    new.append(y)
+                if new != pr and len(new) >= 2:
+                    tot = sum(y['min'] for y in pr); ms = scale_to([y['min'] for y in new], tot)
+                    x['procedures'] = [dict(y, min=mn) for y, mn in zip(new, ms)]; done += 1
             if isinstance(x, dict):
                 for kk in list(x.keys()):
                     n = fx(x[kk])
