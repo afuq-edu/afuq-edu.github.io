@@ -156,7 +156,9 @@ function parseProc(t) {
   const L = lines(t), steps = [], pre = []; let cur = null, totals = [];
   L.forEach((l) => {
     if (TOTAL.test(l) && headTokens(l).length) { totals.push(l); return; }
-    const tk = ROLE.test(l) ? [] : headTokens(l);
+    /* «1. … (5 دقائق)» (tools/proc_style.py): the time closing the line is the step's, not one mentioned inside it */
+    const endT = l.match(/\((\s*[0-9٠-٩]+\s*(?:دقيقتان|دقيقتين|دقائق|دقيقة|minutes?))\)\s*$/);
+    const tk = ROLE.test(l) ? [] : endT && /^\s*[0-9٠-٩]+\.\s/.test(l) ? headTokens(l).filter((x) => x.i >= l.length - endT[0].length) : headTokens(l);
     const timed = tk.filter((x) => x.k !== 'dur' || true);
     if (timed.length) { cur = { lines: [l], tk: timed }; steps.push(cur); return; }
     if (cur) cur.lines.push(l); else pre.push(l);
@@ -231,7 +233,23 @@ function mergeProc(ts, T = 40) {
    «• الطالب: …» under it — the same html proc_list.py writes for one shift */
 const STEP_ROW = 'margin:0;padding:10px 2px;border-bottom:1px dashed #d8d0bf;line-height:1.9';
 const escT = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const PROW = 'margin:0;padding:8px 2px;border-bottom:1px dashed #d8d0bf;line-height:1.9';
+function renderNew(t) {   /* the procedures style of tools/proc_style.py (render_html there draws the same) */
+  const ps = [];
+  String(t).split('\n\n').filter((b) => b.trim()).forEach((b) => {
+    let ls = b.split('\n');
+    if (/^(?:الحصة|Period)\s/.test(ls[0]) && !/^[0-9٠-٩]+\.\s/.test(ls[0])) {
+      ps.push('<p class="phead" style="margin:10px 0 2px;color:#c0392b;font-weight:700">' + escT(ls[0]) + '</p>'); ls = ls.slice(1);
+      if (!ls.length) return;
+    }
+    const m = ls[0].match(/^([0-9٠-٩]+\.)\s*(.*)$/);
+    ps.push('<p class="pstep" style="' + PROW + '">' + (m ? '<b>' + escT(m[1]) + '</b> ' + escT(m[2]) : escT(ls[0])) +
+      ls.slice(1).map((x) => '<br><span style="opacity:.8">' + escT(x) + '</span>').join('') + '</p>');
+  });
+  return '<div class="plist">' + ps.join('') + '</div>';
+}
 function renderSteps(t) {   /* numbered items «1. label: text» with «• …» lines under them; other lines stay paragraphs */
+  if (/^[0-9٠-٩]+\.\s.*\([0-9٠-٩]+ (?:دقيقة|دقيقتان|دقائق|minutes?)\)\s*$/m.test(t)) return renderNew(t);
   const out = []; let cur = null;
   lines(t).forEach((l) => {
     const s = l.trim(); if (!s) return;

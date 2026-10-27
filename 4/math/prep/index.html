@@ -66,7 +66,7 @@ function plain(s,k){
  if(k==='outcomes')return s.outcomes.map((o,i)=>(i+1)+'. '+o.text).join('\n')+'\nمخرج تعليمي آخر: '+s.extra_outcome.text;
  if(k==='levels')return s.outcomes.map((o,i)=>'المخرج '+(i+1)+': '+o.level).join('\n')+'\nالمخرج الآخر: '+s.extra_outcome.level;
  if(['strategies','resources','concepts'].includes(k))return s[k].join('، ');
- if(k==='procedures'){let t=0;return s.procedures.map(p=>{const r='('+t+'–'+(t+p.min)+' د) '+p.text;t+=p.min;return r}).join('\n')}
+ if(k==='procedures'){const st=(s.strategies||[]).map(x=>String(x).replace(/^(?:استراتيجيات\s+)?أخرى\s*[:：]\s*/,''));return s.procedures.map((p,i)=>(i+1)+'. '+p.text+' ('+p.min+' '+(p.min===1||p.min>10?'دقيقة':p.min===2?'دقيقتان':'دقائق')+')'+(st.length?'\nالاستراتيجيات: '+(p.strategy||st[i%st.length])+'.':'')).join('\n\n')}
  if(k==='formative'||k==='summative')return s[k].map((x,i)=>(i+1)+'. ['+x.level+'] '+x.q+'\n   الإجابة: '+x.a).join('\n')+(k==='formative'&&s.sup?'\n\n• نشاط علاجي (لمن لم يتقن): '+s.sup.r+'\n• نشاط إثرائي (للمتقنين): '+s.sup.e:'');
  return String(s[k]);
 }
@@ -76,7 +76,7 @@ function items(s,k){
  if(k==='outcomes')return s.outcomes.map((o,i)=>({lab:'المخرج '+(i+1),t:o.text})).concat([{lab:'مخرج آخر',t:s.extra_outcome.text,x:1}]);
  if(k==='levels')return s.outcomes.map((o,i)=>({lab:'المخرج '+(i+1),t:o.level,lv:1})).concat([{lab:'المخرج الآخر',t:s.extra_outcome.level,lv:1,x:1}]);
  if(['strategies','resources','concepts'].includes(k))return s[k].map(t=>({t,chip:1}));
- if(k==='procedures'){let t=0;return s.procedures.map(p=>{const r={lab:t+'–'+(t+p.min),t:p.text,tm:1};t+=p.min;return r})}
+ if(k==='procedures'){const st=(s.strategies||[]).map(x=>String(x).replace(/^(?:استراتيجيات\s+)?أخرى\s*[:：]\s*/,''));return s.procedures.map((p,i)=>({lab:String(i+1),t:p.text+' ('+p.min+' '+(p.min===1||p.min>10?'دقيقة':p.min===2?'دقيقتان':'دقائق')+')'+(st.length?' — الاستراتيجيات: '+(p.strategy||st[i%st.length]):'')}))}
  if(k==='formative'||k==='summative')return s[k].map(x=>({lab:x.level,t:x.q+'\nالإجابة: '+x.a,q:x.q,a:x.a,lvl:x.level})).concat(k==='formative'&&s.sup?[{lab:'علاجي',t:s.sup.r},{lab:'إثرائي',t:s.sup.e}]:[]);
  return null;
 }

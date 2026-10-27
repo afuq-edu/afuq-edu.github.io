@@ -277,6 +277,10 @@
       close();
       var next = ''; for (var k = i + 1; k < lines.length; k++) { if (lines[k].trim()) { next = lines[k].trim(); break; } }
       var head = (next && point(next)) || reTotal.test(l);
+      /* procedures style (tools/proc_style.py): «الحصة 1: …» headings bold, «1. … (5 دقائق)»: the number and the time bold */
+      if (/^(?:الحصة|Period)\s+[0-9\u0660-\u0669]+\s*[:：]?/.test(l) && /زمن الحصة|lesson time/i.test(l)) { out.push('<p><b>' + esc(l) + '</b></p>'); return; }
+      var nm = l.match(/^([0-9\u0660-\u0669]+\.)\s*(.*?)\s*(\([0-9\u0660-\u0669]+\s*(?:دقيقة|دقيقتان|دقائق|minutes?)\))$/);
+      if (nm) { out.push('<p><b>' + esc(nm[1]) + '</b> ' + esc(nm[2]) + ' <b>' + esc(nm[3]) + '</b></p>'); return; }
       /* a numbered step «1. 5 دقائق — التهيئة: …»: only its heading is bold */
       var sm = l.match(/^([0-9\u0660-\u0669]+\.\s*[^:\uFF1A]{1,70}[:\uFF1A])\s*(.+)$/);
       if (sm) { out.push('<p><b>' + esc(sm[1]) + '</b> ' + esc(sm[2]) + '</p>'); return; }
