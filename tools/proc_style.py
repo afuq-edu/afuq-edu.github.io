@@ -277,8 +277,9 @@ def fix_times(text, T):
 
 # ---------------------------------------------------------------- no group contest in the preps (owner, 2026-10-27)
 # «مسابقة المجموعات» needs a file not every teacher has, and the same closing step in every period is a pattern to avoid:
-# a step that is only the contest goes (its minutes go to the other steps); a closing step that also does the final
-# assessment keeps that part.
+# a step that is only the contest becomes a closing activity that needs no file, varied from period to period and
+# built on the period's own questions and topic (owner: «مسابقة أو أي شيء مناسب، لا حذفه»); a closing step that also does the
+# final assessment keeps that part.
 CONTEST = re.compile(r'مسابقة|المسابقة|سباق المجموعات|كاهوت|Kahoot|group quiz|group contest', re.I)
 COMPETE = re.compile(r'تتنافس|يتنافس|متنافس|التنافس|الفائز|الفائزة|مخطط النقاط|صاحبة الدور|جولة|نقاط المجموعات|للنقاط|compete|winning team', re.I)
 def _strip_contest(body):
@@ -298,15 +299,50 @@ def _strip_contest(body):
     text = '، '.join([first] + keep[1:])
     if len(re.sub(r'^\S+\s+\S+\s*', '', text)) < 12: return None      # nothing left but a verb and its subject
     return (names[0] + ': ' if names else '') + text
-def drop_contest(text):
+ACT_AR = [
+    ('تحدي الفريقين: يقسم المعلم الصف إلى فريقين ويطرح أسئلة شفهية من الدرس، منها: «{q}»، ويجيب الفريق صاحب الدور ويسجّل المعلم نقاطه على السبورة', 'التعلم المبني على اللعب'),
+    ('بطاقة الخروج: يكتب كل {who} على بطاقة إجابة سؤال «{q}» وفكرة واحدة تعلّمها اليوم، ويسلّمها للمعلم قبل الخروج', 'التقويم البنائي'),
+    ('صح أم خطأ: يقرأ المعلم عبارات قصيرة عن {topic}، ويرفع {whos} بطاقة «صح» أو «خطأ» ويصحّحون العبارة الخاطئة', 'التعلم المبني على اللعب'),
+    ('سباق السبورة: يتسابق ممثل من كل مجموعة لكتابة إجابة «{q}» على السبورة، ويناقش المعلم الإجابات مع الصف', 'التعلم التعاوني'),
+    ('كرة الأسئلة: يرمي المعلم كرة صغيرة إلى {who} فيجيب عن سؤال من الدرس مثل «{q}»، ثم يرميها إلى زميل ويسأله سؤالًا آخر', 'التعلم المبني على اللعب'),
+    ('أكمل الفكرة: يبدأ المعلم جملة عن {topic}، ويكملها {whos} بالتناوب حتى يكتمل ملخص الحصة على السبورة', 'الحوار والمناقشة'),
+    ('الكرسي الساخن: يجلس {who} متطوع أمام زملائه ويجيب عن أسئلتهم حول {topic}، ويبدأ المعلم بسؤال «{q}»', 'الحوار والمناقشة'),
+    ('ثلاث كلمات: يكتب كل {who} ثلاث كلمات تلخّص {topic}، ويعرض بعضهم كلماتهم ويشرحون سبب اختيارها', 'التعلم الذاتي')]
+ACT_EN = [
+    ('Quick quiz: the teacher splits the class into two teams and asks oral questions from the lesson, such as "{q}"; the team whose turn it is answers and the teacher keeps score on the board', 'Game-based learning'),
+    ('Exit ticket: each {who} writes the answer to "{q}" and one new thing they learnt today, and hands it in before leaving', 'Formative assessment'),
+    ('True or false: the teacher reads short sentences about {topic}; {whos} hold up True or False cards and correct the false ones', 'Game-based learning'),
+    ('Board race: one {who} from each group races to write the answer to "{q}" on the board; the class checks the answers together', 'Collaborative learning'),
+    ('Question ball: the teacher throws a soft ball to a {who}, who answers a question such as "{q}" and then throws it to a classmate with a new question', 'Game-based learning'),
+    ('Finish the sentence: the teacher starts a sentence about {topic} and {whos} finish it in turn until the lesson summary is on the board', 'Discussion'),
+    ('Hot seat: a volunteer {who} sits at the front and answers classmates\' questions about {topic}; the teacher starts with "{q}"', 'Discussion'),
+    ('Three words: each {who} writes three words that sum up {topic} and some explain their choice', 'Self-learning')]
+OWN_ACT = re.compile('^(?:' + '|'.join(re.escape(a.split(':')[0]) for a, _ in ACT_AR + ACT_EN) + '):')
+def activity(qs, topic, seed, en, kid):
+    qs = [x for x in qs if not CONTEST.search(x)]
+    if CONTEST.search(topic or ''): topic = ''
+    acts = ACT_EN if en else ACT_AR
+    q = (qs[seed % len(qs)] if qs else '').strip().rstrip('؟?.')
+    q = re.sub(r'\s+', ' ', q)
+    q = re.sub(r'^(?:س\s*[0-9٠-٩]*\s*)?(?:سؤال\s*)?[(\[]?\s*(?:ال)?مستوى\s+[^):\]]{2,20}[)\]]?\s*[:：]?\s*', '', q)
+    q = re.sub(r'^(?:Q\d*\s*)?\(?[A-Z][a-z]+ level\)?\s*[:：]?\s*', '', q)
+    pool = [a for a in acts if q and len(q) <= 90 or '{q}' not in a[0]]
+    t, st = pool[seed % len(pool)]
+    who = ('pupil' if kid else 'student') if en else ('تلميذ' if kid else 'طالب')
+    whos = ('pupils' if kid else 'students') if en else ('التلاميذ' if kid else 'الطلبة')
+    topic = topic if topic and len(topic) <= 60 else ('the lesson' if en else 'الدرس')
+    return t.format(q=q, topic=topic, who=who, whos=whos), st
+def drop_contest(text, qs=None, topic='', seed=0, en=False, kid=False):
     if not CONTEST.search(text): return None
     blocks = text.split('\n\n'); out = []; changed = False
     for b in blocks:
         ls = b.split('\n'); m = re.match(r'^([0-9٠-٩]+\.)\s*(.*?)\s*(\([^()]*\))\s*$', ls[0])
-        if not m or not CONTEST.search(ls[0]): out.append(b); continue
+        if not m or not CONTEST.search(ls[0]) or OWN_ACT.match(m.group(2)): out.append(b); continue
         changed = True
         body = _strip_contest(m.group(2))
-        if body is None: continue                                   # the step was only the contest
+        if body is None:                                            # the step was only the contest: a closing activity instead
+            a, st = activity(qs or [], topic, seed + len(out), en, kid)
+            out.append(m.group(1) + ' ' + a + ' ' + m.group(3) + '\n' + ('Strategies: ' if en else 'الاستراتيجيات: ') + st + '.'); continue
         out.append('\n'.join([m.group(1) + ' ' + body + ' ' + m.group(3)] + [x for x in ls[1:] if not CONTEST.search(x)]))
     if not changed: return None
     k = 0; res = []                                                  # renumber within each period
@@ -402,10 +438,34 @@ def fix_page(p, gs):
             new = warm_convert(v[1], en, fem, kid)
             if new: v[0], v[1] = ''.join('<p>%s</p>' % H.escape(x) for x in new.split('\n') if x.strip()), new; done += 1
     T = 35 if '/prep35/' in p else 40
-    def fx(x):
+    import zlib
+    def ctx(cont, anc):
+        """the period's questions (its formative / summative fields) and topic, for a closing activity"""
+        pool = [cont] + ([anc[-1][1]] if anc and isinstance(cont, list) and len(cont) in (2, 3) else [])
+        qs = []
+        for c in pool:
+            for y in (c.values() if isinstance(c, dict) else c if isinstance(c, list) else []):
+                ys = y if isinstance(y, list) else [y]
+                for z in ys:
+                    if isinstance(z, str) and ('الإجابة' in z or 'Answer' in z) and not is_new(z):
+                        qs += [q for q, a, lv in B.parse(z) if 8 < len(q) < 140]
+                    if isinstance(z, dict) and isinstance(z.get('q'), str): qs.append(z['q'])
+        topic = ''
+        for path_, o_ in reversed(anc):
+            if isinstance(o_, dict):
+                for kk in ('focus', 'axis', 'topic', 'title', 't', 'name'):
+                    if isinstance(o_.get(kk), str) and 2 < len(o_[kk]) < 70 and not is_new(o_[kk]): topic = o_[kk]; break
+            if topic: break
+        topic = re.sub(r'^(?:الدرس|الحصة)\s*[0-9٠-٩]*\s*[:：-]?\s*', '', topic).strip()
+        return qs, topic
+    def fx(x, cont=None, anc=(), key=''):
         nonlocal done
         if isinstance(x, str) and is_new(x):
-            n0 = drop_contest(x); y = n0 or x
+            n0 = None
+            if CONTEST.search(x):
+                qs, topic = ctx(cont, list(anc))
+                n0 = drop_contest(x, qs, topic, zlib.crc32((p + key).encode()) % 97, en, kid)
+            y = n0 or x
             n = fix_times(y, T) or n0
             if n: done += 1; return n
         return None
@@ -416,21 +476,24 @@ def fix_page(p, gs):
                 for y in pr:
                     if CONTEST.search(y['text']):
                         t2 = _strip_contest(y['text'])
-                        if t2 is None: continue
-                        y = dict(y, text=t2)
+                        if t2 is None:
+                            qs = [z['q'] for z in (x.get('formative') or []) if isinstance(z, dict) and isinstance(z.get('q'), str)]
+                            t2, stg = activity(qs, x.get('focus', ''), zlib.crc32((p + str(path)).encode()) % 97, en, kid)
+                            y = dict(y, text=t2, strategy=stg)
+                        else: y = dict(y, text=t2)
                     new.append(y)
                 if new != pr and len(new) >= 2:
                     tot = sum(y['min'] for y in pr); ms = scale_to([y['min'] for y in new], tot)
                     x['procedures'] = [dict(y, min=mn) for y, mn in zip(new, ms)]; done += 1
             if isinstance(x, dict):
                 for kk in list(x.keys()):
-                    n = fx(x[kk])
+                    n = fx(x[kk], x, anc, str(path) + kk)
                     if n:
                         x[kk] = n
                         if kk == 't' and isinstance(x.get('h'), str): x['h'] = render_html(n)
             elif isinstance(x, list):
                 for j in range(len(x)):
-                    n = fx(x[j])
+                    n = fx(x[j], x, anc, str(path) + str(j))
                     if n:
                         x[j] = n
                         if len(x) == 2 and j == 1 and isinstance(x[0], str) and x[0].lstrip().startswith('<'): x[0] = render_html(n)
