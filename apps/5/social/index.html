@@ -283,7 +283,7 @@ function confetti() {
 }
 
 /* ---------- speech ---------- */
-function speak(text) {
+function speak(text) {   text = String(text).replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\u{1F3FB}-\u{1F3FF}\uFE0F\u200D\u20E3]/gu, ' ').replace(/\s+/g, ' ').trim();
   if (!('speechSynthesis' in window)) { toast('القراءة الصوتية غير مدعومة في هذا المتصفح'); return; }
   speechSynthesis.cancel();
   const en = (text.match(/[A-Za-z]/g) || []).length > (text.match(/[ء-ي]/g) || []).length;

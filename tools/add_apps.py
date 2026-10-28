@@ -116,6 +116,18 @@ def home(g, s):
         if t not in seg: seg += ' · ' + t
     L[i] = x[:a] + seg + x[b:]; write('index.html', '\n'.join(L))
 
+SPEAK = "function speak(text) {"
+CLEAN = ("function speak(text) {   text = String(text).replace(/[\\p{Extended_Pictographic}\\u{1F1E6}-\\u{1F1FF}\\u{1F3FB}-\\u{1F3FF}\\uFE0F\\u200D\\u20E3]/gu, ' ')"
+         ".replace(/\\s+/g, ' ').trim();")   # icons out (owner, 2026-10-28: the voice read 🔊 as «سماعة»)
+def fix_app(d):
+    """the app's speech without icons; the service worker's cache renamed so installed apps take the new page"""
+    h = open(d + 'index.html', encoding='utf8').read()
+    if CLEAN not in h:
+        assert h.count(SPEAK) == 1, d
+        open(d + 'index.html', 'w', encoding='utf8').write(h.replace(SPEAK, CLEAN, 1))
+        w = open(d + 'sw.js', encoding='utf8').read()
+        open(d + 'sw.js', 'w', encoding='utf8').write(re.sub(r"const C='([^']*?)(?:-s\d+)?'", lambda m: "const C='%s-s2'" % m.group(1), w, count=1))
+
 def install(src, g, s, cat, lab):
     d = '%d/%s/' % (g, s); prefix = cat[d]['lock']
     h = open(src + '/index.html', encoding='utf8').read()
@@ -126,6 +138,7 @@ def install(src, g, s, cat, lab):
     for dp, dns, fns in os.walk(R + out, topdown=False):       # names as the app links them (NFC), not a Mac zip's NFD
         for n in dns + fns:
             if unicodedata.normalize('NFC', n) != n: os.rename(os.path.join(dp, n), os.path.join(dp, unicodedata.normalize('NFC', n)))
+    fix_app(R + out)
     base = '/' + out
     write(d + 'lsum/index.html', lsum_page(g, lab, prefix, D, base))
     write(d + 'app/index.html', app_page(g, lab, prefix, base))
