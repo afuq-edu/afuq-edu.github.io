@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""«ختام الدرس» — identity and citizenship (owner, 2026-10-27): after the final assessment, the lesson's last period ends
-with a short group activity or game that ties the lesson's own content to Omani identity and citizenship (a value, a place,
+"""«غلق الدرس» — identity and citizenship (owner, 2026-10-27/28): the lesson's procedures end (its last period) with a
+fun closing step — a short group activity or game that ties the lesson's own content to Omani identity and citizenship (a value, a place,
 heritage, a national symbol or occasion, the economy, Oman Vision 2040). It takes 5 minutes of the period: the period's
 other steps are scaled to the rest (40 − 5 = 35; prep35 30; grade 6 Arabic/Islamic 20 − 5 = 15), so the period still adds up.
-  N. ختام الدرس – <name>: <activity> (5 دقائق)
+  N. غلق الدرس (نشاط ممتع مع المواطنة) – <name>: <activity> (5 دقائق)
   الاستراتيجيات: <strategy>.
-(English pages: «N. Lesson closing – <name>: <activity> (5 minutes)» / «Strategies: …».)
+(English pages: «N. Finishing stage (fun activity with citizenship) – <name>: … (5 minutes)» / «Strategies: …», the last stage after
+Presentation / Practice / Production, tools/english_stages.py.) Only in the procedures, not in the final assessment (owner, 2026-10-28).
 tools/identity_items.json: {"<grade>/<subject>/prep[/uN]": [{"title", "n", "a", "s"} per lesson in page order]};
 prep35 pages use their prep page's items (matched by title). Text fields in the procedures style (tools/proc_style.py) get the
 step in their last period (a field holding several periods: its last «الحصة N» part), html copies are redrawn, grades 2–4 math
@@ -17,14 +18,14 @@ sys.path.insert(0, R + 'tools')
 import build_quiz as B
 import proc_style as P
 MIN = 5
-IDRX = re.compile(r'^[0-9٠-٩]+\.\s*(?:ختام الدرس|Lesson closing) – ')
+IDRX = re.compile(r'^[0-9٠-٩]+\.\s*(?:غلق الدرس|Finishing stage|ختام الدرس|Lesson closing)\b[^–\n]*– ')   # the old labels too
 STEP = re.compile(r'^[0-9٠-٩]+\.\s')
 HEAD = lambda b: bool(re.match(r'^(?:الحصة|Period)\s', b)) and not STEP.match(b)
 
 def block(k, it, en):
     a = it['a'].strip().rstrip('.')
-    if en: return '%d. Lesson closing – %s: %s (%s)\nStrategies: %s.' % (k, it['n'], a, P.minutes(MIN, True), it['s'].rstrip('.'))
-    return '%d. ختام الدرس – %s: %s (%s)\nالاستراتيجيات: %s.' % (k, it['n'], a, P.minutes(MIN), it['s'].rstrip('.'))
+    if en: return '%d. Finishing stage (fun activity with citizenship) – %s: %s (%s)\nStrategies: %s.' % (k, it['n'], a, P.minutes(MIN, True), it['s'].rstrip('.'))
+    return '%d. غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s (%s)\nالاستراتيجيات: %s.' % (k, it['n'], a, P.minutes(MIN), it['s'].rstrip('.'))
 
 def with_identity(text, it, en):
     """text (procedures style) with the closing step at the end of its last period, or None"""
@@ -84,7 +85,7 @@ def fix_page(p, rel, items):
             S = sum(y['min'] for y in v)
             if len(pr) < 2 or S < 15: continue
             ms = P.scale_to([y['min'] for y in pr], S - MIN)
-            nv = [dict(y, min=m) for y, m in zip(pr, ms)] + [{'min': MIN, 'text': 'ختام الدرس – %s: %s' % (it['n'], it['a'].strip().rstrip('.')), 'strategy': it['s'].rstrip('.'), 'id': 1}]
+            nv = [dict(y, min=m) for y, m in zip(pr, ms)] + [{'min': MIN, 'text': 'غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s' % (it['n'], it['a'].strip().rstrip('.')), 'strategy': it['s'].rstrip('.'), 'id': 1}]
             if nv != v: cont[k] = nv; n += 1
             continue
         t = v if kind == 'text' else B.strip_html(v) if kind == 'html' else v['t'] if kind == 'ht' else v[1]

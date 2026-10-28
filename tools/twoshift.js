@@ -149,7 +149,7 @@ function headTokens(l) {
 const ROLE = /^\s*(?:[-•–]|(?:دور\s+)?(?:المعلم|المعلمة|الطالب|الطالبة|الطلبة|الطلاب|التلميذ|التلاميذ|المتعلم)|Teacher|Pupils?|Students?|Strategy|الاستراتيجي)/;
 const TOTAL = /^\s*[-–•]?\s*(?:المجموع|مجموع الزمن|مجموع زمن الحصة|مجموع زمن الأنشطة|الزمن الكلي|زمن الحصة|Total)/i;
 const WARM = /التهيئة|تهيئة|التمهيد|تمهيد|الإحماء|إحماء|warm[- ]?up|lead[- ]?in|starter|opening/i;
-const CLOSE = /التقويم الختامي|تقويم ختامي|الغلق|الختام|الخاتمة|الإغلاق|مسابقة المجموعات|بطاقة الخروج|خطة الأسبوع|التهدئة|closure|closing|plenary|exit ticket|wrap[- ]?up|cool[- ]?down/i;
+const CLOSE = /غلق الدرس|ختام الدرس|Finishing stage|التقويم الختامي|تقويم ختامي|الغلق|الختام|الخاتمة|الإغلاق|مسابقة المجموعات|بطاقة الخروج|خطة الأسبوع|التهدئة|closure|closing|plenary|exit ticket|wrap[- ]?up|cool[- ]?down/i;
 const CLOSE_HEAD = /التقويم|بطاقات? (?:ال)?خروج|الخلاصة|التلخيص|ملخص الحصة|assessment|summary|review/i;   /* a step named so (its first line) */
 const isClose = (lines0) => CLOSE.test(lines0.join(' ')) || CLOSE_HEAD.test(lines0[0] || '');
 function parseProc(t) {

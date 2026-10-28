@@ -2,7 +2,7 @@
 """The time of every learning outcome (owner, 2026-10-27: «الأهداف تذكر كل هدف ومن وقته من زمن الحصة، اذكر جنب الهدف الوقت
 بين قوسين»): each outcome of a period ends with its share of the period, «… (10 دقائق)» / «… (10 minutes)», the shares adding
 up to the period (40 minutes; prep35 35). The share comes from the period's procedures: the warm-up goes to the first outcome,
-the closing steps (final assessment, «ختام الدرس») to the last one, every other step to the outcome it shares the most words
+the closing steps (final assessment, «غلق الدرس» / Finishing stage) to the last one, every other step to the outcome it shares the most words
 with, else to the outcomes in turn; an outcome no step went to still gets a few minutes. A field holding several periods
 («Period 1:» / «الحصة 1» parts) is timed part by part. Html copies (<li> items, the «مخرج تعليمي آخر» box) get the same times;
 grades 2–4 math keep them in the session's "omins" ([{min}] for outcomes + the other outcome) and the page draws them.
@@ -18,9 +18,9 @@ OT = re.compile(r'\s*\((?:[0-9٠-٩]+) (?:دقيقة|دقيقتان|دقائق|m
 OTHER = re.compile(r'^\s*[-•]?\s*(?:(?:ال)?مخرج(?:ات)?\s+(?:تعليمي(?:ة)?\s+)?(?:ال)?آخر|(?:another|other|additional)\s+(?:learning\s+)?outcome)', re.I)
 SEGH = re.compile(r'^\s*(?:Period|Lesson|الحصة|حصة)\s*[0-9٠-٩]+\b', re.I)
 WARM = re.compile(r'التهيئة|التمهيد|warm|lead[- ]?in|starter|opening', re.I)
-CLOSE = re.compile(r'ختام الدرس|Lesson closing|التقويم الختامي|الختام|الغلق|غلق الدرس|خاتمة|plenary|closing|wrap[- ]?up|final assessment|exit ticket|بطاقة الخروج', re.I)
+CLOSE = re.compile(r'غلق الدرس|Finishing stage|ختام الدرس|Lesson closing|التقويم الختامي|الختام|الغلق|غلق الدرس|خاتمة|plenary|closing|wrap[- ]?up|final assessment|exit ticket|بطاقة الخروج', re.I)
 STOP = set('يذكر يتعرف يوضح يبين يحدد يميز يستنتج يقارن يصف يشرح يطبق يكتب يقرأ يحل يجد يستخدم الطالب الطلبة المعلم التلميذ'
-           ' على إلى في من عن مع بين التي الذي ذلك هذه هذا كل بعض أو ثم حول عند خلال the and with from that this pupils students teacher will able'.split())
+           ' على إلى في من عن مع بين التي الذي ذلك هذه هذا كل بعض أو ثم حول عند خلال the and with from that this pupils students teacher will able stage presentation practice production finishing'.split())
 TASH = re.compile(r'[ً-ْٰـ]')
 
 def words(s):

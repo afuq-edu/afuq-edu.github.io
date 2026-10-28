@@ -337,7 +337,7 @@ def drop_contest(text, qs=None, topic='', seed=0, en=False, kid=False):
     blocks = text.split('\n\n'); out = []; changed = False
     for b in blocks:
         ls = b.split('\n'); m = re.match(r'^([0-9٠-٩]+\.)\s*(.*?)\s*(\([^()]*\))\s*$', ls[0])
-        if not m or not CONTEST.search(ls[0]) or OWN_ACT.match(m.group(2)) or re.match(r'(?:ختام الدرس|Lesson closing) – ', m.group(2)): out.append(b); continue   # tools/add_identity.py
+        if not m or not CONTEST.search(ls[0]) or OWN_ACT.match(m.group(2)) or re.match(r'(?:غلق الدرس|Finishing stage|ختام الدرس|Lesson closing)\b', m.group(2)): out.append(b); continue   # tools/add_identity.py
         changed = True
         body = _strip_contest(m.group(2))
         if body is None:                                            # the step was only the contest: a closing activity instead
