@@ -6,7 +6,7 @@ and the catalogue part in p/index.html. Rerunning replaces the unit pages."""
 import re, os, sys, json
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 sys.path.insert(0, R + 'tools')
-SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الهوية والمواطنة','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات'}
+SUBJ = {'math':'الرياضيات','science':'العلوم','arabic':'اللغة العربية','english':'اللغة الإنجليزية','islamic':'التربية الإسلامية','social':'الهوية والمواطنة','physics':'الفيزياء','chemistry':'الكيمياء','biology':'الأحياء','it':'تقنية المعلومات', 'envsci':'العلوم البيئية'}
 GRADE = {1:'الأول',2:'الثاني',3:'الثالث',4:'الرابع',5:'الخامس',6:'السادس',7:'السابع',8:'الثامن',9:'التاسع',10:'العاشر',11:'الحادي عشر',12:'الثاني عشر'}
 UNITS = ['الأولى','الثانية','الثالثة','الرابعة','الخامسة','السادسة']
 TITLE = 'حصاد الوحدات'
