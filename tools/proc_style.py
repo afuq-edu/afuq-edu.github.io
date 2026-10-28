@@ -266,7 +266,7 @@ def fix_times(text, T):
         st = [(i, m) for i, m in st if m]
         if len(st) < 2: continue
         ds = [toN(m.group(1)) for i, m in st]; tot = sum(ds)
-        if tot == T or not (T * 0.55 <= tot <= T * 1.3): continue   # 22–52: an author's slip or a dropped step; 20 is a part of a period (grade 6)
+        if tot in (T, T - 15) or not (T * 0.55 <= tot <= T * 1.3): continue   # T - 15: the procedures' part of the period (tools/stage_times.py)   # 22–52: an author's slip or a dropped step; 20 is a part of a period (grade 6)
         new = scale_to(ds, T); en = bool(re.search(r'minute', st[0][1].group(2)))
         for (i, m), d in zip(st, new):
             ls = blocks[i].split('\n'); ls[0] = ls[0][:m.start()] + '(' + minutes(d, en) + ')'; blocks[i] = '\n'.join(ls)

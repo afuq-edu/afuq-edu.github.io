@@ -199,6 +199,10 @@ function rewriteHead(l, tk, d, c, incl, idx, actIdx) {
   s = s.replace(/^(\s*[◄►•]?\s*(?:النشاط|Activity)\s*)([0-9٠-٩]+)/, (m, a, n) => a + like(actIdx(), n));
   return s;
 }
+function procTotal(ts) {   /* the procedures' own minutes (25 when the stages carry theirs, tools/stage_times.py), else 40 */
+  const s = ts.map((t) => parseProc(t).steps.reduce((a, x) => a + (durOf(x) || 0), 0));
+  return s.length && s.every((x) => x === s[0]) && s[0] >= 15 && s[0] <= 40 ? s[0] : 40;
+}
 function mergeProc(ts, T = 40) {
   const P = ts.map(parseProc);
   if (P.some((p) => !p.steps.length)) return ts.map((t) => String(t || '').trim()).filter(Boolean).join('\n\n');
@@ -293,7 +297,7 @@ function mergeText(kind, ts) {
   if (kind === 'last') return ts.slice().reverse().find((x) => x.trim()) || ts[ts.length - 1];
   if (kind === 'q') return mergeQuestions(ts);
   if (typeof kind === 'number') return mergeProc(ts, kind);
-  if (kind === 'proc') return mergeProc(ts);
+  if (kind === 'proc') return mergeProc(ts, procTotal(ts));
   return mergeNotes(ts);
 }
 function mergeFields(list, kinds = KINDS) {   /* list: field arrays (or objects) of the group's periods */
@@ -392,7 +396,8 @@ function mergeSessions(ss, gi) {
     const r = ms.length * 5 <= 40 ? scaleTo(ms, 8).map((x) => x * 5) : scaleTo(ms, 40);
     out.omins = r.map((m) => ({ min: m }));
   }
-  out.procedures = procSteps(ss.map((s) => s.procedures), 40);
+  const pt = ss[0].procedures.reduce((a, x) => a + (x.min || 0), 0);
+  out.procedures = procSteps(ss.map((s) => s.procedures), pt >= 15 && pt <= 40 ? pt : 40);
   for (const k of ['formative', 'summative']) if (Array.isArray(ss[0][k])) out[k] = [].concat(...ss.map((s) => s[k] || []));
   if (typeof ss[0].notes === 'string') out.notes = mergeNotes(ss.map((s) => s.notes || ''));
   return out;

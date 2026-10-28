@@ -69,7 +69,7 @@ def level(t):
 ANS = re.compile(r'^\s*(?:[-–•*]\s*)?(?:الإجابة النموذجية|الإجابة المتوقعة|الإجابة الصحيحة|الإجابة|الجواب|Model answer|Suggested answer|'
                  r'Expected answer|Possible answer|Sample answer|Answer|Ans\.?)\s*[:：]\s*', re.I | re.M)
 QSTART = re.compile(r'\s*(?:س\s*[\d٠-٩]+|Q\s*\d+|Question\s*\d+|[\d٠-٩]+\s*[).\-–]|[(\[](?:ال)?مستوى|[(\[](?:Support|Expected|Advanced))', re.I)
-HDR = re.compile(r'^\s*(?:الحصة|Period|Lesson|الدرس)\s*[\d٠-٩]+.*?[:：]\s*$|^\s*(?:الحصة|Period)\s*[\d٠-٩]+\s*[:：].*$|^\s*تفريد التعليم\s*[:：]?\s*$', re.M)   # tools/form_heading.py
+HDR = re.compile(r'^\s*(?:الحصة|Period|Lesson|الدرس)\s*[\d٠-٩]+.*?[:：]\s*$|^\s*(?:الحصة|Period)\s*[\d٠-٩]+\s*[:：].*$|^\s*(?:تفريد التعليم|أسئلة التقويم الختامي|Formative questions|Summative questions)\b[^\n]*[:：]?\s*$', re.M)   # tools/form_heading.py
 def strip_html(s):
     if '<' not in s: return s
     s = re.sub(r'<br\s*/?>|</(?:li|p|div|tr)>', '\n', s)
@@ -419,6 +419,7 @@ def main():
     import proc_style; proc_style.main([])   # one procedures style (owner, 2026-10-27)
     import fold_closing; fold_closing.main([])   # no separate «الغلق» field: into the procedures (owner, 2026-10-28)
     import add_identity; add_identity.main([])   # «غلق الدرس»: a fun closing step with citizenship, 5 minutes of the last period (owner, 2026-10-27/28)
+    import stage_times; stage_times.main([])   # التهيئة 5 + الإجراءات 25 + التكويني 5 + الختامي 5 = 40 (owner, 2026-10-28)
     import english_stages; english_stages.main([])   # English: Presentation / Practice / Production, then Finishing (owner, 2026-10-28)
     import outcome_times; outcome_times.main([])
     import form_heading; form_heading.main([])   # «تفريد التعليم:» heading on the formative assessment, not English (owner, 2026-10-28)   # every outcome with its share of the period (owner, 2026-10-27)

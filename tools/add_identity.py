@@ -29,8 +29,8 @@ FILLER = re.compile('^(?:' + '|'.join(re.sub(r'\\\{[a-z]+\\\}', '.*?', re.escape
 
 def block(k, it, en):
     a = it['a'].strip().rstrip('.')
-    if en: return '%d. Finishing stage (fun activity with citizenship) – %s: %s (%s)\nStrategies: %s.' % (k, it['n'], a, P.minutes(MIN, True), it['s'].rstrip('.'))
-    return '%d. غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s (%s)\nالاستراتيجيات: %s.' % (k, it['n'], a, P.minutes(MIN), it['s'].rstrip('.'))
+    if en: return '%d. Finishing stage – %s: %s (%s)\nStrategies: %s.' % (k, it['n'], a, P.minutes(MIN, True), it['s'].rstrip('.'))
+    return '%d. غلق الدرس – %s: %s (%s)\nالاستراتيجيات: %s.' % (k, it['n'], a, P.minutes(MIN), it['s'].rstrip('.'))
 
 def with_identity(text, it, en, sj=-1):
     """text (procedures style) with the closing step at the end of its period sj (default: the last one), or None"""
@@ -109,7 +109,7 @@ def fix_page(p, rel, items, finish=None):
             S = sum(y['min'] for y in v)
             if len(pr) < 2 or S < 15: continue
             ms = P.scale_to([y['min'] for y in pr], S - MIN)
-            nv = [dict(y, min=m) for y, m in zip(pr, ms)] + [{'min': MIN, 'text': 'غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s' % (it['n'], it['a'].strip().rstrip('.')), 'strategy': it['s'].rstrip('.'), 'id': 1}]
+            nv = [dict(y, min=m) for y, m in zip(pr, ms)] + [{'min': MIN, 'text': 'غلق الدرس – %s: %s' % (it['n'], it['a'].strip().rstrip('.')), 'strategy': it['s'].rstrip('.'), 'id': 1}]
             if nv != v: cont[k] = nv; n += 1
             continue
         n += put(cont, k, kind, it, en)

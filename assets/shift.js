@@ -91,9 +91,32 @@
       .replace(/([0-9٠-٩]+)((?:\s|&nbsp;|<[^>]{0,40}>)*)(دقائق|دقيقة)(?![\u0600-\u06FF])/g,function(m,n,sp,u){   /* 3–10 دقائق, 11+ دقيقة */
         var v=toN(n); return n+sp+(v>=3&&v<=10?'دقائق':v>10?'دقيقة':u); });
   }
+  /* the procedures' own part of a period whose stages carry their minutes (tools/stage_times.py: التهيئة 5 + الإجراءات 25 +
+     التكويني 5 + الختامي 5; grade 6: 5 + 23 + 5 + 7): with 35-minute periods the procedures give up the 5 minutes (25 → 20, 23 → 18) */
+  var PARTS=[[25,20],[23,18]];
   function fixText(s){
+    if(typeof s!=='string') return s;
+    /* the line-closing times add up to the procedures' part (25, 50…): that rule first, a time inside a step must not count */
+    var s3=0; (s.match(/\(([0-9٠-٩]+) (?:دقيقة|دقيقتان|دقائق|minutes?)\)(?=[ \t]*(?:\n|$|<))/g)||[]).forEach(function(m){ s3+=toN(m.match(/[0-9٠-٩]+/)[0]); });
+    var part=s3>0&&s3%FROM!==0&&PARTS.some(function(p){ return s3%p[0]===0; });
+    var r=part?s:fixWith(s,false); if(r!==s) return r;
+    var F0=FROM,T0=T;
+    for(var i=0;i<PARTS.length&&r===s;i++){ FROM=PARTS[i][0]; T=PARTS[i][1]; r=fixWith(s,true); }
+    FROM=F0; T=T0;
+    if(r!==s) r=r.replace(/(زمن الحصة|lesson time) ([0-9٠-٩]+) (دقيقة|minutes)/g,function(m,a,n,u){ return a+' '+like(T0,n)+' '+u; });
+    return r;
+  }
+  function fixWith(s,only3){
     if(typeof s!=='string'||s.length<8||!/[0-9٠-٩]/.test(s)) return s;
     var tk=tokens(s); if(!tk.length) return s;
+    if(only3){   /* only times that close their lines (a procedures text): no stray sums */
+      tk=tk.filter(function(t){ return t.k==='dur'&&/^\s*\)\s*(?:\n|$|<)/.test(s.slice(t.i+t.s.length)); });
+      var g3=groups(tk), rep3=[];
+      g3.forEach(function(g){ if(g.length<2) return; var r=scale(g.map(function(t){ return t.dd; })); g.forEach(function(t,j){ rep3.push([t.i,t.s,rewrite(t,t.s,[r[j]])]); }); });
+      rep3.sort(function(a,b){ return b[0]-a[0]; });
+      rep3.forEach(function(x){ s=s.slice(0,x[0])+x[2]+s.slice(x[0]+x[1].length); });
+      return s;
+    }
     /* a time mentioned inside a step («يسجّل القراءات لمدة 10 دقائق») breaks the running sum: also try without plain
        durations (the plan is written with ranges) and without durations deep in a line (the plan's times head the lines) */
     var gs=groups(tk), rep=[];
@@ -142,7 +165,9 @@
         var key=null; Object.keys(o[0]).forEach(function(k){ if(MINK.test(k)&&typeof o[0][k]==='number') key=k; });
         if(key&&o.every(function(x){ return typeof x[key]==='number'; })){
           var sum=0; o.forEach(function(x){ sum+=x[key]; });
-          if(sum===FROM){ var r=scale(o.map(function(x){ return x[key]; })); o=o.map(function(x,i){ var y={}; for(var k in x) y[k]=x[k]; y[key]=r[i]; return y; }); }
+          var to=sum===FROM?T:null;
+          PARTS.forEach(function(p){ if(sum===p[0]&&o.every(function(x){ return typeof x.text==='string'; })) to=p[1]; });   /* grades 2–4 math procedures (25 → 20) */
+          if(to){ var F1=T; T=to; var r=scale(o.map(function(x){ return x[key]; })); T=F1; o=o.map(function(x,i){ var y={}; for(var k in x) y[k]=x[k]; y[key]=r[i]; return y; }); }
         }
       }
       return o.map(walk);
