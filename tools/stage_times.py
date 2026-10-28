@@ -72,6 +72,14 @@ def split_sessions(v, T):
     return [dict(y, min=STAGE) if y.get('id') else dict(y, min=next(it)) for y in keep]
 
 WT = re.compile(r'\s*\((?:[0-9٠-٩]+)\s*(?:دقيقة|دقائق|دقيقتان|minutes?)\)\s*$')
+U = r'[0-9٠-٩]+\s*(?:[–-]\s*[0-9٠-٩]+\s*)?(?:دقيقة|دقائق|دقيقتان|د(?![\u0600-\u06FF])|minutes?|mins?)'
+def strip_times(t):
+    """a warm-up text without its old time notes (one time, the stage's, goes at its end): «(الزمن: 4 دقائق)», «Warm-up (3 minutes):»,
+    a time closing a line (a time inside a sentence, «… (35 دقيقة).», is content and stays)"""
+    t = re.sub(r'\s*\(\s*(?:الزمن|المدة|الوقت|زمن|Time|Duration)\s*[:：]?\s*' + U + r'\s*\)', '', t, flags=re.I)
+    t = re.sub(r'\s*\(\s*' + U + r'\s*\)(?=\s*[:：])', '', t)
+    t = re.sub(r'[ \t]*\(\s*' + U + r'\s*\)(?=[ \t]*(?:\n|$|<))', '', t)
+    return t
 def warm_time(t, en):
     """«… (5 دقائق)» at the end of the warm-up text (of each period part in a merged field)"""
     tag = ' (' + P.minutes(STAGE, en) + ')'
@@ -79,11 +87,11 @@ def warm_time(t, en):
     out = []
     for p in parts:
         if not p.strip() or p.startswith('\n\n'): out.append(p); continue
-        q = WT.sub('', p.rstrip()); out.append(q + tag)
+        q = strip_times(p.rstrip()).rstrip(); out.append(q + tag)
     return ''.join(out)
 def warm_html(h, en):
     tag = ' (' + P.minutes(STAGE, en) + ')'
-    h = re.sub(r'\s*\((?:[0-9٠-٩]+)\s*(?:دقيقة|دقائق|دقيقتان|minutes?)\)(?=\s*(?:</[a-z]+>\s*)*$)', '', h.rstrip())
+    h = strip_times(h.rstrip())
     m = re.search(r'((?:</[a-z]+>\s*)*)$', h)
     return h[:m.start()] + tag + h[m.start():]
 
