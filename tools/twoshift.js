@@ -90,8 +90,9 @@ function mergeLevels(ts) {
   const seen = new Set(), o = other.filter((x) => (seen.has(x.trim()) ? false : (seen.add(x.trim()), true)));
   return renumber([...m, ...o].join('\n'));
 }
+const TFRD = /^\s*تفريد التعليم\s*[:：]?[ \t]*\n/, TFRD_H = /^\s*<p class="tfrd"[^>]*>.*?<\/p>/;   /* tools/form_heading.py: once, at the top */
 function mergeQuestions(ts) {
-  const parts = ts.map((t) => String(t || '').trim()).filter(Boolean);
+  const parts = ts.map((t) => String(t || '').trim()).filter(Boolean).map((t, i) => (i ? t.replace(TFRD, '') : t));
   let k = 0;
   return parts.join('\n\n').split('\n')
     .map((l) => l.replace(/^(\s*)([0-9٠-٩]+)(\s*[.)]\s)/, (m, a, n, b) => a + like(++k, n) + b))
@@ -304,7 +305,7 @@ function mergeFields(list, kinds = KINDS) {   /* list: field arrays (or objects)
     const ts = list.map((f) => get(f, i)).filter((x) => typeof x === 'string');
     let v;
     if (ts.length !== list.length) v = get(list[0], i);
-    else if (/<(?:div|p|br|span|ul|li|b)\b/i.test(ts.join(''))) v = kinds[i] === 'out' ? retime(ts.join('')) : ts.join('');
+    else if (/<(?:div|p|br|span|ul|li|b)\b/i.test(ts.join(''))) v = kinds[i] === 'out' ? retime(ts.join('')) : kinds[i] === 'q' ? ts.map((t, j) => (j ? t.replace(TFRD_H, '') : t)).join('') : ts.join('');
     else v = mergeText(kinds[i] || 'notes', ts);
     if (arr) out.push(v); else out[keys[i]] = v;
   }
