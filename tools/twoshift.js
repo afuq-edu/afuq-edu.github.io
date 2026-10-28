@@ -407,7 +407,7 @@ function twoShiftSessions(o, t1, t2) {
 /* grade 6 Islamic: one flat list of periods {no, w, wl, date, unit, title, k, n, wi, wn, pages, f:[[label, text]×10]} in week
    order, k of n within a lesson; fields: title, outcomes, strategies, resources, warm-up, procedures (its minutes in the label),
    formative, final assessment, closing, homework. Merged periods are laid out again week by week (fewer in each week). */
-function isFlat(o) { return Array.isArray(o) && o.length > 5 && o.every((e) => e && Array.isArray(e.f) && e.f.length === 10 && 'k' in e && 'n' in e && 'w' in e); }
+function isFlat(o) { return Array.isArray(o) && o.length > 5 && o.every((e) => e && Array.isArray(e.f) && (e.f.length === 10 || e.f.length === 9) && 'k' in e && 'n' in e && 'w' in e); }
 function twoShiftFlat(o, t1, t2) {
   const les = new Map();
   o.forEach((e, i) => { const key = e.unit + '\u0000' + e.title + '\u0000' + e.n; if (!les.has(key)) les.set(key, []); les.get(key).push(i); });
@@ -417,8 +417,10 @@ function twoShiftFlat(o, t1, t2) {
     const n1 = idx.length, n2 = n2s[li];
     groupsOf(n1, n2).forEach(([a, b], gi) => {
       const es = idx.slice(a, b).map((i) => o[i]), e0 = es[0];
-      const pm = (e0.f[5][0].match(/[0-9٠-٩]+/) || [])[0];
-      const kinds = ['first', 'out', 'union', 'union', 'first', pm ? toN(pm) : 'proc', 'q', 'q', 'last', 'notes'];
+      const pf = e0.f.find((x) => /^إجراءات/.test(String(x[0]).trim())) || e0.f[5], pm = (pf[0].match(/[0-9٠-٩]+/) || [])[0];
+      const KL = [[/^عنوان/, 'first'], [/^نواتج|^المخرجات/, 'out'], [/^الاستراتيجيات|^مصادر/, 'union'], [/^التهيئة/, 'first'],
+        [/^إجراءات/, pm ? toN(pm) : 'proc'], [/^التقويم/, 'q'], [/^الغلق/, 'last'], [/^الواجب/, 'notes']];   /* by label: «الغلق» may be folded away (tools/fold_closing.py) */
+      const kinds = e0.f.map((x) => (KL.find(([re]) => re.test(String(x[0]).trim())) || [0, 'notes'])[1]);
       const texts = mergeFields(es.map((e) => e.f.map((x) => x[1])), kinds);
       const pages = uni2(es.map((e) => e.pages));
       out.push({ at: idx[a], e: Object.assign({}, e0, { k: gi + 1, n: n2, pages: pages.length > 1 ? pages.join('، ') : e0.pages, f: e0.f.map((x, i) => [x[0], texts[i]]) }) });

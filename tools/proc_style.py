@@ -396,6 +396,12 @@ def warm_convert(text, en, fem, kid):
     res = '\n'.join(out).strip()
     return res if res and res != text.strip() else None
 
+# leftovers of a step's old time in its name: «1. ◄ التهيئة ( ، ): …» (from «(من الدقيقة 0 إلى 5، 5 دقائق)») → «1. التهيئة: …»
+def tidy(text):
+    out = re.sub(r'^([0-9٠-٩]+\.\s*)[◄►◆•]\s*', r'\1', text, flags=re.M)
+    out = re.sub(r'^([0-9٠-٩]+\.\s[^\n]*?)\s*\(\s*[،,]?\s*\)(?=\s*[:：])', r'\1', out, flags=re.M)
+    return out if out != text else None
+
 def fix_page(p, gs):
     h = open(p, encoding='utf8').read(); lits = B.literals(h)
     try: les, kmap = B.page_lessons(lits)
@@ -461,12 +467,14 @@ def fix_page(p, gs):
     def fx(x, cont=None, anc=(), key=''):
         nonlocal done
         if isinstance(x, str) and is_new(x):
-            n0 = None
+            n0 = tidy(x)
+            if n0: x = n0
             if CONTEST.search(x):
                 qs, topic = ctx(cont, list(anc))
-                n0 = drop_contest(x, qs, topic, zlib.crc32((p + key).encode()) % 97, en, kid)
+                n0 = drop_contest(x, qs, topic, zlib.crc32((p + key).encode()) % 97, en, kid) or n0
             y = n0 or x
-            n = fix_times(y, T) or n0
+            lm = re.search(r'\(([0-9٠-٩]+)\s*(?:دقيقة|دقائق)\)', cont[0]) if isinstance(cont, list) and len(cont) == 2 and isinstance(cont[0], str) else None
+            n = fix_times(y, toN(lm.group(1)) if lm else T) or n0   # a field labelled with its own minutes («إجراءات التنفيذ (23 دقيقة)»)
             if n: done += 1; return n
         return None
     for name, i, e, o in lits:

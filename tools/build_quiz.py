@@ -417,6 +417,7 @@ def main():
     print('\n'.join(report))
     import proc_list; proc_list.main()   # lesson procedures as numbered steps, never a table (owner 2026-10-25)
     import proc_style; proc_style.main([])   # one procedures style (owner, 2026-10-27)
+    import fold_closing; fold_closing.main([])   # no separate «الغلق» field: into the procedures (owner, 2026-10-28)
     import add_identity; add_identity.main([])   # «غلق الدرس»: a fun closing step with citizenship, 5 minutes of the last period (owner, 2026-10-27/28)
     import english_stages; english_stages.main([])   # English: Presentation / Practice / Production, then Finishing (owner, 2026-10-28)
     import outcome_times; outcome_times.main([])
