@@ -3,9 +3,9 @@
 fun closing step — a short group activity or game that ties the lesson's own content to Omani identity and citizenship (a value, a place,
 heritage, a national symbol or occasion, the economy, Oman Vision 2040). It takes 5 minutes of the period: the period's
 other steps are scaled to the rest (40 − 5 = 35; prep35 30; grade 6 Arabic/Islamic 20 − 5 = 15), so the period still adds up.
-  N. غلق الدرس (نشاط ممتع مع المواطنة) – <name>: <activity> (5 دقائق)
+  N. غلق الدرس – <name>: <activity> (5 دقائق)
   الاستراتيجيات: <strategy>.
-(English pages: «N. Finishing stage (fun activity with citizenship) – <name>: … (5 minutes)» / «Strategies: …», the last stage after
+(English pages: «N. Finishing stage – <name>: … (5 minutes)» / «Strategies: …», the last stage after
 Presentation / Practice / Production, tools/english_stages.py.) Only in the procedures, not in the final assessment (owner, 2026-10-28).
 English: EVERY period ends with its Finishing stage (owner, 2026-10-28) — tools/finishing_items.json
 {"<grade>/english/prep": {"<lesson index>": [{n, a, s} for each period but the last]}}, the last period takes the lesson's own.

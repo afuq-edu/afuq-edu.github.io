@@ -5,7 +5,7 @@ citizenship part). Each step keeps its text and order and gets its stage in fron
   1. Presentation stage – Warm-up: … (5 minutes)
   3. Practice stage – Read and circle (CB p. 19): … (8 minutes)
   5. Production stage – Act out the story in groups: … (10 minutes)
-  6. Finishing stage (fun activity with citizenship) – … (5 minutes)
+  6. Finishing stage – … (5 minutes)
 The stages split the period's steps in order (every stage at least one step when there are three or more): the split that fits
 the steps' own words best (warm-up, listen, model, present… / drill, match, complete, workbook… / act out, role play, write
 your own, project, game…), the earlier stages first. Html copies are redrawn. Rerunning recomputes them (idempotent).

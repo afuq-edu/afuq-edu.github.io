@@ -2,7 +2,7 @@
 """No separate «الغلق» field (owner, 2026-10-28: «الغلق يكون في سير الدرس وليس بندًا منفصلًا»). Grade 6 Arabic and Islamic
 periods are flat lists of [label, text] fields, among them «الغلق (3 دقائق)»: its minutes join «إجراءات التنفيذ» (20 → 23 دقيقة)
 and the field is removed.
-  • the lesson's last period already ends with «غلق الدرس (نشاط ممتع مع المواطنة)» (tools/add_identity.py): the old closing text
+  • the lesson's last period already ends with «غلق الدرس – …» (tools/add_identity.py): the old closing text
     is dropped and the other steps share the minutes (18 + 5);
   • any other period: the old closing becomes the procedures' last step «N. الغلق: … (3 دقائق)».
 Run before add_identity.py; a page without the field is left as it is (idempotent).
