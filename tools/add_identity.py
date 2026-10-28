@@ -7,6 +7,8 @@ other steps are scaled to the rest (40 − 5 = 35; prep35 30; grade 6 Arabic/Isl
   الاستراتيجيات: <strategy>.
 (English pages: «N. Finishing stage (fun activity with citizenship) – <name>: … (5 minutes)» / «Strategies: …», the last stage after
 Presentation / Practice / Production, tools/english_stages.py.) Only in the procedures, not in the final assessment (owner, 2026-10-28).
+English: EVERY period ends with its Finishing stage (owner, 2026-10-28) — tools/finishing_items.json
+{"<grade>/english/prep": {"<lesson index>": [{n, a, s} for each period but the last]}}, the last period takes the lesson's own.
 tools/identity_items.json: {"<grade>/<subject>/prep[/uN]": [{"title", "n", "a", "s"} per lesson in page order]};
 prep35 pages use their prep page's items (matched by title). Text fields in the procedures style (tools/proc_style.py) get the
 step in their last period (a field holding several periods: its last «الحصة N» part), html copies are redrawn, grades 2–4 math
@@ -22,21 +24,31 @@ IDRX = re.compile(r'^[0-9٠-٩]+\.\s*(?:غلق الدرس|Finishing stage|ختا
 STEP = re.compile(r'^[0-9٠-٩]+\.\s')
 HEAD = lambda b: bool(re.match(r'^(?:الحصة|Period)\s', b)) and not STEP.match(b)
 
+# proc_style.py's generic closing activities, exactly as it writes them (not an author's own «Exit ticket» step)
+FILLER = re.compile('^(?:' + '|'.join(re.sub(r'\\\{[a-z]+\\\}', '.*?', re.escape(t)) for t, _ in P.ACT_AR + P.ACT_EN) + r')\s*\([^()]*\)\s*$')
+
 def block(k, it, en):
     a = it['a'].strip().rstrip('.')
     if en: return '%d. Finishing stage (fun activity with citizenship) – %s: %s (%s)\nStrategies: %s.' % (k, it['n'], a, P.minutes(MIN, True), it['s'].rstrip('.'))
     return '%d. غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s (%s)\nالاستراتيجيات: %s.' % (k, it['n'], a, P.minutes(MIN), it['s'].rstrip('.'))
 
-def with_identity(text, it, en):
-    """text (procedures style) with the closing step at the end of its last period, or None"""
+def with_identity(text, it, en, sj=-1):
+    """text (procedures style) with the closing step at the end of its period sj (default: the last one), or None"""
     blocks = [b for b in text.split('\n\n') if b.strip()]
-    start = max([i for i, b in enumerate(blocks) if HEAD(b)] + [0])
-    seg = list(range(start, len(blocks)))
+    starts = [i for i, b in enumerate(blocks) if HEAD(b)] or [0]
+    if not -len(starts) <= sj < len(starts): return None
+    start = starts[sj]; stop = starts[sj + 1] if sj != -1 and sj + 1 < len(starts) else len(blocks)
+    seg = list(range(start, stop))
     timed = [(i, P.TEND.search(blocks[i].split('\n')[0])) for i in seg if STEP.match(blocks[i])]
     timed = [(i, m) for i, m in timed if m]
     if not timed: return None
     S = sum(P.toN(m.group(1)) for i, m in timed)
     old = [i for i, m in timed if IDRX.match(blocks[i])]
+    # a generic closing activity put in place of the group contest (proc_style.py: «Exit ticket», «Three words»…) right before
+    # this step: the fun closing replaces it, its minutes go back to the period
+    body = lambda i: re.sub(r'^[0-9٠-٩]+\.\s*(?:(?:Presentation|Practice|Production) stage – )?', '', blocks[i])
+    keep = [(i, m) for i, m in timed if i not in old]
+    if len(keep) > 2 and FILLER.match(body(keep[-1][0]).split('\n')[0]): old.append(keep[-1][0])
     rest = [(i, m) for i, m in timed if i not in old]
     if len(rest) < 2 or S - MIN < 2 * len(rest) or S < 15: return None
     new = P.scale_to([P.toN(m.group(1)) for i, m in rest], S - MIN)
@@ -56,7 +68,18 @@ def items_for(rel, data):
         return {'by_title': {B.norm(x['title']): x for x in data[rel.replace('/prep35', '/prep')]}}
     return None
 
-def fix_page(p, rel, items):
+def put(cont, k, kind, it, en, sj=-1):
+    v = cont[k]
+    t = v if kind == 'text' else B.strip_html(v) if kind == 'html' else v['t'] if kind == 'ht' else v[1]
+    new = with_identity(t, it, en, sj)
+    if new is None: return 0
+    if kind == 'text': cont[k] = new
+    elif kind == 'html': cont[k] = P.render_html(new)
+    elif kind == 'ht': v['t'], v['h'] = new, P.render_html(new)
+    else: v[0], v[1] = P.render_html(new), new
+    return 1
+
+def fix_page(p, rel, items, finish=None):
     h = open(p, encoding='utf8').read(); lits = B.literals(h)
     les, kmap = B.page_lessons(lits)
     if isinstance(items, dict): items = [items['by_title'].get(B.norm(l['title'])) for l in les]
@@ -64,7 +87,7 @@ def fix_page(p, rel, items):
     en = rel.split('/')[1] == 'english'
     before = [json.dumps(x[3], ensure_ascii=False) for x in lits]
     # the last period of each lesson, per kind of copy (plain text / html / {h, t} / [html, text] / merged periods / sessions)
-    last = {}
+    last, periods = {}, {}
     for li, cont, k in B.field_targets(lits, kmap, 'proc'):
         if li is None or not items[li]: continue
         v = cont[k]
@@ -77,6 +100,7 @@ def fix_page(p, rel, items):
         if kind != 'sessions' and not P.is_new(t): continue
         comb = kind != 'sessions' and any(HEAD(b) for b in t.split('\n\n'))
         last[(li, kind, comb)] = (cont, k, kind)
+        if kind != 'sessions': periods.setdefault((li, kind, comb), []).append((cont, k, kind))
     n = 0
     for (li, _, _), (cont, k, kind) in last.items():
         it = items[li]; v = cont[k]
@@ -88,14 +112,16 @@ def fix_page(p, rel, items):
             nv = [dict(y, min=m) for y, m in zip(pr, ms)] + [{'min': MIN, 'text': 'غلق الدرس (نشاط ممتع مع المواطنة) – %s: %s' % (it['n'], it['a'].strip().rstrip('.')), 'strategy': it['s'].rstrip('.'), 'id': 1}]
             if nv != v: cont[k] = nv; n += 1
             continue
-        t = v if kind == 'text' else B.strip_html(v) if kind == 'html' else v['t'] if kind == 'ht' else v[1]
-        new = with_identity(t, it, en)
-        if new is None: continue
-        if kind == 'text': cont[k] = new
-        elif kind == 'html': cont[k] = P.render_html(new)
-        elif kind == 'ht': v['t'], v['h'] = new, P.render_html(new)
-        else: v[0], v[1] = P.render_html(new), new
-        n += 1
+        n += put(cont, k, kind, it, en)
+    # English: every period ends with its Finishing stage (owner, 2026-10-28), the lesson's last one with the lesson's activity
+    for (li, kind, comb), fs in periods.items():
+        fin = (finish or {}).get(str(li)) or []
+        if not fin: continue
+        if comb:
+            for cont, k, _ in fs:
+                for j, it in enumerate(fin): n += put(cont, k, kind, it, en, j) if it else 0
+        else:
+            for (cont, k, _), it in zip(fs[:-1], fin): n += put(cont, k, kind, it, en) if it else 0
     # parallel html lists (html / txt …) follow their text
     for name, i, e, o in lits:
         for path, x, anc in B.nodes(o):
@@ -115,6 +141,7 @@ def fix_page(p, rel, items):
 def main(only=None):
     only = [a.strip('/') for a in (sys.argv[1:] if only is None else only)]
     data = json.load(open(R + 'tools/identity_items.json', encoding='utf8'))
+    fin = json.load(open(R + 'tools/finishing_items.json', encoding='utf8')) if os.path.exists(R + 'tools/finishing_items.json') else {}
     pages = sorted(set(glob.glob(R + '[0-9]*/*/prep*/index.html') + glob.glob(R + '[0-9]*/*/prep/u*/index.html')))
     tot = 0
     for p in pages:
@@ -122,7 +149,7 @@ def main(only=None):
         if only and gs not in only: continue
         items = items_for(rel, data)
         if not items: continue
-        n, t = fix_page(p, rel, items)
+        n, t = fix_page(p, rel, items, fin.get(rel) or fin.get(rel.replace('/prep35', '/prep')))
         if t != open(p, encoding='utf8').read(): open(p, 'w', encoding='utf8').write(t)
         print('%-22s %4d closing steps' % (rel, n)); tot += n
     print('done', tot)
