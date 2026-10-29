@@ -1,0 +1,127 @@
+/* «شاشة الهاتف» (owner, 2026-10-29): the home page, every subject portal and the gold link page /p/ drawn like a phone's
+   home screen — small glassy app icons on a calm daytime wallpaper. Loaded after each page's own <style>, so it only
+   restyles: the markup, links, locks and dialogs stay as they were. Always light (daytime). */
+:root,:root[data-theme="dark"],:root:not([data-theme="light"]){
+  color-scheme:light;
+  --bg:#EEF5FF!important; --card:#FFFFFF!important; --ink:#17233D!important; --muted:#56627C!important; --line:rgba(120,140,180,.22)!important;
+  --brand:#2F6FB3!important; --brand-ink:#FFFFFF!important;
+  --glass:rgba(255,255,255,.46); --glass-hi:rgba(255,255,255,.72); --glass-line:rgba(255,255,255,.75);
+  --glass-shadow:0 12px 34px -12px rgba(46,78,140,.28);
+}
+html{min-height:100%;background:#EAF4FF}
+body{min-height:100vh;background:
+  radial-gradient(1100px 620px at 92% -8%,#FFE9C2 0%,rgba(255,233,194,0) 62%),
+  radial-gradient(900px 640px at -12% 18%,#CFE6FF 0%,rgba(207,230,255,0) 62%),
+  radial-gradient(820px 720px at 112% 92%,#E6DEFF 0%,rgba(230,222,255,0) 60%),
+  radial-gradient(700px 520px at 10% 104%,#D6F5EA 0%,rgba(214,245,234,0) 60%),
+  linear-gradient(180deg,#EAF4FF 0%,#F5F8FF 46%,#FFF6EC 100%) fixed!important;
+  color:var(--ink)}
+
+/* ---- top bar: frosted glass, like a phone's status area ---- */
+header{position:relative;z-index:20;background:rgba(255,255,255,.5)!important;border-bottom:1px solid var(--glass-line)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);box-shadow:0 6px 24px -14px rgba(46,78,140,.35)}
+header .top{padding:12px 16px!important;gap:10px 14px!important}
+header .logo{width:42px!important;height:42px!important;border-radius:13px!important;font-size:22px!important;
+  background:linear-gradient(150deg,#7DB4FF 0%,#2F6FB3 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 6px 14px -6px rgba(47,111,179,.7)}
+header .title h1{font-size:clamp(18px,4.4vw,24px)!important}
+header .title p{font-size:13.5px!important}
+header .contact{background:var(--glass)!important;border:1px solid var(--glass-line)!important;padding:6px 12px!important;font-size:14px}
+
+main{max-width:720px!important}
+main>h2,.subjects h2,.gifts h2{font-size:15px!important;font-weight:700;color:#43506C;letter-spacing:.2px;margin:0 4px 10px!important}
+
+/* ---- the glass "screen" that holds the icons ---- */
+.grid,.subjects,.box{background:var(--glass)!important;border:1px solid var(--glass-line)!important;border-radius:28px!important;
+  -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--glass-shadow)!important}
+.grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:22px 6px!important;padding:22px 10px 18px!important}
+@media (min-width:560px){.grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}}
+@media (min-width:700px){.grid{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
+
+/* ---- one app: a squircle glass icon with its name under it ---- */
+.card,.subj,.box .row{position:relative;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;
+  gap:7px!important;text-align:center!important;background:none!important;border:0!important;border-top:0!important;box-shadow:none!important;
+  padding:0!important;margin:0!important;transform:none!important;color:var(--ink)!important;text-decoration:none!important;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;min-width:0}
+.card .hd{display:flex!important;flex-direction:column!important;align-items:center!important;gap:7px!important}
+.card .ic,.subj .sic,.box .row .sic{--ac:var(--ph,var(--c,#3B82F6));position:relative;width:60px!important;height:60px!important;border-radius:18px!important;flex:none;
+  display:grid!important;place-items:center!important;color:#fff!important;overflow:hidden;opacity:1!important;
+  background:linear-gradient(155deg,color-mix(in srgb,var(--ac) 52%,#fff) 0%,color-mix(in srgb,var(--ac) 88%,#fff) 55%,var(--ac) 100%)!important;
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 10px 20px -8px color-mix(in srgb,var(--ac) 75%,transparent),inset 0 1px 0 rgba(255,255,255,.85),inset 0 -3px 8px rgba(0,0,0,.07);
+  transition:transform .18s ease,box-shadow .18s ease}
+.card .ic::before,.subj .sic::before,.box .row .sic::before{content:"";position:absolute;inset:0 0 50% 0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.08));border-radius:18px 18px 50% 50%/18px 18px 26% 26%}
+.card .ic svg,.subj .sic svg,.box .row .sic svg{position:relative;width:28px!important;height:28px!important;stroke-width:1.9;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.18))}
+.card:hover .ic,.subj:hover .sic,.box .row:hover .sic{transform:translateY(-3px)}
+.card:active .ic,.subj:active .sic,.box .row:active .sic{transform:scale(.9)}
+.card h3,.subj b,.box .row b{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin:0!important;max-width:88px;font-size:12.5px!important;font-weight:600!important;line-height:1.35!important;color:#1B2740!important;opacity:1!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.card p,.card .tag,.card .go,.subj small,.subj .arr,.box .row .arr{display:none!important}
+.subj>span:not(.sic){display:contents}
+
+/* locked: a small gold lock on the icon's corner (phone.js marks it; gold users see none) */
+.ph-lock .ic::after,.ph-lock .sic::after,.box button.row .sic::after{content:"";position:absolute;top:4px;left:4px;width:17px;height:17px;border-radius:50%;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C98A00' stroke-width='2.8' stroke-linecap='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/11px no-repeat;
+  box-shadow:0 1px 3px rgba(0,0,0,.18)}
+
+/* «جديد ✨» sits on the icon's top edge */
+.card .afuq-new,.subj .afuq-new,.box .row .afuq-new{position:absolute!important;top:-9px!important;left:50%!important;right:auto!important;margin:0!important;
+  transform:translateX(-50%);font-size:10.5px!important;padding:1px 8px!important;z-index:4}
+.card.afuq-new-host,.subj.afuq-new-host{position:relative}
+.box .row b.afuq-new-host,.subj b.afuq-new-host{position:static}
+
+/* accent per section (the same everywhere; --ph, as the cards carry an inline --c) */
+[data-id="prep"],.row[href$="/prep/"]{--ph:#3B82F6}
+[data-id="slides"],.row[href$="/slides/"],[data-id="lessons"],.row[href$="/lessons/"]{--ph:#6366F1}
+[data-id="interactive"],.row[href$="/interactive/"]{--ph:#8B5CF6}
+[data-id="games"],.row[href$="/games/"]{--ph:#EC4899}
+[data-id="scorm"],.row[href$="/scorm/"]{--ph:#14B8A6}
+[data-id="board"],.row[href$="/board/"]{--ph:#22A55E}
+[data-id="harvest"],.row[href$="/harvest/"]{--ph:#F0A020}
+[data-id="summaries"],.row[href$="/summaries/"]{--ph:#0EA5E9}
+[data-id="recap"],.row[href$="/recap/"]{--ph:#06B6D4}
+[data-id="lsum"],.row[href$="/lsum/"]{--ph:#38A6E8}
+[data-id="story"],.row[href$="/story/"]{--ph:#A855F7}
+[data-id="explorer"],.row[href$="/explorer/"]{--ph:#10B981}
+[data-id="numbers"],.row[href$="/numbers/"]{--ph:#F97316}
+[data-id="kahoot"],.row[href$="/kahoot/"]{--ph:#7C3AED}
+[data-id="homework"],.row[href$="/homework/"]{--ph:#FB8C3C}
+[data-id="app"],.row[href$="/app/"]{--ph:#F43F5E}
+/* subjects on the home page */
+.subj[href$="/math/"]{--ph:#6366F1} .subj[href$="/science/"]{--ph:#06B6D4} .subj[href$="/arabic/"]{--ph:#E0712C}
+.subj[href$="/english/"]{--ph:#3B82F6} .subj[href$="/islamic/"]{--ph:#16A34A} .subj[href$="/social/"]{--ph:#F2A515}
+.subj[href$="/it/"]{--ph:#0EA5E9} .subj[href$="/pe/"]{--ph:#FB7185} .subj[href$="/sport/"]{--ph:#FB7185} .subj[href$="/arts/"]{--ph:#EC4899}
+.subj[href$="/music/"]{--ph:#A855F7} .subj[href$="/physics/"]{--ph:#8B5CF6} .subj[href$="/chemistry/"]{--ph:#14B8A6}
+.subj[href$="/biology/"]{--ph:#22C55E} .subj[href$="/envsci/"]{--ph:#65A30D} .subj[href$="/advmath/"]{--ph:#4F46E5}
+.subj[href$="/basicmath/"]{--ph:#7C83F7} .subj[href$="/homeland/"]{--ph:#DC2626}
+
+/* ---- home page: the grade dots and the subject list as icons ---- */
+.picker{background:var(--glass);border:1px solid var(--glass-line);border-radius:28px;padding:16px 8px!important;
+  -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:var(--glass-shadow)}
+.gbtn .dot{background:linear-gradient(155deg,color-mix(in srgb,var(--c) 30%,#fff),color-mix(in srgb,var(--c) 14%,#fff))!important;
+  border:1px solid rgba(255,255,255,.8)!important;box-shadow:0 8px 16px -8px color-mix(in srgb,var(--c) 70%,transparent),inset 0 1px 0 #fff}
+.gbtn[aria-pressed="true"] .dot{background:linear-gradient(155deg,color-mix(in srgb,var(--c) 55%,#fff),var(--c))!important;color:#fff!important}
+.subjects{padding:18px 10px 16px!important}
+.subjects>h2,.subjects>.hint,.subjects>.ann{padding:0 8px}
+#sList,#programs{display:grid}
+#sList{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 6px;margin-top:18px}
+#programs{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 6px}
+#programs>h2,#programs>.hint{grid-column:1/-1}
+@media (min-width:560px){#sList,#programs{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (min-width:700px){#sList,#programs{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+/* ---- the gold link page: each subject is a screen of icons ---- */
+.box{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 6px;padding:16px 10px 18px!important;margin-bottom:16px}
+.box>h2{grid-column:1/-1;margin:0 6px 2px!important;font-size:15px!important}
+@media (min-width:560px){.box{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (min-width:700px){.box{grid-template-columns:repeat(6,minmax(0,1fr))}}
+
+/* ---- the rest in glass ---- */
+.note,.ann,.gift,.xgift,.cta{background:var(--glass)!important;border:1px solid var(--glass-line)!important;
+  -webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);box-shadow:var(--glass-shadow)}
+.gift,.xgift{border-radius:20px!important}
+.ann{border-inline-start:3px solid #F2B035!important}
+footer{color:#5D6A86!important}
+dialog{background:rgba(255,255,255,.92)!important;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--glass-line)}
+@media (prefers-reduced-motion:reduce){.card .ic,.subj .sic,.box .row .sic{transition:none}}
