@@ -67,11 +67,9 @@ function draw(){
   les.value=st.l; sk.innerHTML='';
   L.s.forEach(function(x,i){ var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=(I[x.k]||'')+' '+x.k; b.setAttribute('aria-pressed',String(i===st.s)); b.onclick=function(){st.s=i;draw()}; sk.appendChild(b); });
   var h='<div class="meta"><b>مهارة '+esc(S.k)+'</b> · '+S.p.length+(S.p.length===1?' حصة':(S.p.length===2?' حصتان':' حصص'))+' ('+(40*S.p.length)+' دقيقة)'+(S.w?' · '+esc(S.w):'')+'<ol>'+S.p.map(function(a){return '<li>'+esc(a)+'</li>'}).join('')+'</ol></div>';
-  h+='<button type="button" class="all" id="all">📋 نسخ التحضير كاملًا</button>';
   S.f.forEach(function(t,i){ h+='<section class="f"><h2><span>'+(i+1)+'. '+esc(F[i])+'</span><button type="button" class="cp" data-i="'+i+'">نسخ</button></h2><pre>'+esc(t)+'</pre></section>'; });
   view.innerHTML=h;
   view.querySelectorAll('.cp').forEach(function(b){ b.onclick=function(){ copy(S.f[+b.dataset.i],b); }; });
-  document.getElementById('all').onclick=function(){ copy(S.f.map(function(t,i){return F[i]+':\\n'+t}).join('\\n\\n'),this); };
 }
 les.onchange=function(){ st.l=+les.value; st.s=0; draw(); };
 draw();
