@@ -119,10 +119,16 @@ def home(g, s):
 SPEAK = "function speak(text) {"
 CLEAN = ("function speak(text) {   text = String(text).replace(/[\\p{Extended_Pictographic}\\u{1F1E6}-\\u{1F1FF}\\u{1F3FB}-\\u{1F3FF}\\uFE0F\\u200D\\u20E3]/gu, ' ')"
          ".replace(/\\s+/g, ' ').trim();")   # icons out (owner, 2026-10-28: the voice read 🔊 as «سماعة»)
-STORY = 'قصص_المنهج.pdf'          # the subject's curriculum story, beside the app (tools/add_stories.py)
+STORIES = os.environ.get('AFUQ_STORIES', '/home/user/stories').rstrip('/') + '/'   # the stories repo (afuq-edu/stories → /stories/)
+def story_url(g, s): return '/stories/%d/%s.pdf' % (g, s) if os.path.exists(STORIES + '%d/%s.pdf' % (g, s)) else None
 STORY_TILE = "if (D.pdfs && Object.keys(D.pdfs).length) tiles.splice(3, 0, ['pdfs', '📄', 'الملخصات PDF', 'للطباعة والمذاكرة']);"
+# the story lives outside the app's folder: online it opens as it is, offline from the app's cache (as a blob)
 STORY_VIEW = ("V.story = () => set(`<h2>📖 قصص المنهج</h2><div class=\"card\"><p class=\"mute\">قصة مصوّرة لدروس المادة، تعمل بدون إنترنت بعد تثبيت التطبيق.</p>"
-              "<div class=\"row\"><a class=\"btn\" href=\"%s\" target=\"_blank\">📖 افتح القصة</a><a class=\"btn sec\" href=\"%s\" download>⬇ تحميل</a></div></div>`);" % (quote(STORY), quote(STORY)))
+              "<div class=\"row\"><button class=\"btn\" onclick=\"A_story(0)\">📖 افتح القصة</button><button class=\"btn sec\" onclick=\"A_story(1)\">⬇ تحميل</button></div></div>`); "
+              "window.A_story = dl => { const u = %s; if (navigator.onLine && !dl) { window.open(u, '_blank'); return; } "
+              "fetch(u).then(r => { if (!r.ok) throw 0; return r.blob(); }).then(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); "
+              "if (dl) a.download = %s; else a.target = '_blank'; document.body.appendChild(a); a.click(); a.remove(); })"
+              ".catch(() => toast('افتح القصة مرة واحدة وأنت متصل بالإنترنت')); };")
 SW = """const C='%s';
 const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
 const FILES=%s;
@@ -138,16 +144,17 @@ def fix_app(d):
     if CLEAN not in h:
         assert h.count(SPEAK) == 1, d
         h = h.replace(SPEAK, CLEAN, 1)
-    if os.path.exists(d + STORY) and 'V.story' not in h:
+    g, s = d.rstrip('/').split('/')[-2:]; su = story_url(int(g), s)
+    if su and 'V.story' not in h:
         assert h.count(STORY_TILE) == 1 and h.count('const V = {};') == 1, d
         h = h.replace(STORY_TILE, STORY_TILE + " tiles.splice(4, 0, ['story', '📖', 'قصص المنهج', 'قصة مصوّرة للمادة']);", 1)
-        h = h.replace('const V = {};', 'const V = {}; ' + STORY_VIEW, 1)
+        h = h.replace('const V = {};', 'const V = {}; ' + STORY_VIEW % (json.dumps(su), json.dumps('قصص المنهج.pdf')), 1)
     if h != h0: open(d + 'index.html', 'w', encoding='utf8').write(h)
-    files = sorted(os.path.relpath(p, d) for p in glob.glob(d + 'الملخصات/*.pdf')) + ([STORY] if os.path.exists(d + STORY) else [])
+    files = sorted(os.path.relpath(p, d) for p in glob.glob(d + 'الملخصات/*.pdf'))
     import hashlib
-    ver = hashlib.md5((h + '|'.join('%s:%d' % (f, os.path.getsize(d + f)) for f in files)).encode()).hexdigest()[:8]
+    ver = hashlib.md5((h + '|'.join('%s:%d' % (f, os.path.getsize(d + f)) for f in files) + (su and '|%s:%d' % (su, os.path.getsize(STORIES + su[9:])) or '')).encode()).hexdigest()[:8]
     base = re.search(r"const C='(app-[0-9a-f]+-[0-9a-f]+)", open(d + 'sw.js', encoding='utf8').read()).group(1)
-    open(d + 'sw.js', 'w', encoding='utf8').write(SW % ('%s-%s' % (base, ver), json.dumps(['./' + quote(f) for f in files])))
+    open(d + 'sw.js', 'w', encoding='utf8').write(SW % ('%s-%s' % (base, ver), json.dumps(['./' + quote(f) for f in files] + ([quote(su)] if su else []))))
 
 def install(src, g, s, cat, lab):
     d = '%d/%s/' % (g, s); prefix = cat[d]['lock']

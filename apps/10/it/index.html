@@ -443,7 +443,7 @@ function mathQ() {
 }
 
 /* ---------- router ---------- */
-const V = {};
+const V = {}; V.story = () => set(`<h2>📖 قصص المنهج</h2><div class="card"><p class="mute">قصة مصوّرة لدروس المادة، تعمل بدون إنترنت بعد تثبيت التطبيق.</p><div class="row"><button class="btn" onclick="A_story(0)">📖 افتح القصة</button><button class="btn sec" onclick="A_story(1)">⬇ تحميل</button></div></div>`); window.A_story = dl => { const u = "/stories/10/it.pdf"; if (navigator.onLine && !dl) { window.open(u, '_blank'); return; } fetch(u).then(r => { if (!r.ok) throw 0; return r.blob(); }).then(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); if (dl) a.download = "\u0642\u0635\u0635 \u0627\u0644\u0645\u0646\u0647\u062c.pdf"; else a.target = '_blank'; document.body.appendChild(a); a.click(); a.remove(); }).catch(() => toast('افتح القصة مرة واحدة وأنت متصل بالإنترنت')); };
 let CLEAN = null;
 function go(r) { location.hash = r ? '#' + r : '#'; }
 function route() {
@@ -480,7 +480,7 @@ V.home = () => {
     ['exams', '📝', 'الاختبارات', 'تجريبية وشاملة'], ['compete', '🏆', 'المسابقات', 'تحدَّ أصدقاءك'], ['games', '🎮', 'الألعاب', 'تعلّم وأنت تلعب'],
     ['acts', '🧩', 'الأنشطة', 'وأوراق عمل'], ['favs', '⭐', 'المفضلة', 'دروسك المميزة'], ['me', '🏅', 'إنجازاتي', 'النقاط والأوسمة']
   ];
-  if (D.pdfs && Object.keys(D.pdfs).length) tiles.splice(3, 0, ['pdfs', '📄', 'الملخصات PDF', 'للطباعة والمذاكرة']);
+  if (D.pdfs && Object.keys(D.pdfs).length) tiles.splice(3, 0, ['pdfs', '📄', 'الملخصات PDF', 'للطباعة والمذاكرة']); tiles.splice(4, 0, ['story', '📖', 'قصص المنهج', 'قصة مصوّرة للمادة']);
   set(`<div class="hero"><div class="row" style="position:relative;z-index:1"><div class="grow"><div class="big">${APP.emoji}</div><h2>${esc(APP.subject)}</h2><div>${esc(APP.grade)} · ${esc(APP.term)}</div><div style="margin-top:6px;font-weight:700">${hello}</div></div>
    <div class="ring">${ringSvg(p, 84)}<b>${ar(Math.round(p * 100))}٪</b></div></div>
    <div class="stats3"><div><b>${ar(dc)}/${ar(LS.length)}</b>درس منجز</div><div><b>🔥 ${ar(ST.streak.n)}</b>أيام متتالية</div><div><b>⭐ ${ar(ST.points)}</b>نقطة</div></div></div>
