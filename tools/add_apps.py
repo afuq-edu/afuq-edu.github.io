@@ -119,14 +119,35 @@ def home(g, s):
 SPEAK = "function speak(text) {"
 CLEAN = ("function speak(text) {   text = String(text).replace(/[\\p{Extended_Pictographic}\\u{1F1E6}-\\u{1F1FF}\\u{1F3FB}-\\u{1F3FF}\\uFE0F\\u200D\\u20E3]/gu, ' ')"
          ".replace(/\\s+/g, ' ').trim();")   # icons out (owner, 2026-10-28: the voice read 🔊 as «سماعة»)
+STORY = 'قصص_المنهج.pdf'          # the subject's curriculum story, beside the app (tools/add_stories.py)
+STORY_TILE = "if (D.pdfs && Object.keys(D.pdfs).length) tiles.splice(3, 0, ['pdfs', '📄', 'الملخصات PDF', 'للطباعة والمذاكرة']);"
+STORY_VIEW = ("V.story = () => set(`<h2>📖 قصص المنهج</h2><div class=\"card\"><p class=\"mute\">قصة مصوّرة لدروس المادة، تعمل بدون إنترنت بعد تثبيت التطبيق.</p>"
+              "<div class=\"row\"><a class=\"btn\" href=\"%s\" target=\"_blank\">📖 افتح القصة</a><a class=\"btn sec\" href=\"%s\" download>⬇ تحميل</a></div></div>`);" % (quote(STORY), quote(STORY)))
+SW = """const C='%s';
+const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
+const FILES=%s;
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(CORE).then(()=>Promise.all(FILES.map(u=>fetch(u).then(r=>{if(r.ok)return c.put(u,r);}).catch(()=>{}))))).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request,{ignoreSearch:true}).then(r=>r||fetch(e.request).then(res=>{if(res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(e.request,cp));}return res;}).catch(()=>e.request.mode==='navigate'?caches.match('./index.html'):Response.error())));});
+"""
 def fix_app(d):
-    """the app's speech without icons; the service worker's cache renamed so installed apps take the new page"""
-    h = open(d + 'index.html', encoding='utf8').read()
+    """the app as the owner wants it on the phone (2026-10-28/29): speech without icons («سماعة»); the summaries and the
+    curriculum story saved with the app when it is installed, so they open without internet; the story as a home tile;
+    the cache named after the content, so installed apps take every change"""
+    h = open(d + 'index.html', encoding='utf8').read(); h0 = h
     if CLEAN not in h:
         assert h.count(SPEAK) == 1, d
-        open(d + 'index.html', 'w', encoding='utf8').write(h.replace(SPEAK, CLEAN, 1))
-        w = open(d + 'sw.js', encoding='utf8').read()
-        open(d + 'sw.js', 'w', encoding='utf8').write(re.sub(r"const C='([^']*?)(?:-s\d+)?'", lambda m: "const C='%s-s2'" % m.group(1), w, count=1))
+        h = h.replace(SPEAK, CLEAN, 1)
+    if os.path.exists(d + STORY) and 'V.story' not in h:
+        assert h.count(STORY_TILE) == 1 and h.count('const V = {};') == 1, d
+        h = h.replace(STORY_TILE, STORY_TILE + " tiles.splice(4, 0, ['story', '📖', 'قصص المنهج', 'قصة مصوّرة للمادة']);", 1)
+        h = h.replace('const V = {};', 'const V = {}; ' + STORY_VIEW, 1)
+    if h != h0: open(d + 'index.html', 'w', encoding='utf8').write(h)
+    files = sorted(os.path.relpath(p, d) for p in glob.glob(d + 'الملخصات/*.pdf')) + ([STORY] if os.path.exists(d + STORY) else [])
+    import hashlib
+    ver = hashlib.md5((h + '|'.join('%s:%d' % (f, os.path.getsize(d + f)) for f in files)).encode()).hexdigest()[:8]
+    base = re.search(r"const C='(app-[0-9a-f]+-[0-9a-f]+)", open(d + 'sw.js', encoding='utf8').read()).group(1)
+    open(d + 'sw.js', 'w', encoding='utf8').write(SW % ('%s-%s' % (base, ver), json.dumps(['./' + quote(f) for f in files])))
 
 def install(src, g, s, cat, lab):
     d = '%d/%s/' % (g, s); prefix = cat[d]['lock']
