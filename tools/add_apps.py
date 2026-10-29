@@ -55,7 +55,7 @@ def lsum_page(g, lab, prefix, D, base):
     for U in D['units']:
         rows = ''
         for i in U['ids']:
-            f = (D.get('pdfs', {}).get(i) or {}).get('s')
+            P = D.get('pdfs', {}).get(i) or {}; f = P.get('s') or P.get('m')   # «m»: some apps file a lesson's PDF under it
             if not f or i not in les: continue
             url = base + quote(f)
             rows += ('<div class="row"><div class="t"><span class="code">%s</span><b>%s</b></div><div class="acts">'
