@@ -3,9 +3,9 @@
   • the gold section <g>/<s>/story/ (locked): open or download it;
   • inside the subject app (apps/<g>/<s>/): a «📖 قصص المنهج» tile; the story is saved with the app on install, so it opens
     without internet (tools/add_apps.py fix_app).
-The PDFs live in their own repo, afuq-edu/stories (served at /stories/<g>/<s>.pdf): this repo is near the 1 GB Pages limit.
+The PDFs live in the repo afuq-edu/more (served at /more/stories/<g>/<s>.pdf): this repo is near the 1 GB Pages limit.
 Usage: python3 tools/add_stories.py PDF [PDF ...]      (names قصص_المنهج_<المادة>_الصف_<الصف>.pdf)
-Then push afuq-edu/stories first, wait for its deploy, then this repo; add «story» to the links program."""
+Then push afuq-edu/more first, wait for its deploy, then this repo; add «story» to the links program."""
 import re, os, sys, json, shutil, unicodedata, html as H
 from urllib.parse import quote
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

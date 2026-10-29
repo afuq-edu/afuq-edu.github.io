@@ -119,8 +119,8 @@ def home(g, s):
 SPEAK = "function speak(text) {"
 CLEAN = ("function speak(text) {   text = String(text).replace(/[\\p{Extended_Pictographic}\\u{1F1E6}-\\u{1F1FF}\\u{1F3FB}-\\u{1F3FF}\\uFE0F\\u200D\\u20E3]/gu, ' ')"
          ".replace(/\\s+/g, ' ').trim();")   # icons out (owner, 2026-10-28: the voice read 🔊 as «سماعة»)
-STORIES = os.environ.get('AFUQ_STORIES', '/home/user/stories').rstrip('/') + '/'   # the stories repo (afuq-edu/stories → /stories/)
-def story_url(g, s): return '/stories/%d/%s.pdf' % (g, s) if os.path.exists(STORIES + '%d/%s.pdf' % (g, s)) else None
+STORIES = os.environ.get('AFUQ_STORIES', '/home/user/more/stories').rstrip('/') + '/'   # in the repo afuq-edu/more (served at /more/stories/)
+def story_url(g, s): return '/more/stories/%d/%s.pdf' % (g, s) if os.path.exists(STORIES + '%d/%s.pdf' % (g, s)) else None
 STORY_TILE = "if (D.pdfs && Object.keys(D.pdfs).length) tiles.splice(3, 0, ['pdfs', '📄', 'الملخصات PDF', 'للطباعة والمذاكرة']);"
 # the story lives outside the app's folder: online it opens as it is, offline from the app's cache (as a blob)
 STORY_VIEW = ("V.story = () => set(`<h2>📖 قصص المنهج</h2><div class=\"card\"><p class=\"mute\">قصة مصوّرة لدروس المادة، تعمل بدون إنترنت بعد تثبيت التطبيق.</p>"
@@ -152,7 +152,7 @@ def fix_app(d):
     if h != h0: open(d + 'index.html', 'w', encoding='utf8').write(h)
     files = sorted(os.path.relpath(p, d) for p in glob.glob(d + 'الملخصات/*.pdf'))
     import hashlib
-    ver = hashlib.md5((h + '|'.join('%s:%d' % (f, os.path.getsize(d + f)) for f in files) + (su and '|%s:%d' % (su, os.path.getsize(STORIES + su[9:])) or '')).encode()).hexdigest()[:8]
+    ver = hashlib.md5((h + '|'.join('%s:%d' % (f, os.path.getsize(d + f)) for f in files) + (su and '|%s:%d' % (su, os.path.getsize(STORIES + su[len('/more/stories/'):])) or '')).encode()).hexdigest()[:8]
     base = re.search(r"const C='(app-[0-9a-f]+-[0-9a-f]+)", open(d + 'sw.js', encoding='utf8').read()).group(1)
     open(d + 'sw.js', 'w', encoding='utf8').write(SW % ('%s-%s' % (base, ver), json.dumps(['./' + quote(f) for f in files] + ([quote(su)] if su else []))))
 
