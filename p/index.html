@@ -160,7 +160,7 @@ button.row .sic,button.row b{opacity:.6}
      2026-10-25, was 5 hours), in this tab only; then they lock again and ask to contact Afuq. /assets/pkgmode.js takes them away when the time is up. */
   var PREVIEW=20*60e3, pv=0;
   /* sections whose files are PDFs (boards, picture recaps) never open on trial or plain links: a PDF opened once stays in the browser history */
-  var PDFP=/^(board|recap)/;
+  var PDFP=/^(board|recap|lsum|story)/;   /* PDF sections: locked in trials and trial minutes (lsum, story: owner, 2026-10-29) */
   function el(t,c,txt){ var n=document.createElement(t); if(c) n.className=c; if(txt!=null) n.textContent=txt; return n; }
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
   // e.g. #4mn7m11e.2KPYrdmF2K8 ; the name is base64url UTF-8. The long form (#to=..&i=..) is still accepted.
@@ -334,27 +334,42 @@ button.row .sic,button.row b{opacity:.6}
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
+  /* the newest sections first, in their own box above the gifts (owner, 2026-10-29): the subject app, its curriculum
+     stories and the lesson summaries; the subject boxes below leave them out */
+  var TOP=['app','story','lsum'];
+  function partRow(it,p,lab){
+    var has=it.parts.some(function(q){return q[0]===p[0]});
+    if(has){
+      if(p[2]) unlock(it.c.lock+p[0]);
+      var a=el('a','row'); a.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
+      var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; a.append(s, el('b',null,lab), el('span','arr','افتح ←'));
+      return a;
+    }
+    if(!(plain||trial)) return null;
+    if(trial && !PDFP.test(p[0])) return null;   /* a trial shows only what it carries, plus its locked PDF sections */
+    if(plain && preview && !PDFP.test(p[0])){
+      var o=el('a','row'); o.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
+      var so=el('span','sic'); so.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; o.append(so, el('b',null,lab), el('span','arr','⏳ افتح ←'));
+      return o;
+    }
+    var r=el('button','row'); r.type='button';
+    var s2=el('span','sic'); s2.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; r.append(s2, el('b',null,lab), el('span','arr','🔒 للباقة الذهبية'));
+    r.onclick=function(){ goldDlg(it.c.title+' – '+p[1]); };
+    return r;
+  }
+  var top=el('section','box'); top.style.setProperty('--c','#E8A100'); top.append(el('h2',null,'✨ الجديد في الباقة الذهبية'));
+  items.forEach(function(it){ TOP.forEach(function(k){
+    var p=it.c.parts.filter(function(q){return q[0]===k})[0]; if(!p) return;
+    var r=partRow(it,p,items.length>1?p[1]+' – '+it.c.title:p[1]); if(r) top.append(r);
+  }); });
+  if(top.querySelector('.row')) root.append(top);
   root.append(gifts(plain||!(kcode||to)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links, never on plain ones */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
-    it.parts.forEach(function(p){
-      if(p[2]) unlock(it.c.lock+p[0]);
-      var a=el('a','row'); a.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
-      var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; a.append(s, el('b',null,p[1]), el('span','arr','افتح ←'));
-      box.append(a);
-    });
+    it.parts.forEach(function(p){ if(TOP.indexOf(p[0])<0) box.append(partRow(it,p,p[1])); });
     if(plain||trial) it.c.parts.forEach(function(p){
-      if(it.parts.some(function(q){return q[0]===p[0]})) return;
-      if(trial && !PDFP.test(p[0])) return;   /* a trial shows only what it carries, plus its locked PDF sections */
-      if(plain && preview && !PDFP.test(p[0])){
-        var o=el('a','row'); o.href='../'+it.path+(p[0]==='page'?'':p[0]+'/');
-        var so=el('span','sic'); so.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; o.append(so, el('b',null,p[1]), el('span','arr','⏳ افتح ←'));
-        box.append(o); return;
-      }
-      var r=el('button','row'); r.type='button';
-      var s=el('span','sic'); s.innerHTML=ICON[p[0]]||ICON[p[0].replace(/\d+$/,'')]||ICON.prep; r.append(s, el('b',null,p[1]), el('span','arr','🔒 للباقة الذهبية'));
-      r.onclick=function(){ goldDlg(it.c.title+' – '+p[1]); };
-      box.append(r);
+      if(TOP.indexOf(p[0])>=0 || it.parts.some(function(q){return q[0]===p[0]})) return;
+      var r=partRow(it,p,p[1]); if(r) box.append(r);
     });
     root.append(box);
   });
