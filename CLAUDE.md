@@ -104,6 +104,13 @@
 يكتب `<g>/arabic/skills/` (مفتوح مثل ملف التحضير، ليس تحت prep* فلا تمسّه أدوات تحضير الحصص) وبطاقته بعد ملف التحضير؛
 `tools/skill_norm.py` يقرأ صيغ التحضير الأربع. المحتوى دُمج من حصص التحضير نفسه.
 
+## مهارات المشروع (.claude/skills) — 2026-10-30
+- `/sync-links`: الباقات من برنامج الروابط إلى p/packages.json (`tools/sync_packages.py`) وأقسام المواد في البرنامج (`tools/links_parts.py`).
+- `/add-files`: فرز المرفوعات (`tools/sort_uploads.py`) ثم add_apps / add_stories والنشر وبرنامج الروابط.
+- `/check-preps`: فحص كل التحاضير بالقواعد (`tools/check_preps.py`؛ يجب أن يطبع «لا أخطاء»).
+- `/space`: مساحة المستودعات الثلاثة أمام 1 GB (`tools/space.py`).
+- `/graphify`: خريطة مرئية للمنصة (`tools/graphify.py`).
+
 ## المساحة (حد GitHub Pages ‏1 GB لكل مستودع)
 الخطوط المضمّنة تُخزَّن مرة واحدة في `/assets/f/` عبر `tools/dedupe_fonts.py` (أدوات الإضافة تشغّله تلقائيًا على المستودعين).
 عند إضافة صفحة يدويًا شغّل: `python3 tools/dedupe_fonts.py . /home/user/afuq`. راقب الحجم بـ `du -sh --exclude=.git .`
