@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""SCORM 1.2 packages for منصة نور: one zip per lesson («ألعاب ونشاط الدرس»: three games + one activity, then the certificate).
+"""SCORM 1.2 packages for منصة نور: one zip per lesson («ألعاب ونشاط الدرس»: three games + one activity; the pupil picks any of them and gets a certificate for
+each one finished (owner, 2026-10-30), and a full certificate after all four).
 Usage: python3 tools/build_scorm.py [grade/subject ...]      (default: every subject with a lesson-games page, /afuq/q/*/*)
 Each package is self-contained (no internet needed inside Noor): the lesson page of /afuq/q/<g>/<s>/ with the quiz engine,
 its stylesheet and the certificate font inside the zip, plus a small SCORM wrapper that
   - starts the attempt (cmi.core.lesson_status «incomplete»), takes the pupil's name from the LMS for the certificate,
-  - sends the score after every game (cmi.core.score.raw = total / 40 × 100) and «completed» once all four are done,
+  - sends the score after every game (cmi.core.score.raw = average of the finished games × 10) and «completed» once one is done,
   - keeps the progress in cmi.suspend_data, so a pupil who comes back on another device carries on.
 Outside an LMS the page works as the normal lesson page. The zips are NOT stored on the site (2 700 lessons ≈ 250 MB, the
 files repo is near the 1 GB Pages limit): /assets/scorm.js (written here from SCORM_JS + MANIFEST) builds a lesson's zip in the
@@ -182,7 +183,7 @@ def list_page(g, s, d, rows, prefix):
             cur = L.get('u'); items.append('<h2 class="uh">%s</h2>' % esc(cur or ''))
         name = 'Afuq-%s-G%s-L%02d.zip' % (s.upper(), g, li + 1)   # ASCII: browsers drop a non-ASCII download name ("download")
         url = '/afuq/scorm/%s/%s/L%02d.zip' % (g, s, li + 1)
-        items.append('<div class="row"><div class="t"><b>%d. %s</b><span>٣ ألعاب + نشاط + شهادة</span></div>'
+        items.append('<div class="row"><div class="t"><b>%d. %s</b><span>٣ ألعاب + نشاط، وشهادة لكلٍّ منها</span></div>'
                      '<span class="acts"><button type="button" class="btn go scorm-dl" data-g="%s" data-s="%s" data-l="%d">⬇️ تنزيل ملف السكورم</button>'
                      '<a class="btn" href="/afuq/q/%s/%s/?l=%d" target="_blank" rel="noopener">👁 معاينة</a></span></div>'
                      % (li + 1, esc(L['t']), g, s, li + 1, g, s, li + 1))
@@ -190,7 +191,8 @@ def list_page(g, s, d, rows, prefix):
             '<li>اضغط «⬇️ تنزيل ملف السكورم» للدرس الذي تريده.</li>'
             '<li>في منصة نور افتح <b>مرفقات المادة</b>، وتحت عنوان الدرس اختر إضافة مرفق من نوع <b>SCORM</b>.</li>'
             '<li>ارفع ملف الـ zip <b>كاملًا كما هو دون فكّه</b> — لا ترفع ملف index وحده. ملف واحد لكل عنوان درس.</li></ol>'
-            'يلعب الطالب الألعاب الثلاث ثم النشاط (١٠ درجات لكلٍّ منها)، وتظهر له شهادة باسمه في النهاية، وتصل درجته (من ١٠٠) وحالة الإكمال '
+            'يختار الطالب أي لعبة أو النشاط (١٠ درجات لكلٍّ منها)، وتظهر له شهادة باسمه لكل واحدة يُنهيها، دون أن يُلزَم بإنهاء الأربعة '
+            '(ومن ينهي الأربعة يحصل أيضًا على الشهادة الكاملة)، وتصل درجته (معدّل ما أنهاه، من ١٠٠) وحالة الإكمال '
             'إلى نور تلقائيًا. الملف يعمل داخل نور دون الحاجة إلى موقعنا. (على الجوال قد يفكّ الآيفون الملف تلقائيًا؛ الأسهل الرفع من الكمبيوتر.)</div>')
     css = ('<style>:root{--bg:#f6f4ee;--card:#fff;--ink:#1f2a24;--muted:#66726c;--brand:#2f6fb3;--line:#ece4d2}'
            '@media (prefers-color-scheme:dark){:root{--bg:#141815;--card:#1d231f;--ink:#e8ede9;--muted:#9aa59f;--brand:#5b9be0;--line:#2b332e}}'
