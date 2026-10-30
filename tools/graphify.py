@@ -122,7 +122,7 @@ def main():
         repos += bar(art[0] * 1e6, 'آخر نشر على Pages', 'حجم حزمة النشر المضغوطة (%s)' % H.escape(art[1]))
     if total > 0.9 * LIMIT:
         notes.append('ملفات الموقع %s، أي %d%% من حد GitHub Pages ‏1 GB%s.' % (
-            human(total), round(100 * total / LIMIT), (' (حزمة النشر المضغوطة %d MB)' % art[0]) if art else ''))
+            human(total), round(100 * total / LIMIT), (' (حزمة النشر المضغوطة %s)' % human(art[0] * 1e6)) if art else ''))
     for name, desc in (('afuq', 'الملفات: نسخ الطلاب والألعاب والسكورم'), ('more', 'إضافي: قصص المنهج')):
         p = other_repo(name)
         if p:
