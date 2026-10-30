@@ -50,7 +50,7 @@ def main():
         subs = ''
         for k, c in by[g]:
             chips = ''.join('<span class="chip%s">%s</span>' % ('' if p[2] or p[0] == 'prep' else ' free', H.escape(p[1])) for p in c['parts'])
-            subs += '<details class="subj" style="--c:%s"><summary><b>%s</b><em>%d قسمًا</em></summary><div class="chips">%s</div><code>/%s</code></details>' % (
+            subs += '<details class="subj" style="--c:%s"><summary><b>%s</b><em>%d قسمًا</em></summary><div class="chips">%s</div><code dir="ltr">/%s</code></details>' % (
                 H.escape(c.get('color', '#2F6FB3')), H.escape(c['title']), len(c['parts']), chips, H.escape(k))
         grades += '<section class="grade"><h3>الصف %s <em>%d مادة</em></h3>%s</section>' % (GRADES[g - 1], len(by[g]), subs)
     sec_rows = ''.join('<tr><td>%s</td><td>%d</td></tr>' % (H.escape(s), n) for s, n in sorted(secs.items(), key=lambda x: -x[1]))
