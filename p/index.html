@@ -329,6 +329,7 @@ button.row .sic,button.row b{opacity:.6}
       setTimeout(function(){ location.reload(); }, pv-Date.now()+500);
     } else root.append(el('p','ann','🔒 انتهت التجربة الذهبية (٢٠ دقيقة)، وأُقفلت بقية أقسام المادة. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
   }
+  var ntc=el('div'); root.append(ntc); if(window.afuqNotices) window.afuqNotices(ntc); else ntc.setAttribute('data-notices','');   /* «📢 الإعلانات» (/assets/notices.js) */
   var ann=el('div'); root.append(ann);
   if(!plain) fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
     if(!j) return;
@@ -398,6 +399,7 @@ button.row .sic,button.row b{opacity:.6}
 })();
 </script>
 <script src="/assets/newbadge.js" defer></script>
+<script src="/assets/notices.js" defer></script>
 <script src="/assets/phone.js" defer></script>
 </body>
 </html>
