@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """A new subject's prep (ملف التحضير) from lesson JSON files, on the page engine of an existing prep of the same kind
 (owner, 2026-10-28: grade 12 environmental science, built from its books like grade 11's).
-Usage: python3 tools/add_prep_units.py GRADE SUBJECT LESSONS_DIR TEMPLATE_GRADE LOCK_PREFIX COLOR
+Usage: python3 tools/add_prep_units.py GRADE SUBJECT LESSONS_DIR TEMPLATE_GRADE LOCK_PREFIX COLOR [TEMPLATE_SUBJECT LABEL ICONCONST]
+  (TEMPLATE_SUBJECT: a subject of another name on the same kind of engine, e.g. 11 geography from 11 envsci, 2026-11-01;
+  then LABEL is the new subject's Arabic name and ICONCONST the home page's icon constant, e.g. SOC)
   LESSONS_DIR/L01.json … = {"id","title","unit","periods":[{n, axis, week, date, note, sb, tg, f:[10 fields]}], "closing":{n,a,s}}
   (the prep page format of TEMPLATE_GRADE/SUBJECT/prep/uN, one page per unit, in lesson order).
 Writes <g>/<s>/prep/index.html (unit chooser) and prep/u<N>/index.html, the subject portal <g>/<s>/index.html (from the template
@@ -20,13 +22,17 @@ def write(p, t):
 
 def main():
     g, s, src, tg, lock, color = int(sys.argv[1]), sys.argv[2], sys.argv[3], int(sys.argv[4]), sys.argv[5], sys.argv[6]
-    d, td = '%d/%s/' % (g, s), '%d/%s/' % (tg, s); G, TG = GRADE[g], GRADE[tg]
+    ts = sys.argv[7] if len(sys.argv) > 7 else s
+    d, td = '%d/%s/' % (g, s), '%d/%s/' % (tg, ts); G, TG = GRADE[g], GRADE[tg]
+    LAB = sys.argv[8] if len(sys.argv) > 8 else None
+    OLDLAB = __import__('add_gold_pack').SUBJ.get(ts) if LAB else None
+    def relabel(h): return h.replace(OLDLAB, LAB) if LAB else h
     les = [json.load(open(f, encoding='utf8')) for f in sorted(glob.glob(os.path.join(src, 'L*.json')))]
     units = []
     for L in les:
         if not units or units[-1][0] != L['unit']: units.append((L['unit'], []))
         units[-1][1].append(L)
-    tpl = subprocess.run(['git', 'show', 'HEAD:%sprep/u1/index.html' % td], cwd=R, capture_output=True, text=True).stdout
+    tpl = relabel(subprocess.run(['git', 'show', 'HEAD:%sprep/u1/index.html' % td], cwd=R, capture_output=True, text=True).stdout)
     m = re.search(r'<script type="application/json" id="data">', tpl); old, e = DEC.raw_decode(tpl, m.end())
     old_unit = old[0]['unit']
     ident = json.load(open(R + 'tools/identity_items.json', encoding='utf8'))
@@ -38,17 +44,18 @@ def main():
         ident[d + 'prep/u%d' % k] = [dict(title=L['title'], **L['closing']) for L in ls]
     json.dump(ident, open(R + 'tools/identity_items.json', 'w', encoding='utf8'), ensure_ascii=False, indent=0)
     # unit chooser
-    h = subprocess.run(['git', 'show', 'HEAD:%sprep/index.html' % td], cwd=R, capture_output=True, text=True).stdout
+    h = relabel(subprocess.run(['git', 'show', 'HEAD:%sprep/index.html' % td], cwd=R, capture_output=True, text=True).stdout)
     tu = []
     for k in range(1, 9):
         t = subprocess.run(['git', 'show', 'HEAD:%sprep/u%d/index.html' % (td, k)], cwd=R, capture_output=True, text=True).stdout
         if not t: break
         mm = re.search(r'<script type="application/json" id="data">', t); tu.append(DEC.raw_decode(t, mm.end())[0][0]['unit'])
     for a, (b, _) in zip(tu, units): h = h.replace(re.sub(r'^الوحدة [^:]*:\s*', '', a), re.sub(r'^الوحدة [^:]*:\s*', '', b))
+    for k in range(len(units) + 1, 9): h = re.sub(r'<a class="u" href="u%d/">.*?</a>' % k, '', h)
     write(d + 'prep/index.html', h.replace('الصف ' + TG, 'الصف ' + G).replace(td, d))
     # portal page
     oldlock = json.loads(re.search(r'var CAT=(\{.*\});\s*\n', read('p/index.html')).group(1))[td]['lock']
-    h = subprocess.run(['git', 'show', 'HEAD:%sindex.html' % td], cwd=R, capture_output=True, text=True).stdout
+    h = relabel(subprocess.run(['git', 'show', 'HEAD:%sindex.html' % td], cwd=R, capture_output=True, text=True).stdout)
     write(d + 'index.html', h.replace('الصف ' + TG, 'الصف ' + G).replace(oldlock, lock).replace(td, d))
     # catalogue
     v = read('p/index.html'); cm = re.search(r'var CAT=(\{.*\});\s*\n', v); cat = json.loads(cm.group(1))
@@ -57,11 +64,12 @@ def main():
         new = {}
         for k2, val in cat.items():
             new[k2] = val
-            if k2 == last: new[d] = {'title': re.sub(TG + r'$', G, cat[td]['title']), 'color': color, 'lock': lock, 'parts': [['prep', 'ملف التحضير', False]]}
+            if k2 == last: new[d] = {'title': relabel(re.sub(TG + r'$', G, cat[td]['title'])), 'color': color, 'lock': lock, 'parts': [['prep', 'ملف التحضير', False]]}
         write('p/index.html', v[:cm.start(1)] + json.dumps(new, ensure_ascii=False) + v[cm.end(1):])
     # home page: the subject in the grade's list, like the template grade's entry
     hm = read('index.html')
-    ent = re.search(r"\['%s/','[^']*',[A-Z]+,'[^']*'\]" % s, hm[hm.index('    %d:[[' % tg):]).group(0)
+    ent = re.search(r"\['%s/','[^']*',[A-Z]+,'[^']*'\]" % ts, hm[hm.index('    %d:[[' % tg):]).group(0)
+    if LAB: ent = "['%s/','%s',%s,'ملف التحضير']" % (s, LAB, sys.argv[9])
     a0 = hm.index('    %d:[[' % g); a1 = hm.index('\n', a0); seg = hm[a0:a1]
     if "['%s/'" % s not in seg:
         k = seg.rindex(']]'); write('index.html', hm[:a0] + seg[:k] + '],' + ent[:-1] + seg[k:] + hm[a1:])

@@ -17,10 +17,10 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 sys.path.insert(0, R + 'tools')
 T = '12/biology/'                                   # the template package
 DEC = json.JSONDecoder()
-SUBJ = {'envsci': 'العلوم البيئية'}
+SUBJ = {'envsci': 'العلوم البيئية', 'geography': 'الجغرافيا الاقتصادية'}
 GRADE = {9: 'التاسع', 10: 'العاشر', 11: 'الحادي عشر', 12: 'الثاني عشر'}
 UNITS_AR = ['الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'الخامسة', 'السادسة']
-ICON = {'envsci': '🌍'}
+ICON = {'envsci': '🌍', 'geography': '🗺️'}
 THEMES = ['garden', 'park', 'maproom', 'lab', 'city', 'heritage']
 
 def read(p): return open(R + p, encoding='utf8').read()
