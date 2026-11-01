@@ -165,7 +165,7 @@ button.row .sic,button.row b{opacity:.6}
   function el(t,c,txt){ var n=document.createElement(t); if(c) n.className=c; if(txt!=null) n.textContent=txt; return n; }
   // Short form: #<items>.<name> where items = (<grade><subject letter><section letters>)+ or "*" for everything,
   // e.g. #4mn7m11e.2KPYrdmF2K8 ; the name is base64url UTF-8. The long form (#to=..&i=..) is still accepted.
-  var SUBJ={m:'math',v:'advmath',b:'basicmath',e:'english',a:'arabic',s:'science',f:'physics',c:'chemistry',l:'biology',i:'islamic',o:'social',t:'arts',w:'homeland',n:'envsci',x:'it',y:'pe',z:'sport'};
+  var SUBJ={m:'math',v:'advmath',b:'basicmath',e:'english',a:'arabic',s:'science',f:'physics',c:'chemistry',l:'biology',i:'islamic',o:'social',t:'arts',w:'homeland',n:'envsci',x:'it',y:'pe',z:'sport',g:'geography'};
   // Listeners first, so even a broken link can never stop a newly pasted one from loading in this tab.
   // Pasting another custom link into a tab that already shows one only changes the hash: reload for the new link.
   window.addEventListener('hashchange',function(){ location.reload(); });
