@@ -1,5 +1,5 @@
 /* «📢 الإعلانات» (owner, 2026-10-31; one «جديد» label per announcement, 2026-11-02): a button at the top of the home page and
-   the link pages (/p/). Tapping it opens the announcements of /announce.json {"important":[{id, title, lines:[…], img?, imgAlt?}]},
+   the link pages (/p/). Tapping it opens the announcements of /announce.json {"important":[{id, title, lines:[…], img?, imgAlt?, link?:{href,text}}]},
    newest first, each folded under its title. An announcement this device has not opened carries «جديد» (on its title and on the
    button); opening it removes the label for good on this device (localStorage).
    Usage: <div data-notices></div> + <script src="/assets/notices.js" defer></script>, or window.afuqNotices(element). */
@@ -20,6 +20,7 @@ var css='.ntc-b{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 1
  '.ntc-n[open]>summary .ar{transform:rotate(180deg)}.ntc-body{padding:0 14px 12px}'+
  '.ntc-body p{margin:6px 0;font-size:17px;font-weight:800;line-height:1.9;color:#1A202C}'+
  '.ntc-body a.im{display:block;margin:4px 0 8px}.ntc-body img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid #F1C7C7}'+
+ '.ntc-body a.go{display:block;margin:10px 0 2px;padding:11px;border-radius:12px;background:#2F6FB3;color:#fff;text-align:center;text-decoration:none;font-weight:800;font-size:16px}'+
  '.ntc-x{display:block;width:100%;padding:11px;border:0;border-radius:12px;background:#C53030;color:#fff;font:inherit;font-weight:800;font-size:16px;cursor:pointer}'+
  '@media (prefers-color-scheme:dark){.ntc-b{background:#3A1418;color:#FFB4B4;border-color:#FF7A7A}.ntc-b:hover{background:#4A1A1F}'+
  '.ntc-d{background:#172238;color:#E6ECF6}.ntc-in>h2{color:#FFB4B4}.ntc-n{background:#2A1620;border-color:#FF7A7A}.ntc-n>summary{color:#FF9A9A}.ntc-body p{color:#F2F5FA}}';
@@ -41,6 +42,7 @@ function show(list,onChange){
     s.append(mk('span','ar','▾'));
     if(a.img){ var ln=mk('a','im'); ln.href=a.img; ln.target='_blank'; ln.rel='noopener'; var im=mk('img'); im.src=a.img; im.alt=a.imgAlt||a.title||''; im.loading='lazy'; ln.append(im); body.append(ln); }
     (a.lines||[a.text]).forEach(function(l){ if(l) body.append(mk('p',null,l)); });
+    if(a.link&&a.link.href){ var go=mk('a','go',a.link.text||'افتح الرابط'); go.href=a.link.href; go.target='_blank'; go.rel='noopener'; body.append(go); }
     n.append(s,body); box.append(n);
     n.addEventListener('toggle',function(){ if(!n.open) return; markRead(id); var t=s.querySelector('.ntc-new'); if(t)t.remove(); onChange(); });
   });
