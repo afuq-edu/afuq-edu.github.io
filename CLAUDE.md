@@ -1,5 +1,15 @@
 # منصة أفق – قواعد ثابتة للعمل على الموقع
 
+## النشر مباشرة على main — نسخة واحدة من التحاضير لكل المحادثات (قرار المالك 2026-11-03)
+كل محادثة (ومنها محادثات مشروع «أفق») تعمل على هذا المستودع نفسه، فالتحاضير وكل الأقسام نسخة واحدة يراها الجميع. لذلك:
+- **ابدأ من آخر main** قبل أي تعديل: `git fetch origin main && git merge --ff-only FETCH_HEAD` (أو `git checkout -B <فرعك> origin/main`).
+- **انشر عملك على main مباشرة** عند انتهائه، لا تتركه في فرع جانبي ولا تفتح طلب دمج:
+  `git fetch origin main && git rebase FETCH_HEAD && git push origin HEAD:main`، ثم انتظر نجاح النشر
+  (`https://api.github.com/repos/afuq-edu/afuq-edu.github.io/actions/runs?per_page=1`). العمل الذي يبقى في فرع جانبي لا يظهر على الموقع
+  ولا تراه المحادثات الأخرى.
+- عند تعديل مستودع الملفات (afuq-edu/afuq) أو more: انشره أولًا وانتظر نشره، ثم انشر الموقع.
+- لا `git commit --amend` ولا `push --force` على main.
+
 ## العروض (slides / lessons / interactive) — مناسبة لكل الشاشات وملء الشاشة
 كل صفحة عرض تُضاف أو تُستبدل يجب أن تمر على:
 
