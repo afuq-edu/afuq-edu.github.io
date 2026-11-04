@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><script>(function(){var k='ofuq-g4t-unlock-kahoot';function g(n,x){try{if(window[n].getItem(x)==='1')return true}catch(e){}try{return new RegExp('(^|; )'+x+'=1(;|$)').test(document.cookie)||(' '+window.name+' ').indexOf(' '+x+' ')>=0}catch(e){return false}}if(g('localStorage',k)||g('sessionStorage',k)||g('localStorage','afuq-all')||g('sessionStorage','afuq-all'))return;document.documentElement.style.display='none';location.replace('../?lock=kahoot')})()</script>
+<meta charset="utf-8"><script src="/assets/pkgmode.js" data-role="page"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مسابقات كاهوت – الفنون البصرية – الصف الرابع</title>
+<style>
+@font-face{font-family:Plex;font-weight:400;font-display:swap;src:url(/assets/f/a9cefdcae5467621.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F,U+060C}
+@font-face{font-family:Plex;font-weight:700;font-display:swap;src:url(/assets/f/27765dbaf24ff38f.woff2) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F,U+060C}
+@font-face{font-family:Plex;font-weight:400;font-display:swap;src:url(/assets/f/653bfd524aa46742.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Plex;font-weight:700;font-display:swap;src:url(/assets/f/9e002e656ff8bade.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{--ink:#2d3b45;--mut:#6b7c86;--line:#e3eaee;--teal:#3f8f86;--tealS:#e6f4f1;--vio:#6a5aa8;--vioS:#f0edfa;--amb:#c98a2e;--ambS:#fdf3e3;--ok:#3f9a62;--okS:#e7f6ec;--no:#c46a6a;--noS:#fbecec;
+--g0:#6fbfb1;--g1:#8fb0ea;--g2:#efab7f;--g3:#bb9be3;--g4:#e9c25e;--g5:#ea96a9}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{min-height:100%;background:#f7f9fb}
+body{min-height:100vh}
+body{margin:0;font-family:Plex,'Segoe UI',Tahoma,sans-serif;color:var(--ink);background:radial-gradient(1200px 600px at 85% -10%,#e9f5f2 0,transparent 60%),radial-gradient(900px 500px at 0% 110%,#f1edfb 0,transparent 60%),#f7f9fb;overflow-x:hidden;background-attachment:fixed}
+button,input,select{font:inherit}
+.scr{display:none;min-height:100vh;padding:clamp(10px,2.4vw,28px);animation:fade .45s ease}
+.scr.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto 12px}
+.brand{font-weight:700;color:var(--teal);font-size:clamp(1rem,2vw,1.3rem)}
+.ib{border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 12px;cursor:pointer;color:var(--mut);display:inline-flex;align-items:center;gap:6px}
+.ib:hover{background:#fafcfd}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 30px rgba(60,90,110,.07)}
+/* setup */
+.setup{max-width:980px;margin:0 auto}
+.hero{text-align:center;margin:6px 0 18px}
+.hero h1{margin:0;font-size:clamp(1.5rem,3.6vw,2.4rem);color:#33706a}
+.hero p{margin:6px 0 0;color:var(--mut)}
+.step{padding:16px 18px;margin-bottom:14px}
+.sh{display:flex;align-items:center;gap:10px;font-weight:700;color:#3d5a66;margin-bottom:10px}
+.sn{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--tealS);color:var(--teal);font-size:.9rem}
+select.big{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:#fbfdfd;font-size:1.05rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fbfdfd;border-radius:999px;padding:8px 14px;cursor:pointer;color:#4f6470;transition:.2s}
+.chip.on{background:var(--tealS);border-color:#b7dcd5;color:#2f6f68;font-weight:700;box-shadow:0 2px 10px rgba(63,143,134,.15)}
+.chip small{color:var(--mut);font-weight:400}
+.row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.stepper button{border:0;background:#f5f8f9;width:44px;height:44px;font-size:1.3rem;cursor:pointer;color:var(--teal)}
+.stepper span{min-width:54px;text-align:center;font-weight:700;font-size:1.2rem}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.nm{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:14px;padding:6px 10px;background:#fbfdfd}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+.nm input{border:0;background:transparent;outline:none;width:100%;font-size:1rem}
+input[type=range]{width:min(420px,100%);accent-color:var(--teal)}
+.qn{font-size:1.5rem;font-weight:700;color:var(--teal);min-width:2.2em;text-align:center}
+.go{display:block;margin:18px auto 30px;border:0;border-radius:18px;padding:14px 44px;font-size:1.25rem;font-weight:700;color:#fff;background:linear-gradient(135deg,#5fb2a6,#7c9ee0);box-shadow:0 10px 26px rgba(95,150,190,.3);cursor:pointer;transition:.2s}
+.go:hover{transform:translateY(-2px)}
+.note{color:var(--mut);font-size:.88rem;margin-top:6px}
+/* question */
+.qwrap{max-width:1200px;margin:0 auto}
+.qbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.prog{flex:1;min-width:160px;height:8px;background:#eaf0f2;border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#6fbfb1,#8fb0ea);border-radius:99px;transition:width .6s}
+.meta{display:flex;gap:8px;align-items:center;color:var(--mut);font-size:.95rem}
+.tag{border-radius:999px;padding:3px 12px;background:var(--vioS);color:var(--vio);font-size:.85rem}
+.diff{display:inline-flex;gap:3px}.diff b{width:8px;height:8px;border-radius:50%;background:#dfe6ea}.diff b.f{background:var(--amb)}
+.stage{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+.qcard{padding:clamp(16px,2.6vw,30px);position:relative}
+.type{display:inline-block;font-size:.85rem;color:var(--teal);background:var(--tealS);border-radius:999px;padding:3px 12px;margin-bottom:10px}
+.qt{font-size:clamp(1.25rem,2.6vw,2rem);line-height:1.75;font-weight:700;color:#2f4450}
+.blank{display:inline-block;min-width:4.5em;border-bottom:3px dashed #b9c7cf;margin:0 4px;color:var(--ok);text-align:center}
+.side{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:170px}
+.ring{position:relative;width:clamp(120px,15vw,170px);aspect-ratio:1}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:9}
+.ring .bg{stroke:#eaf0f2}
+.ring .fg{stroke:var(--teal);stroke-linecap:round;transition:stroke .4s}
+.ring.over .fg{stroke:var(--amb)}
+.rv{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.rv b{font-size:clamp(2rem,4vw,3rem);line-height:1;color:#35525c}
+.rv small{display:block;color:var(--mut);font-size:.8rem}
+.pts{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 14px;text-align:center;color:var(--mut);font-size:.85rem}
+.pts b{display:block;font-size:1.35rem;color:#35525c}
+.turn{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 12px}
+.turn .who{font-weight:700;padding:8px 16px;border-radius:14px;color:#25403a;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.gpick{display:flex;gap:6px;flex-wrap:wrap}
+.gpick button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;font-size:.85rem;color:var(--mut);display:inline-flex;gap:6px;align-items:center}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.opt{border:2px solid var(--line);background:#fff;border-radius:18px;padding:clamp(12px,1.8vw,20px);font-size:clamp(1.05rem,2vw,1.45rem);text-align:right;cursor:pointer;display:flex;align-items:center;gap:12px;transition:transform .15s,border-color .2s,background .3s;color:#2f4450;min-height:68px}
+.opt:hover{transform:translateY(-2px);border-color:#c9d9df}
+.opt .k{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:700;color:#fff}
+.opt.right{background:var(--okS);border-color:#9fd3b2}
+.opt.wrong{background:var(--noS);border-color:#e3b1b1}
+.opt.dim{opacity:.55}
+.opts.tf .opt{justify-content:center;font-weight:700;font-size:clamp(1.3rem,2.6vw,1.9rem)}
+.fb{margin-top:14px;padding:12px 16px;border-radius:16px;display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fb.ok{display:flex;background:var(--okS);color:#2a6b44}
+.fb.no{display:flex;background:var(--noS);color:#8a4040}
+.fb .big{font-size:1.25rem;font-weight:700}
+.nextb{border:0;border-radius:14px;padding:10px 24px;font-weight:700;color:#fff;background:linear-gradient(135deg,#5fb2a6,#7c9ee0);cursor:pointer}
+.float{direction:ltr;position:absolute;left:24px;top:18px;font-weight:700;font-size:2rem;color:var(--ok);animation:up 1.4s ease forwards;pointer-events:none}
+@keyframes up{from{opacity:0;transform:translateY(20px)}20%{opacity:1}to{opacity:0;transform:translateY(-50px)}}
+/* results */
+.res{max-width:1100px;margin:0 auto}
+.rh{text-align:center;margin:6px 0 14px}
+.rh h2{margin:0;color:#33706a;font-size:clamp(1.3rem,3vw,2rem)}
+.rh p{margin:4px 0 0;color:var(--mut)}
+.chart{display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,3vw,40px);height:min(52vh,420px);padding:30px 16px 0;border-bottom:2px solid #e3eaee}
+.col{flex:1;max-width:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar{width:100%;border-radius:16px 16px 6px 6px;height:0;transition:height 1.3s cubic-bezier(.2,.8,.2,1);position:relative;min-height:6px;box-shadow:inset 0 -10px 20px rgba(255,255,255,.35)}
+.col .sc{font-weight:700;font-size:clamp(1rem,2vw,1.4rem);margin-bottom:6px;color:#35525c}
+.col .rk{font-size:.8rem;color:var(--mut);margin-bottom:2px}
+.col.win .bar{box-shadow:0 0 0 4px #fff,0 0 0 7px #f3d98b,0 10px 30px rgba(233,194,94,.45)}
+.star{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:1.5rem;animation:pop .6s .9s both}
+@keyframes pop{from{transform:translateX(-50%) scale(0)}to{transform:translateX(-50%) scale(1)}}
+.labels{display:flex;justify-content:center;gap:clamp(10px,3vw,40px);padding:8px 16px}
+.labels div{flex:1;max-width:150px;text-align:center;font-weight:700;color:#3d5a66;font-size:clamp(.85rem,1.6vw,1.05rem)}
+.ctr{text-align:center;margin:20px 0}
+/* final */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:clamp(8px,2vw,22px);margin:24px auto 10px;max-width:760px;min-height:330px}
+.pd{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.pd .blk{width:100%;border-radius:18px 18px 8px 8px;display:flex;align-items:flex-start;justify-content:center;padding-top:12px;font-size:2.2rem;font-weight:700;color:#fff;height:0;transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.pd .nmf{font-weight:700;font-size:clamp(1rem,2.2vw,1.4rem);color:#33505a;margin-bottom:4px;text-align:center}
+.pd .scf{color:var(--mut);margin-bottom:8px}
+.pd .md{font-size:2.2rem;margin-bottom:4px}
+.rest{max-width:560px;margin:10px auto}
+.rest div{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--line)}
+canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media(max-width:760px){.stage{grid-template-columns:1fr}.side{flex-direction:row;justify-content:center;min-width:0}.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<canvas id="cf"></canvas>
+<!-- SETUP -->
+<section class="scr on" id="s1"><div class="setup">
+ <div class="top"><div class="brand">مسابقات كاهوت</div><button class="ib" id="mute1">🔊 الصوت</button></div>
+ <div class="hero"><h1>الفنون البصرية – الصف الرابع</h1><p>اختر الدرس والحصة، وكوّن المجموعات، ثم ابدأ التحدي</p></div>
+ <div class="card step"><div class="sh"><span class="sn">1</span>الدرس</div><select class="big" id="les"></select></div>
+ <div class="card step"><div class="sh"><span class="sn">2</span>عنوان الحصة</div><div class="chips" id="pers"></div><div class="note" id="pnote"></div></div>
+ <div class="card step"><div class="sh"><span class="sn">3</span>المجموعات</div>
+  <div class="row"><div class="stepper"><button id="gm">−</button><span id="gc">4</span><button id="gp">+</button></div><span class="note">من 2 إلى 6 مجموعات</span></div>
+  <div class="names" id="names"></div></div>
+ <div class="card step"><div class="sh"><span class="sn">4</span>عدد الأسئلة</div>
+  <div class="row"><input type="range" id="qr" min="1" max="20" value="10"><span class="qn" id="qv">10</span>
+  <div class="chips" id="qq"><button class="chip" data-v="5">5</button><button class="chip on" data-v="10">10</button><button class="chip" data-v="15">15</button><button class="chip" data-v="20">20</button></div></div>
+  <div class="note">تُعرض أسئلة الحصة المختارة أولًا ثم تُكمَل من حصص الدرس الأخرى، مرتبة من الأسهل إلى الأصعب. لكل سؤال 30 ثانية.</div></div>
+ <button class="go" id="start">ابدأ المسابقة</button>
+</div></section>
+<!-- QUESTION -->
+<section class="scr" id="s2"><div class="qwrap">
+ <div class="qbar"><div class="meta"><b id="qi"></b><span class="tag" id="qp"></span><span class="diff" id="qd"></span></div><div class="prog"><i id="pg"></i></div>
+ <div class="meta"><button class="ib" id="mute2">🔊</button><button class="ib" id="endb">إنهاء</button></div></div>
+ <div class="turn"><span class="who" id="who"></span><span class="note">تغيير المجموعة:</span><div class="gpick" id="gpick"></div></div>
+ <div class="stage">
+  <div class="card qcard" id="qcard"><span class="type" id="qtype"></span><div class="qt" id="qt"></div><div style="height:16px"></div><div class="opts" id="opts"></div>
+   <div class="fb" id="fb"><span class="big" id="fbt"></span><button class="nextb" id="toRes">عرض النتائج</button></div></div>
+  <div class="side"><div class="ring" id="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="44"/><circle class="fg" id="arc" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/></svg><div class="rv"><div><b id="sec">30</b><small id="secl">ثانية</small></div></div></div>
+  <div class="pts">النقاط المتاحة<b id="avail">1000</b></div></div>
+ </div>
+</div></section>
+<!-- RESULTS -->
+<section class="scr" id="s3"><div class="res">
+ <div class="top"><div class="brand" id="rtitle"></div><button class="ib" id="mute3">🔊</button></div>
+ <div class="rh"><h2 id="rhh">الترتيب بعد السؤال</h2><p id="rhp"></p></div>
+ <div class="chart" id="chart"></div><div class="labels" id="labels"></div>
+ <div class="ctr"><button class="go" id="next" style="display:inline-block;margin:0">السؤال التالي</button></div>
+</div></section>
+<!-- FINAL -->
+<section class="scr" id="s4"><div class="res">
+ <div class="rh"><h2>🏆 منصة التتويج</h2><p id="fsub"></p></div>
+ <div class="podium" id="podium"></div>
+ <div class="rest card" id="rest"></div>
+ <div class="ctr"><button class="go" id="again" style="display:inline-block;margin:6px">إعادة بنفس الإعدادات</button><button class="ib" id="newc" style="margin:6px">مسابقة جديدة</button></div>
+</div></section>
+<script>
+const D=[{"t": "خطوط عجيبة", "u": "الوحدة 1", "p": ["وجوه مُعبِّرة: تأثيرات الخطوط في التعبير عن المشاعر", "أسرار بحر عُمان: الكائنات البحرية العُمانية ورسم التكوين", "أسرار بحر عُمان: إضافة التفاصيل التي تُظهر التأثيرات الخطية بالأقلام الملونة"], "q": [[1, "1", "m", "فم مرسوم بخط منحنٍ للأعلى يعبّر عن", "الفرح", "الخوف", "التوتر", "الغضب"], [1, "1", "f", "الفنانة ............ رسمت وجوهًا معبّرة", "أشواق الرحبية", "نادية البلوشية", "أريج رجب", "راديكا هاملاي"], [1, "2", "m", "خطوط شعر تعبّر عن الخوف", "منكسرة مرتفعة للأعلى", "منحنية هادئة", "أفقية هادئة", "دائرية صغيرة"], [1, "2", "t", "في لعبة مكعب الخطوط نرسم الملمح بالخط الظاهر على المكعب 🎲", "ص"], [1, "3", "t", "تبديل الخطوط المنحنية في الوجه بخطوط منكسرة يجعل التعبير أهدأ.", "خ"], [2, "1", "m", "كائن بحري عُماني", "السلحفاة", "الجمل", "الديك", "الغزال"], [2, "1", "f", "الأعشاب البحرية نرسمها بخطوط ............", "متموجة", "منكسرة", "حادة", "متقطعة"], [2, "2", "m", "الأصداف تناسبها خطوط", "حلزونية", "مستقيمة", "منكسرة", "متقطعة"], [2, "2", "t", "نوزّع عناصر التكوين على الورقة كلها.", "ص"], [2, "3", "m", "ليبدو قاع البحر عميقًا نرسم الكائنات البعيدة", "أصغر في الأعلى", "أكبر في الأسفل", "بلا خطوط", "خارج الورقة"], [3, "1", "m", "الماء الهادئ نرسمه بخطوط", "أفقية هادئة", "منكسرة", "حلزونية", "متقاطعة"], [3, "2", "f", "نُظهر سرعة السمكة بخطوط أفقية ............ خلفها", "قصيرة", "حلزونية", "رأسية", "منكسرة"], [3, "2", "t", "نستخدم خطوطًا توحي بالحركة وأخرى توحي بالهدوء.", "ص"], [3, "3", "m", "نستفيد من عمل أسرار البحر في", "بطاقة دعوة لرحلة بحرية", "رميه", "مسحه", "إخفائه"], [3, "2", "t", "في «وجوه من مجلسنا» نرسم الجد بعمامته بخطوط معبّرة 👴", "ص"]]}, {"t": "أُحب عُمان", "u": "الوحدة 1", "p": ["هُويتي بالخطوط: اختيار الوحدة التراثية ورسمها (النشاط المختار من نشاطي الدرس)", "هُويتي بالخطوط: لصق خيوط الصوف وتوضيح التأثيرات الخطية المختلفة", "هُويتي بالخطوط: إخراج العمل بصورته النهائية وتجميع اللوحة الجدارية"], "q": [[1, "1", "m", "من الوحدات التراثية العُمانية", "الخنجر", "الصاروخ", "اليعسوب", "الكوكب"], [1, "1", "f", "الفنان ............ استخدم خطوطًا قصيرة متكررة وملتفة", "فان جوخ", "حسن مير", "موندريان", "كليمت"], [1, "2", "m", "لماذا نقسّم الوحدة إلى مساحات؟", "لنوزّع الخيوط بتأثيرات مختلفة", "لنمزقها", "لنتركها فارغة", "لنلوّنها بالأسود"], [1, "2", "t", "نرسم الوحدة التراثية بخط خارجي واضح.", "ص"], [1, "3", "t", "أستفيد من أسلوب فان جوخ بتكرار الخيوط قصيرة ملتفة لأُظهر الحركة.", "ص"], [2, "1", "m", "الخامة التي لصقناها", "خيوط الصوف", "الصلصال", "الرمل", "الجرائد"], [2, "1", "f", "نضع اللاصق على مساحة ............ ثم نلصق الخيط", "صغيرة", "كبيرة جدًا", "خارج الوحدة", "مبللة"], [2, "2", "m", "الخيوط الملتفة توحي بـ", "الحركة", "الهدوء", "النوم", "الصمت"], [2, "2", "t", "الخيوط المتوازية توحي بالهدوء 〰️", "ص"], [2, "3", "m", "الفرق بين الخيوط والقلم", "الخيوط ملمس بارز يُلمس", "لا فرق", "القلم بارز أكثر", "الخيوط لا تُرى"], [3, "1", "m", "نهذّب أطراف الخيوط الزائدة بـ", "المقص الآمن", "اللاصق", "الماء", "الممحاة"], [3, "2", "f", "نرتّب الأعمال في الجدارية بمسافات ............", "متساوية", "عشوائية", "متداخلة", "مقلوبة"], [3, "2", "t", "نغطي جميع مساحات الوحدة بالخيوط.", "ص"], [3, "3", "m", "عنوان لوحتنا الصفية", "أحب عُمان", "قاع البحر", "الفضاء المرح", "الجبل السحري"], [3, "2", "t", "يشرح ممثل كل مجموعة معنى الرمز الذي رسمته.", "ص"]]}, {"t": "بقعة ضوء", "u": "الوحدة 2", "p": ["أشكالي لها ظل: مفهوم الظل والنور وتحديد ظل الأشكال من مصدر الضوء", "ظلي يرافقني: قصة الظل ورسم الشخصية وقصها", "ظلي يرافقني: صنع ظل الشخصية من الورق الأسود ولصقها وفق مصدر الضوء", "منظر تزينه الظلال: رسم تكوين لمنظر من الطبيعة وتحديد مناطق الظل", "منظر تزينه الظلال: تلوين التكوين بإظهار مناطق الظل والنور"], "q": [[1, "1", "m", "أين يقع الظل بالنسبة لمصدر الضوء؟", "في الجهة المعاكسة", "في الجهة نفسها", "فوق مصدر الضوء", "لا يوجد ظل"], [1, "1", "f", "إذا اقترب مصدر الضوء من الشكل ............ الظل", "يكبر", "يصغر", "يختفي", "يتلون"], [1, "2", "t", "يطول ظل النخلة صباحًا ويقصر ظهرًا 🌴", "ص"], [1, "3", "m", "لماذا يتغير طول ظل النخلة؟", "لتغير اتجاه ضوء الشمس وارتفاعها", "لأن النخلة تكبر", "لأن الريح تحركه", "لا يتغير"], [2, "1", "m", "من كان يرافق الطفل في القصة؟", "ظله", "قطته", "صديقه", "أخوه"], [2, "2", "f", "يتكوّن الظل من مصدر ضوء ............ الشكل", "يحجبه", "يلوّنه", "يقصّه", "يرسمه"], [2, "2", "m", "عامل يجعل الظل يختلف", "قرب الضوء", "لون الورقة", "اسم الطفل", "حجم المقص"], [2, "3", "t", "نطمئن الطفل الخائف بأن الظل يتحرك معه ولا يؤذيه.", "ص"], [3, "1", "m", "صنعنا ظل الشخصية من ورقة لونها", "أسود", "أصفر", "أبيض", "أخضر"], [3, "2", "f", "نلصق الظل في الجهة ............ لمصدر الضوء", "المعاكسة", "نفسها", "العليا", "الداخلية"], [3, "2", "t", "إذا كانت الشمس فوق الشخصية تمامًا يكون ظلها طويلًا جدًا.", "خ"], [3, "3", "m", "نُظهر أن الوقت عصر بـ", "شمس منخفضة وظل طويل", "شمس فوق الرأس", "بلا ظل", "قمر"], [4, "1", "m", "نحدد قبل رسم الظلال", "مصدر الضوء", "لون الإطار", "اسم المنظر", "عدد الألوان"], [4, "2", "f", "نظلل جهة الظل بخط ............", "خفيف", "سميك أسود", "ملون", "متقطع"], [4, "2", "t", "لأن مصدر الضوء واحد تتجه الظلال كلها في اتجاه واحد.", "ص"], [4, "3", "m", "نقلنا الشمس إلى الجهة الأخرى… الظلال", "تنتقل إلى الجهة المقابلة", "تبقى كما هي", "تختفي", "تتضاعف"], [5, "1", "m", "لوّنّا المنظر بـ", "الألوان المائية", "الصلصال", "خيوط الصوف", "الجرائد"], [5, "2", "f", "جهة الظل نلوّنها بدرجة ............", "غامقة", "فاتحة", "بيضاء", "شفافة"], [5, "2", "m", "نحصل على درجة أغمق بالمائية بـ", "تقليل الماء وزيادة اللون", "زيادة الماء", "المسح", "التجفيف بالنفخ"], [5, "3", "t", "الظل والنور يعطيان المنظر عمقًا ويجعلان العناصر مجسّمة.", "ص"]]}, {"t": "صديقي الظل", "u": "الوحدة 2", "p": ["شرائط المثلثات: اكتشاف الظل من المستويات البارزة وتجهيز الشرائط", "شرائط المثلثات: ثني الشرائط وتشكيل المثلثات بمستويات وأطوال مختلفة", "شرائط المثلثات: لصق المثلثات في مساحة العمل لإظهار الظل والنور وتفسير تكونه", "بلاطات بصنع يدي: الظل والنور في البارز والغائر في الفن الإسلامي وتجهيز الخامات", "بلاطات بصنع يدي: فرد عجينة السيراميك وإضافة التفاصيل البارزة", "بلاطات بصنع يدي: إكمال البلاطات وعرضها في جدارية والتحدث عن خطوات إظهار الظل"], "q": [[1, "1", "m", "الجزء المرتفع عن السطح هو", "البارز", "الغائر", "الظل", "النور"], [1, "1", "f", "نرسم الخطوط على الورق المقوى بمسافة ............", "2 سم", "7 سم", "15 سم", "10 سم"], [1, "2", "t", "ظهرت ظلال على الورقة المجعدة لأن الأجزاء البارزة حجبت الضوء.", "ص"], [1, "3", "m", "كلما زاد ارتفاع الجزء البارز", "طال ظله", "قصر ظله", "اختفى ظله", "تلوّن ظله"], [2, "1", "m", "الشكل الذي صنعناه من الشريط", "المثلث", "الدائرة", "المربع", "النجمة"], [2, "2", "f", "نثني الشريط إلى نصفين ثم نثني ............ النصفين", "أنصاف", "أطراف", "ألوان", "زوايا"], [2, "2", "t", "نحتاج مثلثات بمستويات مختلفة لتختلف ظلالها.", "ص"], [2, "3", "m", "أي المثلثات ظله أطول؟", "الأعلى", "الأصغر", "المسطح", "الملوّن"], [3, "1", "m", "نلصق المثلثات على قاعدة مقاسها", "15×15 سم", "7×7 سم", "2×2 سم", "30×30 سم"], [3, "2", "f", "نجرّب ترتيب المثلثات ............ اللصق", "قبل", "بعد", "بدل", "دون"], [3, "2", "t", "تحجب المثلثات البارزة الضوء فيتكوّن ظل خلفها.", "ص"], [3, "3", "m", "لو أضأنا العمل من الأعلى مباشرة", "تقصر الظلال وتكاد تختفي", "تطول الظلال", "تتلون الظلال", "يزيد البروز"], [4, "1", "m", "خامة البلاطة", "عجينة السيراميك", "خيوط الصوف", "الورق الشفاف", "الجرائد"], [4, "1", "f", "مقاس البلاطة ............", "7×7 سم", "15×15 سم", "2×2 سم", "20×20 سم"], [4, "2", "t", "تبدو نقوش الفن الإسلامي مجسّمة لأن البارز يصنع ظلالًا على الغائر.", "ص"], [4, "3", "m", "نحدد الجزء البارز في التصميم بـ", "تظليله أو كتابة (بارز)", "مسحه", "تركه فارغًا", "قصّه"], [5, "1", "m", "نفرد العجينة بـ", "النشابة", "المقص", "الفرشاة", "القطارة"], [5, "2", "f", "من تقنيات البارز: الحبال والشرائح و............", "الضغط", "النفخ", "الطي", "التلوين المائي"], [5, "2", "t", "نترك البلاطة تجف قبل نقلها حتى لا يتشوه البارز.", "ص"], [5, "3", "m", "الجزء الذي يصنع ظلًا أوضح في البلاطة", "الحبل الأعلى ارتفاعًا", "الجزء المسطح", "الحافة المهذبة", "الغائر"], [6, "1", "m", "نجمع البلاطات في", "جدارية", "كوب", "حقيبة", "ظرف"], [6, "2", "f", "نوزّع البلاطات ذات البروز العالي والمنخفض ............", "بالتناوب", "في جهة واحدة", "فوق بعضها", "عشوائيًا"], [6, "2", "t", "يمكن تقديم البلاطة درعًا أو علّاقة لزوار المدرسة 🎁", "ص"], [6, "3", "m", "مثال للبارز والغائر في بيئتنا العُمانية", "نقوش الأبواب الخشبية", "ورقة ملساء", "كوب ماء", "سماء صافية"]]}];
+const GC=['var(--g0)','var(--g1)','var(--g2)','var(--g3)','var(--g4)','var(--g5)'];
+const TYPES={m:'اختيار من متعدد',t:'صواب أم خطأ',f:'أكمل الفراغ'};
+const $=id=>document.getElementById(id);
+let S={l:0,p:1,g:4,names:[],n:10},G=null,muted=false;
+try{const m=localStorage.getItem('kq_mute');muted=m==='1'}catch(e){}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+/* ---------- audio ---------- */
+let AC=null;function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,t0,d,type='sine',v=.12){const a=ac();if(!a||muted)return;const o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;o.connect(g);g.connect(a.destination);const t=a.currentTime+t0;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.start(t);o.stop(t+d+.05)}
+const SND={ok(){[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.09,.45,'sine',.11))},no(){tone(330,0,.35,'triangle',.09);tone(262,.18,.5,'triangle',.08)},
+ tick(){tone(880,0,.08,'sine',.035)},bars(){for(let i=0;i<6;i++)tone(392+i*70,i*.08,.25,'sine',.05)},
+ win(){[392,523.25,659.25,783.99,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.14,.6,'sine',.09))},start(){tone(523.25,0,.3,'sine',.08);tone(783.99,.12,.4,'sine',.08)}};
+function setMute(m){muted=m;try{localStorage.setItem('kq_mute',m?'1':'0')}catch(e){}['mute1','mute3'].forEach(i=>$(i).textContent=m?'🔇 الصوت مكتوم':'🔊 الصوت');$('mute2').textContent=m?'🔇':'🔊'}
+['mute1','mute2','mute3'].forEach(i=>$(i).onclick=()=>setMute(!muted));
+/* ---------- setup ---------- */
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+function buildLes(){let h='',u='';D.forEach((L,i)=>{if(L.u!==u){if(u)h+='</optgroup>';u=L.u;h+=`<optgroup label="${esc(u)}">`}h+=`<option value="${i}">${esc(L.t)}</option>`});$('les').innerHTML=h+'</optgroup>'}
+function buildPers(){const L=D[S.l];if(S.p>L.p.length)S.p=1;$('pers').innerHTML=L.p.map((t,i)=>{const c=L.q.filter(q=>q[0]===i+1).length;return `<button class="chip ${S.p===i+1?'on':''}" data-p="${i+1}">الحصة ${i+1}: ${esc(t)} <small>(${c})</small></button>`}).join('');$('pnote').textContent=`عدد أسئلة الدرس كاملًا: ${L.q.length} سؤالًا`}
+function buildNames(){const old=[...document.querySelectorAll('.nm input')].map(i=>i.value);$('gc').textContent=S.g;$('names').innerHTML=Array.from({length:S.g},(_,i)=>`<label class="nm"><span class="dot" style="background:${GC[i]}"></span><input value="${esc(old[i]||S.names[i]||'المجموعة '+(i+1))}" maxlength="22"></label>`).join('')}
+function setN(v){S.n=Math.max(1,Math.min(20,v));$('qr').value=S.n;$('qv').textContent=S.n;document.querySelectorAll('#qq .chip').forEach(c=>c.classList.toggle('on',+c.dataset.v===S.n))}
+$('les').onchange=e=>{S.l=+e.target.value;S.p=1;buildPers()};
+$('pers').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;S.p=+b.dataset.p;buildPers()};
+$('gm').onclick=()=>{if(S.g>2){S.g--;buildNames()}};$('gp').onclick=()=>{if(S.g<6){S.g++;buildNames()}};
+$('qr').oninput=e=>setN(+e.target.value);$('qq').onclick=e=>{const b=e.target.closest('.chip');if(b)setN(+b.dataset.v)};
+/* ---------- game ---------- */
+function pickQs(){const L=D[S.l];const prim=shuf(L.q.filter(q=>q[0]===S.p)),oth=shuf(L.q.filter(q=>q[0]!==S.p));
+ let sel=prim.slice(0,S.n);if(sel.length<S.n)sel=sel.concat(oth.slice(0,S.n-sel.length));
+ return sel.map((q,i)=>({q,r:Math.random()})).sort((a,b)=>(+a.q[1])-(+b.q[1])||a.r-b.r).map(x=>x.q)}
+function startGame(){S.names=[...document.querySelectorAll('.nm input')].map((i,k)=>i.value.trim()||('المجموعة '+(k+1)));
+ const qs=pickQs();if(!qs.length)return;G={qs,i:0,score:Array(S.g).fill(0),prev:Array(S.g).fill(0),turn:0,stats:Array(S.g).fill(0)};
+ ac();SND.start();show('s2');ask()}
+$('start').onclick=startGame;
+let T={t0:0,raf:0,done:true,lastTick:-1};
+function ptsAt(t){let p=t<=30?1000-500*(t/30):Math.max(100,500-400*((t-30)/30));return Math.round(p/10)*10}
+function ask(){const q=G.qs[G.i],L=D[S.l];G.turn=G.i%S.g;
+ $('qi').textContent=`السؤال ${G.i+1} من ${G.qs.length}`;$('pg').style.width=((G.i)/G.qs.length*100)+'%';
+ $('qp').textContent=q[0]?`الحصة ${q[0]}: ${L.p[q[0]-1]}`:'مراجعة الدرس';
+ $('qd').innerHTML=[1,2,3].map(k=>`<b class="${k<=+q[1]?'f':''}"></b>`).join('');
+ $('qtype').textContent=TYPES[q[2]];
+ let txt=esc(q[3]);if(q[2]==='f')txt=txt.replace('...','<span class="blank" id="blank">&nbsp;</span>');$('qt').innerHTML=txt;
+ let opts;if(q[2]==='t')opts=[{t:'صواب',c:q[4]==='ص'},{t:'خطأ',c:q[4]==='خ'}];else opts=shuf([{t:q[4],c:true},{t:q[5],c:false},{t:q[6],c:false},{t:q[7],c:false}]);
+ G.opts=opts;const K=['أ','ب','ج','د'],KC=['#7cc3b6','#93b2ea','#efb18a','#bea2e5'];
+ $('opts').className='opts'+(q[2]==='t'?' tf':'');
+ $('opts').innerHTML=opts.map((o,k)=>`<button class="opt" data-k="${k}">${q[2]==='t'?'':`<span class="k" style="background:${KC[k]}">${K[k]}</span>`}<span>${esc(o.t)}</span></button>`).join('');
+ $('fb').className='fb';renderTurn();
+ T={t0:performance.now(),done:false,lastTick:-1};$('ring').classList.remove('over');loop()}
+function renderTurn(){const g=G.turn;$('who').innerHTML=`<span class="dot" style="background:${GC[g]}"></span>دور: ${esc(S.names[g])}`;$('who').style.background='#fff';
+ $('gpick').innerHTML=S.names.map((n,i)=>`<button data-g="${i}" style="${i===g?'border-color:#9fcfc6;color:#2f6f68;font-weight:700':''}"><span class="dot" style="background:${GC[i]}"></span>${esc(n)}</button>`).join('')}
+$('gpick').onclick=e=>{const b=e.target.closest('button');if(!b||T.done)return;G.turn=+b.dataset.g;renderTurn()};
+function loop(){if(T.done)return;const t=(performance.now()-T.t0)/1000;const left=30-t;
+ const arc=$('arc');if(left>=0){$('sec').textContent=Math.ceil(left);$('secl').textContent='ثانية';arc.style.strokeDashoffset=276.46*(1-left/30);
+  const s=Math.ceil(left);if(s<=5&&s!==T.lastTick&&s>0){T.lastTick=s;SND.tick()}}
+ else{$('ring').classList.add('over');$('sec').textContent='+'+Math.floor(-left);$('secl').textContent='وقت إضافي';arc.style.strokeDashoffset=276.46*Math.min(1,(-left)/30)}
+ $('avail').textContent=ptsAt(t);T.raf=requestAnimationFrame(loop)}
+$('opts').onclick=e=>{const b=e.target.closest('.opt');if(!b||T.done)return;T.done=true;cancelAnimationFrame(T.raf);
+ const t=(performance.now()-T.t0)/1000,o=G.opts[+b.dataset.k],q=G.qs[G.i];
+ document.querySelectorAll('.opt').forEach((el,k)=>{if(G.opts[k].c)el.classList.add('right');else if(el===b)el.classList.add('wrong');else el.classList.add('dim')});
+ if(q[2]==='f'){const bl=$('blank');if(bl)bl.textContent=q[4]}
+ G.prev=G.score.slice();let gain=0;
+ if(o.c){gain=ptsAt(t);G.score[G.turn]+=gain;G.stats[G.turn]++;SND.ok();$('fb').className='fb ok';$('fbt').textContent=`إجابة صحيحة! ${gain} نقطة تُضاف إلى ${S.names[G.turn]}`;
+  const f=document.createElement('div');f.className='float';f.textContent='+'+gain;$('qcard').appendChild(f);setTimeout(()=>f.remove(),1500)}
+ else{SND.no();$('fb').className='fb no';$('fbt').textContent=q[2]==='t'?`الإجابة الصحيحة: ${q[4]==='ص'?'صواب':'خطأ'}`:`الإجابة الصحيحة: ${q[4]}`}
+ G.last={g:G.turn,gain}};
+$('toRes').onclick=()=>showRes();
+function showRes(){show('s3');const L=D[S.l];$('rtitle').innerHTML=`<bdi>${esc(L.t)}</bdi>`;
+ const last=G.i===G.qs.length-1;$('next').textContent=last?'النتيجة النهائية 🏆':'السؤال التالي';
+ $('rhh').textContent=`الترتيب بعد السؤال ${G.i+1}`;
+ $('rhp').textContent=G.last.gain?`فازت بهذا السؤال: ${S.names[G.last.g]} (+${G.last.gain})`:`لم تُحتسب نقاط في هذا السؤال`;
+ const max=Math.max(1200,...G.score)*1.12;const order=[...G.score.keys()].sort((a,b)=>G.score[b]-G.score[a]);const rank={};order.forEach((g,i)=>{rank[g]=(i>0&&G.score[g]===G.score[order[i-1]])?rank[order[i-1]]:i+1});
+ $('chart').innerHTML=S.names.map((n,g)=>`<div class="col ${G.last.gain&&g===G.last.g?'win':''}"><div class="rk">المركز ${rank[g]}</div><div class="sc" id="sc${g}">${G.prev[g]}</div><div class="bar" id="bar${g}" style="background:${GC[g]};height:${G.prev[g]/max*100}%">${G.last.gain&&g===G.last.g?'<span class="star">⭐</span>':''}</div></div>`).join('');
+ $('labels').innerHTML=S.names.map(n=>`<div>${esc(n)}</div>`).join('');
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{S.names.forEach((n,g)=>{$('bar'+g).style.height=Math.max(1.5,G.score[g]/max*100)+'%';countUp($('sc'+g),G.prev[g],G.score[g])});SND.bars()}))}
+function countUp(el,a,b){const t0=performance.now();function st(now){const k=Math.min(1,(now-t0)/1200),e=1-Math.pow(1-k,3);el.textContent=Math.round(a+(b-a)*e);if(k<1)requestAnimationFrame(st)}requestAnimationFrame(st)}
+$('next').onclick=()=>{if(G.i<G.qs.length-1){G.i++;show('s2');ask()}else final()};
+$('endb').onclick=()=>{T.done=true;cancelAnimationFrame(T.raf);final()};
+function final(){show('s4');const L=D[S.l];$('fsub').innerHTML=`<bdi>${esc(L.t)}</bdi> • الأسئلة المنجزة: ${G.i+1} من ${G.qs.length}`;
+ const order=[...G.score.keys()].sort((a,b)=>G.score[b]-G.score[a]);
+ const pos=[order[1],order[0],order[2]],H=[150,210,110],M=['🥈','🥇','🥉'],N=['2','1','3'];
+ $('podium').innerHTML=pos.map((g,k)=>g===undefined?'<div class="pd"></div>':`<div class="pd"><div class="md">${M[k]}</div><div class="nmf">${esc(S.names[g])}</div><div class="scf">${G.score[g]} نقطة • ${G.stats[g]} إجابات صحيحة</div><div class="blk" id="pb${k}" style="background:${GC[g]}">${N[k]}</div></div>`).join('');
+ $('rest').innerHTML=order.map((g,i)=>`<div><span>${i+1}. <span class="dot" style="display:inline-block;background:${GC[g]}"></span> ${esc(S.names[g])}</span><b>${G.score[g]}</b></div>`).join('');
+ requestAnimationFrame(()=>requestAnimationFrame(()=>pos.forEach((g,k)=>{const e=$('pb'+k);if(e)e.style.height=H[k]+'px'})));
+ SND.win();confetti()}
+$('again').onclick=()=>startGame();$('newc').onclick=()=>show('s1');
+/* ---------- calm confetti ---------- */
+function confetti(){const c=$('cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const cols=['#9fd8cd','#b7cbf2','#f4c7a8','#d4c1f0','#f2dc95','#f2b8c6'];
+ const P=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.6,w:6+Math.random()*7,h:8+Math.random()*10,vy:.8+Math.random()*1.6,vx:-.5+Math.random(),r:Math.random()*6,vr:-.05+Math.random()*.1,c:cols[Math.random()*cols.length|0]}));
+ const t0=performance.now();(function f(now){x.clearRect(0,0,c.width,c.height);const el=(now-t0)/1000;P.forEach(p=>{p.y+=p.vy;p.x+=p.vx+Math.sin(p.y/40)*.4;p.r+=p.vr;x.save();x.globalAlpha=Math.max(0,1-Math.max(0,el-5)/2);x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(el<7)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})(t0)}
+document.addEventListener('keydown',e=>{if($('s2').classList.contains('on')&&!T.done&&/^[1-4]$/.test(e.key)){const b=document.querySelector(`.opt[data-k="${+e.key-1}"]`);if(b)b.click()}
+ else if((e.key==='Enter'||e.key===' ')&&$('s2').classList.contains('on')&&T.done){e.preventDefault();showRes()}
+ else if((e.key==='Enter'||e.key===' ')&&$('s3').classList.contains('on')){e.preventDefault();$('next').click()}});
+buildLes();buildPers();buildNames();setN(10);setMute(muted);
+</script>
+</body>
+</html>

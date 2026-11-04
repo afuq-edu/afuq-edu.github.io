@@ -28,7 +28,7 @@ def main():
     os.makedirs(OUT, exist_ok=True); roots = sys.argv[1:] or [R]; saved = files = 0
     for root in roots:
         for d, dirs, fs in os.walk(root):
-            dirs[:] = [x for x in dirs if x != '.git']
+            dirs[:] = [x for x in dirs if x != '.git' and not (x == 'apps' and os.path.samefile(d, root))]   # the subject apps work offline: their fonts stay embedded
             for f in fs:
                 if f.endswith('.html'):
                     n = fix(os.path.join(d, f))
