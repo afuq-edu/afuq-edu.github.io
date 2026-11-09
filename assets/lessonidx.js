@@ -25,13 +25,7 @@
     'font:700 14px/1 system-ui,Tahoma,sans-serif;padding:10px 14px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px #0004;direction:rtl}';
   function addCss(){ var s=document.createElement('style'); s.textContent=css; document.head.appendChild(s); }
   /* the Noor message: one wording for boys and girls (الطلبة / plural address), the lesson title, the link on its own line */
-  function nmsg(L,P){
-    return '📘 شرح درس: «'+String(P?P.t:L.title).replace(/[\u064B-\u0652]/g,'')+'»\n\n'+
-      'أعزائي الطلبة 🌟\n'+
-      'هذا شرح الدرس بالشرائح، لمراجعته في البيت بهدوء وعلى راحتكم؛ فكل شريحة تقرّبكم خطوة من الفهم والتميّز.\n\n'+
-      '🔗 رابط الدرس:\n'+studentUrl(L.id,P)+'\n\n'+
-      'بالتوفيق للجميع ✨';
-  }
+  function nmsg(L,P){ return studentUrl(L.id,P); }   /* «نشر لنور» copies the link only, no message (owner, 2026-11-09) */
   function studentUrl(id,P){ return location.origin+stu+'?l='+encodeURIComponent(id)+(P?'&p='+encodeURIComponent(P.id):''); }
   function icon(t){ t=String(t).replace(/[\u064B-\u0652]/g,'');
     return /^(النحو|الصرف)/.test(t)?'📗':/^الإملاء/.test(t)?'✏️':/^خط/.test(t)?'✍️':/^التعبير/.test(t)?'📝':/^(القراءة الحرة|قراءة حرة)/.test(t)?'📚':/^(الحصة|Period)/.test(t)?'🕘':'▫️'; }
@@ -58,7 +52,7 @@
     var o=el('div'); o.id='afuqIdx'; var w=el('div','w'); o.appendChild(w);
     w.appendChild(el('h1',null,(D.title||'').replace(/^العرض التفاعلي\s*[–-]\s*/,'')||'الدروس'));
     var n=0; D.lessons.forEach(function(L){ n+=(L.slides||[]).length; });
-    w.appendChild(el('p','s','اختر الدرس: «دخول» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده لتضعه في منصة نور فيقرأه الطالب في البيت.'+
+    w.appendChild(el('p','s','اختر الدرس: «دخول» يعرضه لك بملاحظاتك، و«نشر لنور» ينسخ رابط هذا الدرس وحده (الرابط فقط) لتضعه في منصة نور فيقرأه الطالب في البيت.'+
       (D.lessons.some(function(L){ return L.parts&&L.parts.length; })?' دروس النحو والإملاء والتعبير وغيرها تظهر تحت درسها بعنوانها وشرائحها، ولا تتكرر في الدرس نفسه.':'')));
     var unit=null, units={}; (D.units||[]).forEach(function(u){ units[u.id]=u.name; });
     D.lessons.forEach(function(L){
