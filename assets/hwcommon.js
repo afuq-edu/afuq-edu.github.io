@@ -1,5 +1,7 @@
 /* Shared pieces of the homework games: theme, sound, read-aloud, result screen with a certificate. */
 (function(){
+  /* the certificate can be downloaded as an image (owner, 2026-11-10) */
+  if(!window.AfuqCertDownload&&!document.querySelector('script[src*="certdl.js"]')){ var cs=document.createElement('script'); cs.src='/assets/certdl.js'; cs.defer=true; document.head.appendChild(cs); }
   var css='\
 :root{--bg:#F3F6FB;--card:#FFFFFF;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#FFFFFF;--ok:#1F9D55;--okbg:#E3F6EA;--bad:#D64545;--badbg:#FBE7E7;--gold:#E8A317}\
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F;--okbg:#12301F;--bad:#FF6B6B;--badbg:#3A1A1E;--gold:#F2B035}}\
@@ -45,7 +47,7 @@ main{max-width:720px;margin:0 auto;padding:16px 16px 48px}\
       '<div class="name"><label for="nm">اكتب اسمك لتظهر شهادة الإنجاز:</label><input id="nm" maxlength="30" autocomplete="name" placeholder="اسمي"></div>'+
       '<div class="cert" id="cert"><p class="t">🏅 شهادة إنجاز</p><p>تُمنح الطالبة / الطالب</p><p class="n" id="cn"></p><p class="ct"></p><p class="s"></p><p class="cc" style="font-weight:800"></p><p class="cd"></p><p class="f"></p></div>'+
       '<div class="row"><button class="btn" id="show" type="button">عرض الشهادة</button><button class="btn alt" id="prt" type="button" hidden>🖨 طباعة الشهادة</button><button class="btn alt" id="again" type="button">↻ العب من جديد</button></div>'+
-      '<p class="hint" id="shot" hidden>للتسليم: صوّر الشهادة (لقطة شاشة) وأرفقها في منصة نور.</p>';
+      '<p class="hint" id="shot" hidden>للتسليم: نزّل الشهادة صورة (أو اطبعها) وأرفقها في منصة نور.</p>';
     m.querySelector('.stars').textContent=star;
     m.querySelector('.score').textContent='نتيجتك: '+o.correct+' من '+o.total+(o.points!=null?' · '+o.points+' نقطة':'');
     m.querySelector('.msg').textContent=msg;

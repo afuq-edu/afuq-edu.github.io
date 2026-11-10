@@ -243,5 +243,6 @@ $('bCert').onclick=cert;$('nm').addEventListener('keydown',e=>{if(e.key==='Enter
 function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const cv=$('cf'),x=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;const cols=['#ff7a8a','#5fa8ff','#ffd166','#6ccf8e','#a58be8','#ff9f43'];const P=Array.from({length:110},()=>({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,w:7+Math.random()*7,h:9+Math.random()*9,vy:2+Math.random()*3,vx:-1+Math.random()*2,r:Math.random()*6,vr:-.1+Math.random()*.2,c:cols[Math.floor(Math.random()*6)]}));const t0=performance.now();const f=()=>{const el=performance.now()-t0;x.clearRect(0,0,cv.width,cv.height);P.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(el<3500)requestAnimationFrame(f);else x.clearRect(0,0,cv.width,cv.height)};f()}
 })();
 </script>
+<script src="/assets/certdl.js" defer></script>
 </body>
 </html>
