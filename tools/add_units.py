@@ -55,13 +55,13 @@ def main():
     share = mode in ('homework', 'open')
     if share:
         cards = ''.join('<div class="u row" data-u="u%d" data-name="%s – %s"><a class="t" href="u%d/"><b>%s</b><span>%s</span></a>'
-                        '<div class="acts"><a class="btn go" href="u%d/">▶ تشغيل في الصف</a><button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button>'
-                        '<button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></div></div>'
+                        '<div class="acts"><a class="btn go" href="u%d/">▶ تشغيل في الصف</a><button type="button" class="btn cp" data-k="link">🔗 نسخ</button>'
+                        '</div></div>'
                         % (i, title, labels[i-1], i, labels[i-1], line, i) for i in range(1, len(files)+1))
     else:
         cards = ''.join('<a class="u" href="u%d/"><b>%s</b><span>%s</span></a>' % (i, labels[i-1], line) for i in range(1, len(files)+1))
     note = ('<div class="note"><b>للمعلم:</b> لكل وحدة <b>رابط دائم</b> يفتحه الطلاب مباشرة بلا اشتراك ولا رمز. '
-            'اضغط «نسخ رسالة نور» وألصقها في منصة نور (الواجبات أو المحتوى) فتصل للطلاب مع الرابط، أو «نسخ الرابط» وحده. '
+            'اضغط «نسخ» وألصق الرابط في منصة نور (الواجبات أو المحتوى). '
             'وللعرض داخل الحصة اضغط «تشغيل في الصف».</div>') if share else ''
     js = ('<script>(function(){var S=%s,L=%s,G=%s;'
           'function cp(t,b,lab){function ok(){b.textContent=\'✔ تم النسخ\';b.classList.add(\'done\');setTimeout(function(){b.textContent=lab;b.classList.remove(\'done\')},1800)}'

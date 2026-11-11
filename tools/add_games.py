@@ -104,13 +104,13 @@ def build_collection(g, s, sec, nav):
     open(d + 'index.html', 'w', encoding='utf8').write(out)
     return len(out)
 
-def btns(): return ('<span class="acts"><a class="btn go" href="%s">▶ تشغيل</a><button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button>'
-                    '<button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></span>')
+def btns(): return ('<span class="acts"><a class="btn go" href="%s">▶ تشغيل</a><button type="button" class="btn cp" data-k="link">🔗 نسخ</button>'
+                    '</span>')
 
 def row(url, name, title, sub, cls='row'):
     return ('<div class="u %s" data-u="%s" data-name="%s"><a class="t" href="%s"><b>%s</b><span>%s</span></a><div class="acts">'
-            '<a class="btn go" href="%s">▶ تشغيل في الصف</a><button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button>'
-            '<button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></div></div>') % (cls, esc(url), esc(name), esc(url), esc(title), esc(sub), esc(url))
+            '<a class="btn go" href="%s">▶ تشغيل في الصف</a><button type="button" class="btn cp" data-k="link">🔗 نسخ</button>'
+            '</div></div>') % (cls, esc(url), esc(name), esc(url), esc(title), esc(sub), esc(url))
 
 def tree_html(nodes, base, trail, path):
     out = []
@@ -118,11 +118,11 @@ def tree_html(nodes, base, trail, path):
         p = path + [i]; url = base + '?go=' + '.'.join(map(str, p)); t = short(n['t']); nm = ' – '.join(trail + [t])
         if n.get('k'):
             out.append('<details class="les" data-u="%s" data-name="%s"><summary><span class="lt">%s</span><span class="acts"><a class="btn go" href="%s">▶ تشغيل</a>'
-                       '<button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button><button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></span></summary>'
+                       '<button type="button" class="btn cp" data-k="link">🔗 نسخ</button></span></summary>'
                        '<div class="kids">%s</div></details>' % (esc(url), esc(nm), esc(t), esc(url), tree_html(n['k'], base, trail + [t], p)))
         else:
             out.append('<div class="u row leaf" data-u="%s" data-name="%s"><span class="t"><b>%s</b></span><div class="acts"><a class="btn go" href="%s">▶ تشغيل</a>'
-                       '<button type="button" class="btn cp" data-k="link">🔗 نسخ الرابط</button><button type="button" class="btn cp" data-k="msg">📋 نسخ رسالة نور</button></div></div>'
+                       '<button type="button" class="btn cp" data-k="link">🔗 نسخ</button></div></div>'
                        % (esc(url), esc(nm), esc(t), esc(url)))
     return ''.join(out)
 
@@ -154,7 +154,7 @@ def list_page(g, s, prefix, lessons, units, colls):
     for sec, name, nav in colls: rows.append(coll_block(g, s, sec, name, nav))
     note = ('<div class="note"><b>للمعلم:</b> لكل درس <b>رابط دائم</b> يفتحه الطلاب مباشرة بلا اشتراك ولا رمز، ويضم ألعاب وأنشطة ذلك الدرس فقط. '
             'وفي «المجموعات الجاهزة» لكل درس ولكل لعبة أو نشاط رابطه الخاص (اضغط على الدرس لترى أنشطته). '
-            'اضغط «نسخ رسالة نور» وألصقها في منصة نور، أو «نسخ الرابط» وحده. وللعب داخل الحصة اضغط «تشغيل».</div>')
+            'اضغط «نسخ» وألصق الرابط في منصة نور. وللعب داخل الحصة اضغط «تشغيل».</div>')
     script = ('<script>(function(){var S=%s,L=%s,G=%s;'
               'function cp(t,b,lab){function ok(){b.textContent=\'✔ تم النسخ\';b.classList.add(\'done\');setTimeout(function(){b.textContent=lab;b.classList.remove(\'done\')},1800)}'
               'function fb(){var a=document.createElement(\'textarea\');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand(\'copy\');ok()}catch(e){prompt(\'انسخ:\',t)}a.remove()}'
