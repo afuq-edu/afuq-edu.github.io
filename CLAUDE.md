@@ -311,3 +311,9 @@ canvas بمقاس 1600×1130 من نص الصندوق نفسه (الاسم، ا�
 الإدارة بالـSQL عبر MCP: إنشاء `insert into pick_links(code,label,max_subjects,max_devices) values (substr(replace(gen_random_uuid()::text,'-',''),1,14),'..',N,2)`؛
 إيقاف `update pick_links set cancelled=true where code=..`؛ إعادة ضبط (فصل جديد أو تغيير جهاز) `update pick_links set subjects=null, teacher_name=null where code=..; delete from pick_devices where code=..`.
 أمر فيه `delete`/`drop` يطلب موافقة من المالك في تطبيقه وقد تنتهي مهلته: فضّل أوامر بلا حذف أو اطلب الموافقة صراحة. الروابط `#pick[N]` القديمة تبقى تعمل لكنها قابلة للنشر.
+
+### أداة إنشاء الروابط الخاصة `/p/admin/` (2026-11-13)
+صفحة مخفية (noindex) يدخلها المالك بمفتاح إدارة سرّي: إنشاء روابط (عدد المواد/الأجهزة/الكمية/وسم) + قائمة بحالتها + إيقاف/تفعيل/تحرير الأجهزة/إعادة ضبط/وسم.
+المفتاح لا يُحفظ في أي مكان (في قاعدة البيانات SHA-256 فقط في `pick_admin`، وفي متصفح المالك localStorage `afuq-pl-admin`)؛ لا تكتبه في المستودع.
+مفتاح جديد عند الضياع: `insert into pick_admin(id,key_hash) values (1, encode(sha256(convert_to('<المفتاح>','UTF8')),'hex')) on conflict (id) do update set key_hash=excluded.key_hash`.
+دوال الإدارة (`pick_admin_create/list/set`) تتحقق من المفتاح وتتأخر ١٫٥ ث عند الخطأ؛ إعادة الضبط تعطّل الأجهزة (`pick_devices.active=false`) بدل حذفها.

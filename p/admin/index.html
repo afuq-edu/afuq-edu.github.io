@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>روابط المعلمين الخاصة</title>
+<style>
+:root{--bg:#F3F6FB;--card:#fff;--ink:#16213A;--muted:#5B6782;--line:#DCE3EE;--brand:#2F6FB3;--brand-ink:#fff;--ok:#1F9D55;--bad:#D64545;--warn:#B7791F}
+@media (prefers-color-scheme:dark){:root{--bg:#0F1626;--card:#18223A;--ink:#E8EDF7;--muted:#9AA6C2;--line:#2B3756;--brand:#6EA8FF;--brand-ink:#0F1626;--ok:#3DD47F;--bad:#FF6B6B;--warn:#E8B04A}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif;line-height:1.7;padding:0 16px 56px}
+.wrap{max-width:880px;margin:0 auto;display:grid;gap:18px;padding-top:22px}
+h1{margin:0;font-size:24px}h2{margin:0 0 6px;font-size:18px}
+p{margin:0}.muted{color:var(--muted);font-size:14px}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--muted)}
+input,select{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 11px;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 13px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;color:inherit;white-space:nowrap}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 13px;font-size:13.5px;font-weight:700;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.url{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;direction:ltr;text-align:left;background:var(--bg);border-radius:9px;padding:8px 10px;overflow-x:auto;white-space:nowrap;user-select:all}
+.lk{border:1px solid var(--line);border-inline-start:4px solid var(--c,var(--brand));border-radius:14px;padding:12px 14px;display:grid;gap:8px;background:var(--card)}
+.lk h3{margin:0;font-size:16px}
+.pill{font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--bg);color:var(--muted)}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 17%,transparent);color:var(--warn)}
+.pill.off{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.msg{min-height:20px;font-size:14px;font-weight:700}.msg.err{color:var(--bad)}.msg.good{color:var(--ok)}
+.toast{position:fixed;inset-inline:16px;bottom:18px;margin:0 auto;max-width:340px;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;text-align:center;font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div><h1>روابط المعلمين الخاصة</h1><p class="muted">أنشئ رابطًا فريدًا لكل معلم: يختار مواده ويكتب اسمه مرة واحدة، ويعمل على الأجهزة التي تحددها فقط.</p></div>
+
+  <section class="card" id="login">
+    <h2>مفتاح الإدارة</h2>
+    <p class="muted">المفتاح سرّي ولا يُحفظ إلا في هذا المتصفح. بدونه لا يمكن إنشاء الروابط ولا رؤيتها.</p>
+    <div class="row"><input id="key" type="password" autocomplete="off" placeholder="الصق المفتاح هنا" style="flex:1 1 240px"><button class="btn primary" id="enter" type="button">دخول</button></div>
+    <p class="msg" id="loginMsg" role="alert"></p>
+  </section>
+
+  <div id="app" hidden>
+    <section class="card">
+      <div class="row"><h2 style="margin:0;flex:1">إنشاء روابط جديدة</h2><button class="btn" id="exit" type="button">خروج</button></div>
+      <div class="grid">
+        <label>عدد المواد المسموحة للمعلم<input id="nSub" type="number" min="1" max="60" value="3"></label>
+        <label>عدد الأجهزة<input id="nDev" type="number" min="1" max="20" value="2"></label>
+        <label>كم رابطًا<input id="nCnt" type="number" min="1" max="100" value="1"></label>
+        <label>وسم لك (اختياري)<input id="lab" type="text" maxlength="80" placeholder="مثال: مدرسة النور"></label>
+      </div>
+      <div class="row"><button class="btn primary" id="make" type="button">إنشاء</button><p class="msg" id="makeMsg" role="status"></p></div>
+      <div id="fresh" hidden class="card" style="background:var(--bg)"><div class="row"><b style="flex:1">الروابط الجديدة</b><button class="btn" id="copyAll" type="button">نسخ الكل</button></div><div id="freshList" style="display:grid;gap:8px"></div></div>
+    </section>
+
+    <section class="card">
+      <div class="row"><h2 style="margin:0;flex:1">الروابط</h2><button class="btn" id="reload" type="button">تحديث</button></div>
+      <input id="q" type="search" placeholder="ابحث بالاسم أو الوسم أو المادة…">
+      <div class="row" id="chips" role="group" aria-label="التصفية"></div>
+      <div id="list" style="display:grid;gap:10px"></div>
+    </section>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var SB='https://jcfjicctftvsmtamvtof.supabase.co/rest/v1/rpc/', SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZmppY2N0ZnR2c210YW12dG9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzNjY4OTQsImV4cCI6MjEwNjk0Mjg5NH0.a3a2pHnyb8ht6OFK_gedqShexSp8L_o8ws1CFKFfJc0';
+  var SUBJ={math:'الرياضيات',english:'اللغة الإنجليزية',it:'تقنية المعلومات',pe:'التربية البدنية والصحية',social:'الدراسات الاجتماعية / الهوية والمواطنة',arts:'الفنون',science:'العلوم',arabic:'اللغة العربية',islamic:'التربية الإسلامية',physics:'الفيزياء',biology:'الأحياء',envsci:'العلوم البيئية',chemistry:'الكيمياء',sport:'الرياضة المدرسية',homeland:'هذا وطني',advmath:'الرياضيات المتقدمة',basicmath:'الرياضيات الأساسية',geography:'الجغرافيا الاقتصادية'};
+  var $=function(i){return document.getElementById(i)}, KEY='afuq-pl-admin', links=[], filter='all';
+  function el(t,c,x){ var n=document.createElement(t); if(c) n.className=c; if(x!=null) n.textContent=x; return n; }
+  function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(function(){ t.classList.remove('show'); },1700); }
+  function key(){ try{ return localStorage.getItem(KEY)||''; }catch(e){ return window._k||''; } }
+  function setKey(v){ try{ if(v) localStorage.setItem(KEY,v); else localStorage.removeItem(KEY); }catch(e){ window._k=v; } }
+  function rpc(fn,body){ return fetch(SB+fn,{method:'POST',headers:{'apikey':SBK,'Authorization':'Bearer '+SBK,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  function url(code){ return location.origin+'/p/#pl'+code; }
+  function copy(t){ var ok=function(){ toast('نُسخ'); };
+    try{ navigator.clipboard.writeText(t).then(ok,function(){ fb(t); ok(); }); }catch(e){ fb(t); ok(); } }
+  function fb(t){ var a=document.createElement('textarea'); a.value=t; a.style.cssText='position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); }catch(e){} a.remove(); }
+  function denied(){ setKey(''); $('app').hidden=true; $('login').hidden=false; $('loginMsg').className='msg err'; $('loginMsg').textContent='المفتاح غير صحيح.'; }
+  function subjName(p){ var s=p.split('/'); return (SUBJ[s[1]]||s[1])+' – الصف '+s[0]; }
+  function status(l){ return l.cancelled?'off':(l.subjects?'used':'new'); }
+
+  function enter(){
+    var k=$('key').value.trim()||key(); if(!k){ $('loginMsg').className='msg err'; $('loginMsg').textContent='الصق المفتاح أولًا.'; return; }
+    $('loginMsg').className='msg'; $('loginMsg').textContent='جارٍ التحقق…'; $('enter').disabled=true;
+    rpc('pick_admin_list',{p_key:k}).then(function(r){
+      $('enter').disabled=false;
+      if(!r||r.status!=='ok') return denied();
+      setKey(k); $('key').value=''; $('login').hidden=true; $('app').hidden=false; links=r.links||[]; draw();
+    }).catch(function(){ $('enter').disabled=false; $('loginMsg').className='msg err'; $('loginMsg').textContent='تعذّر الاتصال، أعد المحاولة.'; });
+  }
+  function load(){ rpc('pick_admin_list',{p_key:key()}).then(function(r){ if(!r||r.status!=='ok') return denied(); links=r.links||[]; draw(); }).catch(function(){ toast('تعذّر التحديث'); }); }
+
+  function draw(){
+    var cnt={all:links.length,new:0,used:0,off:0}; links.forEach(function(l){ cnt[status(l)]++; });
+    var C=$('chips'); C.replaceChildren();
+    [['all','الكل'],['new','لم يُختَر بعد'],['used','اختار مواده'],['off','موقوف']].forEach(function(x){
+      var b=el('button','chip',x[1]+' ('+cnt[x[0]].toLocaleString('ar')+')'); b.type='button'; b.setAttribute('aria-pressed',String(filter===x[0])); b.onclick=function(){ filter=x[0]; draw(); }; C.append(b); });
+    var q=$('q').value.trim().toLowerCase(), L=$('list'); L.replaceChildren();
+    var shown=links.filter(function(l){ if(filter!=='all'&&status(l)!==filter) return false;
+      if(!q) return true; var hay=[l.teacher_name,l.label].concat((l.subjects||[]).map(subjName)).join(' ').toLowerCase(); return hay.indexOf(q)>=0; });
+    if(!shown.length){ L.append(el('p','muted','لا توجد روابط في هذا العرض.')); return; }
+    shown.forEach(function(l){ L.append(card(l)); });
+  }
+  function card(l){
+    var st=status(l), c=el('article','lk'); c.style.setProperty('--c',st==='off'?'var(--bad)':st==='used'?'var(--ok)':'var(--warn)');
+    var top=el('div','row'); top.append(el('h3',null,l.teacher_name||l.label||'رابط بلا اسم'));
+    top.append(el('span','pill '+(st==='off'?'off':st==='used'?'ok':'warn'),st==='off'?'موقوف':st==='used'?'اختار مواده':'لم يُختَر بعد'));
+    top.append(el('span','pill',pk(l.max_subjects)+' · '+dv(l.devices,l.max_devices)));
+    c.append(top);
+    if(l.teacher_name&&l.label) c.append(el('p','muted','الوسم: '+l.label));
+    if(l.subjects&&l.subjects.length) c.append(el('p','muted','المواد: '+l.subjects.map(subjName).join(' · ')));
+    if(l.last_seen) c.append(el('p','muted','آخر فتح: '+new Date(l.last_seen).toLocaleString('ar',{dateStyle:'medium',timeStyle:'short'})));
+    c.append(el('div','url',url(l.code)));
+    var a=el('div','row');
+    a.append(btn('نسخ الرابط',false,function(){ copy(url(l.code)); }));
+    var wa=el('a','btn','واتساب'); wa.target='_blank'; wa.rel='noopener'; wa.href='https://wa.me/?text='+encodeURIComponent('منصة أفق التعليمية – رابطك الخاص (لا تشاركه مع أحد، يعمل على '+dv2(l.max_devices)+' فقط)\n'+url(l.code)); a.append(wa);
+    a.append(btn(l.cancelled?'تفعيل':'إيقاف',!l.cancelled,function(){ act(l,l.cancelled?'resume':'stop'); }));
+    a.append(btn('تحرير الأجهزة',false,function(){ if(confirm('تحرير أماكن الأجهزة؟ تبقى المواد والاسم، ويستطيع المعلم فتح الرابط على أجهزة جديدة.')) act(l,'devices'); }));
+    a.append(btn('إعادة ضبط',true,function(){ if(confirm('إعادة الضبط تمسح المواد والاسم والأجهزة، ويختار المعلم من جديد (فصل جديد). متأكد؟')) act(l,'reset'); }));
+    a.append(btn('الوسم',false,function(){ var v=prompt('وسم للرابط (يظهر لك فقط):',l.label||''); if(v!==null) act(l,'label',v); }));
+    c.append(a); return c;
+  }
+  function btn(t,danger,fn){ var b=el('button','btn'+(danger?' danger':''),t); b.type='button'; b.onclick=fn; return b; }
+  function pk(n){ return n===1?'مادة واحدة':n===2?'مادتان':n<=10?n.toLocaleString('ar')+' مواد':n.toLocaleString('ar')+' مادة'; }
+  function dv2(n){ return n===1?'جهاز واحد':n===2?'جهازين':n<=10?n.toLocaleString('ar')+' أجهزة':n.toLocaleString('ar')+' جهازًا'; }
+  function dv(u,m){ return 'الأجهزة '+(u||0).toLocaleString('ar')+'/'+m.toLocaleString('ar'); }
+  function act(l,a,v){ rpc('pick_admin_set',{p_key:key(),p_code:l.code,p_action:a,p_value:v==null?null:v}).then(function(r){ if(!r||r.status==='denied') return denied(); toast(r.status==='ok'?'تم':'تعذّر'); load(); }).catch(function(){ toast('تعذّر الاتصال'); }); }
+
+  $('enter').onclick=enter; $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') enter(); });
+  $('exit').onclick=function(){ setKey(''); $('app').hidden=true; $('login').hidden=false; $('loginMsg').textContent=''; };
+  $('reload').onclick=load; $('q').addEventListener('input',draw);
+  var fresh=[];
+  $('make').onclick=function(){
+    var n=+$('nSub').value, d=+$('nDev').value, c=+$('nCnt').value, m=$('makeMsg'); m.className='msg';
+    if(!(n>=1&&n<=60&&d>=1&&d<=20&&c>=1&&c<=100)){ m.className='msg err'; m.textContent='راجع الأرقام (المواد ١–٦٠، الأجهزة ١–٢٠، الروابط ١–١٠٠).'; return; }
+    $('make').disabled=true; m.textContent='جارٍ الإنشاء…';
+    rpc('pick_admin_create',{p_key:key(),p_label:$('lab').value,p_max_subjects:n,p_count:c,p_max_devices:d}).then(function(r){
+      $('make').disabled=false; if(!r||r.status==='denied') return denied(); if(r.status!=='ok'){ m.className='msg err'; m.textContent='تعذّر الإنشاء.'; return; }
+      fresh=r.links||[]; m.className='msg good'; m.textContent='أُنشئ '+fresh.length.toLocaleString('ar')+(fresh.length===1?' رابط':' روابط')+' ونُسخ أولها.';
+      var F=$('freshList'); F.replaceChildren();
+      fresh.forEach(function(l){ var w=el('div','row'); var u=el('div','url',url(l.code)); u.style.flex='1 1 260px'; w.append(u,btn('نسخ',false,function(){ copy(url(l.code)); })); F.append(w); });
+      $('fresh').hidden=false; if(fresh.length) copy(url(fresh[0].code)); load();
+    }).catch(function(){ $('make').disabled=false; m.className='msg err'; m.textContent='تعذّر الاتصال، أعد المحاولة.'; });
+  };
+  $('copyAll').onclick=function(){ copy(fresh.map(function(l){ return url(l.code); }).join('\n')); };
+  if(key()){ $('key').value=''; enter(); }
+})();
+</script>
+</body>
+</html>
