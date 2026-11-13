@@ -187,14 +187,15 @@ button.row .sic,button.row b{opacity:.6}
   window.addEventListener('focus',stale);
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
   var hraw=location.hash.slice(1), raw=hraw; try{ raw=decodeURIComponent(hraw); }catch(e){}
-  var to='', all=false, want=[], kcode='', plain=false, pickMode='', pickMax=0, picked=false;
+  var to='', all=false, want=[], kcode='', plain=false, pickMode='', pickMax=0, picked=false, plCode='', plInfo=null;
   function b64(t){ try{ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; return new TextDecoder().decode(Uint8Array.from(atob(t),function(c){return c.charCodeAt(0)})); }catch(e){ return ''; } }
   if(/(^|&)(to|i|all)=/.test(raw)){
     var h=new URLSearchParams(/(^|&)(to|i|all)=/.test(hraw)?hraw:raw); to=h.get('to')||''; all=h.get('all')==='1';
     want=(h.get('i')||'').split(';').map(function(x){ var m=x.split(':'); return [(m[0]||''), (m[1]||'all')]; });
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
-    var pkm=/^(reset)?pick(\d{0,2})$/.exec(code); if(pkm){ pickMode=pkm[1]?'reset':'pick'; pickMax=+pkm[2]||0; code=''; }   /* #pick[N]: the subscriber chooses the subjects (see pickStart) */
+    var pkm=/^(reset)?pick(\d{0,2})$/.exec(code); if(pkm){ pickMode=pkm[1]?'reset':'pick'; pickMax=+pkm[2]||0; code=''; }
+    var plm=/^pl([0-9a-f]{14})$/.exec(code); if(plm){ pickMode='pl'; plCode=plm[1]; code=''; }   /* #pl<code>: a private link of one teacher (see plStart) */   /* #pick[N]: the subscriber chooses the subjects (see pickStart) */
     // #k<id>-<items> carries its materials too, so a new stable link works before packages.json is synced.
     var tm=/^([tu])([0-9a-z]{5,9})-(.+)$/.exec(code);
     if(tm){ trial=parseInt(tm[2],36)*1000; code=tm[3]; trialOld=tm[1]!==TRIAL_GEN; }
@@ -372,7 +373,7 @@ button.row .sic,button.row b{opacity:.6}
     });
     root.append(box);
   });
-  if(picked) root.append(el('p','lead','موادك محفوظة على هذا الجهاز وتظهر كلما فتحت هذا الرابط. لتغيير المواد أو التجديد تواصل مع منصة أفق على '+PHONE+'.'));
+  if(picked) root.append(el('p','lead',plCode?'هذا الرابط خاص بك وحدك ويعمل على '+pkDevs(plInfo?plInfo.max_devices:2)+' فقط'+(plInfo?' (مستخدم الآن على '+pkNum(plInfo.devices)+')':'')+'، فلا تشاركه مع أحد. لتغيير المواد أو التجديد تواصل مع منصة أفق على '+PHONE+'.':'موادك محفوظة على هذا الجهاز وتظهر كلما فتحت هذا الرابط. لتغيير المواد أو التجديد تواصل مع منصة أفق على '+PHONE+'.'));
   }
 
   /* «رابط اختيار المواد» #pick[N] (owner, 2026-11-13): ONE link for every subscriber. The first visit on a device shows the subjects to choose
@@ -382,6 +383,7 @@ button.row .sic,button.row b{opacity:.6}
      (the new term). #resetpick[N] (sent by Afuq to one subscriber) clears this device's choice so that they can choose again. */
   var PKEY='afuq-pick', PTERM='afuq-pick-term', GN=['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر'];
   function pkNum(n){ return n.toLocaleString('ar'); }
+  function pkDevs(n){ return n===1?'جهاز واحد':n===2?'جهازين':n<=10?pkNum(n)+' أجهزة':pkNum(n)+' جهازًا'; }
   function pkCnt(n){ return n===1?'مادة واحدة':n===2?'مادتين':n<=10?pkNum(n)+' مواد':pkNum(n)+' مادة'; }
   function pkRead(k){ var v=''; try{ v=localStorage.getItem(k)||''; }catch(e){}
     if(!v){ try{ var m=new RegExp('(?:^|; )'+k+'=([^;]*)').exec(document.cookie); if(m) v=decodeURIComponent(m[1]); }catch(e){} } return v; }
@@ -389,13 +391,54 @@ button.row .sic,button.row b{opacity:.6}
   function pkDel(k){ try{ localStorage.removeItem(k); }catch(e){} try{ document.cookie=k+'=; path=/; max-age=0'; }catch(e){} }
   function pkSel(){ var out=[]; pkRead(PKEY).split('|').forEach(function(p){ if(CAT[p]&&out.indexOf(p)<0) out.push(p); }); return out; }
   /* forget this device's choice and lock again what it opened */
-  function pkTake(sel){
+  function pkTake(sel,keep){
     var ks=[]; sel.forEach(function(p){ var c=CAT[p]; if(c) c.parts.forEach(function(x){ ks.push(c.lock+x[0]); }); });
     ks.forEach(function(k){ relock(k); ['localStorage','sessionStorage'].forEach(function(S){ try{ window[S].removeItem(k); }catch(e){} }); });
-    pkDel(PKEY); pkDel(PTERM);
-    ['localStorage','sessionStorage'].forEach(function(S){ try{ var st=window[S]; if((st.getItem('afuq-pkg-home')||'').indexOf('#pick')>=0){ st.removeItem('afuq-pkg-home'); st.removeItem('afuq-pkg-paths'); } }catch(e){} });
+    if(!keep){ pkDel(PKEY); pkDel(PTERM); }
+    ['localStorage','sessionStorage'].forEach(function(S){ try{ var st=window[S]; if(/#(pick|pl)/.test(st.getItem('afuq-pkg-home')||'')){ st.removeItem('afuq-pkg-home'); st.removeItem('afuq-pkg-paths'); } }catch(e){} });
+  }
+
+  /* «الرابط الخاص» #pl<14 hex> (owner, 2026-11-13): one link per teacher, unique, so that a shared link is useless to anyone else. The link, its
+     subjects (chosen once, on the first device) and the devices that opened it (at most max_devices, two) live in the «afaq-subscribe» Supabase
+     project (tables pick_links / pick_devices; only the two functions pick_open / pick_choose are callable from here). A device is a random id kept in
+     localStorage + a cookie. The last answer is cached on the device so the link still opens offline; a full / stopped / reset link takes its sections back.
+     Links are made and managed with SQL (create: insert into pick_links(code,label,max_subjects); reset: delete from pick_devices / set subjects=null). */
+  var SB='https://jcfjicctftvsmtamvtof.supabase.co/rest/v1/rpc/', SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZmppY2N0ZnR2c210YW12dG9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzNjY4OTQsImV4cCI6MjEwNjk0Mjg5NH0.a3a2pHnyb8ht6OFK_gedqShexSp8L_o8ws1CFKFfJc0';
+  function plDev(){ var d=pkRead('afuq-dev'); if(!/^[0-9a-f]{32}$/.test(d)){ var a=new Uint8Array(16); try{ crypto.getRandomValues(a); }catch(e){ for(var i=0;i<16;i++) a[i]=Math.floor(Math.random()*256); }
+      d=''; for(var j=0;j<16;j++) d+=('0'+a[j].toString(16)).slice(-2); pkWrite('afuq-dev',d); } return d; }
+  function plRpc(fn,body){ return fetch(SB+fn,{method:'POST',headers:{'apikey':SBK,'Authorization':'Bearer '+SBK,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
+  function plMsg(title,text){ var b=el('div','bad'); b.append(el('b',null,title)); b.append(document.createElement('br')); b.append(document.createTextNode(text)); root.replaceChildren(b); }
+  function plStart(){
+    var dev=plDev(), ck='afuq-plc-'+plCode, cache=pkRead(ck).split('|').filter(function(p){ return CAT[p]; });
+    var lock=function(list){ pkTake(list,true); };
+    var drop=function(){ lock(cache); pkDel(ck); pkDel(ck+'n'); };
+    var show=function(subs){ want=subs.map(function(p){ return [p,'all']; }); picked=true; render(); };
+    plRpc('pick_open',{p_code:plCode,p_device:dev}).then(function(r){
+      var s=r&&r.status;
+      if(s==='ok'){
+        var subs=(r.subjects||[]).filter(function(p){ return CAT[p]; });
+        lock(cache.filter(function(p){ return subs.indexOf(p)<0; }));
+        pkWrite(ck,subs.join('|')); pkWrite(ck+'n',r.name||''); plInfo=r; if(r.name) to='\u2068'+String(r.name).slice(0,60)+'\u2069'; show(subs);
+      } else if(s==='chooser'){
+        drop(); plInfo=r; pickMax=r.max_subjects||0;
+        pickChooser('',null,function(chosen,btn,name){
+          btn.disabled=true;
+          plRpc('pick_choose',{p_code:plCode,p_device:dev,p_subjects:chosen,p_name:name}).then(function(x){
+            if(x&&x.status==='bad_name'){ btn.disabled=false; plMsg('تعذّر حفظ الاسم','اكتب اسمًا من حرفين إلى ٦٠ حرفًا، ثم أعد المحاولة.'); return; }
+            if(x&&x.status==='bad'){ btn.disabled=false; plMsg('تعذّر الحفظ','عدد المواد غير مسموح به في هذا الرابط. أعد المحاولة أو تواصل مع منصة أفق على '+PHONE+'.'); return; }
+            location.reload();
+          }).catch(function(){ btn.disabled=false; btn.textContent='تعذّر الاتصال، أعد المحاولة'; });
+        });
+      } else if(s==='full'){ drop(); plMsg('هذا الرابط وصل إلى الحد الأقصى للأجهزة','الرابط خاص بمعلم واحد ويعمل على '+pkDevs(r.max_devices||2)+' فقط، وقد استُخدم عليهما. للمساعدة تواصل مع منصة أفق على '+PHONE+'.'); }
+      else if(s==='stopped'){ drop(); plMsg('تم إيقاف هذا الرابط','انتهى الاشتراك المرتبط بهذا الرابط. للتجديد أو الاشتراك تواصل مع منصة أفق على '+PHONE+'.'); }
+      else plMsg('هذا الرابط غير صحيح','تأكد من نسخ الرابط كاملًا، أو تواصل مع منصة أفق على '+PHONE+'.');
+    }).catch(function(){
+      if(cache.length){ plInfo=null; var cn=pkRead(ck+'n'); if(cn) to='\u2068'+cn.slice(0,60)+'\u2069'; show(cache); }   /* offline: what this device was given last time */
+      else plMsg('تعذّر الاتصال','تأكد من اتصالك بالإنترنت ثم أعد فتح الرابط.');
+    });
   }
   function pickStart(){
+    if(pickMode==='pl') return plStart();
     if(pickMode==='reset'){ pkTake(pkSel()); location.replace(location.pathname+'#pick'+(pickMax||'')); return; }
     fetch('packages.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; }).then(function(j){
       var t=j&&typeof j.pick==='string'?j.pick.trim():'', sel=pkSel(), st=pkRead(PTERM);
@@ -406,7 +449,7 @@ button.row .sic,button.row b{opacity:.6}
       else pickChooser(t);
     });
   }
-  function pickChooser(term,keep){
+  function pickChooser(term,keep,save){
     var chosen=keep||[], grade=0, grades=[];
     Object.keys(CAT).forEach(function(p){ var g=+p.split('/')[0]; if(grades.indexOf(g)<0) grades.push(g); }); grades.sort(function(a,b){ return a-b; });
     var gb=el('div','picker'), sb=el('div','subjects'), bar=el('div','pkbar'), sum=el('p','hint'), go=el('button','pkbtn','متابعة ←');
@@ -430,16 +473,19 @@ button.row .sic,button.row b{opacity:.6}
     go.onclick=function(){
       var cf=el('div','box'); cf.append(el('h2',null,'تأكيد المواد'));
       var ul=el('ul','pkul'); chosen.forEach(function(p){ ul.append(el('li',null,CAT[p].title)); }); cf.append(ul);
-      cf.append(el('p','lead','ستُحفظ هذه المواد على هذا الجهاز وتظهر لك في كل مرة تفتح فيها هذا الرابط، ولا تتغير إلا بالتواصل مع منصة أفق على '+PHONE+'. هل هذه موادك؟'));
+      cf.append(el('p','lead',(save?'ستُربط هذه المواد واسمك برابطك الخاص، ولا تتغير بعد ذلك إلا بالتواصل مع منصة أفق على ':'ستُحفظ هذه المواد على هذا الجهاز وتظهر لك في كل مرة تفتح فيها هذا الرابط، ولا تتغير إلا بالتواصل مع منصة أفق على ')+PHONE+'. هل هذه موادك؟'));
+      var nmIn=null;
+      if(save){ cf.append(el('p','lead','اكتب اسمك كما تريد أن يظهر في المنصة، وسيبقى ثابتًا مع موادك:')); nmIn=document.createElement('input'); nmIn.type='text'; nmIn.maxLength=60; nmIn.placeholder='الاسم الثلاثي'; nmIn.setAttribute('autocomplete','name');
+        nmIn.setAttribute('style','width:100%;font-size:17px;padding:11px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);margin:0 0 12px'); cf.append(nmIn); }
       var ok=el('button','pkbtn','نعم، احفظ المواد'), back=el('button','pkbtn alt','رجوع'); ok.type=back.type='button';
       var ar=el('div','pkacts'); ar.append(ok,back); cf.append(ar);
       root.replaceChildren(cf);
-      back.onclick=function(){ pickChooser(term,chosen); };
-      ok.onclick=function(){ pkWrite(PKEY,chosen.join('|')); if(term) pkWrite(PTERM,term); location.reload(); };
+      back.onclick=function(){ pickChooser(term,chosen,save); };
+      ok.onclick=function(){ if(save){ var nv=nmIn.value.replace(/\s+/g,' ').trim(); if(nv.length<2){ nmIn.style.borderColor='var(--bad)'; nmIn.focus(); return; } return save(chosen,ok,nv); } pkWrite(PKEY,chosen.join('|')); if(term) pkWrite(PTERM,term); location.reload(); };
     };
     bar.append(sum,go);
     root.replaceChildren(el('p','hello','اختر موادك'),
-      el('p','lead','اختر المواد التي اشتركت فيها'+(pickMax?' (حتى '+pkCnt(pickMax)+')':'')+'. تُحفظ على هذا الجهاز، وتظهر لك في الباقة الذهبية كلما فتحت هذا الرابط دون أن تختارها مرة أخرى.'),
+      el('p','lead','اختر المواد التي اشتركت فيها'+(pickMax?' (حتى '+pkCnt(pickMax)+')':'')+(save?'. تُربط بهذا الرابط الخاص بك، وتظهر لك في الباقة الذهبية كلما فتحته على جهازك ('+pkDevs(plInfo&&plInfo.max_devices||2)+' فقط) دون أن تختارها مرة أخرى.':'. تُحفظ على هذا الجهاز، وتظهر لك في الباقة الذهبية كلما فتحت هذا الرابط دون أن تختارها مرة أخرى.')),
       gb,sb,bar);
     paint();
   }
