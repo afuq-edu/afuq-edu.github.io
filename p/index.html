@@ -120,6 +120,16 @@ button.row .sic,button.row b{opacity:.6}
 .row .arr{margin-inline-start:auto;color:var(--c);font-weight:700;font-size:14px}
 .row:hover b{color:var(--c)}
 .bad{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+.pkrow{display:flex;align-items:center;gap:12px;padding:13px 4px;border-top:1px solid var(--line);cursor:pointer}
+.pkrow input{flex:none;width:21px;height:21px;accent-color:var(--brand)}
+.pkrow b{font-size:15.5px;font-weight:600}
+.pkbar{display:grid;gap:12px;position:sticky;bottom:0;background:var(--bg);padding:10px 0 14px}
+.pkbar .hint{margin:0;color:var(--muted);font-size:14px}
+.pkbtn{display:block;width:100%;border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--brand);color:var(--brand-ink);cursor:pointer}
+.pkbtn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.pkbtn:disabled{opacity:.45;cursor:not-allowed}
+.pkacts{display:grid;gap:10px;margin:0 0 12px}
+.pkul{margin:6px 0 12px;padding-inline-start:22px}
 .cta{display:inline-block;margin-top:6px;background:var(--brand);color:var(--brand-ink);border-radius:12px;padding:10px 18px;font-weight:700;text-decoration:none}
 </style>
 <link rel="stylesheet" href="/assets/phone.css">
@@ -177,13 +187,14 @@ button.row .sic,button.row b{opacity:.6}
   window.addEventListener('focus',stale);
   document.addEventListener('visibilitychange',function(){ if(!document.hidden) stale(); });
   var hraw=location.hash.slice(1), raw=hraw; try{ raw=decodeURIComponent(hraw); }catch(e){}
-  var to='', all=false, want=[], kcode='', plain=false;
+  var to='', all=false, want=[], kcode='', plain=false, pickMode='', pickMax=0, picked=false;
   function b64(t){ try{ t=t.replace(/-/g,'+').replace(/_/g,'/'); while(t.length%4) t+='='; return new TextDecoder().decode(Uint8Array.from(atob(t),function(c){return c.charCodeAt(0)})); }catch(e){ return ''; } }
   if(/(^|&)(to|i|all)=/.test(raw)){
     var h=new URLSearchParams(/(^|&)(to|i|all)=/.test(hraw)?hraw:raw); to=h.get('to')||''; all=h.get('all')==='1';
     want=(h.get('i')||'').split(';').map(function(x){ var m=x.split(':'); return [(m[0]||''), (m[1]||'all')]; });
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
+    var pkm=/^(reset)?pick(\d{0,2})$/.exec(code); if(pkm){ pickMode=pkm[1]?'reset':'pick'; pickMax=+pkm[2]||0; code=''; }   /* #pick[N]: the subscriber chooses the subjects (see pickStart) */
     // #k<id>-<items> carries its materials too, so a new stable link works before packages.json is synced.
     var tm=/^([tu])([0-9a-z]{5,9})-(.+)$/.exec(code);
     if(tm){ trial=parseInt(tm[2],36)*1000; code=tm[3]; trialOld=tm[1]!==TRIAL_GEN; }
@@ -337,7 +348,7 @@ button.row .sic,button.row b{opacity:.6}
     // newest notice first: the gold-package notice (custom), then the general one (text)
     [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
   }).catch(function(){});
-  root.append(gifts(plain||!(kcode||to)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links, never on plain ones */
+  root.append(gifts(plain||!(kcode||to||picked)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links, never on plain ones */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
     it.parts.forEach(function(p){
@@ -361,6 +372,76 @@ button.row .sic,button.row b{opacity:.6}
     });
     root.append(box);
   });
+  if(picked) root.append(el('p','lead','موادك محفوظة على هذا الجهاز وتظهر كلما فتحت هذا الرابط. لتغيير المواد أو التجديد تواصل مع منصة أفق على '+PHONE+'.'));
+  }
+
+  /* «رابط اختيار المواد» #pick[N] (owner, 2026-11-13): ONE link for every subscriber. The first visit on a device shows the subjects to choose
+     (at most N when the link says so: #pick3, any number for #pick); the choice is kept on the device (localStorage + a cookie) and every later
+     visit opens the gold package of those subjects at once, without choosing again. packages.json key "pick": "-" stops the link (takes back what
+     it opened on the device); any other value is the TERM id: when it changes, the saved choice is dropped and the subscriber chooses again
+     (the new term). #resetpick[N] (sent by Afuq to one subscriber) clears this device's choice so that they can choose again. */
+  var PKEY='afuq-pick', PTERM='afuq-pick-term', GN=['','الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر'];
+  function pkNum(n){ return n.toLocaleString('ar'); }
+  function pkCnt(n){ return n===1?'مادة واحدة':n===2?'مادتين':n<=10?pkNum(n)+' مواد':pkNum(n)+' مادة'; }
+  function pkRead(k){ var v=''; try{ v=localStorage.getItem(k)||''; }catch(e){}
+    if(!v){ try{ var m=new RegExp('(?:^|; )'+k+'=([^;]*)').exec(document.cookie); if(m) v=decodeURIComponent(m[1]); }catch(e){} } return v; }
+  function pkWrite(k,v){ try{ localStorage.setItem(k,v); }catch(e){} try{ document.cookie=k+'='+encodeURIComponent(v)+'; path=/; max-age=31536000; SameSite=Lax'; }catch(e){} }
+  function pkDel(k){ try{ localStorage.removeItem(k); }catch(e){} try{ document.cookie=k+'=; path=/; max-age=0'; }catch(e){} }
+  function pkSel(){ var out=[]; pkRead(PKEY).split('|').forEach(function(p){ if(CAT[p]&&out.indexOf(p)<0) out.push(p); }); return out; }
+  /* forget this device's choice and lock again what it opened */
+  function pkTake(sel){
+    var ks=[]; sel.forEach(function(p){ var c=CAT[p]; if(c) c.parts.forEach(function(x){ ks.push(c.lock+x[0]); }); });
+    ks.forEach(function(k){ relock(k); ['localStorage','sessionStorage'].forEach(function(S){ try{ window[S].removeItem(k); }catch(e){} }); });
+    pkDel(PKEY); pkDel(PTERM);
+    ['localStorage','sessionStorage'].forEach(function(S){ try{ var st=window[S]; if((st.getItem('afuq-pkg-home')||'').indexOf('#pick')>=0){ st.removeItem('afuq-pkg-home'); st.removeItem('afuq-pkg-paths'); } }catch(e){} });
+  }
+  function pickStart(){
+    if(pickMode==='reset'){ pkTake(pkSel()); location.replace(location.pathname+'#pick'+(pickMax||'')); return; }
+    fetch('packages.json',{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; }).then(function(j){
+      var t=j&&typeof j.pick==='string'?j.pick.trim():'', sel=pkSel(), st=pkRead(PTERM);
+      if(t==='-'){ pkTake(sel); var b=el('div','bad'); b.append(el('b',null,'تم إيقاف هذا الرابط')); b.append(document.createElement('br'));
+        b.append(document.createTextNode('انتهى الاشتراك المرتبط بهذا الرابط. للتجديد أو الاشتراك تواصل مع منصة أفق على '+PHONE+'.')); root.replaceChildren(b); return; }
+      if(sel.length&&t&&st&&st!==t){ pkTake(sel); sel=[]; }   /* a new term: choose again */
+      if(sel.length){ if(t&&!st) pkWrite(PTERM,t); want=sel.map(function(p){ return [p,'all']; }); picked=true; render(); }
+      else pickChooser(t);
+    });
+  }
+  function pickChooser(term,keep){
+    var chosen=keep||[], grade=0, grades=[];
+    Object.keys(CAT).forEach(function(p){ var g=+p.split('/')[0]; if(grades.indexOf(g)<0) grades.push(g); }); grades.sort(function(a,b){ return a-b; });
+    var gb=el('div','picker'), sb=el('div','subjects'), bar=el('div','pkbar'), sum=el('p','hint'), go=el('button','pkbtn','متابعة ←');
+    go.type='button'; go.disabled=true;
+    function paint(){
+      Array.prototype.forEach.call(gb.children,function(b){ var g=+b.getAttribute('data-g'), n=chosen.filter(function(p){ return +p.split('/')[0]===g; }).length;
+        b.setAttribute('aria-pressed',String(g===grade)); b.querySelector('.lbl').textContent='الصف '+GN[g]+(n?' ('+pkNum(n)+')':''); });
+      sb.replaceChildren();
+      if(!grade){ sb.append(el('p','hint','اختر الصف من الدوائر أعلاه، فتظهر مواده لتختار منها. يمكنك الانتقال بين الصفوف واختيار مواد من أكثر من صف.')); }
+      else { sb.append(el('h2',null,'مواد الصف '+GN[grade]));
+        Object.keys(CAT).filter(function(p){ return +p.split('/')[0]===grade; }).forEach(function(p){
+          var c=CAT[p], lb=el('label','pkrow'), cb=document.createElement('input'); cb.type='checkbox'; cb.checked=chosen.indexOf(p)>=0;
+          cb.disabled=!cb.checked&&!!pickMax&&chosen.length>=pickMax;
+          cb.onchange=function(){ var i=chosen.indexOf(p); if(cb.checked&&i<0) chosen.push(p); else if(!cb.checked&&i>=0) chosen.splice(i,1); paint(); };
+          lb.append(cb,el('b',null,c.title)); sb.append(lb); }); }
+      sum.textContent=chosen.length?'✅ المختار ('+pkNum(chosen.length)+(pickMax?' من '+pkNum(pickMax):'')+'): '+chosen.map(function(p){ return CAT[p].title; }).join(' · '):(pickMax?'يمكنك اختيار حتى '+pkCnt(pickMax)+'.':'لم تختر شيئًا بعد.');
+      go.disabled=!chosen.length;
+    }
+    grades.forEach(function(g){ var b=el('button','gbtn'); b.type='button'; b.setAttribute('data-g',String(g)); b.style.setProperty('--c','var(--brand)');
+      b.append(el('span','dot',pkNum(g)),el('span','lbl')); b.onclick=function(){ grade=g; paint(); }; gb.append(b); });
+    go.onclick=function(){
+      var cf=el('div','box'); cf.append(el('h2',null,'تأكيد المواد'));
+      var ul=el('ul','pkul'); chosen.forEach(function(p){ ul.append(el('li',null,CAT[p].title)); }); cf.append(ul);
+      cf.append(el('p','lead','ستُحفظ هذه المواد على هذا الجهاز وتظهر لك في كل مرة تفتح فيها هذا الرابط، ولا تتغير إلا بالتواصل مع منصة أفق على '+PHONE+'. هل هذه موادك؟'));
+      var ok=el('button','pkbtn','نعم، احفظ المواد'), back=el('button','pkbtn alt','رجوع'); ok.type=back.type='button';
+      var ar=el('div','pkacts'); ar.append(ok,back); cf.append(ar);
+      root.replaceChildren(cf);
+      back.onclick=function(){ pickChooser(term,chosen); };
+      ok.onclick=function(){ pkWrite(PKEY,chosen.join('|')); if(term) pkWrite(PTERM,term); location.reload(); };
+    };
+    bar.append(sum,go);
+    root.replaceChildren(el('p','hello','اختر موادك'),
+      el('p','lead','اختر المواد التي اشتركت فيها'+(pickMax?' (حتى '+pkCnt(pickMax)+')':'')+'. تُحفظ على هذا الجهاز، وتظهر لك في الباقة الذهبية كلما فتحت هذا الرابط دون أن تختارها مرة أخرى.'),
+      gb,sb,bar);
+    paint();
   }
   // Stable links: #k<id>.<name> looks the materials up in packages.json, so editing a person's package
   // changes what the SAME link shows (the file is refreshed whenever the packages are synced).
@@ -396,7 +477,7 @@ button.row .sic,button.row b{opacity:.6}
       });
     };
     load();
-  } else render();
+  } else if(pickMode) pickStart(); else render();
 })();
 </script>
 <script src="/assets/newbadge.js" defer></script>
