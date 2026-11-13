@@ -120,16 +120,40 @@ button.row .sic,button.row b{opacity:.6}
 .row .arr{margin-inline-start:auto;color:var(--c);font-weight:700;font-size:14px}
 .row:hover b{color:var(--c)}
 .bad{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
-.pkrow{display:flex;align-items:center;gap:12px;padding:13px 4px;border-top:1px solid var(--line);cursor:pointer}
-.pkrow input{flex:none;width:21px;height:21px;accent-color:var(--brand)}
-.pkrow b{font-size:15.5px;font-weight:600}
-.pkbar{display:grid;gap:12px;position:sticky;bottom:0;background:var(--bg);padding:10px 0 14px}
-.pkbar .hint{margin:0;color:var(--muted);font-size:14px}
-.pkbtn{display:block;width:100%;border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--brand);color:var(--brand-ink);cursor:pointer}
+.pk{grid-template-columns:minmax(0,1fr)}   /* a grid item never grows past the screen (a nowrap label made the page wider than a phone) */
+.pkgrades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 8px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px 10px}
+.pkg{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:4px 2px;cursor:pointer;color:var(--ink);border-radius:14px;-webkit-tap-highlight-color:transparent}
+.pkd{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:19px;font-weight:700;color:var(--brand);background:color-mix(in srgb,var(--brand) 11%,var(--card));border:1.5px solid color-mix(in srgb,var(--brand) 32%,transparent);transition:transform .15s,background .15s,color .15s}
+.pkl{font-size:12.5px;color:var(--muted);font-weight:600;text-align:center;line-height:1.35}
+.pkg:hover .pkd{transform:translateY(-2px)}
+.pkg[aria-pressed="true"] .pkd{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.pkg[aria-pressed="true"] .pkl{color:var(--ink)}
+.pksub{display:grid;gap:10px}
+.pksub.pkfade{animation:pkin .2s ease both}
+.pksub h2{margin:0 0 2px;font-size:18px}
+.pksub .pkgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.pkrow{display:flex;align-items:center;gap:14px;min-height:56px;padding:10px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s}
+.pkrow:hover{border-color:var(--brand)}
+.pkrow:has(input:checked){border-color:var(--brand);background:color-mix(in srgb,var(--brand) 9%,var(--card))}
+.pkrow:has(input:disabled){opacity:.5;cursor:not-allowed}
+.pkrow input{flex:none;width:22px;height:22px;accent-color:var(--brand)}
+.pkrow b{font-size:15.5px;font-weight:600;line-height:1.4}
+.pkhint{margin:0;color:var(--muted);font-size:14.5px}
+.pkbar{display:grid;gap:10px;position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:3;background:color-mix(in srgb,var(--card) 90%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 10px 30px -12px #0003}
+.pkbtn{display:block;width:100%;border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-size:16px;background:var(--brand);color:var(--brand-ink);cursor:pointer;transition:opacity .15s,transform .1s}
+.pkbtn:active{transform:scale(.99)}
 .pkbtn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
 .pkbtn:disabled{opacity:.45;cursor:not-allowed}
 .pkacts{display:grid;gap:10px;margin:0 0 12px}
 .pkul{margin:6px 0 12px;padding-inline-start:22px}
+.pkconf{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:20px;animation:pkin .2s ease both}
+.pkconf h2{margin:0;font-size:18px}.pkconf p{margin:0}
+.pkname{width:100%;font-size:17px;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:var(--bg);margin:0 0 12px}
+.pkname:focus{border-color:var(--brand);outline:0}
+@keyframes pkin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (min-width:560px){.pkgrades{grid-template-columns:repeat(6,minmax(0,1fr));padding:18px 14px}.pksub .pkgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:900px){.pkgrades{max-width:720px}.pkbar{max-width:560px;margin-inline:auto;width:100%}.pkconf{max-width:560px;margin-inline:auto;width:100%}}
+@media (prefers-reduced-motion:reduce){.pksub,.pkconf{animation:none}.pkd,.pkbtn,.pkrow{transition:none}}
 .cta{display:inline-block;margin-top:6px;background:var(--brand);color:var(--brand-ink);border-radius:12px;padding:10px 18px;font-weight:700;text-decoration:none}
 </style>
 <link rel="stylesheet" href="/assets/phone.css">
@@ -452,31 +476,34 @@ button.row .sic,button.row b{opacity:.6}
   function pickChooser(term,keep,save){
     var chosen=keep||[], grade=0, grades=[];
     Object.keys(CAT).forEach(function(p){ var g=+p.split('/')[0]; if(grades.indexOf(g)<0) grades.push(g); }); grades.sort(function(a,b){ return a-b; });
-    var gb=el('div','picker'), sb=el('div','subjects'), bar=el('div','pkbar'), sum=el('p','hint'), go=el('button','pkbtn','متابعة ←');
+    var gb=el('div','pkgrades'), sb=el('div','pksub'), bar=el('div','pkbar'), sum=el('p','pkhint'), go=el('button','pkbtn','متابعة ←');
     go.type='button'; go.disabled=true;
     function paint(){
       Array.prototype.forEach.call(gb.children,function(b){ var g=+b.getAttribute('data-g'), n=chosen.filter(function(p){ return +p.split('/')[0]===g; }).length;
-        b.setAttribute('aria-pressed',String(g===grade)); b.querySelector('.lbl').textContent='الصف '+GN[g]+(n?' ('+pkNum(n)+')':''); });
+        b.setAttribute('aria-pressed',String(g===grade)); b.querySelector('.pkl').textContent='الصف '+GN[g]+(n?' ('+pkNum(n)+')':''); });
+      var fp=document.activeElement&&document.activeElement.getAttribute?document.activeElement.getAttribute('data-p'):null, shown=sb.getAttribute('data-g')!==String(grade);
+      sb.setAttribute('data-g',String(grade)); sb.className='pksub'+(shown&&grade?' pkfade':'');
       sb.replaceChildren();
-      if(!grade){ sb.append(el('p','hint','اختر الصف من الدوائر أعلاه، فتظهر مواده لتختار منها. يمكنك الانتقال بين الصفوف واختيار مواد من أكثر من صف.')); }
-      else { sb.append(el('h2',null,'مواد الصف '+GN[grade]));
+      if(!grade){ sb.append(el('p','pkhint','اختر الصف من الدوائر أعلاه، فتظهر مواده لتختار منها. يمكنك الانتقال بين الصفوف واختيار مواد من أكثر من صف.')); }
+      else { sb.append(el('h2',null,'مواد الصف '+GN[grade])); var gr=el('div','pkgrid'); sb.append(gr);
         Object.keys(CAT).filter(function(p){ return +p.split('/')[0]===grade; }).forEach(function(p){
           var c=CAT[p], lb=el('label','pkrow'), cb=document.createElement('input'); cb.type='checkbox'; cb.checked=chosen.indexOf(p)>=0;
           cb.disabled=!cb.checked&&!!pickMax&&chosen.length>=pickMax;
           cb.onchange=function(){ var i=chosen.indexOf(p); if(cb.checked&&i<0) chosen.push(p); else if(!cb.checked&&i>=0) chosen.splice(i,1); paint(); };
-          lb.append(cb,el('b',null,c.title)); sb.append(lb); }); }
+          cb.setAttribute('data-p',p); lb.append(cb,el('b',null,c.title.replace(/\s*[–-]?\s*الصف .*$/,'')||c.title)); gr.append(lb); }); }
       sum.textContent=chosen.length?'✅ المختار ('+pkNum(chosen.length)+(pickMax?' من '+pkNum(pickMax):'')+'): '+chosen.map(function(p){ return CAT[p].title; }).join(' · '):(pickMax?'يمكنك اختيار حتى '+pkCnt(pickMax)+'.':'لم تختر شيئًا بعد.');
       go.disabled=!chosen.length;
+      if(fp){ var again=sb.querySelector('[data-p="'+fp+'"]'); if(again&&!again.disabled) again.focus(); }
     }
-    grades.forEach(function(g){ var b=el('button','gbtn'); b.type='button'; b.setAttribute('data-g',String(g)); b.style.setProperty('--c','var(--brand)');
-      b.append(el('span','dot',pkNum(g)),el('span','lbl')); b.onclick=function(){ grade=g; paint(); }; gb.append(b); });
+    grades.forEach(function(g){ var b=el('button','pkg'); b.type='button'; b.setAttribute('data-g',String(g)); b.style.setProperty('--c','var(--brand)');
+      b.append(el('span','pkd',pkNum(g)),el('span','pkl')); b.onclick=function(){ grade=g; paint(); }; gb.append(b); });
     go.onclick=function(){
-      var cf=el('div','box'); cf.append(el('h2',null,'تأكيد المواد'));
+      var cf=el('div','pkconf'); cf.append(el('h2',null,'تأكيد المواد'));
       var ul=el('ul','pkul'); chosen.forEach(function(p){ ul.append(el('li',null,CAT[p].title)); }); cf.append(ul);
       cf.append(el('p','lead',(save?'ستُربط هذه المواد واسمك برابطك الخاص، ولا تتغير بعد ذلك إلا بالتواصل مع منصة أفق على ':'ستُحفظ هذه المواد على هذا الجهاز وتظهر لك في كل مرة تفتح فيها هذا الرابط، ولا تتغير إلا بالتواصل مع منصة أفق على ')+PHONE+'. هل هذه موادك؟'));
       var nmIn=null;
       if(save){ cf.append(el('p','lead','اكتب اسمك كما تريد أن يظهر في المنصة، وسيبقى ثابتًا مع موادك:')); nmIn=document.createElement('input'); nmIn.type='text'; nmIn.maxLength=60; nmIn.placeholder='الاسم الثلاثي'; nmIn.setAttribute('autocomplete','name');
-        nmIn.setAttribute('style','width:100%;font-size:17px;padding:11px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);margin:0 0 12px'); cf.append(nmIn); }
+        nmIn.className='pkname'; cf.append(nmIn); }
       var ok=el('button','pkbtn','نعم، احفظ المواد'), back=el('button','pkbtn alt','رجوع'); ok.type=back.type='button';
       var ar=el('div','pkacts'); ar.append(ok,back); cf.append(ar);
       root.replaceChildren(cf);

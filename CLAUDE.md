@@ -317,3 +317,4 @@ canvas بمقاس 1600×1130 من نص الصندوق نفسه (الاسم، ا�
 المفتاح لا يُحفظ في أي مكان (في قاعدة البيانات SHA-256 فقط في `pick_admin`، وفي متصفح المالك localStorage `afuq-pl-admin`)؛ لا تكتبه في المستودع.
 مفتاح جديد عند الضياع: `insert into pick_admin(id,key_hash) values (1, encode(sha256(convert_to('<المفتاح>','UTF8')),'hex')) on conflict (id) do update set key_hash=excluded.key_hash`.
 دوال الإدارة (`pick_admin_create/list/set`) تتحقق من المفتاح وتتأخر ١٫٥ ث عند الخطأ؛ إعادة الضبط تعطّل الأجهزة (`pick_devices.active=false`) بدل حذفها.
+واجهة اختيار المواد (`pickChooser` في p/index.html) تستعمل أصنافها الخاصة (`pkgrades/pkg/pkd/pkl/pksub/pkrow/pkbar/pkconf`) لا `.picker/.gbtn/.subjects/.box`: هذه تُعاد تنسيقها في `/assets/phone.css` (شبكة أيقونات) وكانت تكسر الجوال (اتساع الصفحة وتبعثر نموذج الاسم). مفحوصة على ٣٩٠ و١٢٨٠ بكسل؛ بعد أي تعديل صوّر الشاشتين.
