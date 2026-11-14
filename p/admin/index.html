@@ -83,7 +83,7 @@ input,select{border:1px solid var(--line);background:var(--bg);border-radius:10p
   function key(){ try{ return localStorage.getItem(KEY)||''; }catch(e){ return window._k||''; } }
   function setKey(v){ try{ if(v) localStorage.setItem(KEY,v); else localStorage.removeItem(KEY); }catch(e){ window._k=v; } }
   function rpc(fn,body){ return fetch(SB+fn,{method:'POST',headers:{'apikey':SBK,'Authorization':'Bearer '+SBK,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
-  function url(code){ return location.origin+'/p/#pl'+code; }
+  function url(code){ return location.origin+'/p/?pl='+code; }
   function copy(t){ var ok=function(){ toast('نُسخ'); };
     try{ navigator.clipboard.writeText(t).then(ok,function(){ fb(t); ok(); }); }catch(e){ fb(t); ok(); } }
   function fb(t){ var a=document.createElement('textarea'); a.value=t; a.style.cssText='position:fixed;opacity:0'; document.body.appendChild(a); a.select(); try{ document.execCommand('copy'); }catch(e){} a.remove(); }

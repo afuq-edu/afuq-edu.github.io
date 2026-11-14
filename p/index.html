@@ -219,7 +219,8 @@ button.row .sic,button.row b{opacity:.6}
   } else {
     var dot=raw.indexOf('.'), code=dot<0?raw:raw.slice(0,dot); to=dot<0?'':b64(raw.slice(dot+1));
     var pkm=/^(reset)?pick(\d{0,2})$/.exec(code); if(pkm){ pickMode=pkm[1]?'reset':'pick'; pickMax=+pkm[2]||0; code=''; }
-    var plm=/^pl([0-9a-f]{14})$/.exec(code); if(plm){ pickMode='pl'; plCode=plm[1]; code=''; }   /* #pl<code>: a private link of one teacher (see plStart) */   /* #pick[N]: the subscriber chooses the subjects (see pickStart) */
+    var plm=/^pl([0-9a-f]{14})$/.exec(code); if(plm){ pickMode='pl'; plCode=plm[1]; code=''; }
+    if(!pickMode){ var pqm=/[?&]pl=([0-9a-f]{14})(?:&|$)/.exec(location.search); if(pqm){ pickMode='pl'; plCode=pqm[1]; } }   /* #pl<code>: a private link of one teacher (see plStart) */   /* #pick[N]: the subscriber chooses the subjects (see pickStart) */
     // #k<id>-<items> carries its materials too, so a new stable link works before packages.json is synced.
     var tm=/^([tu])([0-9a-z]{5,9})-(.+)$/.exec(code);
     if(tm){ trial=parseInt(tm[2],36)*1000; code=tm[3]; trialOld=tm[1]!==TRIAL_GEN; }
@@ -428,8 +429,15 @@ button.row .sic,button.row b{opacity:.6}
      localStorage + a cookie. The last answer is cached on the device so the link still opens offline; a full / stopped / reset link takes its sections back.
      Links are made and managed with SQL (create: insert into pick_links(code,label,max_subjects); reset: delete from pick_devices / set subjects=null). */
   var SB='https://jcfjicctftvsmtamvtof.supabase.co/rest/v1/rpc/', SBK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjZmppY2N0ZnR2c210YW12dG9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzNjY4OTQsImV4cCI6MjEwNjk0Mjg5NH0.a3a2pHnyb8ht6OFK_gedqShexSp8L_o8ws1CFKFfJc0';
-  function plDev(){ var d=pkRead('afuq-dev'); if(!/^[0-9a-f]{32}$/.test(d)){ var a=new Uint8Array(16); try{ crypto.getRandomValues(a); }catch(e){ for(var i=0;i<16;i++) a[i]=Math.floor(Math.random()*256); }
-      d=''; for(var j=0;j<16;j++) d+=('0'+a[j].toString(16)).slice(-2); pkWrite('afuq-dev',d); } return d; }
+  var plDevId='';
+  function plDev(){ if(plDevId) return plDevId;
+    var d=pkRead('afuq-dev'); if(!/^[0-9a-f]{32}$/.test(d)){ var m=/(?:^|\s)afuqdev=([0-9a-f]{32})(?:\s|$)/.exec(window.name||''); d=m?m[1]:''; }
+    if(!/^[0-9a-f]{32}$/.test(d)){ try{ d=sessionStorage.getItem('afuq-dev')||''; }catch(e){ d=''; } }
+    if(!/^[0-9a-f]{32}$/.test(d)){ var a=new Uint8Array(16); try{ crypto.getRandomValues(a); }catch(e){ for(var i=0;i<16;i++) a[i]=Math.floor(Math.random()*256); }
+      d=''; for(var j=0;j<16;j++) d+=('0'+a[j].toString(16)).slice(-2); }
+    pkWrite('afuq-dev',d); try{ sessionStorage.setItem('afuq-dev',d); }catch(e){}
+    try{ if(!/afuqdev=/.test(window.name||'')) window.name=((window.name||'')+' afuqdev='+d).trim(); }catch(e){}
+    plDevId=d; return d; }
   function plRpc(fn,body){ return fetch(SB+fn,{method:'POST',headers:{'apikey':SBK,'Authorization':'Bearer '+SBK,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){ if(!r.ok) throw 0; return r.json(); }); }
   function plMsg(title,text){ var b=el('div','bad'); b.append(el('b',null,title)); b.append(document.createElement('br')); b.append(document.createTextNode(text)); root.replaceChildren(b); }
   function plStart(){
@@ -450,10 +458,10 @@ button.row .sic,button.row b{opacity:.6}
           plRpc('pick_choose',{p_code:plCode,p_device:dev,p_subjects:chosen,p_name:name}).then(function(x){
             if(x&&x.status==='bad_name'){ btn.disabled=false; plMsg('تعذّر حفظ الاسم','اكتب اسمًا من حرفين إلى ٦٠ حرفًا، ثم أعد المحاولة.'); return; }
             if(x&&x.status==='bad'){ btn.disabled=false; plMsg('تعذّر الحفظ','عدد المواد غير مسموح به في هذا الرابط. أعد المحاولة أو تواصل مع منصة أفق على '+PHONE+'.'); return; }
-            location.reload();
+            plStart();
           }).catch(function(){ btn.disabled=false; btn.textContent='تعذّر الاتصال، أعد المحاولة'; });
         });
-      } else if(s==='full'){ drop(); plMsg('هذا الرابط وصل إلى الحد الأقصى للأجهزة','الرابط خاص بمعلم واحد ويعمل على '+pkDevs(r.max_devices||2)+' فقط، وقد استُخدم عليهما. للمساعدة تواصل مع منصة أفق على '+PHONE+'.'); }
+      } else if(s==='full'){ drop(); plMsg('هذا الرابط وصل إلى الحد الأقصى للأجهزة','الرابط خاص بمعلم واحد ويعمل على '+pkDevs(r.max_devices||2)+' فقط، وقد استُخدم عليهما. إن فتحته من تطبيق (نور أو واتساب) فافتحه من متصفح الجهاز نفسه. ولتحرير جهاز تواصل مع منصة أفق على '+PHONE+'.'); }
       else if(s==='stopped'){ drop(); plMsg('تم إيقاف هذا الرابط','انتهى الاشتراك المرتبط بهذا الرابط. للتجديد أو الاشتراك تواصل مع منصة أفق على '+PHONE+'.'); }
       else plMsg('هذا الرابط غير صحيح','تأكد من نسخ الرابط كاملًا، أو تواصل مع منصة أفق على '+PHONE+'.');
     }).catch(function(){
