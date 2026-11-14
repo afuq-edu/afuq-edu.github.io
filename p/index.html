@@ -311,7 +311,7 @@ button.row .sic,button.row b{opacity:.6}
     {name:'منصة المعلم', desc:'تطبيق مساعد للمعلم، هدية خاصة لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://22-tan-gamma.vercel.app/', note:'يمكن استخدامه على الهاتف، لكن للحصول على واجهة أفضل يوصى باستخدامه على جهاز تابلت أو كمبيوتر.'},
     {name:'الجرس', desc:'تطبيق الجرس، الهدية الثانية لمشتركي الباقة الذهبية من منصة أفق التعليمية.', url:'https://afuq-edu.github.io/111/jaras/', note:'يعمل على الهاتف والتابلت والكمبيوتر.'}
   ];
-  function gifts(locked){ var f=document.createDocumentFragment(), hw=el('div'); f.append(hw); if(window.afuqHwOffer) window.afuqHwOffer(hw); else hw.setAttribute('data-hwoffer','');   /* «الواجبات التلقائية» above «منصة المعلم» (/assets/hwoffer.js) */
+  function gifts(locked){ var f=document.createDocumentFragment();   /* no announcements / homework offer on this page (owner, 2026-11-14) */
     GIFTS.forEach(function(g){ f.append(gift(g,locked)); }); if(SHOW_HADER) f.append(hader()); return f; }
   var SHOW_HADER=false; /* «حاضر» card hidden again, gold links too (owner, 2026-10-27); true shows it on every link */
   /* «حاضر» (afaq-subscribe): gold subscribers install it, then contact the platform, and the owner opens it free for a full day */
@@ -367,13 +367,6 @@ button.row .sic,button.row b{opacity:.6}
       setTimeout(function(){ location.reload(); }, pv-Date.now()+500);
     } else root.append(el('p','ann','🔒 انتهت التجربة الذهبية (٢٠ دقيقة)، وأُقفلت بقية أقسام المادة. للاشتراك في الباقة الذهبية تواصل مع منصة أفق على '+PHONE+'.'));
   }
-  var ntc=el('div'); root.append(ntc); if(window.afuqNotices) window.afuqNotices(ntc); else ntc.setAttribute('data-notices','');   /* «📢 الإعلانات» (/assets/notices.js) */
-  var ann=el('div'); root.append(ann);
-  if(!plain) fetch('../announce.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(j){
-    if(!j) return;
-    // newest notice first: the gold-package notice (custom), then the general one (text)
-    [].concat(j.custom||[], j.text||[]).forEach(function(t){ if(t) ann.append(el('p','ann',String(t))); });
-  }).catch(function(){});
   root.append(gifts(plain||!(kcode||to||picked)||!!trial)); /* gifts show on every link; usable only on registered / named (gold) links, never on plain ones */
   items.forEach(function(it){
     var box=el('section','box'); box.style.setProperty('--c',it.c.color); box.append(el('h2',null,it.c.title));
@@ -562,8 +555,6 @@ button.row .sic,button.row b{opacity:.6}
 })();
 </script>
 <script src="/assets/newbadge.js" defer></script>
-<script src="/assets/notices.js" defer></script>
-<script src="/assets/hwoffer.js" defer></script>
 <script src="/assets/phone.js" defer></script>
 </body>
 </html>
