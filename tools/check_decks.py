@@ -58,6 +58,8 @@ def main():
         if probs:
             bad += len(probs); print('== %s: %d problems' % (rel, len(probs)))
             for x in probs[:8]: print('   ', x)
+    miss = [p[len(R):] for p in glob.glob(R + '[0-9]*/*/slides/index.html') + glob.glob(R + '[0-9]*/*/interactive/index.html') if 'assets/offline.js' not in open(p, encoding='utf8').read()]
+    if miss: print('\nتنبيه: %d عرضًا بلا «العمل بدون إنترنت» (شغّل python3 tools/add_offline.py): %s' % (len(miss), ' '.join(miss[:6])))
     print('\nفُحص %d عرضًا: %s' % (n, 'لا مشاكل' if not bad else '%d مشكلة' % bad))
     return 1 if bad else 0
 
