@@ -443,7 +443,7 @@ button.row .sic,button.row b{opacity:.6}
       if(s==='ok'){
         var subs=(r.subjects||[]).filter(function(p){ return CAT[p]; });
         lock(cache.filter(function(p){ return subs.indexOf(p)<0; }));
-        pkWrite(ck,subs.join('|')); pkWrite(ck+'n',r.name||''); plInfo=r; if(r.name) to='\u2068'+String(r.name).slice(0,60)+'\u2069'; show(subs);
+        pkWrite(ck,subs.join('|')); pkWrite(ck+'n',r.name||''); pkWrite('afuq-pl-last',plCode); plInfo=r; if(r.name) to='\u2068'+String(r.name).slice(0,60)+'\u2069'; show(subs);
       } else if(s==='chooser'){
         drop(); plInfo=r; pickMax=r.max_subjects||0;
         pickChooser('',null,function(chosen,btn,name){
@@ -454,7 +454,12 @@ button.row .sic,button.row b{opacity:.6}
             plStart();
           }).catch(function(){ btn.disabled=false; btn.textContent='تعذّر الاتصال، أعد المحاولة'; });
         });
-      } else if(s==='full'){ drop(); plMsg('هذا الرابط وصل إلى الحد الأقصى للأجهزة','الرابط خاص بمعلم واحد ويعمل على '+pkDevs(r.max_devices||2)+' فقط، وقد استُخدم عليهما. إن فتحته من تطبيق (نور أو واتساب) فافتحه من متصفح الجهاز نفسه. ولتحرير جهاز تواصل مع منصة أفق على '+PHONE+'.'); }
+      } else if(s==='full'){ drop(); plMsg('هذا الرابط وصل إلى الحد الأقصى للأجهزة','الرابط خاص بمعلم واحد ويعمل على '+pkDevs(r.max_devices||2)+' فقط، وقد استُخدم عليهما (كل متصفح أو تطبيق على هاتفك يُحسب جهازًا). إن كان هذا جهازك فاستبدل به أقدم جهاز.');
+        var bx=root.firstChild;
+        if(r.can_swap){ var sb=el('button','pkbtn','استبدال أقدم جهاز بهذا الجهاز'); sb.type='button'; sb.style.marginTop='14px';
+          sb.onclick=function(){ sb.disabled=true; plRpc('pick_swap',{p_code:plCode,p_device:dev}).then(function(x){ if(x&&x.status==='ok') plStart(); else { sb.disabled=false; plMsg('تعذّر الاستبدال','استُخدم الاستبدال مرتين خلال ٢٤ ساعة. حاول لاحقًا أو تواصل مع منصة أفق على '+PHONE+'.'); } }).catch(function(){ sb.disabled=false; sb.textContent='تعذّر الاتصال، أعد المحاولة'; }); };
+          bx.append(sb); bx.append(el('p','pkhint','يمكن الاستبدال مرتين كل ٢٤ ساعة. الجهاز القديم يفقد الأقسام عند فتحه الرابط.')); }
+        else bx.append(el('p','pkhint','استُخدم الاستبدال مرتين خلال ٢٤ ساعة. حاول لاحقًا أو تواصل مع منصة أفق على '+PHONE+'.')); }
       else if(s==='stopped'){ drop(); plMsg('تم إيقاف هذا الرابط','انتهى الاشتراك المرتبط بهذا الرابط. للتجديد أو الاشتراك تواصل مع منصة أفق على '+PHONE+'.'); }
       else plMsg('هذا الرابط غير صحيح','تأكد من نسخ الرابط كاملًا، أو تواصل مع منصة أفق على '+PHONE+'.');
     }).catch(function(){
