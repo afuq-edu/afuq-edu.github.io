@@ -318,10 +318,18 @@ button.row .sic,button.row b{opacity:.6}
   function hader(){
     var b=el('button','gift'); b.type='button';
     b.innerHTML='<span class="gi">⬇️</span><span><b></b><small></small></span>'; b.querySelector('b').textContent='تحميل أداة «حاضر»'; b.querySelector('small').textContent='مجانًا لمشتركي الباقة الذهبية · تعبئة تحاضير نور تلقائيًا';
-    var d=document.createElement('dialog'); d.className='gdlg';
+    var d=document.createElement('dialog'); d.className='gdlg'; d.style.maxHeight='90vh'; d.style.overflowY='auto';
     var w=el('div','dlg'); w.append(el('h3',null,'⬇️ تحميل أداة «حاضر»'));
-    w.append(el('p',null,'إضافة تعبّئ تحاضير منصة نور تلقائيًا من اشتراكك في منصة أفق: الفصل كاملًا أو دروسًا تختارها، بتواريخ النشر الرسمية.'));
-    w.append(el('p',null,'«حاضر» مجانية لمشتركي الباقة الذهبية، بلا حاجة إلى تفعيل. ثبّتها من متجر كروم عبر الرابط أدناه، ثم افتحها وأنت داخل منصة نور.'));
+        w.append(el('p',null,'«حاضر» إضافة لمتصفح كروم أو إيدج على الحاسوب، تملأ تحاضير منصة نور عنك بدل كتابتها بيدك:'));
+    var ul=el('ul'); ul.setAttribute('style','margin:0 0 12px;padding-inline-start:20px;font-size:14.5px;line-height:1.8;color:var(--ink)');
+    ['تعبّئ كل بنود التحضير في نور: المخرجات والمستوى والاستراتيجيات والمصادر والمفاهيم والتهيئة وسير الدرس والتقويم.',
+     'تحضير الفصل كاملًا بتواريخ الخطة، أو «أختار الدروس بنفسي».',
+     'تحاضير جاهزة لكل مادة وصف، مطابقة لشجرة دروس نور.',
+     'تكمل الناقص فقط ولا تكرر تحضيرًا موجودًا في نور.',
+     'وتخدمك أيضًا في الواجبات وغرف النقاش والفيديو والدرس التفاعلي.',
+     'لا تحتاج كلمة مرور نور ولا تُرسل بياناتك لأي جهة، وتتحدّث وحدها من متجر كروم.'].forEach(function(t){ ul.append(el('li',null,t)); });
+    w.append(ul);
+    w.append(el('p',null,'مجانية الآن لمشتركي الباقة الذهبية، بلا حاجة إلى تفعيل: ثبّتها من متجر كروم عبر الرابط أدناه، ثم افتحها وأنت داخل منصة نور.'));
     var go=el('a','go','تحميل «حاضر» من متجر كروم ←'); go.href='https://afuq-edu.github.io/afaq-subscribe/install.html'; go.target='_blank'; go.rel='noopener'; w.append(go);
     var x=el('button','gx','إغلاق'); x.type='button'; w.append(x); d.append(w); b.append(d);
     b.onclick=function(e){ if(d.contains(e.target)&&e.target!==d) return; d.showModal(); };
