@@ -26,5 +26,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
+      - name: Wait until the uploaded site is listed as an artifact   # deploy-pages looked for it in the same second it was created and found none (2026-11-24)
+        run: sleep 45
       - id: deployment
         uses: actions/deploy-pages@v4
